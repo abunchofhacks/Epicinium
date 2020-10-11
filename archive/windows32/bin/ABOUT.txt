@@ -1,0 +1,5 @@
+This folder contains the binaries used to run the game.
+Editing or removing these files will cause the game to crash.
+
+Do not run binaries found in this folder directly.
+Instead, run "epicinium.exe".

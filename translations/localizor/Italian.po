@@ -1,0 +1,143 @@
+msgid ""
+msgstr ""
+
+msgid "Economic Growth"
+msgstr "Crescita Economica"
+
+msgid "Good luck!"
+msgstr "Buona fortuna!"
+
+msgid "Dutch"
+msgstr "Olandese"
+
+msgid "CHAT"
+msgstr "CHAT"
+
+msgid "Quit?"
+msgstr "Uscire?"
+
+msgid "quit"
+msgstr "esci"
+
+msgid "Quit"
+msgstr "Esci"
+
+msgid "%s was defeated."
+msgstr "%s è stato sconfitto."
+
+msgid "%s was victorious. Score: %d."
+msgstr "%s ha vinto. Punteggio: %d."
+
+msgid "None"
+msgstr "Nessuno"
+
+msgid "Forest"
+msgstr "Foresta"
+
+msgid "Town"
+msgstr "Paese"
+
+msgid "Barracks"
+msgstr "Caserme"
+
+msgid "Airfield"
+msgstr "Aeroporto"
+
+msgid "Farm"
+msgstr "Fattoria"
+
+msgid "Build %s"
+msgstr "Costruisci %s"
+
+msgid "Upgrade"
+msgstr "Migliora"
+
+msgid "first"
+msgstr "primo"
+
+msgid "second"
+msgstr "secondo"
+
+msgid "Send"
+msgstr "Invia"
+
+msgid "Click to open chat."
+msgstr "Fai clic per aprire la chat."
+
+msgid "cancel"
+msgstr "annulla"
+
+msgid "MOUNTAIN"
+msgstr "MONTAGNA"
+
+msgid "FOREST"
+msgstr "FORESTA"
+
+msgid "CITY"
+msgstr "CITTÀ"
+
+msgid "TOWN"
+msgstr "PAESE"
+
+msgid "OUTPOST"
+msgstr "AVAMPOSTO"
+
+msgid "INDUSTRY"
+msgstr "INDUSTRIA"
+
+msgid "BARRACKS"
+msgstr "CASERME"
+
+msgid "SOIL"
+msgstr "SUOLO"
+
+msgid "UPGRADE"
+msgstr "MIGLIORA"
+
+msgid "Copy"
+msgstr "Copia"
+
+msgid "Red Player"
+msgstr "Giocatore Rosso"
+
+msgid "Yellow Player"
+msgstr "Giocatore Giallo"
+
+msgid "Black Player"
+msgstr "Giocatore Nero"
+
+msgid "Pink Player"
+msgstr "Giocatore Rosa"
+
+msgid "special thanks"
+msgstr "ringraziamenti speciali"
+
+msgid "return to main menu"
+msgstr "torna al menù principale"
+
+msgid "PLAY"
+msgstr "GIOCA"
+
+msgid "confirm"
+msgstr "conferma"
+
+msgid "forgot password?"
+msgstr "password dimenticata?"
+
+msgid "Username:"
+msgstr "Nome Utente:"
+
+msgid "ok"
+msgstr "ok"
+
+msgid "send"
+msgstr "invia"
+
+msgid "CREDITS"
+msgstr "CREDITI"
+
+msgid "QUIT"
+msgstr "ESCI"
+
+msgid "RESTART"
+msgstr "RIAVVIA"

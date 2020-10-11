@@ -1,0 +1,322 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Everything is Free"
+msgstr "Tudo é Gratuito"
+
+msgid "High Speed"
+msgstr "Alta Velocidade"
+
+msgid "Economic Growth"
+msgstr "Crescimento Econômico"
+
+msgid "Listen up, Commander!"
+msgstr "Escute, Comandante!"
+
+msgid "Get 25 points."
+msgstr "Ganhe 25 pontos."
+
+msgid "Get 40 points."
+msgstr "Ganhe 40 pontos."
+
+msgid "Get at least 25 points."
+msgstr "Ganhe ao menos 25 pontos."
+
+msgid "Greetings, Commander!"
+msgstr "Saudações, Comandante!"
+
+msgid "Get 30 points."
+msgstr "Ganhe 30 pontos."
+
+msgid "Get 80 points."
+msgstr "Ganhe 80 pontos."
+
+msgid "Well hello there, partner!"
+msgstr "Bom, e aí, parceiro!"
+
+msgid "Get at least 4 points."
+msgstr "Ganhe ao menos 4 pontos."
+
+msgid "Get at least 10 points."
+msgstr "Ganhe ao menos 10 pontos."
+
+msgid "Get 21 points."
+msgstr "Ganhe 21 pontos."
+
+msgid "Get 86 points."
+msgstr "Ganhe 86 pontos."
+
+msgid "Get 132 points."
+msgstr "Ganhe 132 pontos."
+
+msgid "Get 2 points."
+msgstr "Ganhe 2 pontos."
+
+msgid "Get 5 points."
+msgstr "Ganhe 5 pontos."
+
+msgid "Get 8 points."
+msgstr "Ganhe 8 pontos."
+
+msgid "Playing Tutorial"
+msgstr "Jogando Tutorial"
+
+msgid "Playing Challenge"
+msgstr "Jogando Desafio"
+
+msgid "Playing %s Challenge"
+msgstr "Jogando o Desafio %s"
+
+msgid "Playing Free For All"
+msgstr "Jogando Cada Um Por Si"
+
+msgid "Playing Versus AI"
+msgstr "Jogando Contra IA"
+
+msgid "Playing AI vs AI"
+msgstr "Jogando IA Contra IA"
+
+msgid "Spectating One vs One"
+msgstr "Assistindo Um Contra Um"
+
+msgid "Spectating Free For All"
+msgstr "Assistindo Cada Um Por Si"
+
+msgid "Spectating Versus AI"
+msgstr "Assistindo Contra IA"
+
+msgid "Spectating AI vs AI"
+msgstr "Assistindo IA Contra IA"
+
+msgid "In One vs One Lobby (%s/%s)"
+msgstr "Em Uma Sala Um Contra Um (%s/%s)"
+
+msgid "In Free For All Lobby (%s/%s)"
+msgstr "Em Uma Sala Cada Um Por Si (%s/%s)"
+
+msgid "In Versus AI Lobby (%s/%s)"
+msgstr "Em Uma Sala Contra IA (%s/%s)"
+
+msgid "In AI vs AI Lobby (%s/%s)"
+msgstr "Em Uma Sala IA Contra IA (%s/%s)"
+
+msgid "Dutch"
+msgstr "Holandês"
+
+msgid "Ready"
+msgstr "Pronto"
+
+msgid "CHAT"
+msgstr "BATE-PAPO"
+
+msgid "SEVENTEEN NEW SPECIES OF FROG DISCOVERED"
+msgstr "DEZESSETE NOVAS ESPÉCIES DE SAPOS DESCOBERTAS"
+
+msgid "quit"
+msgstr "sair"
+
+msgid "%s was defeated."
+msgstr "%s foi derrotado."
+
+msgid "%s was victorious. Score: %d."
+msgstr "%s foi vitorioso. Placar: %d."
+
+msgid "Spring, Year %d"
+msgstr "Primavera, Ano %d"
+
+msgid "Summer, Year %d"
+msgstr "Verão, Ano %d"
+
+msgid "Autumn, Year %d"
+msgstr "Outono, Ano %d"
+
+msgid "Winter, Year %d"
+msgstr "Inverno, Ano %d"
+
+msgid "Upgrade"
+msgstr "Melhorar"
+
+msgid "Upgrade to %s"
+msgstr "Melhorar para %s"
+
+msgid "Stop"
+msgstr "Parar"
+
+msgid "GAME"
+msgstr "JOGO"
+
+msgid "Send"
+msgstr "Enviar"
+
+msgid "Click to open chat."
+msgstr "Clique para abrir o bate-papo."
+
+msgid "Open Chat"
+msgstr "Abrir Bate-papo"
+
+msgid "Resign & Quit"
+msgstr "Desistir & Sair"
+
+msgid "Price: $%d.%d%d"
+msgstr "Preço: $%d.%d%d"
+
+msgid "The Planet"
+msgstr "O Planeta"
+
+msgid "Score:"
+msgstr "Placar:"
+
+msgid "cancel"
+msgstr "cancelar"
+
+msgid "Resign?"
+msgstr "Renunciar?"
+
+msgid "resign"
+msgstr "renunciar"
+
+msgid "STOP"
+msgstr "PARAR"
+
+msgid "NONE"
+msgstr "NENHUM"
+
+msgid "DESERT"
+msgstr "DESERTO"
+
+msgid "MOUNTAIN"
+msgstr "MONTANHA"
+
+msgid "WATER"
+msgstr "ÁGUA"
+
+msgid "FOREST"
+msgstr "FLORESTA"
+
+msgid "CITY"
+msgstr "CIDADE"
+
+msgid "TOWN"
+msgstr "CIDADE"
+
+msgid "OUTPOST"
+msgstr "POSTO AVANÇADO"
+
+msgid "INDUSTRY"
+msgstr "INDÚSTRIA"
+
+msgid "BARRACKS"
+msgstr "QUARTEL"
+
+msgid "SOIL"
+msgstr "SOLO"
+
+msgid "UPGRADE"
+msgstr "MELHORAR"
+
+msgid "MOVE"
+msgstr "MOVER"
+
+msgid "AIR"
+msgstr "AR"
+
+msgid "Epicinium"
+msgstr "Epicinium"
+
+msgid "Copy"
+msgstr "Copiar"
+
+msgid "Red Player"
+msgstr "Jogador Vermelho"
+
+msgid "Blue Player"
+msgstr "Jogador Azul"
+
+msgid "Yellow Player"
+msgstr "Jogador Amarelo"
+
+msgid "Black Player"
+msgstr "Jogador Preto"
+
+msgid "Pink Player"
+msgstr "Jogador Rosa"
+
+msgid "special thanks"
+msgstr "agradecimentos especiais"
+
+msgid "return to main menu"
+msgstr "voltar ao menu principal"
+
+msgid "LOG IN"
+msgstr "CONECTAR-SE"
+
+msgid "REGISTER"
+msgstr "REGISTRAR"
+
+msgid "PLAY"
+msgstr "JOGAR"
+
+msgid "Downloading..."
+msgstr "Fazendo download..."
+
+msgid "confirm"
+msgstr "confirmar"
+
+msgid "forgot password?"
+msgstr "esqueceu a senha?"
+
+msgid "Username:"
+msgstr "Nome de usuário:"
+
+msgid "Token:"
+msgstr "Token:"
+
+msgid "Confirm password:"
+msgstr "Confirmar a senha:"
+
+msgid "ok"
+msgstr "ok"
+
+msgid "Please describe what happened."
+msgstr "Favor descrever o que aconteceu."
+
+msgid "send"
+msgstr "enviar"
+
+msgid "Initializing..."
+msgstr "Inicializando..."
+
+msgid "Not logged in."
+msgstr "Não está conectado."
+
+msgid "Find us on Discord!"
+msgstr "Encontre a gente no Discord!"
+
+msgid "SETTINGS"
+msgstr "CONFIGURAÇÕES"
+
+msgid "CREDITS"
+msgstr "CRÉDITOS"
+
+msgid "QUIT"
+msgstr "SAIR"
+
+msgid "RESTART"
+msgstr "REINICIAR"
+
+msgid "Connecting to Steam..."
+msgstr "Conectando ao Steam..."
+
+msgid "Please log in to play!"
+msgstr "Favor se conectar para jogar!"
+
+msgid "Connecting to official servers..."
+msgstr "Conectando aos servidores oficiais..."
+
+msgid "Connected to official servers."
+msgstr "Conectado aos servidores oficiais."
+
+msgid "The server has been shut down for maintenance. We'll be back soon!"
+msgstr "O servidor foi desligado para a manutenção. Voltaremos em breve!"

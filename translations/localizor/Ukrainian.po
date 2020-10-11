@@ -1,0 +1,8 @@
+msgid ""
+msgstr ""
+
+msgid "SETTINGS"
+msgstr "НАЛАШТУВАННЯ"
+
+msgid "red"
+msgstr "червоний"

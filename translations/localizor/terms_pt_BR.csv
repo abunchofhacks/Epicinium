@@ -1,0 +1,42 @@
+Unit,A unit is a soldier or group of soldiers occupying a single space.
+Tile,A tile is a square space in the game along with the buildings or trees that are on it.
+Rifleman,Unit type. All-round infantry unit.
+Gunner,Unit type. Soldier with a heavy machinegun. Possible alternative name: Commando.
+Sapper,Unit type. Soldier with a long-distance mortar. Possible alternative name: Artillerist.
+Tank,Unit type. Armored tank with a heavy cannon.
+Settler,Unit type. Can build settlements.
+Militia,Unit type. Fast but fragile infantry unit.
+Grass,Tile type.
+Dirt,Tile type. Left over after grass was destroyed.
+Desert,Tile type.
+Rubble,Tile type.
+Ridge,Tile type.
+Mountain,Tile type.
+Water,Tile type.
+Forest,Tile type.
+City,Tile type. The most important tile type in the game. Has one or more tall buildings on it.
+Town,Tile type. Has smaller buildings than the City.
+Outpost,Tile type. Usually built near enemy borders.
+Industry,Tile type. Produces tanks and generates income.
+Barracks,Tile type. Produces military units.
+Airfield,Tile type. Produces air units.
+Farm,Tile type. Surrounded by Soil or Crops.
+Soil,Tile type. Fertile land where Crops can grow.
+Crops,Tile type. Similar to a Soil tile but with crops on it.
+Trenches,Tile type.
+Snow,Weather effect.
+Frostbite,Weather effect. The affected area is extremely cold.
+Firestorm,Weather effect. The affected area is on fire.
+Bonedrought,Weather effect. The affected area is extremely dry.
+Gas,A lethal gas.
+Focus,Ability name. Causes multiple units to focus on one enemy.
+Lockdown,Ability name. Causes a unit to guard a space.
+Shell,Ability name. Causes a unit to fire explosive rounds at an adjacent space.
+Bombard,Ability name. Causes a unit to fire mortar rounds at long range.
+Capture,Ability name. Causes a tile to change owners.
+Upgrade,Ability name. Causes a tile to change type or to increase in size. Current translation: Melhorar
+Planning phase,Phase of the game where players give orders to their units and tiles.
+Action phase,Phase of the game where units and tiles execute their orders.
+Decay phase,Phase of the game where Gas and certain weather effects deal damage.
+Night phase,Phase of the game where certain tiles produce income.
+Weather phase,Phase of the game where weather effects change.

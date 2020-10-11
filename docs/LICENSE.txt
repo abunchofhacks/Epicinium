@@ -1,0 +1,30 @@
+Copyright (C) 2017-2020 A Bunch of Hacks.
+All rights reserved.
+
+This product includes software developed by the OpenSSL Project
+for use in the OpenSSL Toolkit (http://www.openssl.org/).
+
+Portions of this software are copyright (C) 2006 The FreeType Project (www.freetype.org).
+All rights reserved.
+
+See also the LICENSE.txt files for
+	curl
+	DiscordRPC
+	femtozip
+	FreeType
+	GLEW
+	ImGui
+	intl
+	JsonCpp
+	libpng
+	OpenSSL
+	plog
+	SDL2
+	SDL2_gfx
+	SDL2_image
+	SDL2_net
+	SDL2_ttf
+	termcolor
+	zlib
+in their respective subfolders.
+

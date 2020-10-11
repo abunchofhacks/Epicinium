@@ -1,0 +1,13 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "English"
+msgstr "Английский"
+
+msgid "CHAT"
+msgstr "ЧАТ"
+
+msgid "SETTINGS"
+msgstr "НАСТРОЙКИ"

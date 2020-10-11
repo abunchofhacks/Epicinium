@@ -1,0 +1,11 @@
+msgid ""
+msgstr ""
+
+msgid "Elimination"
+msgstr "Eliminace"
+
+msgid "Morale"
+msgstr "Morálka"
+
+msgid "Custom"
+msgstr "Vlastní"

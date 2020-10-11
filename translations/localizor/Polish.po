@@ -1,0 +1,1857 @@
+msgid ""
+msgstr ""
+
+msgid "Showcase"
+msgstr "Gablota"
+
+msgid "Elimination"
+msgstr "Eliminacja"
+
+msgid "Everything is Free"
+msgstr "Zupełnie za Darmo"
+
+msgid "Tank Derby"
+msgstr "Czołgowe Derby"
+
+msgid "High Speed"
+msgstr "Wysoka Prędkość"
+
+msgid "Economic Growth"
+msgstr "Rozwój Ekonomiczny"
+
+msgid "Morale"
+msgstr "Morale"
+
+msgid "Listen up, Commander!"
+msgstr "Dowódco!"
+
+msgid "The enemy has dug in among the mountains in the east. The longer they are allowed to stay, the more damage their industriousness will do to the surrounding area. Use whatever means necessary to obliterate them. There are some neutral City and Industry tiles in the northwest of the map. Feel free to capture them with your Rifleman units."
+msgstr "Wrogowie okopali się wśród gór na wschodzie. Im dłużej pozwolisz im tam zostać, tym więcej szkód dla pobliskich terenów dokona ich przemysł. Użyj wszelkich niezbędnych środków by ich zniszczyć. Na północnym zachodzie mapy znajduje się kilka neutralnych pól Miast oraz Fabryk. Możesz wykorzystać swoje jednostki Piechoty by je zająć."
+
+msgid "Defeat your opponent by occupying, capturing or destroying all of their City tiles. At the end of the game, you get 1 point for every Grass and Forest tile that remains."
+msgstr "Pokonaj wroga przez okupowanie, zajęcie lub zniszczenie wszystkich należących do niego pól Miast. Na koniec gry zdobędziesz 1 punkt za każde pole Trawy oraz Lasu które przetrwało."
+
+msgid "Get 1 point."
+msgstr "Zdobądź 1 punkt."
+
+msgid "Get 25 points."
+msgstr "Zdobądź 25 punktów."
+
+msgid "Get 40 points."
+msgstr "Zdobądź 40 punktów."
+
+msgid "Now go out there and lay claim to this region while there's still something worth claiming!"
+msgstr "A teraz wyrusz na podbój tego regionu, póki jest tam jeszcze cokolwiek wartego podbicia!"
+
+msgid "Some of the population of this peninsula has rebelled! Eliminate all of the rebels in the area using your tanks, gunners and sappers. Don't worry about capturing cities; they will fall back in line once you have quelled the rebellion."
+msgstr "Cześć ludności tego półwyspu zbuntowała się! Wyeliminuj wszystkich rebeliantów w okolicy używając swoich czołgów, komandosów i saperów. Nie przejmuj się zajmowaniem miast; same przypomną sobie do kogo należą gdy rozprawisz się z buntownikami."
+
+msgid "Defeat your opponent by eliminating all of their units. At the end of the game, you get 1 point for every Grass and Forest tile that remains."
+msgstr "Pokonaj przeciwnika eliminując wszystkie jego jednostki. Na koniec gry otrzymasz 1 punkt za każde pole Trawy oraz Lasu które przetrwają."
+
+msgid "Eliminate all enemy units."
+msgstr "Wyeliminuj wszystkie jednostki wroga."
+
+msgid "Get at least 25 points."
+msgstr "Zdobądź co najmniej 25 punktów."
+
+msgid "Do not destroy any City, Farm or Industry tiles."
+msgstr "Nie zniszcz żadnego pola Miasta, Farmy ani Fabryki."
+
+msgid "Go get rid of those rebels!"
+msgstr "Pozbądź się tych buntowników!"
+
+msgid "Greetings, Commander!"
+msgstr "Witaj, Dowódco!"
+
+msgid ""
+"Who needs money anyway?\n"
+"In this challenge, all unit and tile costs have been reduced to zero, and buildings do not generate any income at night."
+msgstr ""
+"Po co komu w ogóle pieniądze?\n"
+"W tym wyzwaniu, wszystkie koszty jednostek i pól wynoszą zero, a budynki nie przynoszą dochodu w nocy."
+
+msgid "Get 30 points."
+msgstr "Zdobądź 30 punktów."
+
+msgid "Get 80 points."
+msgstr "Zdobądź 80 punktów."
+
+msgid "Good luck!"
+msgstr "Powodzenia!"
+
+msgid "Well hello there, partner!"
+msgstr "Witaj, partnerze!"
+
+msgid "Are you looking for some no-fuss action? Do you want to wake up at the sound of tanks thundering down the open fields? Then you should partake in the spectactular Tank Derby! Hop in one of them beauty's and show 'em what you got!"
+msgstr "Szukasz łatwej akcji? Masz ochotę budzić się do ogłuszającego dźwięku czołgów toczących się po otwartych polach? W takim razie powinieneś wsiąść udział w spektakularnym Czołgowym Derby! Wskakuj do jednej z tych ślicznotek i pokaż im na co Cię stać!"
+
+msgid "Defeat all three opponents by destroying their industry and eliminating all of their tanks. Tanks are cheaper than normal and can do regular attacks, but only have one hitpoint. you get 1 point for every Grass and Forest tile that remains."
+msgstr "Pokonaj wszystkich trzech wrogów przez zniszczenie należących do nich fabryk i czołgów. Czołgi są tańsze niż zwykle i atakują normalnie, jednak posiadają tylko jeden punkt życia. Otrzymasz 1 punkt za każde pole Trawy oraz Lasu które przetrwają."
+
+msgid "Eliminate all enemy tanks."
+msgstr "Wyeliminuj wszystkie czołgi wroga."
+
+msgid "Get at least 4 points."
+msgstr "Zdobądź co najmniej 4 punkty."
+
+msgid "Get at least 10 points."
+msgstr "Zdobądź co najmniej 10 punktów."
+
+msgid "Let's rumble!"
+msgstr "Naprzód!"
+
+msgid ""
+"What happens when we, ahum, \"spill\" a year's worth of energy drinks into the water supply of the entire region? Let's find out!\n"
+"\n"
+"In this challenge, all units have their movement speed increased by 2."
+msgstr ""
+"Co by się stało gdybyśmy \"przypadkiem\" wylali całoroczny zapas drinków energetycznych do zasobów pitnej wody w całym regionie? Czas się przekonać!\n"
+"\n"
+"W tym wyzwaniu, wszystkie jednostki poruszają się 2 razy szybciej."
+
+msgid "In this challenge, there are no enemies to fight or opponents to defeat. Just focus on growing your economy."
+msgstr "W tym wyzwaniu nie ma przeciwników których trzeba pokonać. Skoncentruj się na rozwoju gospodarki."
+
+msgid "The game ends after the second winter night. Your score is equal to how much money you have at the end."
+msgstr "Gra skończy się po drugiej zimowej nocy. Twój wynik będzie równy ilości pieniędzy które będziesz miał na koniec."
+
+msgid "Get 21 points."
+msgstr "Zdobądź 21 punktów."
+
+msgid "Get 86 points."
+msgstr "Zdobądź 86 punktów."
+
+msgid "Get 132 points."
+msgstr "Zdobądź 132 punkty."
+
+msgid "In this challenge you will use \"Morale\" instead of money and power to produce units, which is gained on the field of battle. Each enemy unit killed earns you 1 Morale and each enemy tile you destroy is worth 5 Morale. Capturing a tile gains you 3 Morale and also lowers enemy Morale by 5."
+msgstr "W tym wyzwaniu do produkcji jednostek, zamiast pieniędzy i energii, będziesz używał „Morale”, które zdobywasz na polu bitwy. Każda zabita wroga jednostka zapewni Ci 1 Morale, a każde zniszczone wrogie pole 5 Morale. Zdobycie pola da Ci 3 Morale, a także obniży Morale przeciwnika o 5."
+
+msgid "Occupy or destroy your opponent's City to win. Each remaining City tile is worth 2 points at the end of the game, and each remaining Barracks, Industry or Airfield tile is worth 1 point."
+msgstr "Okupuj lub zniszcz Miasto przeciwnika aby wygrać. Na koniec gry każde pozostałe pole Miasta jest warte 2 punkty, a każde pozostałe pole koszar, fabryki lub lotniska jest warte 1 punkt."
+
+msgid "Get 2 points."
+msgstr "Zdobądź 2 punkty."
+
+msgid "Get 5 points."
+msgstr "Zdobądź 5 punktów."
+
+msgid "Get 8 points."
+msgstr "Zdobądź 8 punktów."
+
+msgid "In Menu"
+msgstr "W Menu"
+
+msgid "Looking to Play"
+msgstr "Szuka Gry"
+
+msgid "Playing Tutorial"
+msgstr "Przechodzi Samouczek"
+
+msgid "Playing Challenge"
+msgstr "Przechodzi Wyzwanie"
+
+msgid "Playing %s Challenge"
+msgstr "Przechodzi Wyzwanie %s"
+
+msgid "Watching Replay"
+msgstr "Ogląda Powtórkę"
+
+msgid "Playing One vs One"
+msgstr "Gra Jeden na Jednego"
+
+msgid "Playing Free For All"
+msgstr "Gra Każdy na Każdego"
+
+msgid "Playing Versus AI"
+msgstr "Gra Przeciw Komputerowi"
+
+msgid "Playing AI vs AI"
+msgstr "Gra Komputer przeciw Komputerowi"
+
+msgid "Spectating One vs One"
+msgstr "Ogląda Jeden na Jednego"
+
+msgid "Spectating Free For All"
+msgstr "Ogląda Każdy na Każdego"
+
+msgid "Spectating Versus AI"
+msgstr "Ogląda Przeciw Komputerowi"
+
+msgid "Spectating AI vs AI"
+msgstr "Ogląda Komputer przeciw Komputerowi"
+
+msgid "In One vs One Lobby (%s/%s)"
+msgstr "W lobby Jeden na Jednego (%s/%s)"
+
+msgid "In Free For All Lobby (%s/%s)"
+msgstr "W lobby Każdy na Każdego (%s/%s)"
+
+msgid "In Versus AI Lobby (%s/%s)"
+msgstr "W lobby Przeciw Komputerowi (%s/%s)"
+
+msgid "In AI vs AI Lobby (%s/%s)"
+msgstr "w lobby Komputer przeciw Komputerowi (%s/%s)"
+
+msgid "English"
+msgstr "English"
+
+msgid "Dutch"
+msgstr "Nederlands"
+
+msgid "Ready"
+msgstr "Gotowy"
+
+msgid "CHAT"
+msgstr "CZAT"
+
+msgid "FUTURE PROMISES PEACE AND PROSPERITY"
+msgstr "PRZYSZŁOŚĆ OBIECUJE POKÓJ I DOBROBYT"
+
+msgid "ECONOMY ON THE RISE"
+msgstr "POZIOM GOSPODARCZY WZRASTA"
+
+msgid "SEVENTEEN NEW SPECIES OF FROG DISCOVERED"
+msgstr "ODKRYTO SIEDEMNAŚCIE NOWYCH GATUNKÓW ŻABY"
+
+msgid "RECORD NUMBER OF CYCLISTS ON CITY STREETS"
+msgstr "REKORDOWA LICZBA ROWERZYSTÓW NA ULICACH MIAST"
+
+msgid "SURVEY SHOWS CATS MORE POPULAR THAN DOGS"
+msgstr "ANKIETA WYKAZUJE: KOTY BARDZIEJ POPULARNE NIŻ PSY"
+
+msgid "SURVEY SHOWS DOGS MORE POPULAR THAN CATS"
+msgstr "ANKIETA WYKAZUJE: PSY BARDZIEJ POPULARNE NIŻ KOTY"
+
+msgid "BEE POPULATION LARGER THAN EVER ACCORDING TO ENTOMOLOGISTS"
+msgstr "POPULACJA PSZCZÓŁ WIĘKSZA NIŻ KIEDYKOLWIEK WG ENTOMOLOGÓW"
+
+msgid "WOMAN DISCOVERS SAFE CONTAINING 1500 CANS OF MUSHROOM SOUP"
+msgstr "KOBIETA ODKRYWA SEJF ZAWIERAJĄCY 1500 PUSZEK ZUPY GRZYBOWEJ"
+
+msgid "MAN FINALLY HAPPY AFTER SOLVING CHILDHOOD MATH PROBLEM"
+msgstr "MĘŻCZYZNA W KOŃCU SZCZĘŚLIWY, ROZWIĄZAŁ DZIECIĘCY PROBLEM MATEMATYCZNY"
+
+msgid "COUPLE CELEBRATES FIVE YEARS WITHOUT USING THE LETTER R"
+msgstr "PARA ŚWIĘTUJE PIĘĆ LAT BEZ UŻYCIA LITERY R."
+
+msgid "A NEW ERA BEGINS"
+msgstr "ZACZYNA SIĘ NOWA ERA"
+
+msgid "BRAVE PIONEERS SETTLE NEW CITIES"
+msgstr "ODWAŻNI PIONIERZY ZAKŁADAJĄ NOWE MIASTA"
+
+msgid "Quit?"
+msgstr "Wyjść?"
+
+msgid "Are you sure you want to quit?"
+msgstr "Jesteś pewien, że chcesz wyjść?"
+
+msgid "quit"
+msgstr "wyjście"
+
+msgid "Quit"
+msgstr "Wyjście"
+
+msgid "%s was defeated."
+msgstr "%s został pokonany."
+
+msgid "%s was victorious. Score: %d."
+msgstr "%s zwyciężył. Wynik: %d."
+
+msgid "GLOBAL WARMING WORSENS"
+msgstr "GLOBALNE OCIEPLANIE PRZYSPIESZA"
+
+msgid "HEAT WAVES CAUSE AVERAGE HUMIDITY TO DROP"
+msgstr "FALE CIEPŁA POWODUJĄ SPADEK ŚREDNIEJ WILGOTNOŚCI"
+
+msgid "DROUGHT CURBS GROWTH OF TREES AND CROPS, WARN BOTANISTS"
+msgstr "SUSZE OGRANICZAJĄ WZROST DRZEW I UPRAW, OSTRZEGAJĄ BOTANIŚCI"
+
+msgid "FROSTBITE EXPECTED TO TERRORIZE OPEN FIELDS IN WINTER"
+msgstr "OSTRY MRÓZ PRZEWIDYWANY NA OTWARTYCH POLACH W ZIMIE"
+
+msgid "DRY AREAS WITHOUT VEGETATION SUFFER FROM DESERTIFICATION"
+msgstr "SUCHE OBSZARY BEZ ROŚLINNOŚCI PUSTYNNIEJĄ"
+
+msgid "DESERT SAND UNSUITABLE FOR BUILDING, SAY CONTRACTORS"
+msgstr "PUSTYNNY PIASEK NIE NADAJE SIĘ DO BUDOWY, MÓWIĄ KONTRAHENCI"
+
+msgid "SUMMER FIRESTORM ALERT LIKELY"
+msgstr "LETNIE BURZE OGNIOWE PRAWDOPODOBNE"
+
+msgid "EXTREME DROUGHT WEAKENS TROOPS IN DESERTS"
+msgstr "EKSTREMALNA SUSZA OSŁABIA ŻOŁNIERZY NA PUSTYNIACH"
+
+msgid "DROUGHT LEAVES TANKS MORE VULNERABLE TO EXTREME WEATHER, SAY MECHANICS"
+msgstr "SUSZA OSŁABIA ODPORNOŚĆ CZOŁGÓW NA EKSTREMALNE WARUNKI POGODOWE, MÓWIĄ MECHANICY"
+
+msgid "DEFORESTATION SPREADS AS WAR CONTINUES"
+msgstr "DEFORESTACJA ROZPRZESTRZENIA SIĘ PRZEZ TRWAJĄCĄ WOJNĘ"
+
+msgid "EXTREME DROUGHT ALSO AFFECTS STONE, ASPHALT AND RUBBLE"
+msgstr "EKSTREMALNA SUSZA WPŁYWA NAWET NA KAMIENIE, ASFALT I GRUZY"
+
+msgid "STRUCTURAL INTEGRITY OF BUILDINGS FALTERS, WARN ENGINEERS"
+msgstr "INTEGRALNOŚĆ KONSTRUKCYJNA BUDYNKÓW NARUSZONA, OSTRZEGAJĄ INŻYNIEROWIE"
+
+msgid "INCREASED RISK OF FIRESTORM IN SUMMER"
+msgstr "ZWIĘKSZONE RYZYKO BURZ OGNIOWYCH W LECIE"
+
+msgid "CITIES VULNERABLE TO INFERNO ONCE FORESTS ARE GONE"
+msgstr "PO ZNIKNIĘCIU LASÓW MIASTA SĄ NARAŻONE NA PIEKŁO"
+
+msgid "THE END OF DAYS HAS ARRIVED, SAY CULT LEADERS"
+msgstr "NADSZEDŁ KONIEC ŚWIATA, OGŁASZAJĄ PRZYWÓDCY KULTÓW"
+
+msgid "CITIZENS IN AFFECTED REGIONS ARE ADVISED TO EVACUATE IMMEDIATELY"
+msgstr "ZALECA SIĘ NATYCHMIASTOWĄ EWAKUACJĘ OBYWATELI Z ZAGROŻONYCH REGIONÓW"
+
+msgid "Spring, Year %d"
+msgstr "Wiosna, Rok %d"
+
+msgid "Summer, Year %d"
+msgstr "Lato, Rok %d"
+
+msgid "Autumn, Year %d"
+msgstr "Jesień, Rok %d"
+
+msgid "Winter, Year %d"
+msgstr "Zima, Rok %d"
+
+msgid "Rifleman"
+msgstr "Piechota"
+
+msgid "Gunner"
+msgstr "Komandos"
+
+msgid "Sapper"
+msgstr "Saper"
+
+msgid "Tank"
+msgstr "Czołg"
+
+msgid "Settler"
+msgstr "Osadnik"
+
+msgid "Militia"
+msgstr "Milicja"
+
+msgid "Grass"
+msgstr "Trawa"
+
+msgid "Dirt"
+msgstr "Błoto"
+
+msgid "Desert"
+msgstr "Pustynia"
+
+msgid "Rubble"
+msgstr "Gruz"
+
+msgid "Ridge"
+msgstr "Grań"
+
+msgid "Mountain"
+msgstr "Góra"
+
+msgid "Water"
+msgstr "Woda"
+
+msgid "Forest"
+msgstr "Las"
+
+msgid "City"
+msgstr "Miasto"
+
+msgid "Town"
+msgstr "Miasteczko"
+
+msgid "Outpost"
+msgstr "Obóz Wojskowy"
+
+msgid "Industry"
+msgstr "Fabryka"
+
+msgid "Barracks"
+msgstr "Koszary"
+
+msgid "Airfield"
+msgstr "Lotnisko"
+
+msgid "Farm"
+msgstr "Farma"
+
+msgid "Soil"
+msgstr "Gleba"
+
+msgid "Crops"
+msgstr "Uprawy"
+
+msgid "Trenches"
+msgstr "Okopy"
+
+msgid "Focus"
+msgstr "Skoncentruj Ogień"
+
+msgid "Lockdown"
+msgstr "Zablokuj"
+
+msgid "Shell"
+msgstr "Ostrzelaj"
+
+msgid "Bombard"
+msgstr "Zbombarduj"
+
+msgid "Drop Gas"
+msgstr "Zrzuć Gaz"
+
+msgid "Capture"
+msgstr "Zajmij"
+
+msgid "Dig Trenches"
+msgstr "Wykop Okopy"
+
+msgid "Settle %s"
+msgstr "Załóż %s"
+
+msgid "Build %s"
+msgstr "Zbuduj %s"
+
+msgid "Upgrade"
+msgstr "Ulepsz"
+
+msgid "Upgrade to %s"
+msgstr "Ulepsz na %s"
+
+msgid "Cultivate %s"
+msgstr "Kultywuj %s"
+
+msgid "Produce %s"
+msgstr "Produkuj %s"
+
+msgid "Stop"
+msgstr "Stop"
+
+msgid "Move"
+msgstr "Ruch"
+
+msgid "first"
+msgstr "pierwszy"
+
+msgid "second"
+msgstr "drugi"
+
+msgid "third"
+msgstr "trzeci"
+
+msgid "fourth"
+msgstr "czwarty"
+
+msgid "fifth"
+msgstr "piąty"
+
+msgid "sixth"
+msgstr "szósty"
+
+msgid "seventh"
+msgstr "siódmy"
+
+msgid "eighth"
+msgstr "ósmy"
+
+msgid "You go %s."
+msgstr "Ruszasz się %s."
+
+msgid "%s goes %s."
+msgstr "%s rusza się %s."
+
+msgid "ALL"
+msgstr "WSZYSCY"
+
+msgid "GAME"
+msgstr "GRA"
+
+msgid "The chat target. Click to switch (also TAB key)."
+msgstr "Odbiorca wiadomości. Kliknij aby przełączyć (również klawisz TAB)."
+
+msgid "Send"
+msgstr "Wyślij"
+
+msgid "Click to open chat."
+msgstr "Kliknij, aby otworzyć czat."
+
+msgid "Open Chat"
+msgstr "Otwórz Czat"
+
+msgid "Resign & Quit"
+msgstr "Zrezygnuj i Wyjdź"
+
+msgid "Close"
+msgstr "Zamknij"
+
+msgid "Price: $%d.%d%d"
+msgstr "Cena: %d,%d%dzł"
+
+msgid "The Planet"
+msgstr "Planeta"
+
+msgid "Mission Briefing"
+msgstr "Odprawa"
+
+msgid "This player has been defeated."
+msgstr "Ten gracz został pokonany."
+
+msgid "Defeat!"
+msgstr "Porażka!"
+
+msgid "All players are defeated!"
+msgstr "Wszyscy gracze zostali pokonani!"
+
+msgid "You have been defeated."
+msgstr "Zostałeś pokonany."
+
+msgid "Score:"
+msgstr "Wynik:"
+
+msgid "A player is victorious!"
+msgstr "Gracz zwycięża!"
+
+msgid "You are victorious."
+msgstr "Jesteś zwycięzcą."
+
+msgid "cancel"
+msgstr "anuluj"
+
+msgid "Resign?"
+msgstr "Zrezygnować?"
+
+msgid "Are you sure you want to resign?"
+msgstr "Czy na pewno chcesz zrezygnować?"
+
+msgid "resign"
+msgstr "zrezygnuj"
+
+msgid "Slow air unit that deploys gas in an area."
+msgstr "Powolna jednostka powietrzna która zrzuca gaz."
+
+msgid "All-round infantry unit that can dig trenches."
+msgstr "Wszechstronna jednostka, która może kopać okopy."
+
+msgid "Shoots three times and can lock down a space."
+msgstr "Strzela trzy razy i może zablokować pole."
+
+msgid "Can bombard far-away tiles."
+msgstr "Może bombardować odległe pola."
+
+msgid "Does not attack but has a powerful shell ability."
+msgstr "Nie atakuje, lecz posiada potężną zdolność ostrzału."
+
+msgid "Can build settlements."
+msgstr "Może budować osady."
+
+msgid "Fast but fragile infantry unit that can build outposts."
+msgstr "Szybka, ale delikatna jednostka piesza, która może budować obozy wojskowe."
+
+msgid "Inaccessible to ground units."
+msgstr "Niedostępne dla jednostek naziemnych."
+
+msgid "An inspiring grassland."
+msgstr "Inspirująca łąka."
+
+msgid "Left over after grass was destroyed."
+msgstr "Pozostaje po zniszczeniu trawy."
+
+msgid "An arid wasteland."
+msgstr "Jałowe pustkowie."
+
+msgid "Left over after a structure was destroyed."
+msgstr "Pozostałe po zniszczeniu budynku."
+
+msgid "Trees provide cover for your troops."
+msgstr "Drzewa zapewniają osłonę dla twoich żołnierzy."
+
+msgid "Capture or destroy all enemy Cities to win."
+msgstr "Zajmij lub zniszcz wszystkie Miasta wroga aby wygrać."
+
+msgid "Generates income at night."
+msgstr "Generuje dochód w nocy."
+
+msgid "Produces militia and settlers."
+msgstr "Produkuje milicję i osadników."
+
+msgid "Produces tanks and generates income at night."
+msgstr "Produkuje czołgi i generuje dochód w nocy."
+
+msgid "Produces specialized military units."
+msgstr "Produkuje wyspecjalizowane jednostki wojskowe."
+
+msgid "Produces zeppelins."
+msgstr "Produkuje sterowce."
+
+msgid "Crops can grow here."
+msgstr "Tu można uprawiać rośliny."
+
+msgid "Harvested for income at night."
+msgstr "Zbierane w nocy w celu generowania dochodu."
+
+msgid "Provides cover from bullets."
+msgstr "Zapewnia osłonę przed kulami."
+
+msgid "Drought"
+msgstr "Susza"
+
+msgid "Crops and trees will no longer grow here."
+msgstr "Nie będą tu już rosły rośliny ani drzewa."
+
+msgid "Snow"
+msgstr "Śnieg"
+
+msgid "Ground units are slowed."
+msgstr "Jednostki naziemne są spowolnione."
+
+msgid "Frostbite"
+msgstr "Ostry Mróz"
+
+msgid "Ground units that remain here take damage in the Decay phase."
+msgstr "Jednostki naziemne, które zastanie tu Faza Zniszczeń, otrzymają obrażenia."
+
+msgid "Firestorm"
+msgstr "Burza Ogniowa"
+
+msgid "Units that remain here take damage in the Decay phase."
+msgstr "Jednostki, które zastanie tu Faza Zniszczeń, otrzymają obrażenia."
+
+msgid "Bonedrought"
+msgstr "Posucha"
+
+msgid "Units and tiles have fewer hitpoints."
+msgstr "Jednostki i pola mają mniej punktów życia."
+
+msgid "Gas"
+msgstr "Gaz"
+
+msgid "Ground units have fewer hitpoints. Ground units that remain here take damage in the Decay phase."
+msgstr "Jednostki naziemne mają mniej punktów życia. Jednostki naziemne, które zastanie tu Faza Zniszczeń, otrzymają obrażenia."
+
+msgid "The player was victorious!"
+msgstr "Gracz zwyciężył!"
+
+msgid "The player was defeated."
+msgstr "Gracz został pokonany."
+
+msgid "REVOKE"
+msgstr "ODWOŁAJ"
+
+msgid "STOP"
+msgstr "STOP"
+
+msgid "RIFLEMAN"
+msgstr "PIECHOTA"
+
+msgid "GUNNER"
+msgstr "KOMANDOS"
+
+msgid "SAPPER"
+msgstr "SAPER"
+
+msgid "TANK"
+msgstr "CZOŁG"
+
+msgid "SETTLER"
+msgstr "OSADNIK"
+
+msgid "MILITIA"
+msgstr "MILICJA"
+
+msgid "GRASS"
+msgstr "TRAWA"
+
+msgid "DIRT"
+msgstr "BŁOTO"
+
+msgid "DESERT"
+msgstr "PUSTYNIA"
+
+msgid "RUBBLE"
+msgstr "GRUZ"
+
+msgid "RIDGE"
+msgstr "GRAŃ"
+
+msgid "MOUNTAIN"
+msgstr "GÓRA"
+
+msgid "WATER"
+msgstr "WODA"
+
+msgid "FOREST"
+msgstr "LAS"
+
+msgid "CITY"
+msgstr "MIASTO"
+
+msgid "TOWN"
+msgstr "MIASTECZKO"
+
+msgid "OUTPOST"
+msgstr "OBÓZ WOJSKOWY"
+
+msgid "INDUSTRY"
+msgstr "FABRYKA"
+
+msgid "BARRACKS"
+msgstr "KOSZARY"
+
+msgid "AIRFIELD"
+msgstr "LOTNISKO"
+
+msgid "FARM"
+msgstr "FARMA"
+
+msgid "SOIL"
+msgstr "GLEBA"
+
+msgid "CROPS"
+msgstr "UPRAWY"
+
+msgid "TRENCHES"
+msgstr "OKOPY"
+
+msgid "FOCUS"
+msgstr "SKONCENTRUJ OGIEŃ"
+
+msgid "LOCKDOWN"
+msgstr "ZABLOKUJ"
+
+msgid "SHELL"
+msgstr "OSTRZELAJ"
+
+msgid "BOMBARD"
+msgstr "ZBOMBARDUJ"
+
+msgid "DROP GAS"
+msgstr "ZRZUĆ GAZ"
+
+msgid "CAPTURE"
+msgstr "ZAJMIJ"
+
+msgid "DIG TRENCHES"
+msgstr "WYKOP OKOPY"
+
+msgid "CULTIVATE"
+msgstr "KULTYWUJ"
+
+msgid "UPGRADE"
+msgstr "ULEPSZ"
+
+msgid "MOVE"
+msgstr "RUCH"
+
+msgid "GROUND"
+msgstr "NAZIEMNA"
+
+msgid "UNIT"
+msgstr "JEDNOSTKA"
+
+msgid "TILE"
+msgstr "POLE"
+
+msgid "AIR"
+msgstr "POWIETRZNA"
+
+msgid "Hi! This tutorial will teach you how to play Epicinium."
+msgstr "Cześć! Ten samouczek nauczy Cię, jak grać w Epicinium."
+
+msgid "Epicinium is a strategy game played in rounds, where each round consists of multiple phases. In the Planning phase, you can select units by clicking on them with the LEFT MOUSE BUTTON."
+msgstr "Epicinium to strategiczna gra turowa, w której każda tura składa się z wielu faz. W Fazie Planowania możesz wybierać jednostki, klikając je LEWYM PRZYCISKIEM MYSZY."
+
+msgid "Good, you've selected your City tile. Now try selecting one of your Militia units by clicking on it with the LEFT MOUSE BUTTON."
+msgstr "Dobrze, wybrałeś swoje pole Miasta. Teraz spróbuj wybrać jedną ze swoich jednostek Milicji, klikając ją LEWYM PRZYCISKIEM MYSZY."
+
+msgid "Your units are red. Try selecting one of your Militia units by clicking on it with the LEFT MOUSE BUTTON."
+msgstr "Twoje jednostki są czerwone. Spróbuj wybrać jedną ze swoich jednostek Milicji, klikając ją LEWYM PRZYCISKIEM MYSZY."
+
+msgid "Select one of your Militia units by clicking on it with the LEFT MOUSE BUTTON."
+msgstr "Wybierz jedną ze swoich jednostek Milicji, klikając ją LEWYM PRZYCISKIEM MYSZY."
+
+msgid "Once selected, units can be ordered to move and attack by clicking on their destination with the RIGHT MOUSE BUTTON."
+msgstr "Po wybraniu jednostki można rozkazać jej ruch i atak klikając miejsce docelowe PRAWYM PRZYCISKIEM MYSZY."
+
+msgid "Give your unit a Move order by clicking on a different location with the RIGHT MOUSE BUTTON."
+msgstr "Daj swojej jednostce rozkaz Ruchu, klikając w innym miejscu PRAWYM PRZYCISKIEM MYSZY."
+
+msgid "Excellent! The unit did not yet move, because the game is currently in the Planning phase. Click the Ready button or press the SPACE BAR to start the Action phase."
+msgstr "Świetnie! Jednostka jeszcze się nie poruszyła, ponieważ obecnie trwa Faza Planowania. Kliknij przycisk Gotowy lub naciśnij SPACJĘ by rozpocząć Fazę Akcji."
+
+msgid "In the Action phase, players take turns automatically executing their orders."
+msgstr "W fazie Akcji gracze na zmianę automatycznie wykonują swoje rozkazy."
+
+msgid "Next, a Night phase will take place. (Click the pause sign or press the SPACE BAR to unpause.)"
+msgstr "Następnie odbędzie się Faza Nocy. (Kliknij symbol pauzy lub naciśnij SPACJĘ, aby wznowić.)"
+
+msgid "At night, City tiles can gain power if they are surrounded by enough Grass, Forest, Crops, Water or snowed tiles. City tiles also generate income at night."
+msgstr "W nocy pola Miast mogą zyskać energię, jeśli są otoczone wystarczającą ilością pól Trawy, Lasu, Upraw i Wody lub pól ośnieżonych. Pola Miast również generują dochód w nocy."
+
+msgid "Afterwards, a new Planning phase begins. Time to issue new orders to your tiles and units."
+msgstr "Następnie rozpoczyna się nowa Faza Planowania. Czas wydać nowe rozkazy polom i jednostkom."
+
+msgid "Besides units, you can also give orders to tiles. Try selecting one of your City tiles by clicking on it with the LEFT MOUSE BUTTON."
+msgstr "Oprócz jednostek możesz także wydawać rozkazy polom. Spróbuj wybrać jedno ze swoich pól Miast, klikając je LEWYM PRZYCISKIEM MYSZY."
+
+msgid "Tiles you control have red highlights. Try selecting one of your City tiles by clicking on it with the LEFT MOUSE BUTTON."
+msgstr "Pola które kontrolujesz są podświetlone na czerwono. Spróbuj wybrać jedno ze swoich Miast klikając je LEWYM PRZYCISKIEM MYSZY."
+
+msgid "Select one of your City tiles by clicking on it with the LEFT MOUSE BUTTON."
+msgstr "Wybierz jedno ze swoich pól Miast klikając je LEWYM PRZYCISKIEM MYSZY."
+
+msgid "Tiles can produce new units and build other buildings. Once selected, access these abilities by clicking on the tile again with the RIGHT MOUSE BUTTON. Please order one of your City tiles to produce a Settler unit."
+msgstr "Pola mogą produkować nowe jednostki i budować inne budynki. Po wybraniu pola uzyskasz dostęp do tych opcji przez kliknięcie go ponownie PRAWYM PRZYCISKIEM MYSZY. Rozkaż jednemu ze swoich pól Miast wyprodukować jednostkę Osadnika."
+
+msgid "Order your City tile to produce a Settler unit by selecting it with the LEFT MOUSE BUTTON, clicking on it again with the RIGHT MOUSE BUTTON, then clicking the upper panel and finally clicking on the tile where you want the Settler to be created."
+msgstr "Rozkaż polu Miasta wyprodukowanie jednostki Osadnika przez wybranie go LEWYM PRZYCISKIEM MYSZY, ponowne kliknięcie go PRAWYM PRZYCISKIEM MYSZY, kliknięcie w górny panel i na koniec wybranie pola na którym Osadnik ma się pojawić."
+
+msgid "Great! Creating new units and tiles costs money and power, but they are only deducted when the order is executed in the Action phase. Click the Ready button or press the SPACE BAR to start the next Action phase."
+msgstr "Wspaniale! Tworzenie nowych jednostek i pól kosztuje pieniądze i energię, ale są one odejmowane dopiero gdy rozkaz zostaje wykonany w Fazie Akcji. Kliknij przycisk Gotowy lub wciśnij SPACJĘ by rozpocząć kolejną Fazę Akcji."
+
+msgid "If units or tiles cannot complete their order in a single Action phase, they will keep their order and try again later."
+msgstr "Jeśli jednostka lub pole nie może wykonać swojego rozkazu w Fazie Akcji, zachowa go i spróbuje ponownie później."
+
+msgid "After every Night phase, a new season arrives that begins with a Weather phase. (Click the pause sign or press the SPACE BAR to unpause.)"
+msgstr "Po każdej Fazie Nocy nadchodzi kolejna pora roku, rozpoczynając się Fazą Pogody. (Kliknij symbol pauzy lub naciśnij SPACJĘ, aby wznowić.)"
+
+msgid "In the Weather phase, weather effects change and plantlife may grow."
+msgstr "W Fazie Pogody zmieniają się efekty pogodowe i rośliny mogą rosnąć."
+
+msgid "Then a new Planning phase begins as usual. Select your units and give them some new orders!"
+msgstr "Następnie ponownie rozpoczyna się Faza Planowania. Wybierz swoje jednostki i daj im nowe rozkazy!"
+
+msgid "Once your units reach enemy tiles they will automatically occupy them. As long as a tile is occupied, it cannot execute orders, gain power or provide income. Occupy all enemy City tiles in order to defeat your opponent."
+msgstr "Gdy twoje jednostki dotrą do wrogich pól, automatycznie będą je okupować. Okupowane pole nie może wykonywać rozkazów, zyskiwać energii ani generować dochodu. Okupuj wszystkie pola Miast wroga, aby go pokonać."
+
+msgid "Militia units will attack when moving into enemy units. They will also fire back if attacked and attack any units that move past them."
+msgstr "Jednostki Milicji atakują wkraczając na pole zajęte przez jednostki wroga. Odpowiedzą ogniem jeśli zostaną zaatakowane i ostrzelają wszystkie jednostki próbujące przejść obok nich."
+
+msgid "Settler units can be used to build tiles that generate income. Once the Settler unit is surrounded by Grass and Forest tiles, select it, click on it again with the RIGHT MOUSE BUTTON and order it to build either a Farm tile or a Town tile."
+msgstr "Jednostki Osadników są używane do budowania pól które przynoszą dochód. Gdy Osadnik jest otoczony polami Trawy i Lasu, wybierz go, kliknij go ponownie PRAWYM PRZYCISKIEM MYSZY i rozkaż mu założenie pola Farmy lub pola Miasteczka."
+
+msgid "Excellent! Buildings generate income at night, and you can spend that money on new military units such as the Militia unit."
+msgstr "Dobra robota! Budynki generują dochód w nocy, a pieniądze te możesz wydawać na nowe jednostki wojskowe, na przykład Milicję."
+
+msgid "Over the course of the game, global warming will make the world less habitable. Destroying forests and building new tiles will accelerate this process."
+msgstr "Podczas rozgrywki globalne ocieplanie sprawi, że kolejne tereny przestaną nadawać się do życia. Niszczenie Lasów i budowanie nowych pól przyspieszy ten proces."
+
+msgid "Industry tiles are a cheap way to generate income and can produce the powerful Tank unit. However, they also lower the humidity of nearby tiles and accelerate global warming. To build an Industry tile select one of your City tiles, click on it again with the RIGHT MOUSE BUTTON, click the left panel and then click on an adjacent tile."
+msgstr "Pola Fabryk to tani sposób na generowanie dochodu, a do tego pozwalają na produkcję potężnej jednostki: Czołgów. Należy jednak pamiętać, że Fabryki obniżają  wilgotność pobliskich pól i przyspieszają globalne ocieplanie. By zbudować pole Fabryki wybierz jedno ze swoich pól Miast, kliknij je ponownie PRAWYM PRZYCISKIEM MYSZY, kliknij lewy panel a na koniec kliknij sąsiednie pole."
+
+msgid "Great! Industry and Barracks tiles can be upgraded to increase their size. The more buildings a tile has, the stronger a unit produced there will be."
+msgstr "Wspaniale! Pola Fabryk i Baraków mogą zostać ulepszone co je powiększy. Im więcej budynków jest na danym polu, tym silniejsza będzie jednostka tam produkowana."
+
+msgid "Tiles need power to produce units and only gain power at night."
+msgstr "Pola potrzebują energii do produkcji jednostek, a zyskują ją tylko nocą."
+
+msgid "Barracks tiles can produce Rifleman, Gunner and Sapper units. To build a Barracks tile select one of your City tiles, click on it again with the RIGHT MOUSE BUTTON, click the lower panel and then click on an adjacent tile."
+msgstr "Pola Baraków mogą produkować Piechotę, Komandosów oraz Saperów. By wybudować pole Baraków wybierz jedno ze swoich pól Miast, kliknij je ponownie PRAWYM PRZYCISKIEM MYSZY, kliknij dolny panel a następnie kliknij sąsiednie pole."
+
+msgid "That's it! Remember: you must occupy or destroy all enemy City tiles in order to defeat your opponent. Good luck!"
+msgstr "To wszystko! Pamiętaj: Musisz okupować lub zniszczyć wszystkie pola Miast przeciwnika by go pokonać. Powodzenia!"
+
+msgid "Victory! After every game you win, you are rewarded with a score equal to the number of grass tiles left on the map. If the score you obtain in a game is higher than the amount of rating points you have, your rating will rise!"
+msgstr "Zwycięstwo! Po każdej wygranej grze otrzymasz punkty równe ilości pozostałych na mapie pól trawy. Jeśli twój wynik jest wyższy niż liczba twoich punktów rankingu, twój ranking się podniesie!"
+
+msgid "Try again! Remember: you must occupy or destroy all enemy City tiles in order to defeat your opponent."
+msgstr "Spróbuj jeszcze raz! Pamiętaj: Musisz okupować lub zniszczyć wszystkie pola Miast przeciwnika by go pokonać. Powodzenia!"
+
+msgid "Epicinium"
+msgstr "Epicinium"
+
+msgid "Cut"
+msgstr "Wytnij"
+
+msgid "Copy"
+msgstr "Kopiuj"
+
+msgid "Paste"
+msgstr "Wklej"
+
+msgid "In the Weather phase, the season changes and crops can grow. In Spring, trees can grow. In Autumn, global warming worsens."
+msgstr "W Fazie Pogody zmienia się pora roku a rośliny uprawne rosną. Wiosną rosną drzewa. Na Jesień, globalne ocieplanie pogarsza się."
+
+msgid "In the Night phase, building tiles gain power depending on their surroundings and generate income."
+msgstr "W Fazie Nocy pola budynków otrzymują energię w zależności od otoczenia i generują dochód."
+
+msgid "In the Planning phase, players decide which orders to give to their units and tiles. Orders are executed in the Action phase."
+msgstr "W Fazie Planowania gracze decydują, jakie rozkazy wydać swoim jednostkom i polom. Rozkazy są wykonywane w Fazie Akcji."
+
+msgid "In the Decay phase, any Frostbite, Firestorm or Gas present on the map deals damage. Gas spreads out or dissipates."
+msgstr "W Fazie Zniszczeń wszystkie efekty Ostrego Mrozu, Burzy Ogniowej oraz Gazu znajdujące się na mapie zadają obrażenia. Gaz rozprzestrzenia się lub ulatnia."
+
+msgid "Red Player"
+msgstr "Gracz Czerwony"
+
+msgid "Blue Player"
+msgstr "Gracz Niebieski"
+
+msgid "Yellow Player"
+msgstr "Gracz Żółty"
+
+msgid "Teal Player"
+msgstr "Gracz Zielononiebieski"
+
+msgid "Black Player"
+msgstr "Gracz Czarny"
+
+msgid "Pink Player"
+msgstr "Gracz Różowy"
+
+msgid "Indigo Player"
+msgstr "Gracz Indygo"
+
+msgid "Purple Player"
+msgstr "Gracz Fioletowy"
+
+msgid "Credits"
+msgstr "Autorzy"
+
+msgid "a game by a bunch of hacks"
+msgstr "gra studia a bunch of hacks"
+
+msgid "game design, programming, graphic design"
+msgstr "projekt gry, programowanie, grafika"
+
+msgid "game design, programming, engineering, sound design"
+msgstr "projekt gry, programowanie, spr. techniczne, dźwięk"
+
+msgid "graphic design"
+msgstr "grafika"
+
+msgid "programming, sound design"
+msgstr "programowanie, dźwięk"
+
+msgid "special thanks"
+msgstr "specjalne podziękowania"
+
+msgid "box art"
+msgstr "ilustracje"
+
+msgid "story concepts, copywriting"
+msgstr "fabuła, opisy gry"
+
+msgid "copywriting"
+msgstr "opisy gry"
+
+msgid "initial os x support"
+msgstr "wstępna obsługa systemów os x"
+
+msgid "return to main menu"
+msgstr "powrót do menu głównego"
+
+msgid "Usernames must be between 3 and 36 characters long and can only contain letters, numbers, underscores, dashes, periods and tildes."
+msgstr "Nazwy użytkowników muszą mieć od 3 do 36 znaków i mogą zawierać tylko litery, cyfry, podkreślenia, myślniki, kropki i tyldy."
+
+msgid "This is not a valid email address."
+msgstr "To nie jest prawidłowy adres email."
+
+msgid "Passwords must consist of at least 8 characters and must contain a letter and a non-letter."
+msgstr "Hasła muszą składać się z co najmniej 8 znaków i muszą zawierać literę oraz znak niebędący literą."
+
+msgid "The passwords do not match."
+msgstr "Hasła się różnią."
+
+msgid "This is not a valid password reset token."
+msgstr "To nie jest prawidłowy token zresetowania hasła."
+
+msgid "This is not a valid key."
+msgstr "To nie jest prawidłowy klucz."
+
+msgid "Oops! Connection to server was lost."
+msgstr "Ups! Utracono połączenie z serwerem."
+
+msgid "Attempting to reconnect..."
+msgstr "Próba ponownego połączenia..."
+
+msgid "Press PLAY to rejoin."
+msgstr "Naciśnij GRAJ, aby ponownie dołączyć do gry."
+
+msgid "LOG OUT"
+msgstr "WYLOGUJ SIĘ"
+
+msgid "LOG IN"
+msgstr "ZALOGUJ SIĘ"
+
+msgid "REGISTER"
+msgstr "ZAREJESTRUJ SIĘ"
+
+msgid "PLAY"
+msgstr "GRAJ"
+
+msgid "Download in progress"
+msgstr "Pobieranie w toku"
+
+msgid "Downloading..."
+msgstr "Pobieranie..."
+
+msgid "Enter Key"
+msgstr "Wprowadź Klucz"
+
+msgid "Feedback?"
+msgstr "Sugestie/Opinie?"
+
+msgid "An error has occurred."
+msgstr "Wystąpił błąd."
+
+msgid "Email address:"
+msgstr "Adres email:"
+
+msgid "Password:"
+msgstr "Hasło:"
+
+msgid "Keep me logged in:"
+msgstr "Nie wylogowuj mnie:"
+
+msgid "confirm"
+msgstr "potwierdź"
+
+msgid "forgot password?"
+msgstr "nie pamiętasz hasła?"
+
+msgid "You are not logged in. Would you like to play as a guest using your Discord username?"
+msgstr "Nie jesteś zalogowany. Czy chcesz grać jako gość, używając swojej nazwy użytkownika z Discorda?"
+
+msgid "If you are on Discord, you can join our community by visiting our Discord server (click here)."
+msgstr "Jeśli korzystasz z Discorda, możesz dołączyć do naszej społeczności, odwiedzając nasz serwer na Discordzie (kliknij tutaj)."
+
+msgid "Looking for the Discord application..."
+msgstr "Szukanie aplikacji Discord..."
+
+msgid "Connecting with Steam..."
+msgstr "Łączenie ze Steamem..."
+
+msgid "I confirm that I want to merge my Steam-based Epicinium account with my email-based Epicinium account."
+msgstr "Potwierdzam, że chcę połączyć moje konto Epicinium oparte na platformie Steam z moim kontem Epicinium opartym na moim e-mailu."
+
+msgid "Key:"
+msgstr "Klucz:"
+
+msgid "Key activation successful!"
+msgstr "Aktywacja klucza powiodła się!"
+
+msgid "There already exists an Epicinium user with the same name. Please enter a new username to use within Epicinium."
+msgstr "Istnieje już użytkownik Epicinium o tej samej nazwie. Wprowadź nową nazwę użytkownika, której chcesz używać w Epicinium."
+
+msgid "Username:"
+msgstr "Nazwa użytkownika:"
+
+msgid "If you forgot your password and want to reset it, please enter the email address that you used to register. We will email you a password reset token."
+msgstr "Jeśli zapomniałeś hasła i chcesz je zresetować, wprowadź adres e-mail użyty podczas rejestracji. Prześlemy Ci e-mailem token resetowania hasła."
+
+msgid "Within a few minutes, you should receive an email containing your password reset token. Please check your spam folder as well! If you have trouble restting your password, please contact us at help@epicinium.nl"
+msgstr "W ciągu kilku minut powinieneś otrzymać wiadomość e-mail zawierającą token resetowania hasła. Sprawdź również folder ze spamem! Jeśli masz problem z odzyskaniem hasła, skontaktuj się z nami pod adresem help@epicinium.nl"
+
+msgid "Token:"
+msgstr "Token:"
+
+msgid "New password:"
+msgstr "Nowe hasło:"
+
+msgid "Confirm password:"
+msgstr "Potwierdź hasło:"
+
+msgid "Saving files seems not to be working! Please make sure the game is unpacked or installed in a folder where you have permission to write. Settings might not be stored correctly when the game closes."
+msgstr "Wydaje się, że zapisywanie plików nie działa! Upewnij się, że gra została rozpakowana lub zainstalowana w folderze, w którym masz uprawnienia do wprowadzania zmian. Ustawienia mogą nie zostać poprawnie zapisane po zamknięciu gry."
+
+msgid "ok"
+msgstr "ok"
+
+msgid "Bug report"
+msgstr "Zgłoś błąd"
+
+msgid "Please describe what happened."
+msgstr "Opisz, co się stało."
+
+msgid "Send my Epicinium log files to the developers to help them with debugging:"
+msgstr "Wyślij moje pliki zapisu Epicinium do programistów, aby pomóc im w naprawianiu błędów:"
+
+msgid "send"
+msgstr "wyślij"
+
+msgid "Initializing..."
+msgstr "Rozpoczynanie..."
+
+msgid "Not logged in."
+msgstr "Nie zalogowany."
+
+msgid "Find us on Discord!"
+msgstr "Znajdź nas na Discordzie!"
+
+msgid "SETTINGS"
+msgstr "USTAWIENIA"
+
+msgid "CREDITS"
+msgstr "AUTORZY"
+
+msgid "QUIT"
+msgstr "WYJDŹ"
+
+msgid "Please finish the sentence."
+msgstr "Dokończ zdanie."
+
+msgid "You need to be connected to the server to play!"
+msgstr "Aby grać, musisz mieć połączenie z serwerem!"
+
+msgid "UPDATE"
+msgstr "AKTUALIZACJA"
+
+msgid "A new version is available! Please update Epicinium via your GameJolt client."
+msgstr "Dostępna jest nowa wersja! Zaktualizuj Epicinium za pośrednictwem klienta GameJolt."
+
+msgid "A new version is available! Please update Epicinium via your itch desktop app."
+msgstr "Dostępna jest nowa wersja! Zaktualizuj Epicinium za pomocą aplikacji komputerowej itch."
+
+msgid "A new version is available! Please update Epicinium via Steam."
+msgstr "Dostępna jest nowa wersja! Zaktualizuj Epicinium przez Steama."
+
+msgid "A new version is available! Please download the latest version of Epicinium."
+msgstr "Dostępna jest nowa wersja! Pobierz najnowszą wersję Epicinium."
+
+msgid "RESTART"
+msgstr "RESTART"
+
+msgid "Failed to connect to Steam."
+msgstr "Nie udało połączyć się ze Steamem."
+
+msgid "Connecting to Steam..."
+msgstr "Łączenie ze Steamem..."
+
+msgid "Please log in to play!"
+msgstr "Zaloguj się, aby zagrać!"
+
+msgid "Log in to play or play as a guest using your Discord username."
+msgstr "Zaloguj się, lub graj jako gość używając nazwy użytkownika z Discorda."
+
+msgid "Version mismatch. Please update to version %s."
+msgstr "Niezgodność wersji. Zaktualizuj do wersji %s."
+
+msgid "A patch is available! Click to download version %s."
+msgstr "Aktualizacja jest dostępna! Kliknij by pobrać wersję %s."
+
+msgid "Patch downloaded. Click to install version %s."
+msgstr "Pobrano aktualizację. Kliknij, aby zainstalować wersję %s."
+
+msgid "Downloading patch failed."
+msgstr "Pobieranie aktualizacji nie powiodło się."
+
+msgid "Continuing download of version %s."
+msgstr "Kontynuowanie pobierania wersji %s."
+
+msgid "Downloading additional files..."
+msgstr "Pobieranie dodatkowych plików..."
+
+msgid "Downloading %s..."
+msgstr "Pobieranie %s..."
+
+msgid "Connecting to official servers..."
+msgstr "Łączenie z oficjalnymi serwerami..."
+
+msgid "Connected to official servers."
+msgstr "Połączono z oficjalnymi serwerami."
+
+msgid "The server has been shut down for maintenance. We'll be back soon!"
+msgstr "Serwer obecnie jest zamknięty w celu konserwacji. Wrócimy niebawem!"
+
+msgid "An update is required to connect to the server."
+msgstr "Aby połączyć się z serwerem, wymagana jest aktualizacja."
+
+msgid "Failed to connect to official servers."
+msgstr "Nie udało połączyć się z oficjalnymi serwerami."
+
+msgid "Attempting to log in..."
+msgstr "Próba logowania..."
+
+msgid "Login successful."
+msgstr "Logowanie powiodło się."
+
+msgid "Could not connect to the login server."
+msgstr "Nie udało się połączyć z serwerem logowania."
+
+msgid "Unknown email address or incorrect password."
+msgstr "Nieznany adres e-mail lub nieprawidłowe hasło."
+
+msgid "Your account has been locked due to too many failed login attempts. Please try again in 2 hours."
+msgstr "Twoje konto zostało zablokowane z powodu zbyt wielu nieudanych prób logowania. Spróbuj ponownie za 2 godziny."
+
+msgid "Your account has been disabled. If you have any questions about this, you can reach us at support@epicinium.nl"
+msgstr "Twoje konto zostało wyłączone. Jeśli masz jakiekolwiek pytania na ten temat, możesz skontaktować się z nami pod adresem support@epicinium.nl"
+
+msgid "An unexpected error has occurred while logging in."
+msgstr "Wystąpił nieoczekiwany błąd podczas logowania."
+
+msgid "Attempting to register..."
+msgstr "Próba rejestracji..."
+
+msgid "Successfully registered. Please log in."
+msgstr "Zarejestrowano pomyślnie. Zaloguj się."
+
+msgid "This username is already taken."
+msgstr "Ta nazwa użytkownika jest już zajęta."
+
+msgid "There is already an account registered for this email address."
+msgstr "Istnieje już konto zarejestrowane na ten adres e-mail."
+
+msgid "An unexpected error has occurred while registering."
+msgstr "Wystąpił nieoczekiwany błąd podczas rejestracji."
+
+msgid "Failed to authenticate using Steam."
+msgstr "Nie udało się uwierzytelnić za pomocą Steama."
+
+msgid "Your login session has expired. Please log in again."
+msgstr "Twoja sesja logowania wygasła. Zaloguj się ponownie."
+
+msgid "You are already online and logged in with this account elsewhere."
+msgstr "Jesteś już online i zalogowany na tym koncie gdzie indziej."
+
+msgid "Your account has been disabled. If you have any questions about this, You can reach us at support@epicinium.nl"
+msgstr "Twoje konto zostało wyłączone. Jeśli masz jakiekolwiek pytania na ten temat, możesz skontaktować się z nami pod adresem support@epicinium.nl"
+
+msgid "You do not own this game on Steam."
+msgstr "Nie posiadasz tej gry na Steamie."
+
+msgid "A key is required to unlock access to the server."
+msgstr "Do odblokowania dostępu do serwera wymagany jest klucz."
+
+msgid "Please enter a username to use within Epicinium."
+msgstr "Wprowadź nazwę użytkownika, której chcesz używać w Epicinium."
+
+msgid "An unexpected error occurred while validating your login session. Please log in again."
+msgstr "Wystąpił nieoczekiwany błąd podczas weryfikacji sesji logowania. Proszę, zaloguj się ponownie."
+
+msgid "An unexpected error occurred while authenticating using your Steam account."
+msgstr "Wystąpił nieoczekiwany błąd podczas uwierzytelniania przy użyciu konta Steam."
+
+msgid "Attempting to activate key..."
+msgstr "Próba aktywowania klucza..."
+
+msgid "Logged in."
+msgstr "Zalogowano."
+
+msgid "The key is incorrect."
+msgstr "Klucz jest nieprawidłowy."
+
+msgid "The key has already been activated."
+msgstr "Klucz został już aktywowany."
+
+msgid "Too many attempts. Please try again in 2 hours."
+msgstr "Zbyt wiele prób. Spróbuj ponownie za 2 godziny."
+
+msgid "An unexpected error has occurred while activating your key. Please try again."
+msgstr "Wystąpił nieoczekiwany błąd podczas aktywacji klucza. Spróbuj ponownie."
+
+msgid "Attempting to reset password..."
+msgstr "Próbuję zresetować hasło..."
+
+msgid "Successfully reset password."
+msgstr "Pomyślnie zresetowano hasło."
+
+msgid "The token is incorrect."
+msgstr "Token jest nieprawidłowy."
+
+msgid "An unexpected error has occurred while resetting your password. Please try again."
+msgstr "Wystąpił nieoczekiwany błąd podczas resetowania hasła. Spróbuj ponownie."
+
+msgid "Thanks for your feedback! We will get back to you soon."
+msgstr "Dziękujemy za wiadomość! Wkrótce się do Ciebie odezwiemy."
+
+msgid "Thanks for your feedback! Click here to view your submission."
+msgstr "Dziękujemy za wiadomość! Kliknij tutaj, aby ją zobaczyć."
+
+msgid "An unexpected error has occurred while sending feedback."
+msgstr "Wystąpił nieoczekiwany błąd podczas wysyłania wiadomości."
+
+msgid "Connected as %s#%s on Discord."
+msgstr "Połączono jako %s#%s na Discordzie."
+
+msgid "Disconnected from Discord."
+msgstr "Rozłączono z Discordem."
+
+msgid "Connected as %s on Steam."
+msgstr "Połączono jako %s na Steamie."
+
+msgid "Failed to connect with Steam."
+msgstr "Nie udało się połączyć ze Steamem."
+
+msgid "Failed to detect Steam!"
+msgstr "Nie udało się wykryć Steama!"
+
+msgid "An unexpected error has occurred."
+msgstr "Wystąpił nieoczekiwany błąd."
+
+msgid "Welcome back!"
+msgstr "Witamy spowrotem!"
+
+msgid "LOBBIES"
+msgstr "LOBBY"
+
+msgid "One vs. One"
+msgstr "Jeden na Jednego"
+
+msgid "Versus A.I."
+msgstr "Przeciw Komputerowi"
+
+msgid "Custom Lobby"
+msgstr "Lobby Niestandardowe"
+
+msgid "overview map"
+msgstr "przejrzyj mapę"
+
+msgid "open guide"
+msgstr "otwórz przewodnik"
+
+msgid "watch replay"
+msgstr "obejrzyj powtórkę"
+
+msgid "Tutorial"
+msgstr "Samouczek"
+
+msgid "loading..."
+msgstr "ładowanie..."
+
+msgid "USERS"
+msgstr "UŻYTKOWNICY"
+
+msgid "LEADERBOARD"
+msgstr "RANKING"
+
+msgid "The leaderboard is updated once per day, at 01:00 UTC."
+msgstr "Ranking jest aktualizowany raz dziennie, o 01:00 UTC."
+
+msgid "FEEDBACK?"
+msgstr "SUGESTIA/OPINIA?"
+
+msgid "Someone wants to join your lobby."
+msgstr "Ktoś chce dołączyć do Twojego lobby."
+
+msgid "accept"
+msgstr "zgódź się"
+
+msgid "deny"
+msgstr "odmów"
+
+msgid "LOBBY"
+msgstr "LOBBY"
+
+msgid "NAME"
+msgstr "IMIĘ"
+
+msgid "The chat target. When in a lobby, click to switch (also TAB key)."
+msgstr "Odbiorca wiadomości. Będąc w lobby, kliknij aby przełączyć (również klawisz TAB)."
+
+msgid "PLAYERS"
+msgstr "GRACZE"
+
+msgid "OBSERVERS"
+msgstr "OGLĄDAJĄCY"
+
+msgid "rename"
+msgstr "zmień nazwę"
+
+msgid "Private lobby:"
+msgstr "Prywatne lobby:"
+
+msgid "Prevent other users from joining your lobby."
+msgstr "Zablokuj innym użytkownikom dołączanie do Twojego lobby."
+
+msgid "Custom maps:"
+msgstr "Mapy niestandardowe:"
+
+msgid "Allow picking custom maps and gamemodes."
+msgstr "Zezwalaj na wybieranie niestandardowych map i trybów gry."
+
+msgid "start game"
+msgstr "zacznij grę"
+
+msgid "You can add AI players by clicking the blue \"+\" icon on the right side of the \"PLAYERS\" list."
+msgstr "Możesz dodawać graczy komputerowych, klikając niebieską ikonę „+” po prawej stronie listy „GRACZE”."
+
+msgid "leave lobby"
+msgstr "opuścić lobby"
+
+msgid "Map:"
+msgstr "Mapa:"
+
+msgid "The map the game is played on."
+msgstr "Mapa, na której toczy się gra."
+
+msgid "unknown"
+msgstr "nieznane"
+
+msgid "Planning timer:"
+msgstr "Minutnik planowania:"
+
+msgid "Duration of the planning phase in seconds."
+msgstr "Czas trwania fazy planowania w sekundach."
+
+msgid "insane"
+msgstr "szalony"
+
+msgid "fast"
+msgstr "szybki"
+
+msgid "standard"
+msgstr "standardowy"
+
+msgid "relaxed"
+msgstr "spokojny"
+
+msgid "OFF"
+msgstr "WYŁĄCZONY"
+
+msgid "unlimited"
+msgstr "nieograniczony"
+
+msgid "Please enter a new lobby name."
+msgstr "Wprowadź nową nazwę lobby."
+
+msgid "Starting overview mode..."
+msgstr "Uruchamianie trybu podglądu..."
+
+msgid "dev"
+msgstr "deweloper"
+
+msgid "guest"
+msgstr "gość"
+
+msgid "This player is in a lobby."
+msgstr "Ten gracz jest w lobby."
+
+msgid "This player is in a game."
+msgstr "Ten gracz jest w grze."
+
+msgid "This player is spectating a game in progress."
+msgstr "Ten gracz obserwuje trwającą grę."
+
+msgid "This player is watching a replay."
+msgstr "Ten gracz ogląda powtórkę."
+
+msgid "Looking for opponents? Try our Discord."
+msgstr "Szukasz przeciwników? Wypróbuj naszego Discorda."
+
+msgid "This lobby is locked."
+msgstr "To lobby jest zamknięte."
+
+msgid "This game is already in progress."
+msgstr "Ta gra już trwa."
+
+msgid "Players in this lobby are watching a replay."
+msgstr "Gracze w tym lobby oglądają powtórkę."
+
+msgid "Lobby \"%s\" was disbanded."
+msgstr "Lobby „%s” zostało rozwiązane."
+
+msgid "1v1"
+msgstr "1 na 1"
+
+msgid "custom"
+msgstr "niestandardowe"
+
+msgid "normal"
+msgstr "zwykłe"
+
+msgid "normal vision"
+msgstr "zwykłe pole widzenia"
+
+msgid "global"
+msgstr "nieograniczone"
+
+msgid "global vision"
+msgstr "nieograniczone pole widzenia"
+
+msgid "red"
+msgstr "czerwony"
+
+msgid "blue"
+msgstr "niebieski"
+
+msgid "teal"
+msgstr "zielononiebieski"
+
+msgid "yellow"
+msgstr "żółty"
+
+msgid "pink"
+msgstr "różowy"
+
+msgid "black"
+msgstr "czarny"
+
+msgid "indigo"
+msgstr "indygo"
+
+msgid "purple"
+msgstr "fioletowy"
+
+msgid "auto"
+msgstr "automatyczny"
+
+msgid "Move to observers"
+msgstr "Przenieś do obserwatorów"
+
+msgid "Move to players"
+msgstr "Przenieś do graczy"
+
+msgid "easy"
+msgstr "łatwy"
+
+msgid "medium"
+msgstr "średni"
+
+msgid "hard"
+msgstr "trudny"
+
+msgid "Remove AI player"
+msgstr "Usuń gracza komputerowego"
+
+msgid "Copy AI player"
+msgstr "Kopiuj gracza komputerowego"
+
+msgid "Add AI player"
+msgstr "Dodaj gracza komputerowego"
+
+msgid "\"%s\" by %s"
+msgstr "\"%s\" autorstwa %s"
+
+msgid "%s Challenge"
+msgstr "Wyzwanie %s"
+
+msgid "Your rating is now %s."
+msgstr "Obecnie posiadasz %s punktów rankingu."
+
+msgid "start replay"
+msgstr "rozpocznij powtórkę"
+
+msgid "You joined lobby \"%s\"."
+msgstr "Dołączyłeś do lobby „%s”."
+
+msgid "You left lobby \"%s\"."
+msgstr "Opuściłeś lobby „%s”."
+
+msgid "%s#%s on Discord wants to join your lobby."
+msgstr "%s#%s z Discorda chce dołączyć do twojego lobby."
+
+msgid "Video"
+msgstr "Wideo"
+
+msgid "Windowed"
+msgstr "Okno"
+
+msgid "Windowed Borderless"
+msgstr "Okno Bez Ramki"
+
+msgid "Fullscreen"
+msgstr "Pełny Ekran"
+
+msgid "Fullscreen Desktop"
+msgstr "Pulpitowy Pełny Ekran"
+
+msgid "Screen Mode:"
+msgstr "Tryb Okna:"
+
+msgid "Screen Resolution:"
+msgstr "Rozdzielczość:"
+
+msgid "Custom"
+msgstr "Niestandardowe"
+
+msgid "Screen Width:"
+msgstr "Szerokość Okna:"
+
+msgid "Screen Height:"
+msgstr "Wysokość Okna:"
+
+msgid "Scale:"
+msgstr "Skala:"
+
+msgid "Framerate:"
+msgstr "Klatki Na Sekundę:"
+
+msgid "Monitor:"
+msgstr "Monitor:"
+
+msgid "Window Position:"
+msgstr "Pozycja Okna:"
+
+msgid "Centered"
+msgstr "Wyśrodkowane"
+
+msgid "Window Position (X):"
+msgstr "Pozycja Okna (X):"
+
+msgid "Window Position (Y):"
+msgstr "Pozycja Okna (Y):"
+
+msgid "Audio"
+msgstr "Dźwięk"
+
+msgid "Master Volume:"
+msgstr "Głośność Ogólna:"
+
+msgid "Gameplay Volume:"
+msgstr "Głośność Rozgrywki:"
+
+msgid "Music Volume:"
+msgstr "Głośność Muzyki:"
+
+msgid "Audio Buffer Size:"
+msgstr "Rozmiar Bufora Dźwięku:"
+
+msgid "Controls"
+msgstr "Sterowanie"
+
+msgid "Selection Mode:"
+msgstr "Tryb Wyboru:"
+
+msgid "Figure-Based"
+msgstr "Oparty Na Figurkach"
+
+msgid "Context Menu"
+msgstr "Menu Kontekstowe"
+
+msgid "View Scrolling with WASD:"
+msgstr "Przesuwanie Mapy za pomocą WASD:"
+
+msgid "View Scrolling with Arrow Keys:"
+msgstr "Przesuwanie Mapy za pomocą Klawiszy Strzałek:"
+
+msgid "View Scrolling at Edge of Screen:"
+msgstr "Przesuwanie Mapy przez najechanie na Krawędź Ekranu:"
+
+msgid "Advanced Mode:"
+msgstr "Tryb Zaawansowany:"
+
+msgid "Allow orders for tiles without power:"
+msgstr "Pozwól rozkazywać polom bez energii:"
+
+msgid "Allow redundant Stop orders:"
+msgstr "Pozwól na dawanie nadmiernych rozkazów Stop:"
+
+msgid "Allow redundant Cultivate orders:"
+msgstr "Pozwól na dawanie nadmiernych rozkazów Kultywuj:"
+
+msgid "Allow redundant Upgrade orders:"
+msgstr "Pozwól na dawanie nadmiernych rozkazów Ulepsz:"
+
+msgid "Allow view scrolling while acting:"
+msgstr "Zezwól na przewijanie widoku podczas akcji:"
+
+msgid "Allow view scrolling while panning:"
+msgstr "Zezwól na przewijanie widoku podczas automatycznego przewijania:"
+
+msgid "Social"
+msgstr "Społeczne"
+
+msgid "Enable Discord Rich Presence:"
+msgstr "Włącz Discord Rich Presence:"
+
+msgid "Interface"
+msgstr "Interfejs"
+
+msgid "Language:"
+msgstr "Język (Language):"
+
+msgid "Main menu art panning:"
+msgstr "Przesuwanie grafiki w menu głównym:"
+
+msgid "Off"
+msgstr "Wyłączone"
+
+msgid "Automatic"
+msgstr "Automatyczne"
+
+msgid "Cursor"
+msgstr "Kursorem"
+
+msgid "apply and restart"
+msgstr "zastosuj i uruchom ponownie"
+
+msgid "discard and return to main menu"
+msgstr "anuluj i wróć do menu głównego"
+
+msgid "apply and return to main menu"
+msgstr "zastosuj i wróć do menu głównego"
+
+msgid "Replays are not available at the moment."
+msgstr "W tej chwili powtórki nie są dostępne."
+
+msgid "Hello %s, welcome to the Epicinium server!"
+msgstr "Cześć %s, witaj na serwerze Epicinium!"
+
+msgid "Connected to %s:%d as %s."
+msgstr "Połączono z %s:%d jako %s."
+
+msgid "%s is online."
+msgstr "%s jest online."
+
+msgid "%s went offline."
+msgstr "%s przeszedł w tryb offline."
+
+msgid "Failed to join lobby because it is private or full."
+msgstr "Nie udało się dołączyć do lobby, ponieważ jest ono prywatne lub pełne."
+
+msgid "You are already in a lobby."
+msgstr "Jesteś już w lobby."
+
+msgid "%s joined the lobby."
+msgstr "%s dołączył do lobby."
+
+msgid "You are not in a lobby."
+msgstr "Nie jesteś w lobby."
+
+msgid "%s left the lobby."
+msgstr "%s opuścił lobby."
+
+msgid "You resigned."
+msgstr "Zrezygnowałeś."
+
+msgid "%s has resigned."
+msgstr "%s zrezygnował."
+
+msgid "Starting game failed."
+msgstr "Rozpoczęcie gry nie powiodło się."
+
+msgid "Starting game..."
+msgstr "Rozpoczynanie gry..."
+
+msgid "Starting tutorial..."
+msgstr "Rozpoczynanie samouczka..."
+
+msgid "Starting tutorial failed."
+msgstr "Rozpoczęcie samouczka nie powiodło się."
+
+msgid "Starting challenge failed."
+msgstr "Rozpoczęcie wyzwania nie powiodło się."
+
+msgid "Connection to server resumed."
+msgstr "Wznowiono połączenie z serwerem."
+
+msgid "The server is shutting down for maintenance. (No new games)"
+msgstr "Serwer jest zamykany w celu konserwacji. (Tworzenie gier wstrzymane)"
+
+msgid "The Epicinium server is online."
+msgstr "Serwer Epicinium jest online."
+
+msgid "The Epicinium server is not online at the moment. Please try again later."
+msgstr "Serwer Epicinium nie jest w tej chwili online. Spróbuj ponownie później."
+
+msgid "Waiting for response from server..."
+msgstr "Oczekiwanie na odpowiedź serwera..."
+
+msgid "Connecting..."
+msgstr "Łączenie..."
+
+msgid "Failed to connect to server."
+msgstr "Nie udało połączyć się z serwerem."
+
+msgid "You have been disconnected from the server."
+msgstr "Zostałeś rozłączony z serwerem."
+
+msgid "Authenticating..."
+msgstr "Uwierzytelnianie..."
+
+msgid "Italian"
+msgstr "Italiano"
+
+msgid "Polish"
+msgstr "Polski"
+
+msgid "Russian"
+msgstr "Русский"
+
+msgid "Ukrainian"
+msgstr "Українська"
+
+msgid "If you have a key, activate it here."
+msgstr "Jeśli masz klucz, aktywuj go tutaj."
+
+msgid "Keep me up to date via email with news about Epicinium and other games made by A Bunch of Hacks."
+msgstr "Przesyłaj mi e-maile z wiadomościami o Epicinium i innych grach stworzonych przez A Bunch of Hacks."
+
+msgid "A valid email address is necessary to recover your account. We will only send emails related to account management and (if you opt in) updates about our games. Click here to read our full privacy statement."
+msgstr "Do odzyskania konta niezbędny jest prawidłowy adres e-mail. Będziemy wysyłać tylko e-maile związane z zarządzaniem kontem i (jeśli wyrazisz zgodę) aktualizacje dotyczące naszych gier. Kliknij tutaj, aby przeczytać nasze pełne oświadczenie o ochronie prywatności."
+
+msgid "Text scaling:"
+msgstr "Skalowanie tekstu:"
+
+msgid "High Contrast Colors:"
+msgstr "Kolory O Wysokim Kontraście:"
+
+msgid "Zeppelin"
+msgstr "Sterowiec"
+
+msgid "ZEPPELIN"
+msgstr "STEROWIEC"
+
+msgid "Czech"
+msgstr "Czech"
+
+msgid "Portuguese (BR)"
+msgstr "Português (BR)"
+
+msgid "Cultivates surrounding spaces when built."
+msgstr "Kultywuje otaczające pola po zbudowaniu."
+
+msgid "Attack an enemy. All friendly ground units adjacent to the target join the attack."
+msgstr "Atakuje wroga. Wszystkie przyjazne jednostki naziemne sąsiadujące z celem dołączą do ataku."
+
+msgid "Attack an enemy and lock down a space. Any enemy entering that space is attacked immediately and stops moving."
+msgstr "Atakuje wroga i blokuje pole. Każdy wróg wchodzący na to pole jest natychmiast atakowany i kończy swój ruch."
+
+msgid "Fire two volleys of explosive rounds at an adjacent space, dealing indiscriminate damage."
+msgstr "Wystrzeliwuje dwie salwy wybuchowych pocisków w sąsiednie pole, mogące trafić cokolwiek znajdującego się tam."
+
+msgid "Fire mortar rounds at a space at long range, dealing indiscriminate damage."
+msgstr "Moździerz wystrzeliwuje pociski z dużej odległości, mogące trafić cokolwiek znajdującego się na danym polu."
+
+msgid "Release a lethal gas in the space below. Gas spreads to surrounding spaces at the end of the Decay phase."
+msgstr "Zrzuca śmiercionośny gaz na ziemię. Pod koniec Fazy Zniszczeń gaz rozprzestrzenia się na otaczające pola."
+
+msgid "Take control of an enemy tile."
+msgstr "Przejmuje kontrolę nad polem wroga."
+
+msgid "Halt previous activities."
+msgstr "Usuwa wcześniejsze rozkazy."
+
+msgid "Increase the number of buildings on this tile."
+msgstr "Zwiększa liczbę budynków na tym polu."
+
+msgid "Revoke"
+msgstr "Odwołaj"
+
+msgid "Cancel an order."
+msgstr "Anuluje rozkaz."
+
+msgid "%s [experimental]"
+msgstr "%s [eksperymentalne]"
+
+msgid "%s [incomplete]"
+msgstr "%s [niedokończone]"
+
+msgid "Unit"
+msgstr "Jednostka"
+
+msgid "Tile"
+msgstr "Pole"
+
+msgid "Planning phase"
+msgstr "Faza Planowania"
+
+msgid "Action phase"
+msgstr "Faza Akcji"
+
+msgid "Decay phase"
+msgstr "Faza Zniszczeń"
+
+msgid "Night phase"
+msgstr "Faza Nocy"
+
+msgid "Weather phase"
+msgstr "Faza Pogody"

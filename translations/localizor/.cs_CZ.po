@@ -1,0 +1,13 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Elimination"
+msgstr "Eliminace"
+
+msgid "Morale"
+msgstr "Morálka"
+
+msgid "Custom"
+msgstr "Vlastní"

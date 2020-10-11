@@ -1,0 +1,41 @@
+"lang"
+{
+	"english"
+	{
+		"tokens"
+		{
+			"#in_menu" "In Menu"
+			"#looking_to_play" "Looking to Play"
+			"#playing_tutorial" "Playing Tutorial"
+			"#playing_challenge" "Playing Challenge"
+			"#playing_challenge_keyed" "Playing {#challenge_name_%challenge_key%} Challenge"
+			"#watching_replay" "Watching Replay"
+
+			"#playing" "{#playing_%lobby_type_key%}"
+			"#spectating" "{#spectating_%lobby_type_key%}"
+			"#in_lobby" "{#in_lobby_%lobby_type_key%}"
+
+			"#playing_one_vs_one" "Playing One vs One"
+			"#playing_free_for_all" "Playing Free For All"
+			"#playing_versus_ai" "Playing Versus AI"
+			"#playing_ai_vs_ai" "Playing AI vs AI"
+			"#spectating_one_vs_one" "Spectating One vs One"
+			"#spectating_free_for_all" "Spectating Free For All"
+			"#spectating_versus_ai" "Spectating Versus AI"
+			"#spectating_ai_vs_ai" "Spectating AI vs AI"
+			"#in_lobby_one_vs_one" "In One vs One Lobby (%lobby_cur_size%/%lobby_max_size%)"
+			"#in_lobby_free_for_all" "In Free For All Lobby (%lobby_cur_size%/%lobby_max_size%)"
+			"#in_lobby_versus_ai" "In Versus AI Lobby (%lobby_cur_size%/%lobby_max_size%)"
+			"#in_lobby_ai_vs_ai" "In AI vs AI Lobby (%lobby_cur_size%/%lobby_max_size%)"
+
+			"#challenge_name_showcase" "Showcase"
+			"#challenge_name_elimination" "Elimination"
+			"#challenge_name_everythingisfree" "Everything is Free"
+			"#challenge_name_trample" "Tank Derby"
+			"#challenge_name_highspeed" "High Speed"
+			"#challenge_name_trample" "Tank Derby"
+			"#challenge_name_investment" "Economic Growth"
+			"#challenge_name_morale" "Morale"
+		}
+	}
+}

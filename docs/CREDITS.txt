@@ -1,0 +1,13 @@
+A game made by A Bunch of Hacks.
+
+	Sander in 't Veld - Game design, programming, graphic design
+	Daan Mulder - Game design, programming, engineering, sound design
+	Masha Loutanina - Graphic design
+	Can Ur - Programming, sound design
+
+Special thanks to:
+
+	Thomas Noppers - Box art
+	Loulou Swarte - Story concepts, copywriting
+	Thomas Jager - Copywriting
+	Jan Westerdiep - Initial OS X support

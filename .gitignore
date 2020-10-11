@@ -1,0 +1,140 @@
+# local makefile config
+/.*.make
+
+# binaries
+/epicinium
+/server
+/editor
+/essai
+
+# old make output (moved to bin)
+/biblesaver
+/printversion
+/*checker
+/check*
+/version
+/variant
+/target
+
+# unignore directories with the same name as a binary
+!/src/*/
+
+# make output folders
+/bin
+/.dep
+/.obj
+/.pic
+/.lic
+/*.app
+
+# windows bat scripts from archive
+/epicinium.bat
+/server.bat
+/editor.bat
+
+# distribution output
+/package
+/packages
+/patches
+/epicinium.app
+
+*.zip
+*.gz
+*.list
+
+# output files
+*.o
+*.s
+*.i
+*.d
+*.Td
+*.a
+*.out*
+*.exe
+*.log
+*.dump*
+*.ps
+*.dot
+*.prof
+
+# local accounts
+*.acc
+/accounts/history.list
+
+# local networking data
+*.fzm
+
+# local recordings
+*.rec
+/recordings/history.list
+/recordings/index.txt
+
+# unignore test data
+!/recordings/*data*/*.rec
+!/recordings/*data*/*.list
+
+# local downloads
+/downloads/*
+!/downloads/ABOUT.txt
+
+# local cached pictures
+/pictures/discord/avatars/*
+/pictures/steam/avatars/*
+
+# local promotion pictures
+/pictures/kickstarter/*
+/pictures/rust/*
+/pictures/stamp/*
+
+# gedit
+*~
+
+#macOS
+.DS_Store
+
+# local maps
+/maps/*test*
+
+# local rulesets
+/rulesets/local.list
+/rulesets/*-rc*.json
+/rulesets/custom.json
+/rulesets/*test*
+
+# local resources
+/resources/palettes/*test*
+!/resources/palettes/index.list
+
+# core dumps
+/*core*
+
+# local settings
+/settings.json
+/settings-*.json
+/imgui.ini
+
+# local notices
+/server-notice.json
+
+# private keys
+/keys/*private*
+!/keys/dummy_private.pem
+/keys/*steam*
+
+# neuralnewtbrains
+*.brain
+*.pth.tar
+
+# local logrotate output
+logs/.*.logrotate.status
+logs/.*.logrotate.conf
+
+# local terminate output
+/terminate.sh
+
+# visual studio code
+/.vscode
+/.vs
+
+# test locales
+/data/loc/xx_*

@@ -1,0 +1,213 @@
+msgid ""
+msgstr ""
+
+msgid "Elimination"
+msgstr "Eliminatie"
+
+msgid "Everything is Free"
+msgstr "Alles is Gratis"
+
+msgid "High Speed"
+msgstr "Hoge Snelheid"
+
+msgid "Economic Growth"
+msgstr "Economische Groei"
+
+msgid "Morale"
+msgstr "Moreel"
+
+msgid "Listen up, Commander!"
+msgstr "Luister, Commandant!"
+
+msgid "The enemy has dug in among the mountains in the east. The longer they are allowed to stay, the more damage their industriousness will do to the surrounding area. Use whatever means necessary to obliterate them. There are some neutral City and Industry tiles in the northwest of the map. Feel free to capture them with your Rifleman units."
+msgstr "De vijand heeft zich ingegraven tussen de bergen in het oosten. Hoe langer ze daar blijven, hoe meer schade hun bedrijvigheid zal toebrengen aan de omgeving. Alle middelen zijn geoorloofd om ze weg te vagen. Er zijn een paar neutrale Stads- en Industrietegels in het noordwesten. Voel je vrij om ze in te nemen met je Infanterist-eenheden."
+
+msgid "Defeat your opponent by occupying, capturing or destroying all of their City tiles. At the end of the game, you get 1 point for every Grass and Forest tile that remains."
+msgstr "Versla je tegenstander door al zijn Stadstegels te bezetten, te veroveren of te vernietigen. Aan het einde van het spel krijg je 1 punt voor elke Gras- en Bostegel die overblijft."
+
+msgid "Get 1 point."
+msgstr "Scoor 1 punt."
+
+msgid "Get 25 points."
+msgstr "Scoor 25 punten."
+
+msgid "Now go out there and lay claim to this region while there's still something worth claiming!"
+msgstr "Ga er nu heen en claim deze regio nu er nog iets te claimen valt!"
+
+msgid "Defeat your opponent by eliminating all of their units. At the end of the game, you get 1 point for every Grass and Forest tile that remains."
+msgstr "Versla je tegenstander door al zijn eenheden uit te schakelen. Aan het einde van het spel krijg je 1 punt voor elke Gras- en Bostegel die overblijft."
+
+msgid "Do not destroy any City, Farm or Industry tiles."
+msgstr "Vernietig geen Stads-, Boerderij- of Industrietegels."
+
+msgid "Go get rid of those rebels!"
+msgstr "Zorg dat je van die rebellen afkomt!"
+
+msgid "Greetings, Commander!"
+msgstr "Gegroet, Commandant!"
+
+msgid ""
+"Who needs money anyway?\n"
+"In this challenge, all unit and tile costs have been reduced to zero, and buildings do not generate any income at night."
+msgstr ""
+"Wie heeft er eigenlijk geld nodig?\n"
+"In deze uitdaging zijn alle eenheids- en tegelkosten op nul gezet, en genereren gebouwen 's nachts geen inkomsten."
+
+msgid "Good luck!"
+msgstr "Succes!"
+
+msgid "Are you looking for some no-fuss action? Do you want to wake up at the sound of tanks thundering down the open fields? Then you should partake in the spectactular Tank Derby! Hop in one of them beauty's and show 'em what you got!"
+msgstr "Ben je op zoek naar actie zonder gedoe? Wil je wakker worden bij het geluid van tanks die over de open velden donderen? Dan moet u deelnemen aan de spectaculaire Tank Derby! Spring in een van die schoonheden en laat ze zien wat je in huis hebt!"
+
+msgid "Defeat all three opponents by destroying their industry and eliminating all of their tanks. Tanks are cheaper than normal and can do regular attacks, but only have one hitpoint. you get 1 point for every Grass and Forest tile that remains."
+msgstr "Versla alle drie de tegenstanders door hun industrie te vernietigen en al hun tanks te elimineren. Tanks zijn goedkoper dan gebruikelijk en kunnen normale aanvallen uitvoeren, maar hebben maar één HP. Je krijgt 1 punt voor elke Gras- en Bostegel die overblijft."
+
+msgid "English"
+msgstr "Engels"
+
+msgid "Dutch"
+msgstr "Nederlands"
+
+msgid "Spring, Year %d"
+msgstr "Lente, Jaar %d"
+
+msgid "Summer, Year %d"
+msgstr "Zomer, Jaar %d"
+
+msgid "Autumn, Year %d"
+msgstr "Herfst, Jaar %d"
+
+msgid "Winter, Year %d"
+msgstr "Winter, Jaar %d"
+
+msgid "Rifleman"
+msgstr "Infanterist"
+
+msgid "Gunner"
+msgstr "Commando"
+
+msgid "Sapper"
+msgstr "Artillerist"
+
+msgid "Guard"
+msgstr "Dekking"
+
+msgid "Shell"
+msgstr "Belaag"
+
+msgid "Bombard"
+msgstr "Bombardeer"
+
+msgid "Drop Gas"
+msgstr "Stort Gas"
+
+msgid "Capture"
+msgstr "Verover"
+
+msgid "Dig Trenches"
+msgstr "Graaf Loopgraven"
+
+msgid "Settle %s"
+msgstr "Sticht %s"
+
+msgid "Build %s"
+msgstr "Bouw %s"
+
+msgid "Upgrade"
+msgstr "Breid uit"
+
+msgid "Upgrade to %s"
+msgstr "Zet om tot %s"
+
+msgid "Cultivate %s"
+msgstr "Cultiveer %s"
+
+msgid "Produce %s"
+msgstr "Produceer %s"
+
+msgid "Stop"
+msgstr "Stop"
+
+msgid "Move"
+msgstr "Verplaats"
+
+msgid "You go %s."
+msgstr "Jij gaat als %s."
+
+msgid "%s goes %s."
+msgstr "%s gaat als %s."
+
+msgid "Send"
+msgstr "Verstuur"
+
+msgid "resign"
+msgstr "opgeven"
+
+msgid "Frostbite"
+msgstr "Vrieskou"
+
+msgid "Firestorm"
+msgstr "Vuurzee"
+
+msgid "Bonedrought"
+msgstr "Kurkdroogte"
+
+msgid "Units and tiles have fewer hitpoints."
+msgstr "Eenheden en tegels hebben minder HP."
+
+msgid "Ground units have fewer hitpoints. Ground units that remain here take damage in the Decay phase."
+msgstr "Grondeenheden hebben minder HP. Grondeenheden die hier blijven, lopen schade op in de Vervalfase."
+
+msgid "In the Decay phase, any Frostbite, Firestorm or Gas present on the map deals damage. Gas spreads out or dissipates."
+msgstr "In de Vervalfase brengen Vrieskou, Vuurzee en Gas schade toe. Gas verspreidt zich of verdwijnt."
+
+msgid "Credits"
+msgstr "Credits"
+
+msgid "a game by a bunch of hacks"
+msgstr "een spel van A Bunch of Hacks"
+
+msgid "game design, programming, graphic design"
+msgstr "spelontwerp, programmeerwerk, grafisch ontwerp"
+
+msgid "game design, programming, engineering, sound design"
+msgstr "spelontwerp, programmeerwerk, techniek, geluid"
+
+msgid "graphic design"
+msgstr "grafisch ontwerp"
+
+msgid "programming, sound design"
+msgstr "programmeerwerk, geluid"
+
+msgid "special thanks"
+msgstr "met dank aan"
+
+msgid "box art"
+msgstr "omslagontwerp"
+
+msgid "story concepts, copywriting"
+msgstr "verhaalideeën, copywriting"
+
+msgid "copywriting"
+msgstr "copywriting"
+
+msgid "initial os x support"
+msgstr "os x ondersteuning"
+
+msgid "return to main menu"
+msgstr "terug naar het hoofdmenu"
+
+msgid "send"
+msgstr "verstuur"
+
+msgid "%s Challenge"
+msgstr "Uitdaging: %s"
+
+msgid "Language:"
+msgstr "Taal:"
+
+msgid "%s (experimental)"
+msgstr "%s (experimenteel)"
+
+msgid "discard and return to main menu"
+msgstr "verwerpen en terug naar het hoofdmenu"

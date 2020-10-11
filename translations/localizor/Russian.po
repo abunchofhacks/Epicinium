@@ -1,0 +1,11 @@
+msgid ""
+msgstr ""
+
+msgid "English"
+msgstr "Английский"
+
+msgid "CHAT"
+msgstr "ЧАТ"
+
+msgid "SETTINGS"
+msgstr "НАСТРОЙКИ"
