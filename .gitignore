@@ -1,5 +1,6 @@
 # local makefile config
 /.*.make
+!/.custom.make
 
 # binaries
 /epicinium

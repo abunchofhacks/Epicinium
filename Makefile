@@ -30,6 +30,14 @@ EMPTY :=
 SPACE := $(EMPTY) #
 COMMA := ,
 
+# Per-repository config. Variables defined with ?= can be configured.
+CUSTOMFILE = ./.custom.make
+ifeq ($(wildcard $(CUSTOMFILE)),) # does not exist
+# Nothing to do.
+else
+include $(CUSTOMFILE)
+endif
+
 # Per-device config. Variables defined with ?= can be configured.
 CONFIGFILE = ./.config.make
 ifeq ($(wildcard $(CONFIGFILE)),) # does not exist
@@ -201,7 +209,8 @@ ENABLE_STEAM ?= no
 ENABLE_FEMTOZIP ?= no
 #
 
-DEFINES     = $(DEFINES_PFM) $(DEFINES_DEV) $(DEFINES_CONFIG)\
+DEFINES     = $(DEFINES_PFM) $(DEFINES_DEV)\
+              $(DEFINES_CUSTOM) $(DEFINES_CONFIG)\
               $(DEFINES_STM) $(DEFINES_FZIP)\
               $(DEFINES_LIC) $(DEFINES_ADDED)
 
@@ -242,6 +251,10 @@ DEFINES_DEV = -DDEVELOPMENT
 endif
 endif
 endif
+
+# configure me from CUSTOMFILE
+DEFINES_CUSTOM ?=
+#
 
 # configure me from CONFIGFILE
 DEFINES_CONFIG ?=
