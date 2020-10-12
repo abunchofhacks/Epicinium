@@ -1,9 +1,18 @@
 # Epicinium
-Epicinium is a multiplayer strategy game with simultaneous turns where nature is a finite resource, available for Windows, Mac and Linux. It is released 12 October 2020 on [Steam](https://store.steampowered.com/app/1286730/Epicinium/) and [itch.io](https://abunchofhacks.itch.io/epicinium).
+
+Epicinium is a multiplayer strategy game with simultaneous turns where nature is a finite resource,
+available for Windows, Mac and Linux.
+
+Epicinium was released on October 12th, 2020 as a free game on [Steam](https://store.steampowered.com/app/1286730/Epicinium/) and [itch.io](https://abunchofhacks.itch.io/epicinium).
+In this repository, the full source code (excluding proprietary Steam integrations) is made available under the AGPL-3.0 License.
 
 Epicinium is being developed by [A Bunch of Hacks](https://abunchofhacks.coop),
 a worker cooperative for video game and software development from the Netherlands.
 Contact us at [info@epicinium.nl](mailto:info@epicinium.nl).
+
+## Support
+
+Epicinium is and will remain free software. If you wish to support Epicinium and A Bunch of Hacks, you have the option to [name-your-own-price](https://abunchofhacks.itch.io/epicinium/purchase) or [buy the game's soundtrack](https://store.steampowered.com/app/1442600/Epicinium__Extended_Soundtrack/).
 
 ## Contents
 
