@@ -58,3 +58,5 @@ Epicinium is distributed in the hope that it will be useful, but WITHOUT ANY WAR
 ## Related repositories
 
 *  [Epicinium documentation](https://github.com/abunchofhacks/epicinium-documentation), which includes a wiki and a tutorial for Epicinium
+*  [Epicinium assets](https://github.com/abunchofhacks/Epicinium-assets), assets for Epicinium including audio, sprites, maps, rulesets and other resources
+*  [Epicinium-NeuralNewt](https://github.com/abunchofhacks/Epicinium-NeuralNewt), a libtorch framework for training neural networks to play Epicinium via NeuralNewt, a parameterized decision tree AI, with evolutionary training techniques
