@@ -120,10 +120,9 @@ std::string Map::authoredFilename(const std::string& name)
 
 Json::Value Map::loadMetadata(const std::string& name)
 {
-	std::ifstream file;
 	try
 	{
-		file.open(readOnlyFilename(name));
+		std::ifstream file = System::ifstream(readOnlyFilename(name));
 		if (file.is_open())
 		{
 			Json::Reader reader;

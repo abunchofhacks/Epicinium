@@ -26,6 +26,8 @@
 
 #include "libs/zlib/zlib.h"
 
+#include "system.hpp"
+
 
 bool Compress::iszippable(const std::string& filepath)
 {
@@ -99,11 +101,17 @@ std::string Compress::gzip(const std::string& filepath)
 std::string Compress::gzip(const std::string& filepath,
 	const std::string& filepathOut)
 {
-	std::ifstream file(filepath, std::ios::binary | std::ios::ate);
+	std::ifstream file = System::ifstream(filepath,
+		std::ios::binary | std::ios::ate);
 	size_t filesize = file.tellg();
 	file.seekg(0, std::ios::beg);
 
+#ifdef PLATFORMUNIX
 	gzFile out = gzopen(filepathOut.c_str(), "wb9");
+#else
+	std::wstring wfilename = System::utf16FromUtf8(filepathOut);
+	gzFile out = gzopen_w(wfilename.c_str(), "wb9");
+#endif
 	if (out == nullptr)
 	{
 		LOGE << "Failed to open output file " << filepathOut;
@@ -165,7 +173,8 @@ std::string Compress::gunzip(const std::string& filepath)
 std::string Compress::gunzip(const std::string& filepath,
 	const std::string& filepathOut)
 {
-	std::ofstream file(filepathOut, std::ios::binary | std::ios::trunc);
+	std::ofstream file = System::ofstream(filepathOut,
+		std::ios::binary | std::ios::trunc);
 	if (!file)
 	{
 		LOGE << "Failed to open output file " << filepathOut;
@@ -176,7 +185,12 @@ std::string Compress::gunzip(const std::string& filepath,
 	constexpr size_t BUFFERSIZE = 65535;
 	std::array<char, BUFFERSIZE> buffer;
 
+#ifdef PLATFORMUNIX
 	gzFile in = gzopen(filepath.c_str(), "rb");
+#else
+	std::wstring wfilename = System::utf16FromUtf8(filepath);
+	gzFile in = gzopen_w(wfilename.c_str(), "rb");
+#endif
 	if (in == nullptr)
 	{
 		LOGE << "Failed to open input file " << filepath;

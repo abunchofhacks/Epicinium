@@ -27,6 +27,18 @@
 
 namespace System
 {
+#ifdef PLATFORMWINDOWS
+	std::wstring utf16FromUtf8(const std::string& str);
+#endif
+
+	FILE* fopen(const std::string& filename, const char* mode);
+	std::ifstream ifstream(const std::string& filename);
+	std::ifstream ifstream(const std::string& filename,
+		std::ios_base::openmode mode);
+	std::ofstream ofstream(const std::string& filename);
+	std::ofstream ofstream(const std::string& filename,
+		std::ios_base::openmode mode);
+
 	bool isDirectory(const std::string& filename);
 	bool isFile(const std::string& filename);
 	bool isFileNonempty(const std::string& filename);

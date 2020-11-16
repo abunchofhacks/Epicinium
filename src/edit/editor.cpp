@@ -45,6 +45,7 @@
 #include "colorname.hpp"
 #include "skin.hpp"
 #include "language.hpp"
+#include "system.hpp"
 
 
 static std::vector<Player> allPlayers;
@@ -1246,7 +1247,7 @@ void Editor::loadFromFile(const std::string& mapname)
 	std::string line;
 
 	std::string fname = Map::readOnlyFilename(mapname);
-	std::ifstream file(fname);
+	std::ifstream file = System::ifstream(fname);
 	if (!std::getline(file, line) || !reader.parse(line, metadata)
 		|| !metadata.isObject())
 	{
@@ -1525,7 +1526,7 @@ void Editor::saveToFile(const std::string &fname)
 	// TODO fname is not really the filename (#23)
 	const std::string& mapname = fname;
 
-	std::ofstream file(Map::authoredFilename(mapname));
+	std::ofstream file = System::ofstream(Map::authoredFilename(mapname));
 
 	Json::Value metadata;
 	metadata["editor-version"] = Version::current().toString();

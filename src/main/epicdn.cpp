@@ -54,13 +54,15 @@ EpiCDN::~EpiCDN()
 	// We need to wait for the thread to finish or risk memory crashes.
 	if (_threadrunning)
 	{
-		LOGI << "Waiting until thread finishes.";
+		LOGI << "Waiting until thread finishes...";
 
 		// Notify the thread that we are shutting down.
 		// (It might already be awake, but soit.)
 		_requestnotifier.notify_one();
 	}
 	if (_thread.joinable()) _thread.join();
+
+	LOGI << "Thread finished";
 }
 
 std::string EpiCDN::getPicture(const std::string& picturename)
@@ -165,9 +167,16 @@ void EpiCDN::runThread()
 			bool ready = false;
 			while (!ready)
 			{
+				if (!_alive)
+				{
+					// Finish this thread.
+					_threadrunning = false;
+					return;
+				}
+
 				_curl->update();
 				ready = (future.wait_for(std::chrono::seconds(0))
-					!= std::future_status::ready);
+					== std::future_status::ready);
 			}
 			Response response = future.get();
 
@@ -196,8 +205,14 @@ void EpiCDN::runThread()
 				_threadrunning = false;
 				return;
 			}
+			else
+			{
+				LOGV << "Downloaded response to " << sourcefilename;
+			}
 
 			System::moveFile(sourcefilename, targetfilename);
+
+			LOGV << "Downloaded " << targetfilename;
 		}
 
 		{

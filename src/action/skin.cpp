@@ -86,7 +86,7 @@ void Skin::save(const std::string& savename) const
 	LOGI << "Saving " << fname;
 
 	System::touchFile(fname);
-	std::ofstream file(fname);
+	std::ofstream file = System::ofstream(fname);
 	if (!file.is_open())
 	{
 		LOGE << "Could not open " << fname;
@@ -191,7 +191,7 @@ std::shared_ptr<Skin> Skin::loadNow(const std::string& skinname)
 
 	try
 	{
-		std::ifstream file(filename(skinname));
+		std::ifstream file = System::ifstream(filename(skinname));
 		Json::Reader reader;
 		Json::Value json;
 		if (!reader.parse(file, json))

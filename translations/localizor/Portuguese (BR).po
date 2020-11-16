@@ -13,6 +13,12 @@ msgstr "Crescimento Econômico"
 msgid "Listen up, Commander!"
 msgstr "Escute, Comandante!"
 
+msgid "The enemy has dug in among the mountains in the east. The longer they are allowed to stay, the more damage their industriousness will do to the surrounding area. Use whatever means necessary to obliterate them. There are some neutral City and Industry tiles in the northwest of the map. Feel free to capture them with your Rifleman units."
+msgstr "O inimigo cavou entre as montanhas do leste. Quanto mais tempo eles permanecerem lá , mais danos sua laboriosidade fará à área ao redor . Use todos os meios necessários para destruí-los. Existem alguns blocos neutros de Cidade e Indústria no noroeste do mapa. Sinta-se à vontade para capturá-los com suas unidades de infantaria."
+
+msgid "Defeat your opponent by occupying, capturing or destroying all of their City tiles. At the end of the game, you get 1 point for every Grass and Forest tile that remains."
+msgstr "Derrote seu oponente ocupando, capturando ou destruindo todas as suas cidades. No final do jogo, você ganha 1 ponto para cada bloco de Grama e Floresta remanescente."
+
 msgid "Get 25 points."
 msgstr "Ganhe 25 pontos."
 
@@ -22,8 +28,21 @@ msgstr "Ganhe 40 pontos."
 msgid "Get at least 25 points."
 msgstr "Ganhe ao menos 25 pontos."
 
+msgid "Do not destroy any City, Farm or Industry tiles."
+msgstr "Não destrua nenhuma cidade, fazenda ou indústria."
+
+msgid "Go get rid of those rebels!"
+msgstr "Destrua esses rebeldes"
+
 msgid "Greetings, Commander!"
 msgstr "Saudações, Comandante!"
+
+msgid ""
+"Who needs money anyway?\n"
+"In this challenge, all unit and tile costs have been reduced to zero, and buildings do not generate any income at night."
+msgstr ""
+"Quem precisa de dinheiro, afinal?\n"
+"Neste desafio, todos os custos unitários e de e edifícios foram reduzidos a zero e os edifícios não geram nenhuma renda à noite."
 
 msgid "Get 30 points."
 msgstr "Ganhe 30 pontos."
@@ -57,6 +76,9 @@ msgstr "Ganhe 5 pontos."
 
 msgid "Get 8 points."
 msgstr "Ganhe 8 pontos."
+
+msgid "Looking to Play"
+msgstr "Procurando partida"
 
 msgid "Playing Tutorial"
 msgstr "Jogando Tutorial"
@@ -112,6 +134,12 @@ msgstr "BATE-PAPO"
 msgid "SEVENTEEN NEW SPECIES OF FROG DISCOVERED"
 msgstr "DEZESSETE NOVAS ESPÉCIES DE SAPOS DESCOBERTAS"
 
+msgid "WOMAN DISCOVERS SAFE CONTAINING 1500 CANS OF MUSHROOM SOUP"
+msgstr "Mulher descobre cofre contendo 1500 latas de sopa de cogumelo"
+
+msgid "BRAVE PIONEERS SETTLE NEW CITIES"
+msgstr "PIONEIROS CORAJOSOS ESTABELECEM NOVAS CIDADES"
+
 msgid "quit"
 msgstr "sair"
 
@@ -120,6 +148,39 @@ msgstr "%s foi derrotado."
 
 msgid "%s was victorious. Score: %d."
 msgstr "%s foi vitorioso. Placar: %d."
+
+msgid "GLOBAL WARMING WORSENS"
+msgstr "AQUECIMENTO GLOBAL PIORA"
+
+msgid "DROUGHT CURBS GROWTH OF TREES AND CROPS, WARN BOTANISTS"
+msgstr "SECA ATRAPALHA CRESCIMENTO DE ÁRVORES E PLANTAÇÕES, DIZEM OS BOTANISTAS"
+
+msgid "FROSTBITE EXPECTED TO TERRORIZE OPEN FIELDS IN WINTER"
+msgstr "ESPERA-SE QUE TEMPESTADES DE FROI ATERRORIZEM CAMPOS ABERTOS NO INVERNO"
+
+msgid "DESERT SAND UNSUITABLE FOR BUILDING, SAY CONTRACTORS"
+msgstr "AREIA DO DESERTO INADEQUADA PARA A CONSTRUÇÃO, DIZEM OS ARQUITETOS"
+
+msgid "SUMMER FIRESTORM ALERT LIKELY"
+msgstr "ALERTA! TEMPESTADES DE FOGO SÃO PROVÁVEIS NO VERÃO"
+
+msgid "EXTREME DROUGHT WEAKENS TROOPS IN DESERTS"
+msgstr "SECA ENFRAQUECE TROPAS NOS DESERTOS"
+
+msgid "DROUGHT LEAVES TANKS MORE VULNERABLE TO EXTREME WEATHER, SAY MECHANICS"
+msgstr "SECA DEIXA TANQUES MAIS VULNERÁVEIS AO CLIMA EXTREMO, DIZEM OS MECÂNICOS"
+
+msgid "STRUCTURAL INTEGRITY OF BUILDINGS FALTERS, WARN ENGINEERS"
+msgstr "A INTEGRIDADE ESTRUTURAL DOS EDIFÍCIOS ESTÁ MAIS FRACA, AVISAM ENGENHEIROS"
+
+msgid "INCREASED RISK OF FIRESTORM IN SUMMER"
+msgstr "AUMENTO DE CHANCE DE TEMPESTADES DE FOGO NO VERÃO"
+
+msgid "CITIES VULNERABLE TO INFERNO ONCE FORESTS ARE GONE"
+msgstr "CIDADES ESTÃO VULNERÁVEIS AO INFERNO POIS AS FLORESTAS FORAM DESTRUÍDAS"
+
+msgid "THE END OF DAYS HAS ARRIVED, SAY CULT LEADERS"
+msgstr "O FIM DOS DIAS CHEGOU, DIZEM LÍDERES RELIGIOSOS"
 
 msgid "Spring, Year %d"
 msgstr "Primavera, Ano %d"
@@ -133,14 +194,62 @@ msgstr "Outono, Ano %d"
 msgid "Winter, Year %d"
 msgstr "Inverno, Ano %d"
 
+msgid "Gunner"
+msgstr "Atirador pesado"
+
+msgid "Sapper"
+msgstr "Morteiro"
+
+msgid "Settler"
+msgstr "Pioneiro"
+
+msgid "Grass"
+msgstr "Grama"
+
+msgid "Dirt"
+msgstr "Terra"
+
+msgid "Rubble"
+msgstr "Pedra"
+
+msgid "Ridge"
+msgstr "cordilheira"
+
+msgid "Town"
+msgstr "Vilarejo"
+
+msgid "Trenches"
+msgstr "Trincheiras"
+
+msgid "Shell"
+msgstr "Bombardeio"
+
+msgid "Drop Gas"
+msgstr "Soltar gás"
+
+msgid "Dig Trenches"
+msgstr "Cavar trincheiras"
+
+msgid "Settle %s"
+msgstr "Construir %s"
+
 msgid "Upgrade"
 msgstr "Melhorar"
 
 msgid "Upgrade to %s"
 msgstr "Melhorar para %s"
 
+msgid "Cultivate %s"
+msgstr "Cultivar %s"
+
+msgid "Produce %s"
+msgstr "Produzir %s"
+
 msgid "Stop"
 msgstr "Parar"
+
+msgid "ALL"
+msgstr "TODOS"
 
 msgid "GAME"
 msgstr "JOGO"
@@ -157,11 +266,17 @@ msgstr "Abrir Bate-papo"
 msgid "Resign & Quit"
 msgstr "Desistir & Sair"
 
+msgid "Close"
+msgstr "Fechar"
+
 msgid "Price: $%d.%d%d"
 msgstr "Preço: $%d.%d%d"
 
 msgid "The Planet"
 msgstr "O Planeta"
+
+msgid "Mission Briefing"
+msgstr "Relatório de missão"
 
 msgid "Score:"
 msgstr "Placar:"
@@ -175,11 +290,44 @@ msgstr "Renunciar?"
 msgid "resign"
 msgstr "renunciar"
 
+msgid "Slow air unit that deploys gas in an area."
+msgstr "Unidade lenta e voadora que joga gás em um área."
+
+msgid "Does not attack but has a powerful shell ability."
+msgstr "Não ataca, mas  tem uma poderosa habilidade de bombardear."
+
+msgid "Produces zeppelins."
+msgstr "Produz dirigivéis"
+
+msgid "Harvested for income at night."
+msgstr "Colhido gera renda a noite"
+
+msgid "Ground units are slowed."
+msgstr "As unidades terrestres são deixadas mais lentas"
+
+msgid "Frostbite"
+msgstr "Tempestade de frio"
+
+msgid "Units that remain here take damage in the Decay phase."
+msgstr "As unidades que permanecem aqui sofrem danos na fase de decadência."
+
+msgid "Bonedrought"
+msgstr "Seca extrema"
+
 msgid "STOP"
 msgstr "PARAR"
 
-msgid "NONE"
-msgstr "NENHUM"
+msgid "GUNNER"
+msgstr "Metralhadora pesada"
+
+msgid "SAPPER"
+msgstr "Morteiro"
+
+msgid "GRASS"
+msgstr "Grama"
+
+msgid "DIRT"
+msgstr "Terra"
 
 msgid "DESERT"
 msgstr "DESERTO"
@@ -211,11 +359,26 @@ msgstr "QUARTEL"
 msgid "SOIL"
 msgstr "SOLO"
 
+msgid "TRENCHES"
+msgstr "Trincheiras"
+
+msgid "SHELL"
+msgstr "Bombaredeio"
+
+msgid "DROP GAS"
+msgstr "Lançar gás"
+
+msgid "DIG TRENCHES"
+msgstr "Cavar trincheiras"
+
 msgid "UPGRADE"
 msgstr "MELHORAR"
 
 msgid "MOVE"
 msgstr "MOVER"
+
+msgid "TILE"
+msgstr "Hectare"
 
 msgid "AIR"
 msgstr "AR"

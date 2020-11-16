@@ -1412,7 +1412,7 @@ void Client::enableCompression()
 	LOGI << "Enabling compression with model '" << _fzmodelname << "'";
 	{
 		std::string filename = Locator::fzmodelFilename(_fzmodelname);
-		std::ifstream file(filename, std::ios::binary);
+		std::ifstream file = System::ifstream(filename, std::ios::binary);
 		if (!file)
 		{
 			LOGE << "Failed to open '" << filename << "'";
@@ -2333,7 +2333,7 @@ void Client::handlePatchManifestResponse(Response response)
 			_futureDownloads.push_back(promise.get_future());
 			_percentages.push_back(std::make_shared<std::atomic<float>>(100));
 
-			std::ofstream file(download.sourcefilename,
+			std::ofstream file = System::ofstream(download.sourcefilename,
 				std::ios::binary | std::ios::trunc);
 			if (file)
 			{
@@ -3283,7 +3283,8 @@ bool Client::isPatchPrimed(const Version& version)
 	// Write a memento, if any.
 	if (_mementoJson)
 	{
-		std::ofstream mementofile(Patch::mementofilename(), std::ios::trunc);
+		std::ofstream mementofile = System::ofstream(Patch::mementofilename(),
+			std::ios::trunc);
 		if (!mementofile.is_open())
 		{
 			LOGE << "Failed to open " << Patch::mementofilename();

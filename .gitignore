@@ -95,6 +95,7 @@
 
 # local maps
 /maps/*test*
+/maps
 
 # local rulesets
 /rulesets/local.list
@@ -139,3 +140,8 @@ logs/.*.logrotate.conf
 
 # test locales
 /data/loc/xx_*
+/translations/xx_*
+
+# intermediate translation files
+/translations/localizor/.*.po
+

@@ -174,7 +174,7 @@ std::string AIChallenge::getDisplayName()
 	return AIChallenge::getDisplayName(_id);
 }
 
-const char* AIChallenge::getDisplayName(const Challenge::Id& id)
+std::string AIChallenge::getDisplayName(const Challenge::Id& id)
 {
 	switch (id)
 	{
@@ -307,7 +307,7 @@ Json::Value AIChallenge::getMissionBriefing()
 	return json;
 }
 
-const char* AIChallenge::getBrief(const Challenge::Id& id,
+std::string AIChallenge::getBrief(const Challenge::Id& id,
 	const Brief& brief)
 {
 	switch (id)
@@ -335,6 +335,10 @@ const char* AIChallenge::getBrief(const Challenge::Id& id,
 				" At the end of the game,"
 				" you get 1 point for every Grass and Forest tile that remains."
 				"");
+				// These have to be hardcoded, because they are translated
+				// client-side by matching the exact string, and we want
+				// challenges to not require client binary patches, only server
+				// patches and optionally client translation file updates.
 				case Brief::FIRST_STAR: return _(""
 				"Get 1 point."
 				"");

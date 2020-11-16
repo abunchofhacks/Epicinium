@@ -90,7 +90,7 @@ bool Library::loadIndex(const std::string& filename)
 	// Our bible is the most recent bible, unless shown otherwise.
 	Version myversion = Version::current();
 
-	std::ifstream index(filename);
+	std::ifstream index = System::ifstream(filename);
 	if (!index.is_open())
 	{
 		return false;
@@ -230,7 +230,7 @@ bool Library::saveBible(const std::string& rulesetname, const Bible& bible)
 	std::string fname = Locator::rulesetFilename(rulesetname);
 	std::cout << "Saving '" << fname << "'..." << std::endl;
 
-	std::ofstream file(fname);
+	std::ofstream file = System::ofstream(fname);
 	if (!file.is_open())
 	{
 		LOGE << "Could not open " << fname;
@@ -252,7 +252,7 @@ bool Library::addVersionToIndex(const Version& version)
 
 	if (version.isRelease())
 	{
-		std::ofstream index(_indexfilename,
+		std::ofstream index = System::ofstream(_indexfilename,
 			std::ofstream::out | std::ofstream::app);
 		if (!index.is_open())
 		{
@@ -265,7 +265,7 @@ bool Library::addVersionToIndex(const Version& version)
 	}
 	else
 	{
-		std::ofstream index(_localindexfilename,
+		std::ofstream index = System::ofstream(_localindexfilename,
 			std::ofstream::out | std::ofstream::app);
 		if (!index.is_open())
 		{
@@ -290,7 +290,7 @@ const Bible& Library::loadBible(const Version& version)
 const Bible& Library::loadBible(const std::string& rulesetname)
 {
 	std::string fname = Locator::rulesetFilename(rulesetname);
-	std::ifstream file(fname);
+	std::ifstream file = System::ifstream(fname);
 	if (!file.is_open())
 	{
 		LOGF << "Could not open " << fname;

@@ -63,6 +63,8 @@ private:
 
 	std::unique_ptr<Steam> _steam;
 
+	virtual void doFirst() override;
+
 	virtual void startUpdates() override;
 	virtual void endUpdates() override;
 

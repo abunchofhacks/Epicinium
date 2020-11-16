@@ -152,7 +152,7 @@ namespace plog
         int retval = _vsnprintf(str, len + 1, format, ap);
 #else
         int retval = _vsnprintf_s(str, len + 1, len, format, ap);
-#endif        
+#endif
         if (retval < 0)
         {
             free(str);
@@ -181,7 +181,7 @@ namespace plog
         int retval = _vsnwprintf(str, len + 1, format, ap);
 #else
         int retval = _vsnwprintf_s(str, len + 1, len, format, ap);
-#endif         
+#endif
         if (retval < 0)
         {
             free(str);
@@ -218,14 +218,14 @@ namespace plog
 #endif
 
 #ifdef _WIN32
-        inline std::wstring toWide(const char* str)
+        inline std::wstring toWide(const char* str, long page = codePage::kActive)
         {
             size_t len = ::strlen(str);
             std::wstring wstr(len, 0);
 
             if (!wstr.empty())
             {
-                int wlen = MultiByteToWideChar(codePage::kActive, 0, str, static_cast<int>(len), &wstr[0], static_cast<int>(wstr.size()));
+                int wlen = MultiByteToWideChar(page, 0, str, static_cast<int>(len), &wstr[0], static_cast<int>(wstr.size()));
                 wstr.resize(wlen);
             }
 

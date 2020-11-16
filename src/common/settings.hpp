@@ -167,6 +167,7 @@ public:
 	Setting<int> fontSizeWallet;
 	Setting<int> fontSizeTutorial;
 	Setting<int> fontSizeHeadline;
+	Setting<std::string> rememberedPreviousContents;
 
 private:
 	Setting<std::string> settings;
@@ -186,6 +187,9 @@ public:
 
 	void load();
 	void save();
+
+	void rememberPreviousContents();
+	void revertToPreviousContents();
 
 	Json::Value flattenIntoJson();
 

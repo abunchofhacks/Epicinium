@@ -67,4 +67,4 @@ std::ostream& operator<<(std::ostream& os, const Season& value);
 std::ostream& operator<<(std::ostream& os, const Daytime& value);
 std::ostream& operator<<(std::ostream& os, const Phase& value);
 
-const char* phaseDescription(const Daytime& daytime, const Phase& phase);
+std::string phaseDescription(const Daytime& daytime, const Phase& phase);

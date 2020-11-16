@@ -63,9 +63,11 @@ Dictator::~Dictator()
 	// We need to wait for the thread to finish or risk memory crashes.
 	if (_threadrunning)
 	{
-		LOGI << "Waiting until thread finishes.";
+		LOGI << "Waiting until thread finishes...";
 	}
 	if (_thread.joinable()) _thread.join();
+
+	LOGI << "Thread finished.";
 }
 
 void Dictator::update()

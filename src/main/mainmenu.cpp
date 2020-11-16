@@ -1051,6 +1051,42 @@ void MainMenu::build()
 	}
 
 	{
+		_layout["mid"].add("confirmsettingsform", Frame::makeForm());
+		InterfaceElement& form = _layout["mid"]["confirmsettingsform"];
+		form.put(new VerticalLayout());
+		form.add("filler1", new Filler());
+		form.add("question", makeInfoprompt(
+			_(""
+			"Do you want to keep these settings?"
+			""),
+			FONTSIZESMALL, /*clickable=*/false));
+		form.add("buttons", new HorizontalLayout());
+		form["buttons"].add("filler1", new HorizontalFiller());
+		form["buttons"].add("keep", makeButtonTiny(
+			_("keep changes"),
+			FONTSIZE_MENUBUTTON));
+		form["buttons"]["keep"].setHotkeyScancode(SDL_SCANCODE_ENTER);
+		form["buttons"].add("revert", makeButtonTiny(
+			_("revert"),
+			FONTSIZE_MENUBUTTON));
+		form["buttons"]["revert"].setHotkeyScancode(SDL_SCANCODE_ESCAPE);
+		form["buttons"].add("filler2", new HorizontalFiller());
+		form["buttons"].setMarginTop(
+			15 * InterfaceElement::scale());
+		form["buttons"].setMarginBottom(
+			30 * InterfaceElement::scale());
+		form.add("timertext", new MultiTextField(
+			::format(
+				// TRANSLATORS: The argument is a number of seconds.
+				_("Reverting to previous settings in %d seconds."),
+				15),
+			FONTSIZESMALL));
+		form.add("timer", new HiddenTag("15"));
+		form.add("filler2", new Filler());
+		form.setMargin(5 * InterfaceElement::scale());
+	}
+
+	{
 		_layout["mid"].add("feedbackform", Frame::makeForm());
 		InterfaceElement& form = _layout["mid"]["feedbackform"];
 		form.put(new VerticalLayout());
@@ -1074,14 +1110,14 @@ void MainMenu::build()
 		auto& dropdown = form["row"]["type"]["dropdown"];
 		dropdown.put(new VerticalLayout());
 		for (auto& text : {
-				std::make_pair(stringref("bug"), (const char*)
+				std::make_pair(stringref("bug"),
 					_("Bug report")),
 				std::make_pair(stringref("wish"),
 					// Not translated because Stomts are in English.
-					"I wish Epicinium..."),
+					std::string("I wish Epicinium...")),
 				std::make_pair(stringref("like"),
 					// Not translated because Stomts are in English.
-					"I like Epicinium..."),
+					std::string("I like Epicinium...")),
 			})
 		{
 			auto tagname = text.first;
@@ -1339,6 +1375,10 @@ void MainMenu::build()
 		== PatchMode::SERVER_BUT_DISABLED_DUE_TO_STORAGE_ISSUES)
 	{
 		_toForm = "storageissueform";
+	}
+	else if (_settings.rememberedPreviousContents.defined())
+	{
+		_toForm = "confirmsettingsform";
 	}
 
 	evaluatePlayable();
@@ -2351,6 +2391,23 @@ void MainMenu::refresh()
 		}
 	}
 
+	{
+		InterfaceElement& forms = getForms();
+		InterfaceElement& form = forms["confirmsettingsform"];
+		if (form["buttons"]["keep"].clicked())
+		{
+			_settings.rememberedPreviousContents.clear();
+			_settings.save();
+			_toForm = "buttons";
+		}
+		else if (form["buttons"]["revert"].clicked())
+		{
+			_settings.revertToPreviousContents();
+			_settings.save();
+			_owner.quit(ExitCode::APPLY_SETTINGS_AND_RESTART);
+		}
+	}
+
 	if (Input::get()->wasKeyPressed(SDL_SCANCODE_M)
 		&& Input::get()->isKeyHeld(SDL_SCANCODE_ALT))
 	{
@@ -2756,6 +2813,43 @@ void MainMenu::refresh()
 			_linkWasHovered = false;
 			static SDL_Cursor* cursor = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW);
 			SDL_SetCursor(cursor);
+		}
+	}
+}
+
+void MainMenu::beforeFirstRefreshOfEachSecond()
+{
+	InterfaceElement& forms = getForms();
+	if (forms.getTag() == "confirmsettingsform")
+	{
+		InterfaceElement& form = forms["confirmsettingsform"];
+		std::string oldtimer = form["timer"].text();
+
+		int seconds = 0;
+		try
+		{
+			seconds = std::stoi(oldtimer);
+		}
+		catch (const std::logic_error& e)
+		{
+			LOGE << "Invalid value for timer: " << oldtimer << std::endl;
+		}
+
+		if (seconds > 0)
+		{
+			seconds -= 1;
+			form["timer"].setText(std::to_string(seconds));
+			form["timertext"].setText(
+				::format(
+					// TRANSLATORS: The argument is a number of seconds.
+					_("Reverting to previous settings in %d seconds."),
+					seconds));
+		}
+		else
+		{
+			_settings.revertToPreviousContents();
+			_settings.save();
+			_owner.quit(ExitCode::APPLY_SETTINGS_AND_RESTART);
 		}
 	}
 }
@@ -3433,7 +3527,10 @@ void MainMenu::loggedIn()
 
 		forms["loginform"]["token"].setText("");
 	}
-	else _toForm = "buttons";
+	else if (forms.getTag() != "confirmsettingsform")
+	{
+		_toForm = "buttons";
+	}
 
 	_loginStatus = LoginStatus::LOGGEDIN;
 

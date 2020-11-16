@@ -94,7 +94,7 @@ std::ostream& operator<<(std::ostream& os, const Season& value)  { return os << 
 std::ostream& operator<<(std::ostream& os, const Daytime& value) { return os << stringify(value); }
 std::ostream& operator<<(std::ostream& os, const Phase& value)   { return os << stringify(value); }
 
-const char* phaseDescription(const Daytime& daytime, const Phase& phase)
+std::string phaseDescription(const Daytime& daytime, const Phase& phase)
 {
 	switch (phase)
 	{

@@ -29,7 +29,7 @@
 #include "version.hpp"
 
 
-void record(const char* term, const char* translation, const char* description);
+void record(const char* term, std::string translation, const char* description);
 
 int main(int argc, char* argv[])
 {
@@ -133,9 +133,9 @@ int main(int argc, char* argv[])
 	return 0;
 }
 
-void record(const char* term, const char* translation, const char* description)
+void record(const char* term, std::string translation, const char* description)
 {
-	if (strcmp(term, translation) == 0)
+	if (translation == term)
 	{
 		std::cout << term << "," << description << std::endl;
 	}

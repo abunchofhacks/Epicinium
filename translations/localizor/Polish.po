@@ -14,10 +14,10 @@ msgid "Tank Derby"
 msgstr "Czołgowe Derby"
 
 msgid "High Speed"
-msgstr "Wysoka Prędkość"
+msgstr "Wysoka prędkość"
 
 msgid "Economic Growth"
-msgstr "Rozwój Ekonomiczny"
+msgstr "Rozwój ekonomiczny"
 
 msgid "Morale"
 msgstr "Morale"
@@ -1780,9 +1780,6 @@ msgstr "Do odzyskania konta niezbędny jest prawidłowy adres e-mail. Będziemy 
 
 msgid "Text scaling:"
 msgstr "Skalowanie tekstu:"
-
-msgid "High Contrast Colors:"
-msgstr "Kolory O Wysokim Kontraście:"
 
 msgid "Zeppelin"
 msgstr "Sterowiec"

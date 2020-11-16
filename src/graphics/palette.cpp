@@ -159,7 +159,7 @@ void Palette::save(const std::string& palettename)
 	LOGI << "Saving " << fname;
 
 	System::touchFile(fname);
-	std::ofstream file(fname);
+	std::ofstream file = System::ofstream(fname);
 	if (!file.is_open())
 	{
 		LOGE << "Could not open " << fname;
@@ -181,7 +181,7 @@ Palette Palette::load(const std::string& palettename)
 		fname = _sourcepalettesfolder + palettename + ".json";
 	}
 
-	std::ifstream file(fname);
+	std::ifstream file = System::ifstream(fname);
 	Json::Reader reader;
 	Json::Value json;
 	if (!reader.parse(file, json))
@@ -289,7 +289,7 @@ void Palette::loadIndex()
 
 void Palette::loadIndexFromFile(const std::string& fname)
 {
-	std::ifstream indexfile(fname);
+	std::ifstream indexfile = System::ifstream(fname);
 	if (!indexfile.is_open())
 	{
 		LOGE << "Could not open " << fname;
@@ -316,7 +316,7 @@ void Palette::loadIndexFromFile(const std::string& fname)
 void Palette::saveIndex()
 {
 	std::string fname = _palettesfolder + "index.list";
-	std::ofstream indexfile(fname, std::ios::trunc);
+	std::ofstream indexfile = System::ofstream(fname, std::ios::trunc);
 	if (!indexfile.is_open())
 	{
 		LOGE << "Could not save " << fname;

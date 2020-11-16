@@ -3,17 +3,44 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+msgid "Showcase"
+msgstr "Vetrina"
+
 msgid "Economic Growth"
 msgstr "Crescita Economica"
 
+msgid "Listen up, Commander!"
+msgstr "Ascolta bene, Comandante!"
+
 msgid "Good luck!"
 msgstr "Buona fortuna!"
+
+msgid "Well hello there, partner!"
+msgstr "Bene, ciao amico!"
+
+msgid "Playing Free For All"
+msgstr "Giocare Free For All"
+
+msgid "Playing AI vs AI"
+msgstr "Giocare AI contro AI"
+
+msgid "Spectating Free For All"
+msgstr "Guardare Free For All"
+
+msgid "Spectating Versus AI"
+msgstr "Guardare vs IA"
 
 msgid "Dutch"
 msgstr "Olandese"
 
 msgid "CHAT"
 msgstr "CHAT"
+
+msgid "SURVEY SHOWS CATS MORE POPULAR THAN DOGS"
+msgstr "IL SONDAGGIO MOSTRA CHE I GATTI SONO PIÙ POPOLARI DEI CANI"
+
+msgid "A NEW ERA BEGINS"
+msgstr "INIZIO DI UNA NUOVA ERA"
 
 msgid "Quit?"
 msgstr "Uscire?"
@@ -30,8 +57,26 @@ msgstr "%s è stato sconfitto."
 msgid "%s was victorious. Score: %d."
 msgstr "%s ha vinto. Punteggio: %d."
 
-msgid "None"
-msgstr "Nessuno"
+msgid "Spring, Year %d"
+msgstr "Primavera, Anno %d"
+
+msgid "Summer, Year %d"
+msgstr "Estate, Anno %d"
+
+msgid "Autumn, Year %d"
+msgstr "Autunno, Anno %d"
+
+msgid "Winter, Year %d"
+msgstr "Inverno, Anno %d"
+
+msgid "Tank"
+msgstr "Carro armato"
+
+msgid "Dirt"
+msgstr "Terra"
+
+msgid "Water"
+msgstr "Acqua"
 
 msgid "Forest"
 msgstr "Foresta"
@@ -48,11 +93,38 @@ msgstr "Aeroporto"
 msgid "Farm"
 msgstr "Fattoria"
 
+msgid "Crops"
+msgstr "Campi"
+
+msgid "Focus"
+msgstr "Concentra"
+
+msgid "Bombard"
+msgstr "Bombarda"
+
+msgid "Drop Gas"
+msgstr "Lancia Gas"
+
+msgid "Capture"
+msgstr "Cattura"
+
 msgid "Build %s"
 msgstr "Costruisci %s"
 
 msgid "Upgrade"
 msgstr "Migliora"
+
+msgid "Upgrade to %s"
+msgstr "Migliora a %s"
+
+msgid "Cultivate %s"
+msgstr "Coltiva %s"
+
+msgid "Produce %s"
+msgstr "Produci %s"
+
+msgid "Stop"
+msgstr "Stop"
 
 msgid "first"
 msgstr "primo"
@@ -60,11 +132,35 @@ msgstr "primo"
 msgid "second"
 msgstr "secondo"
 
+msgid "fourth"
+msgstr "quarto"
+
+msgid "You go %s."
+msgstr "Vai %s"
+
+msgid "%s goes %s."
+msgstr "%s va %s"
+
+msgid "ALL"
+msgstr "TUTTI"
+
+msgid "GAME"
+msgstr "GIOCO"
+
 msgid "Send"
 msgstr "Invia"
 
 msgid "Click to open chat."
 msgstr "Fai clic per aprire la chat."
+
+msgid "Open Chat"
+msgstr "Apri Chat"
+
+msgid "Close"
+msgstr "Chiudi"
+
+msgid "Score:"
+msgstr "Punteggio:"
 
 msgid "cancel"
 msgstr "annulla"
@@ -143,3 +239,36 @@ msgstr "ESCI"
 
 msgid "RESTART"
 msgstr "RIAVVIA"
+
+msgid "Language:"
+msgstr "Lingua:"
+
+msgid "Off"
+msgstr "Off"
+
+msgid "apply and restart"
+msgstr "applica e riavvia"
+
+msgid "%s is online."
+msgstr "%s è online."
+
+msgid "%s went offline."
+msgstr "%s è andato offline."
+
+msgid "Italian"
+msgstr "Italiano"
+
+msgid "Polish"
+msgstr "Polacco"
+
+msgid "Russian"
+msgstr "Russo"
+
+msgid "Ukrainian"
+msgstr "Ucraino"
+
+msgid "Zeppelin"
+msgstr "Zeppelin"
+
+msgid "Czech"
+msgstr "Ceco"

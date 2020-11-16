@@ -1,0 +1,32 @@
+msgid ""
+msgstr ""
+
+msgid "Tank Derby"
+msgstr "Tank Derby"
+
+msgid "High Speed"
+msgstr "Grande vitesse"
+
+msgid "Good luck!"
+msgstr "Bonne chance !"
+
+msgid "Let's rumble!"
+msgstr "C'est partis !"
+
+msgid "Playing Tutorial"
+msgstr "Joue au didacticiel"
+
+msgid "Watching Replay"
+msgstr "Regarde une rediffusion"
+
+msgid "Playing One vs One"
+msgstr "Joue en Un contre Un"
+
+msgid "Playing Free For All"
+msgstr "Joue en Chacun pour soi"
+
+msgid "Playing Versus AI"
+msgstr "Joue Contre l'IA"
+
+msgid "Playing AI vs AI"
+msgstr "Joue en IA contre IA"

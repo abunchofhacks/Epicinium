@@ -311,6 +311,16 @@ void Menu::init()
 	kill();
 }
 
+void Menu::beforeFirstUpdateOfEachSecond()
+{
+	for (auto& submenu : _submenus)
+	{
+		submenu->beforeFirstUpdateOfEachSecond();
+	}
+
+	beforeFirstRefreshOfEachSecond();
+}
+
 void Menu::update()
 {
 	for (auto& submenu : _submenus)

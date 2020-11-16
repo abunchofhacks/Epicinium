@@ -953,7 +953,7 @@ std::future<Response> Curl::download(const std::string& url,
 		"(written to " + filename + ")"});
 
 	System::touchFile(filename);
-	FILE* file = fopen(filename.c_str(), "wb");
+	FILE* file = System::fopen(filename, "wb");
 
 	CURLcode code = CURLE_OK;
 	code = curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
@@ -1115,10 +1115,10 @@ std::future<Response> Curl::download(const std::string& url,
 		"(written to " + filename + ")"});
 
 	System::touchFile(filename);
-	FILE* file = fopen(filename.c_str(), "wb");
+	FILE* file = System::fopen(filename, "wb");
 
 	System::touchFile(etagfilename);
-	FILE* etagfile = fopen(etagfilename.c_str(), "wb");
+	FILE* etagfile = System::fopen(etagfilename, "wb");
 
 	CURLcode code = CURLE_OK;
 	code = curl_easy_setopt(curl, CURLOPT_URL, url.c_str());

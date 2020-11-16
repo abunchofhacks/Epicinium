@@ -28,6 +28,7 @@
 #include "player.hpp"
 #include "map.hpp"
 #include "typenamer.hpp"
+#include "system.hpp"
 
 
 Board::Board(const TypeNamer& typenamer) :
@@ -77,7 +78,7 @@ void Board::load(const std::string& mapname)
 	std::string line;
 
 	std::string fname = Map::readOnlyFilename(mapname);
-	std::ifstream file(fname);
+	std::ifstream file = System::ifstream(fname);
 	if (!std::getline(file, line) || !reader.parse(line, metadata)
 		|| !metadata.isObject())
 	{

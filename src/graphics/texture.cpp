@@ -41,7 +41,11 @@ const Texture* Texture::sprite(const std::string& filename)
 	catch (const std::out_of_range&)
 	{
 		SDL_Surface* surface = IMG_Load(filename.c_str());
-		if (!surface) throw std::runtime_error("failed to load: " + filename);
+		if (!surface)
+		{
+			LOGF << "failed to load: " << filename;
+			throw std::runtime_error("failed to load: " + filename);
+		}
 
 		GLuint id;
 		glGenTextures(1, &id);
@@ -93,7 +97,11 @@ const Texture* Texture::picture(const std::string& filename)
 	catch (const std::out_of_range&)
 	{
 		SDL_Surface* surface = IMG_Load(filename.c_str());
-		if (!surface) throw std::runtime_error("failed to load: " + filename);
+		if (!surface)
+		{
+			LOGF << "failed to load: " << filename;
+			throw std::runtime_error("failed to load: " + filename);
+		}
 
 		if (surface->format->format != SDL_PIXELFORMAT_RGBA8888)
 		{
@@ -102,7 +110,11 @@ const Texture* Texture::picture(const std::string& filename)
 			SDL_FreeSurface(surface);
 			surface = newsurface;
 		}
-		if (!surface) throw std::runtime_error("failed to convert: " + filename);
+		if (!surface)
+		{
+			LOGF << "failed to convert: " << filename;
+			throw std::runtime_error("failed to convert: " + filename);
+		}
 
 		GLuint id;
 		glGenTextures(1, &id);

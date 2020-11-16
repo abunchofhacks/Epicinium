@@ -118,6 +118,7 @@ Settings::Settings(std::unique_ptr<Settings> fallback) :
 	fontSizeWallet(this, "font-size-wallet"),
 	fontSizeTutorial(this, "font-size-tutorial"),
 	fontSizeHeadline(this, "font-size-headline"),
+	rememberedPreviousContents(this, "remembered-previous-contents"),
 	settings(this, "settings", "defaults")
 {}
 
@@ -369,7 +370,7 @@ void Settings::load()
 
 	Json::Reader reader;
 	Json::Value root;
-	std::ifstream file(_filename);
+	std::ifstream file = System::ifstream(_filename);
 	if (!file.is_open())
 	{
 		std::cerr << "Settings file " << _filename
@@ -521,7 +522,7 @@ void Settings::save()
 
 	{
 		Json::Reader reader;
-		std::ifstream file(_filename);
+		std::ifstream file = System::ifstream(_filename);
 		if (!file.is_open())
 		{
 			System::touchFile(_filename);
@@ -537,7 +538,7 @@ void Settings::save()
 	store(root);
 
 	{
-		std::ofstream file(_filename);
+		std::ofstream file = System::ofstream(_filename);
 		if (!file.is_open())
 		{
 			std::cerr << "Settings file " << _filename
@@ -553,6 +554,72 @@ bool Settings::saveable()
 	// We don't want to save the overrides, so only the Settings layer that
 	// has a filename defined is saveable.
 	return !_filename.empty();
+}
+
+void Settings::rememberPreviousContents()
+{
+	if (!saveable())
+	{
+		if (_fallback)
+		{
+			_fallback->rememberPreviousContents();
+		}
+		return;
+	}
+
+	if (System::isFile(_filename))
+	{
+		Json::Reader reader;
+		std::ifstream file = System::ifstream(_filename);
+		if (file)
+		{
+			std::stringstream strm;
+			strm << file.rdbuf();
+			rememberedPreviousContents = strm.str();
+		}
+		else
+		{
+			std::cerr << "Settings file " << _filename
+				<< " could not be read, remembering defaults" << std::endl;
+			rememberedPreviousContents = "{}";
+		}
+	}
+	else
+	{
+		// If there were no previous settings saved, we want the player to
+		// either confirm the new settings or revert to default, so we remember
+		// an empty JSON.
+		rememberedPreviousContents = "{}";
+	}
+}
+
+void Settings::revertToPreviousContents()
+{
+	if (!saveable())
+	{
+		if (_fallback)
+		{
+			_fallback->revertToPreviousContents();
+		}
+		return;
+	}
+
+	System::touchFile(_filename);
+
+	{
+		std::ofstream file = System::ofstream(_filename);
+		if (!file.is_open())
+		{
+			std::cerr << "Settings file " << _filename
+				<< " could not be opened for writing" << std::endl;
+			return;
+		}
+		file << rememberedPreviousContents.value("{}");
+	}
+
+	load();
+
+	rememberedPreviousContents.clear();
 }
 
 Json::Value Settings::flattenIntoJson()

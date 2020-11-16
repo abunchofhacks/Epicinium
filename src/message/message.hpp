@@ -215,12 +215,8 @@ public:
 		const VisionType& visiontype, const std::string& username);
 
 	static StreamedMessage claim_ai(
-		const std::string& ainame);
-	static StreamedMessage claim_ai(
 		const std::string& ainame, const std::string& slotname);
 
-	static StreamedMessage claim_difficulty(
-		const Difficulty& difficulty);
 	static StreamedMessage claim_difficulty(
 		const Difficulty& difficulty, const std::string& slotname);
 

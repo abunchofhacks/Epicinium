@@ -315,14 +315,14 @@ void MultiplayerMenu::build()
 		auto& dropdown = form["row"]["type"]["dropdown"];
 		dropdown.put(new VerticalLayout());
 		for (auto& text : {
-				std::make_pair(stringref("bug"), (const char*)
+				std::make_pair(stringref("bug"),
 					_("Bug report")),
 				std::make_pair(stringref("wish"),
 					// Not translated because Stomts are in English.
-					"I wish Epicinium..."),
+					std::string("I wish Epicinium...")),
 				std::make_pair(stringref("like"),
 					// Not translated because Stomts are in English.
-					"I like Epicinium..."),
+					std::string("I like Epicinium...")),
 			})
 		{
 			auto tagname = text.first;
@@ -476,13 +476,13 @@ void MultiplayerMenu::build()
 		container["inputline"]["indicator"]["button"].setPaddingVertical(4 * InterfaceElement::scale());
 		int lobbyw = InterfaceElement::textW(
 			TextStyle(FONTSIZE_MENUBUTTON, Color::broken()),
-			(const char*) _("LOBBY"));
+			_("LOBBY"));
 		int allw = InterfaceElement::textW(
 			TextStyle(FONTSIZE_MENUBUTTON, Color::broken()),
-			(const char*) _("ALL"));
+			_("ALL"));
 		int namew = InterfaceElement::textW(
 			TextStyle(FONTSIZE_MENUBUTTON, Color::broken()),
-			(const char*) _("NAME"));
+			_("NAME"));
 		container["inputline"]["indicator"]["button"].content().fixWidth(
 			std::max(lobbyw, std::max(allw, namew)));
 		container["inputline"]["indicator"]["button"].settleWidth();
@@ -901,7 +901,7 @@ std::unique_ptr<InterfaceElement> MultiplayerMenu::makeTimerDropdown()
 						"9999"),
 					InterfaceElement::textW(
 						TextStyle(FONTSIZE_MENUBUTTON, Color::broken()),
-						(const char*) _("OFF"))));
+						_("OFF"))));
 			dropdown[tagname]["name"].align(HorizontalAlignment::RIGHT);
 			dropdown[tagname].add("desc", new TextField(
 				desc,
@@ -3321,7 +3321,7 @@ void MultiplayerMenu::listChallenge(const std::string& /**/,
 		element["title"].setText(::format(
 			// TRANSLATORS: The argument is the name of a challenge.
 			_("%s Challenge"),
-			GETTEXT_FROM_SERVER(displayname.c_str())));
+			GETTEXT_FROM_SERVER(displayname.c_str()).c_str()));
 	}
 	if (metadata["panel-picture-name"].isString())
 	{

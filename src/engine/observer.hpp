@@ -302,8 +302,8 @@ protected:
 	virtual void updateWallet() {}
 
 	void updateCards();
-	void checkMarkerCard(stringref name, bool on,
-		const char* iconname, const char* title, const char* description);
+	void checkMarkerCard(stringref name, bool on, const char* iconname,
+		const std::string& title, const std::string& description);
 	void checkAirUnitCard(const UnitType& unittype);
 	void checkGroundUnitCard(const UnitType& unittype);
 	void checkTileCard(const TileType& tiletype);

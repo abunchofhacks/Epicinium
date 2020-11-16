@@ -45,8 +45,8 @@
 #include "libs/plog/Log.h"
 
 #if INTL_ENABLED
-#include "libs/intl/libintl.h"
-#define _(STRING) gettext(STRING)
+#include "language.hpp"
+#define _(STRING) Language::gettext(STRING)
 #else
 #define _(STRING) (STRING)
 #endif
@@ -243,4 +243,10 @@ inline std::string format(const char* format, Args... args)
 		}
 	}
 	return std::string(buffer.begin(), buffer.begin() + n);
+}
+
+template<typename... Args>
+inline std::string format(const std::string& format, Args... args)
+{
+	return ::format(format.c_str(), args...);
 }

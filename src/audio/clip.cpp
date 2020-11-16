@@ -203,8 +203,26 @@ Clip& Clip::get(Clip::Type type)
 			}
 		}
 		break;
-		case Clip::Type::UP             : return load("up1");            break;
-		case Clip::Type::DOWN           : return load("down1");          break;
+		case Clip::Type::UP:
+		{
+			switch (rand() % 3)
+			{
+				case 0:  return load("up1");
+				case 1:  return load("up2");
+				default: return load("up3");
+			}
+		}
+		break;
+		case Clip::Type::DOWN:
+		{
+			switch (rand() % 3)
+			{
+				case 0:  return load("down1");
+				case 1:  return load("down2");
+				default: return load("down3");
+			}
+		}
+		break;
 		case Clip::Type::COLLAPSE       : return load("collapse1");      break;
 		case Clip::Type::PLACEMENT      : return load("placement1");     break;
 		case Clip::Type::SPLASH         : return load("splash1");        break;

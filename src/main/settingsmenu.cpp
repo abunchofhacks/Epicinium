@@ -550,14 +550,14 @@ void SettingsMenu::buildTopLeftDisplayWindow()
 			"centered",
 			"custom",
 		};
-		const char* NAMES[array_size(TAGNAMES)] = {
+		std::string NAMES[array_size(TAGNAMES)] = {
 			_("Centered"),
 			_("Custom"),
 		};
 		for (size_t i = 0; i < array_size(TAGNAMES); i++)
 		{
 			std::string tagname = TAGNAMES[i];
-			std::string name = NAMES[i];
+			const std::string& name = NAMES[i];
 			content.add(tagname, Frame::makeItem(ColorName::FRAMEITEM));
 			content[tagname].put(new TextField(name, FONTSIZE));
 			content[tagname].align(HorizontalAlignment::LEFT);
@@ -975,6 +975,21 @@ void SettingsMenu::buildTopRightInterface()
 			dropdown[tag].align(HorizontalAlignment::LEFT);
 			dropdown[tag].makeClickable();
 		}
+		for (std::string tag : Language::allDetectedTags())
+		{
+			if (content.contains(tag)) continue;
+
+			std::string name = Language::getNameInOwnLanguage(tag);
+			name += " <" + tag + ".po>";
+			content.add(tag, Frame::makeItem(ColorName::FRAMEITEM));
+			content[tag].put(new TextField(name, FONTSIZE));
+			content[tag].align(HorizontalAlignment::LEFT);
+			content[tag].makeClickable();
+			dropdown.add(tag, Frame::makeItem());
+			dropdown[tag].put(new TextField(name, FONTSIZE));
+			dropdown[tag].align(HorizontalAlignment::LEFT);
+			dropdown[tag].makeClickable();
+		}
 		content.settleWidth();
 		content.settleHeight();
 		content.fixWidth();
@@ -1180,7 +1195,7 @@ void SettingsMenu::refresh()
 					_layout["bot"]["apply"].enable();
 					_layout["bot"]["return"].setTag("discard");
 				}
-				catch (const std::logic_error)
+				catch (const std::logic_error&)
 				{
 					LOGE << "Cannot parse dropdown option '" << name << "'";
 				}
@@ -1242,7 +1257,7 @@ void SettingsMenu::refresh()
 				_layout["bot"]["apply"].enable();
 				_layout["bot"]["return"].setTag("discard");
 			}
-			catch (const std::logic_error)
+			catch (const std::logic_error&)
 			{
 				LOGE << "Cannot parse input '" << name << "'";
 			}
@@ -1269,7 +1284,7 @@ void SettingsMenu::refresh()
 				_layout["bot"]["apply"].enable();
 				_layout["bot"]["return"].setTag("discard");
 			}
-			catch (const std::logic_error)
+			catch (const std::logic_error&)
 			{
 				LOGE << "Cannot parse input '" << name << "'";
 			}
@@ -1297,7 +1312,7 @@ void SettingsMenu::refresh()
 					_layout["bot"]["apply"].enable();
 					_layout["bot"]["return"].setTag("discard");
 				}
-				catch (const std::logic_error)
+				catch (const std::logic_error&)
 				{
 					LOGE << "Cannot parse dropdown option '" << name << "'";
 				}
@@ -1342,7 +1357,7 @@ void SettingsMenu::refresh()
 				_layout["bot"]["apply"].enable();
 				_layout["bot"]["return"].setTag("discard");
 			}
-			catch (const std::logic_error)
+			catch (const std::logic_error&)
 			{
 				LOGE << "Cannot parse input '" << name << "'";
 			}
@@ -1369,7 +1384,7 @@ void SettingsMenu::refresh()
 				_layout["bot"]["apply"].enable();
 				_layout["bot"]["return"].setTag("discard");
 			}
-			catch (const std::logic_error)
+			catch (const std::logic_error&)
 			{
 				LOGE << "Cannot parse input '" << name << "'";
 			}
@@ -1396,7 +1411,7 @@ void SettingsMenu::refresh()
 					_layout["bot"]["apply"].enable();
 					_layout["bot"]["return"].setTag("discard");
 				}
-				catch (const std::logic_error)
+				catch (const std::logic_error&)
 				{
 					LOGE << "Cannot parse dropdown option '" << name << "'";
 				}
@@ -1424,7 +1439,7 @@ void SettingsMenu::refresh()
 					_layout["bot"]["apply"].enable();
 					_layout["bot"]["return"].setTag("discard");
 				}
-				catch (const std::logic_error)
+				catch (const std::logic_error&)
 				{
 					LOGE << "Cannot parse dropdown option '" << name << "'";
 				}
@@ -1488,7 +1503,7 @@ void SettingsMenu::refresh()
 					_layout["bot"]["apply"].enable();
 					_layout["bot"]["return"].setTag("discard");
 				}
-				catch (const std::logic_error)
+				catch (const std::logic_error&)
 				{
 					LOGE << "Cannot parse dropdown option '" << name << "'";
 				}
@@ -1709,7 +1724,7 @@ void SettingsMenu::refresh()
 					_settings.selectormode = (SelectorMode) index;
 					content.setTag(name);
 				}
-				catch (const std::logic_error)
+				catch (const std::logic_error&)
 				{
 					LOGE << "Cannot parse dropdown option '" << name << "'";
 				}
@@ -1756,7 +1771,7 @@ void SettingsMenu::refresh()
 					_layout["bot"]["apply"].enable();
 					_layout["bot"]["return"].setTag("discard");
 				}
-				catch (const std::logic_error)
+				catch (const std::logic_error&)
 				{
 					LOGE << "Cannot parse dropdown option '" << name << "'";
 				}
@@ -1867,12 +1882,14 @@ void SettingsMenu::refresh()
 
 	if (_layout["bot"]["apply"].clicked())
 	{
+		_settings.rememberPreviousContents();
 		_settings.save();
 		_owner.quit(ExitCode::APPLY_SETTINGS_AND_RESTART);
 	}
 	else if (_layout["bot"]["return"].getTag() == "apply"
 		&& _layout["bot"]["return"]["apply"].clicked())
 	{
+		_settings.rememberedPreviousContents.clear();
 		_settings.save();
 		quit();
 	}

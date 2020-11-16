@@ -659,7 +659,8 @@ void EssAI::run(size_t games)
 	std::string logname = LogInstaller::getLogsFolderWithSlash() + "essai/"
 		+ desc + "-" + humantime + ".log";
 	System::touchFile(logname);
-	std::ofstream log(logname, std::ofstream::out | std::ofstream::app);
+	std::ofstream log = System::ofstream(logname,
+		std::ofstream::out | std::ofstream::app);
 	if (!log)
 	{
 		LOGE << "Failed to open " << logname << " for writing";

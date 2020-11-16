@@ -1,12 +1,55 @@
-# Release 1.0.0 (2020-10-12)
-
 <!-- SUMMARY
-Added Steam integration.
-Reworked the main menu with brand new art.
-Revamped title theme.
-Added in-game music.
-Improved language support.
+The game asks for confirmation after changing screen resolution or other visual settings and reverts automatically if not confirmed.
 -->
+
+## Patch 1.0.7 (2020-11-09)
+
+*This is a Windows-only patch that is compatible with release 1.0.0.*
+
+### Visuals & User Interface
+- The game asks for confirmation after changing screen resolution or other visual settings and reverts automatically if not confirmed.
+
+
+## Patch 1.0.6 (2020-10-22)
+
+*This is a Windows-only patch that is compatible with release 1.0.0.*
+
+### Audio
+- Lowered volume of explosion and bombard sound effects.
+
+### Techninal
+- Restored translation support on Windows.
+
+
+## Patch 1.0.5 (2020-10-20)
+
+*This is a server-only hotfix that is compatible with release 1.0.0.*
+
+### Accounts
+- Ending a game with a score that is lower than your current rating (but higher than 0) now causes your rating to increase by 0.1, instead of decrease by a percentage of the difference.
+
+### Bugfixes
+- Fixed a bug where clients were kicked for no reason if they tried to Copy an AI opponent.
+
+
+## Patch 1.0.4 (2020-10-16)
+
+*This is a Windows-only patch that is compatible with release 1.0.0.*
+
+### Bugfixes
+- Fixed an issue where the game was unplayable on Windows if the AppData path contained a non-ASCII character, such as in the user's name.
+- Temporarily disabled translation support on Windows as it is not yet fully functional, but instead causes incomplete translations to be shown instead of English.
+
+
+## Patch 1.0.2 (2020-10-13)
+
+*This is a server-only hotfix that is compatible with release 1.0.0.*
+
+### Bugfixes
+- Fixed a crash in the server that would occur if a player resigned from an FFA game while all other players were done with their planning phase.
+
+
+# Release 1.0.0 (2020-10-12)
 
 ### Accounts
 - Added Steam integration. When launching the game from Steam, you may be asked to enter a new username if your Steam nickname does not suffice. Beyond that, no registration is required.

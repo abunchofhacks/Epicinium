@@ -862,7 +862,7 @@ constexpr const char* KNOWN_TILE_TYPES[] = {
 
 inline std::string unitName(const Bible& bible, const UnitType& unittype)
 {
-	const char* unitnames[array_size(KNOWN_UNIT_TYPES)] = {
+	std::string unitnames[array_size(KNOWN_UNIT_TYPES)] = {
 		"-", // none
 		_("RIFLEMAN"),
 		_("GUNNER"),
@@ -887,7 +887,7 @@ inline std::string unitName(const Bible& bible, const UnitType& unittype)
 
 inline std::string tileName(const Bible& bible, const TileType& tiletype)
 {
-	const char* tilenames[array_size(KNOWN_TILE_TYPES)] = {
+	std::string tilenames[array_size(KNOWN_TILE_TYPES)] = {
 		"-", // none
 		_("GRASS"),
 		_("DIRT"),

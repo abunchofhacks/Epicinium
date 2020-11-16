@@ -25,6 +25,7 @@
 #include "source.hpp"
 
 #include "libs/openssl/sha.h"
+#include "system.hpp"
 
 
 Checksum::Checksum(uint8_t digest[]) :
@@ -42,7 +43,7 @@ Checksum Checksum::fromFile(const std::string& filename)
 	SHA512_Init(&ctx);
 
 	{
-		std::ifstream file(filename, std::ios::binary);
+		std::ifstream file = System::ifstream(filename, std::ios::binary);
 		while (file)
 		{
 			file.read(buffer, bufferlen);

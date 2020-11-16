@@ -70,9 +70,9 @@ public:
 	static Difficulty getBotDifficulty(const Challenge::Id& id);
 	static const char* getMapName(const Challenge::Id& id);
 	static const char* getRulesetName(const Challenge::Id& id);
-	static const char* getDisplayName(const Challenge::Id& id);
+	static std::string getDisplayName(const Challenge::Id& id);
 	static const char* getPanelPictureName(const Challenge::Id& id);
 	static const char* getDiscordImageKey(const Challenge::Id& id);
 	static const char* getSteamShortKey(const Challenge::Id& id);
-	static const char* getBrief(const Challenge::Id& id, const Brief& brief);
+	static std::string getBrief(const Challenge::Id& id, const Brief& brief);
 };

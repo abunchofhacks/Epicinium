@@ -50,10 +50,9 @@ std::vector<Version> Patch::list(const Platform& platform,
 	std::vector<Version> patchversions;
 
 	// Walk backwards through the patch history looking for patches.
-	std::ifstream index;
 	std::string indexname = indexFilename(platform);
-	index.open(indexname, std::ifstream::in | std::ifstream::binary);
-
+	std::ifstream index = System::ifstream(indexname,
+		std::ifstream::in | std::ifstream::binary);
 	if (!index.is_open())
 	{
 		LOGW << "Could not open " << indexname;
@@ -186,9 +185,8 @@ Patch::Patch(const Platform& platform, const Version& fromversion) :
 	// Incorporate all patches.
 	for (const Version& patchversion : patchversions)
 	{
-		std::ifstream list;
-		list.open(listfilename(_platform, patchversion), std::ifstream::in);
-
+		std::ifstream list = System::ifstream(
+			listfilename(_platform, patchversion), std::ifstream::in);
 		if (!list.is_open())
 		{
 			LOGF << "Could not open " << listfilename(_platform, patchversion);
@@ -316,7 +314,8 @@ void Patch::restart()
 	// The whole purpose of bin/zero (or bin\\zero.exe) was to do nothing.
 	// In the new launcher we simple treat this as a request for a restart.
 	// For compatibility reasons we do not want to make a new command.
-	std::ofstream file(primedrestartfilename(), std::ios::binary | std::ios::trunc);
+	std::ofstream file = System::ofstream(primedrestartfilename(),
+		std::ios::binary | std::ios::trunc);
 
 #ifdef PLATFORMUNIX
 	file << "./bin/zero";
@@ -474,7 +473,7 @@ bool Patch::install()
 			LOGV << "Reconstructing symlink, reading data...";
 			std::string symtarget;
 			{
-				std::ifstream file(download.sourcefilename);
+				std::ifstream file = System::ifstream(download.sourcefilename);
 				if (!file || !std::getline(file, symtarget))
 				{
 					LOGE << "Failed to read " << download.sourcefilename;

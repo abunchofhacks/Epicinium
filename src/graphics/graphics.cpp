@@ -231,13 +231,15 @@ void Graphics::init()
 		case ScreenMode::DESKTOP:    smode = SDL_WINDOW_FULLSCREEN_DESKTOP;  break;
 	}
 
+	// TRANSLATORS: This is the name of the game. Ideally it is left
+	// untranslated.
+	std::string gamename = _("Epicinium");
+
 	// Create an SDL window which is centered horizontally and vertically.
 	// SDL_WINDOW_OPENGL makes it usable with OpenGL context.
 	SDL_ClearError();
 	_window = SDL_CreateWindow(
-		// TRANSLATORS: This is the name of the game. Ideally it is left
-		// untranslated.
-		_("Epicinium"),
+		gamename.c_str(),
 		_settings.windowX.value() >= 0
 			? _settings.windowX.value()
 			: SDL_WINDOWPOS_CENTERED_DISPLAY(_settings.display.value() - 1),

@@ -27,6 +27,7 @@
 
 #include "settings.hpp"
 #include "loginstaller.hpp"
+#include "system.hpp"
 
 
 #define PARSEINT(VARIABLE) \
@@ -73,7 +74,7 @@ static inline Result parseResult(const std::string& fname, int pid, int skippid)
 {
 	Result result;
 
-	std::ifstream file(fname);
+	std::ifstream file = System::ifstream(fname);
 	if (!file)
 	{
 		throw std::runtime_error("failed to open file '" + fname + "'");

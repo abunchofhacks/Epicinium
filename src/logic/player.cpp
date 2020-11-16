@@ -83,7 +83,7 @@ const char* stringify(const Player& player)
 	return "error";
 }
 
-const char* colorPlayerName(const Player& player)
+std::string colorPlayerName(const Player& player)
 {
 	switch (player)
 	{

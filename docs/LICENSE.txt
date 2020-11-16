@@ -14,7 +14,6 @@ See also the LICENSE.txt files for
 	FreeType
 	GLEW
 	ImGui
-	intl
 	JsonCpp
 	libpng
 	OpenSSL
@@ -25,6 +24,7 @@ See also the LICENSE.txt files for
 	SDL2_net
 	SDL2_ttf
 	termcolor
+	tinygettext
 	zlib
 in their respective subfolders.
 

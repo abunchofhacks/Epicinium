@@ -204,7 +204,7 @@ int main(int argc, char* argv[])
 
 	if (!indexfilename.empty())
 	{
-		std::ifstream file(indexfilename);
+		std::ifstream file = System::ifstream(indexfilename);
 		if (!file)
 		{
 			LOGE << "Failed to open '" << indexfilename << "'";

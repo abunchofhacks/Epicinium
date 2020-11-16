@@ -564,20 +564,6 @@ StreamedMessage Message::claim_visiontype(
 }
 
 StreamedMessage Message::claim_ai(
-		const std::string& ainame)
-{
-	StreamedMessage message;
-	message._type = Message::Type::CLAIM_AI;
-	std::stringstream strm;
-	strm << "{\"type\":\"claim_ai\"";
-	strm << ",\"content\":"
-		<< Json::valueToQuotedString(ainame.c_str());
-	strm << "}";
-	message._str = strm.str();
-	return message;
-}
-
-StreamedMessage Message::claim_ai(
 		const std::string& ainame, const std::string& slotname)
 {
 	StreamedMessage message;
@@ -588,19 +574,6 @@ StreamedMessage Message::claim_ai(
 		<< Json::valueToQuotedString(ainame.c_str());
 	strm << ",\"sender\":"
 		<< Json::valueToQuotedString(slotname.c_str());
-	strm << "}";
-	message._str = strm.str();
-	return message;
-}
-
-StreamedMessage Message::claim_difficulty(
-		const Difficulty& difficulty)
-{
-	StreamedMessage message;
-	message._type = Message::Type::CLAIM_DIFFICULTY;
-	std::stringstream strm;
-	strm << "{\"type\":\"claim_difficulty\"";
-	strm << ",\"difficulty\":\"" << difficulty << "\"";
 	strm << "}";
 	message._str = strm.str();
 	return message;

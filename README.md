@@ -24,6 +24,8 @@ Epicinium is and will remain free software. If you wish to support Epicinium and
 
 ## External dependencies
 
+*  [OpenGL](https://www.opengl.org//)
+*  [zlib](https://zlib.net/)
 *  [GNU Make](https://www.gnu.org/software/make/)
 *  [GnuWin32](http://gnuwin32.sourceforge.net/) (on Windows)
 

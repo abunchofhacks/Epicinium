@@ -36,7 +36,6 @@
 #include "library.hpp"
 #include "recording.hpp"
 #include "loginstaller.hpp"
-#include "language.hpp"
 
 
 struct Buffer
@@ -119,13 +118,15 @@ extern "C"
 	uint8_t epicinium_challenge_bot_difficulty(uint16_t id);
 	const char* epicinium_challenge_map_name(uint16_t id);
 	const char* epicinium_challenge_ruleset_name(uint16_t id);
-	const char* epicinium_challenge_display_name(uint16_t id);
+	const char* epicinium_challenge_display_name(uint16_t id,
+		Buffer* buffer);
 	const char* epicinium_challenge_panel_picture_name(uint16_t id);
 	const char* epicinium_challenge_discord_image_key(uint16_t id);
 	const char* epicinium_challenge_steam_short_key(uint16_t id);
 	size_t epicinium_challenge_briefing_size(uint16_t id);
 	const char* epicinium_challenge_briefing_key(uint16_t id, size_t i);
-	const char* epicinium_challenge_briefing_value(uint16_t id, size_t i);
+	const char* epicinium_challenge_briefing_value(uint16_t id, size_t i,
+		Buffer* buffer);
 
 	Buffer* epicinium_buffer_allocate();
 	void epicinium_buffer_deallocate(Buffer* buffer);
@@ -537,14 +538,15 @@ extern "C"
 		Challenge::Id id = (Challenge::Id) id_as_u16;
 		return AIChallenge::getRulesetName(id);
 	}
-	const char* epicinium_challenge_display_name(uint16_t id_as_u16)
+	const char* epicinium_challenge_display_name(uint16_t id_as_u16,
+		Buffer* buffer)
 	{
 		Challenge::Id id = (Challenge::Id) id_as_u16;
 
 		// The server needs to send the display name in English,
 		// each client will retranslate the display name on its own.
-		Language::ScopedOverride override("en_US");
-		return AIChallenge::getDisplayName(id);
+		buffer->str = AIChallenge::getDisplayName(id);
+		return buffer->str.c_str();
 	}
 	const char* epicinium_challenge_panel_picture_name(uint16_t id_as_u16)
 	{
@@ -570,15 +572,16 @@ extern "C"
 		AIChallenge::Brief brief = (AIChallenge::Brief) i;
 		return AIChallenge::stringify(brief);
 	}
-	const char* epicinium_challenge_briefing_value(uint16_t id_as_u16, size_t i)
+	const char* epicinium_challenge_briefing_value(uint16_t id_as_u16, size_t i,
+		Buffer* buffer)
 	{
 		Challenge::Id id = (Challenge::Id) id_as_u16;
 		AIChallenge::Brief brief = (AIChallenge::Brief) i;
 
 		// The server needs to send the display name in English,
 		// each client will retranslate the display name on its own.
-		Language::ScopedOverride override("en_US");
-		return AIChallenge::getBrief(id, brief);
+		buffer->str = AIChallenge::getBrief(id, brief);
+		return buffer->str.c_str();
 	}
 
 	Buffer* epicinium_buffer_allocate()

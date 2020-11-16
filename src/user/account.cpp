@@ -66,13 +66,13 @@ void Account::save()
 
 	System::touchDirectory(_accountsfolder);
 
-	std::ofstream file;
-	file.open(_accountsfolder + std::to_string(_id) + ".acc",
+	std::ofstream file = System::ofstream(
+		_accountsfolder + std::to_string(_id) + ".acc",
 		std::ofstream::out | std::ofstream::trunc);
 	file << (*this) << std::endl;
 
-	std::ofstream index;
-	index.open(_historyfilename, std::ofstream::out | std::ofstream::trunc);
+	std::ofstream index = System::ofstream(_historyfilename,
+		std::ofstream::out | std::ofstream::trunc);
 	index << std::to_string(_id) << std::endl;
 }
 
@@ -81,8 +81,8 @@ std::string Account::lastSessionId()
 	static constexpr int LENGTH = 80;
 	static char buffer[LENGTH + 1] = {0};
 
-	std::ifstream index;
-	index.open(_historyfilename, std::ifstream::in | std::ifstream::binary);
+	std::ifstream index = System::ifstream(_historyfilename,
+		std::ifstream::in | std::ifstream::binary);
 	index.seekg(0, std::ifstream::end);
 
 	std::string id = "";
@@ -124,7 +124,7 @@ bool Account::loadSession()
 	std::ifstream file;
 	try
 	{
-		file.open(_accountsfolder + id + ".acc");
+		file = System::ifstream(_accountsfolder + id + ".acc");
 	}
 	catch (const std::ifstream::failure&)
 	{

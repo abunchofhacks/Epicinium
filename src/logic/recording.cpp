@@ -100,8 +100,8 @@ void Recording::end()
 
 	std::lock_guard<std::mutex> lock(_recordingsmutex);
 
-	std::ofstream index;
-	index.open(_historyfilename, std::ofstream::out | std::ofstream::app);
+	std::ofstream index = System::ofstream(_historyfilename,
+		std::ofstream::out | std::ofstream::app);
 	index << _name << std::endl;
 }
 
@@ -121,10 +121,9 @@ Json::Value Recording::metadata()
 {
 	if (_metadata) return *_metadata;
 
-	std::ifstream file;
 	try
 	{
-		file.open(filename());
+		std::ifstream file = System::ifstream(filename());
 		if (!file.is_open())
 		{
 			LOGW << "Failed to open '" << filename() << "'";
@@ -156,8 +155,7 @@ bool Recording::exists(const std::string& name)
 {
 	try
 	{
-		std::ifstream file;
-		file.open(Recording(name).filename());
+		std::ifstream file = System::ifstream(Recording(name).filename());
 		if (file.is_open())
 		{
 			return true;
@@ -184,8 +182,8 @@ std::vector<Recording> Recording::list(int count)
 
 	std::lock_guard<std::mutex> lock(_recordingsmutex);
 
-	std::ifstream index;
-	index.open(_historyfilename, std::ifstream::in | std::ifstream::binary);
+	std::ifstream index = System::ifstream(_historyfilename,
+		std::ifstream::in | std::ifstream::binary);
 	index.seekg(0, std::ifstream::end);
 
 	while (index.tellg() > 0 && results.size() < maxcount)

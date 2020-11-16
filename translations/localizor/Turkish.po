@@ -1,0 +1,418 @@
+msgid ""
+msgstr ""
+
+msgid "Elimination"
+msgstr "Eleme"
+
+msgid "Everything is Free"
+msgstr "Her şey Bedava"
+
+msgid "High Speed"
+msgstr "Yüksek Hız"
+
+msgid "Economic Growth"
+msgstr "Ekonomik Büyüme"
+
+msgid "Morale"
+msgstr "Moral"
+
+msgid "Listen up, Commander!"
+msgstr "Dinleyin Kumandan!"
+
+msgid "The enemy has dug in among the mountains in the east. The longer they are allowed to stay, the more damage their industriousness will do to the surrounding area. Use whatever means necessary to obliterate them. There are some neutral City and Industry tiles in the northwest of the map. Feel free to capture them with your Rifleman units."
+msgstr "Düşman doğudaki dağların arasına yerleşti. Kalmalarına ne kadar çok izin verirsek, gayretleri çevreye o kadar çok zarar verecek. Yok edilmeleri için ne gerekiyorsa yap. Haritanın kuzeybatısında bazı doğal Şehir ve Endüstri karoları var. Piyade birliklerini kullanarak bu karoları ele geçirmekten çekinme."
+
+msgid "Defeat your opponent by occupying, capturing or destroying all of their City tiles. At the end of the game, you get 1 point for every Grass and Forest tile that remains."
+msgstr "Rakibinizin tüm Şehir karolarını işgal ederek, ele geçirerek ya da yok ederek rakibinizi yenin. Oyun sonunda geriye kalan her Çimen ve Orman karosundan 1 puan alacaksınız."
+
+msgid "Get 1 point."
+msgstr "1 puan kazan."
+
+msgid "Get 25 points."
+msgstr "25 puan kazan."
+
+msgid "Get 40 points."
+msgstr "40 puan kazan."
+
+msgid "Now go out there and lay claim to this region while there's still something worth claiming!"
+msgstr "Ortada hala kıymetli yerler varken oraya git ve bu bölgede hak iddia et!"
+
+msgid "Some of the population of this peninsula has rebelled! Eliminate all of the rebels in the area using your tanks, gunners and sappers. Don't worry about capturing cities; they will fall back in line once you have quelled the rebellion."
+msgstr "Bu yarımadanın nüfusunun bir kısmı isyan etti! Tanklarınızı, komandolarınızı ve topçularınızı kullanarak tüm isyancıları yok edin. Şehirleri ele geçirme konusunda endişelenmeyin, isyanı bastırdıktan sonra yola geleceklerdir."
+
+msgid "Defeat your opponent by eliminating all of their units. At the end of the game, you get 1 point for every Grass and Forest tile that remains."
+msgstr "Rakibinizin tüm birimlerini yok ederek rakibinizi yenin. Oyun sonunda geriye kalan her Çimen ve Orman karosu için 1 puan kazanacaksınız."
+
+msgid "Eliminate all enemy units."
+msgstr "Tüm düşman birliklerini ortadan kaldırın."
+
+msgid "Get at least 25 points."
+msgstr "En az 25 puan kazanın."
+
+msgid "Do not destroy any City, Farm or Industry tiles."
+msgstr "Hiçbir Şehir, Çiftlik ya da Endüstri karosunu yok etmeyin."
+
+msgid "Go get rid of those rebels!"
+msgstr "O isyancılardan kurtul!"
+
+msgid "Greetings, Commander!"
+msgstr "Selamlar Kumandan!"
+
+msgid ""
+"Who needs money anyway?\n"
+"In this challenge, all unit and tile costs have been reduced to zero, and buildings do not generate any income at night."
+msgstr "Zaten kimin paraya ihtiyacı olur ki? Bu mücadelede tüm birlik ve karo maliyetleri sıfıra indirildi. Binalar geceleri gelir sağlamayacak."
+
+msgid "Get 30 points."
+msgstr "30 puan kazan."
+
+msgid "Get 80 points."
+msgstr "80 puan kazanın."
+
+msgid "Are you looking for some no-fuss action? Do you want to wake up at the sound of tanks thundering down the open fields? Then you should partake in the spectactular Tank Derby! Hop in one of them beauty's and show 'em what you got!"
+msgstr "Yaygarasız bir aksiyon mu arıyorsun? Açık arazilerde gürleyen tankların sesiyle uyanmak ister misin? O zaman muhteşem Tank Derbisine katılmalısın! Güzel tanklarından birine atla ve onlara gücünü göster!"
+
+msgid "Defeat all three opponents by destroying their industry and eliminating all of their tanks. Tanks are cheaper than normal and can do regular attacks, but only have one hitpoint. you get 1 point for every Grass and Forest tile that remains."
+msgstr "Endüstrilerini ve tanklarını yok ederek üç düşmanını da yen. Tanklar normalden daha ucuzdur ve düzenli saldırı yapabilirler ancak bir canları vardır. Kalan her Çimen ve Orman karosu için 1 puan kazanacaksınız."
+
+msgid "Get at least 4 points."
+msgstr "En az 4 puan kazanın."
+
+msgid "Get at least 10 points."
+msgstr "En az 10 puan kazanın."
+
+msgid ""
+"What happens when we, ahum, \"spill\" a year's worth of energy drinks into the water supply of the entire region? Let's find out!\n"
+"\n"
+"In this challenge, all units have their movement speed increased by 2."
+msgstr ""
+"Bir yıl yetecek enerji içeceğini, tüm bölgenin su kaynağına, öhöm, \"döktüğümüzde\" ne olur? Hadi öğrenelim!\n"
+"\n"
+"Bu mücadelede tüm birimlerin hareket hızı 2 artar."
+
+msgid "In this challenge, there are no enemies to fight or opponents to defeat. Just focus on growing your economy."
+msgstr "Bu mücadelede savaşılması ya da yenilmesi gereken bir düşman yok. Sadece ekonominizi geliştirmeye odaklanın."
+
+msgid "The game ends after the second winter night. Your score is equal to how much money you have at the end."
+msgstr "Oyun, ikinci kış gecesinden sonra biter. Puanınız, oyun sonunda sahip olduğunuz paraya eşittir."
+
+msgid "Get 21 points."
+msgstr "21 puan kazanın."
+
+msgid "Get 86 points."
+msgstr "86 puan kazanın."
+
+msgid "Get 132 points."
+msgstr "132 puan kazanın."
+
+msgid "In this challenge you will use \"Morale\" instead of money and power to produce units, which is gained on the field of battle. Each enemy unit killed earns you 1 Morale and each enemy tile you destroy is worth 5 Morale. Capturing a tile gains you 3 Morale and also lowers enemy Morale by 5."
+msgstr "Bu mücadelede birim üretmek için para ve güç yerine \"Moral\" kullanacaksınız, Moral ise savaş alanında kazanılır. Öldürdüğünüz her düşman birimi 1 Moral, yok ettiğiniz her düşman karosu ise 5 Moral. Ele geçirdiğiniz karolar size 3 Moral verirken düşmandan 5 Moral düşürür."
+
+msgid "Occupy or destroy your opponent's City to win. Each remaining City tile is worth 2 points at the end of the game, and each remaining Barracks, Industry or Airfield tile is worth 1 point."
+msgstr "Kazanmak için rakibinizin Şehrini işgal edin veya yok edin. Kalan her Şehir karosu, oyun sonunda 2 puan değerindeyken, kalan her Kışla, Endüstri ve Havaalanı karosu 1 puan değerindedir."
+
+msgid "Get 2 points."
+msgstr "2 puan kazan."
+
+msgid "Get 5 points."
+msgstr "5 puan kazan."
+
+msgid "Get 8 points."
+msgstr "8 puan kazan."
+
+msgid "Looking to Play"
+msgstr "Oyun Arıyor"
+
+msgid "Playing Tutorial"
+msgstr "Öğreticiyi Oynuyor"
+
+msgid "Playing Challenge"
+msgstr "Mücadele Oynuyor"
+
+msgid "Playing %s Challenge"
+msgstr "%s Mücadelesi Oynuyor"
+
+msgid "Watching Replay"
+msgstr "Tekrar İzliyor"
+
+msgid "Playing One vs One"
+msgstr "Bire Bir Oynuyor"
+
+msgid "Playing Free For All"
+msgstr "Herkes Tek Oynuyor"
+
+msgid "Playing Versus AI"
+msgstr "YZ'ye Karşı Oynuyor"
+
+msgid "Playing AI vs AI"
+msgstr "YZ vs YZ Oynuyor"
+
+msgid "Spectating One vs One"
+msgstr "Bire Bir İzliyor"
+
+msgid "Spectating Free For All"
+msgstr "Herkes Tek İzliyor"
+
+msgid "Spectating Versus AI"
+msgstr "YZ'ye Karşı İzliyor"
+
+msgid "Spectating AI vs AI"
+msgstr "YZ vs YZ İzliyor"
+
+msgid "In One vs One Lobby (%s/%s)"
+msgstr "Bire Bir Lobisinde (%s/%s)"
+
+msgid "In Free For All Lobby (%s/%s)"
+msgstr "Herkes Tek Lobisinde (%s/%s)"
+
+msgid "In Versus AI Lobby (%s/%s)"
+msgstr "YZ'ye Karşı Lobisinde (%s/%s)"
+
+msgid "In AI vs AI Lobby (%s/%s)"
+msgstr "YZ vs YZ Lobisinde (%s/%s)"
+
+msgid "English"
+msgstr "İngilizce"
+
+msgid "Ready"
+msgstr "Hazır"
+
+msgid "FUTURE PROMISES PEACE AND PROSPERITY"
+msgstr "GELECEK BARIŞ VE REFAH VADEDİYOR"
+
+msgid "ECONOMY ON THE RISE"
+msgstr "EKONOMİ YÜKSELİŞTE"
+
+msgid "SEVENTEEN NEW SPECIES OF FROG DISCOVERED"
+msgstr "ONYEDİ YEDİ KURBAĞA TÜRÜ KEŞFEDİLDİ."
+
+msgid "RECORD NUMBER OF CYCLISTS ON CITY STREETS"
+msgstr "ŞEHİRDEKİ BİSİKLETÇİ SAYILARI REKOR KIRDI"
+
+msgid "SURVEY SHOWS CATS MORE POPULAR THAN DOGS"
+msgstr "ANKETE GÖRE KEDİLER KÖPEKLERDEN DAHA POPÜLER"
+
+msgid "SURVEY SHOWS DOGS MORE POPULAR THAN CATS"
+msgstr "ANKETE GÖRE KÖPEKLER KEDİLERDEN DAHA POPÜLER"
+
+msgid "BEE POPULATION LARGER THAN EVER ACCORDING TO ENTOMOLOGISTS"
+msgstr "ENTOMOLOGLARA GÖRE ARI NÜFUSU TESPİT EDİLEN EN YÜKSEK SAYIDA"
+
+msgid "WOMAN DISCOVERS SAFE CONTAINING 1500 CANS OF MUSHROOM SOUP"
+msgstr "KADIN 1500 KONSERVE MANTARI GÜVENLE SAKLAMAYI KEŞFETTİ"
+
+msgid "MAN FINALLY HAPPY AFTER SOLVING CHILDHOOD MATH PROBLEM"
+msgstr "ADAM ÇOCUKLUĞUNDAKİ MATEMATİK PROBLEMİNİ ÇÖZDÜKTEN SONRA MUTLU"
+
+msgid "COUPLE CELEBRATES FIVE YEARS WITHOUT USING THE LETTER R"
+msgstr "BİR ÇİFT, 5 YILDIR R HARFİNİ KULLANMIYOR"
+
+msgid "BRAVE PIONEERS SETTLE NEW CITIES"
+msgstr "CESUR ÖNCÜLER YENİ ŞEHİRLER KURUYOR"
+
+msgid "Quit?"
+msgstr "Çıkış?"
+
+msgid "Are you sure you want to quit?"
+msgstr "Çıkmak istediğinizden emin misiniz?"
+
+msgid "quit"
+msgstr "çıkış"
+
+msgid "Quit"
+msgstr "Çıkış"
+
+msgid "%s was defeated."
+msgstr "%s yenildi."
+
+msgid "%s was victorious. Score: %d."
+msgstr "%s kazandı. Score: %d."
+
+msgid "GLOBAL WARMING WORSENS"
+msgstr "KÜRESEL ISINMA KÖTÜYE GİDİYOR"
+
+msgid "HEAT WAVES CAUSE AVERAGE HUMIDITY TO DROP"
+msgstr "SICAK DALGALARI ORTALAMA NEMİ DÜŞÜRDÜ"
+
+msgid "DROUGHT CURBS GROWTH OF TREES AND CROPS, WARN BOTANISTS"
+msgstr "BOTANİSTLER UYARIYOR, KURAKLIK BİTKİ VE AĞAÇLARIN GELİŞİMİNİ ENGELLİYOR"
+
+msgid "FROSTBITE EXPECTED TO TERRORIZE OPEN FIELDS IN WINTER"
+msgstr "KIŞ AYLARINDA AYAZ, TARLALARA DERT OLACAK"
+
+msgid "Spring, Year %d"
+msgstr "İlkbahar, Yıl %d"
+
+msgid "Summer, Year %d"
+msgstr "Yaz, Yıl %d"
+
+msgid "Autumn, Year %d"
+msgstr "Sonbahar, Yıl %d"
+
+msgid "Winter, Year %d"
+msgstr "Kış, Yıl %d"
+
+msgid "Gunner"
+msgstr "Komando"
+
+msgid "Sapper"
+msgstr "Topçu"
+
+msgid "Dirt"
+msgstr "Toprak"
+
+msgid "Ridge"
+msgstr "Tepe"
+
+msgid "City"
+msgstr "Şehir"
+
+msgid "Town"
+msgstr "Kasaba"
+
+msgid "Industry"
+msgstr "Endüstri"
+
+msgid "Soil"
+msgstr "Verimli Toprak"
+
+msgid "Trenches"
+msgstr "Siperler"
+
+msgid "Focus"
+msgstr "Odak"
+
+msgid "Lockdown"
+msgstr "Kontrol Etme"
+
+msgid "Shell"
+msgstr "Bombalama"
+
+msgid "Drop Gas"
+msgstr "Gaz Atma"
+
+msgid "Capture"
+msgstr "Ele Geçirme"
+
+msgid "Dig Trenches"
+msgstr "Siper Kazma"
+
+msgid "Settle %s"
+msgstr "%s Yerleş"
+
+msgid "Build %s"
+msgstr "%s İnşa Et"
+
+msgid "Upgrade"
+msgstr "Yükselt"
+
+msgid "Upgrade to %s"
+msgstr "%s'ye Yükselt"
+
+msgid "Cultivate %s"
+msgstr "%s Yetiştir"
+
+msgid "Produce %s"
+msgstr "%s Üret"
+
+msgid "Move"
+msgstr "İlerle"
+
+msgid "first"
+msgstr "birinci"
+
+msgid "LOG IN"
+msgstr "GİRİŞ YAP"
+
+msgid "REGISTER"
+msgstr "KAYDOL"
+
+msgid "PLAY"
+msgstr "OYNA"
+
+msgid "Downloading..."
+msgstr "İndiriliyor..."
+
+msgid "Enter Key"
+msgstr "Anahtar Giriniz"
+
+msgid "Email address:"
+msgstr "E-posta adresi?"
+
+msgid "Password:"
+msgstr "Şifre:"
+
+msgid "confirm"
+msgstr "onaylıyorum"
+
+msgid "forgot password?"
+msgstr "şifrenizi mi unuttunuz?"
+
+msgid "Looking for the Discord application..."
+msgstr "Discord uygulaması aranıyor..."
+
+msgid "Connecting with Steam..."
+msgstr "Steam ile bağlanılıyor..."
+
+msgid "If you forgot your password and want to reset it, please enter the email address that you used to register. We will email you a password reset token."
+msgstr "Şifrenizi unuttuysanız ve sıfırlamak istiyorsanız, lütfen kaydolurken kullandığınız e-posta adresini giriniz. Size bir şifre sıfırlama kodu göndereceğiz."
+
+msgid "Within a few minutes, you should receive an email containing your password reset token. Please check your spam folder as well! If you have trouble restting your password, please contact us at help@epicinium.nl"
+msgstr "Birkaç dakika içinde, parola sıfırlama kodunuzu içeren bir e-posta almalısınız. Lütfen spam klasörünüzü de kontrol edin! Şifrenizi sıfırlama konusunda sorun yaşıyorsanız, lütfen help@epicinium.nl adresinden bizimle iletişime geçin."
+
+msgid "Token:"
+msgstr "Kod:"
+
+msgid "New password:"
+msgstr "Yeni şifre:"
+
+msgid "Confirm password:"
+msgstr "Şifreyi onayla:"
+
+msgid "Saving files seems not to be working! Please make sure the game is unpacked or installed in a folder where you have permission to write. Settings might not be stored correctly when the game closes."
+msgstr "Dosya kayıt sistemi çalışamıyor gibi gözüküyor. Lütfen oyunu kurduğunuz klasöre yazma iznine sahip olduğunuzdan emin olun. Oyun kapandığında ayarlar doğru şekilde saklanmayabilir."
+
+msgid "Send my Epicinium log files to the developers to help them with debugging:"
+msgstr "Epicinium log dosyalarımı, geliştiricilere hata ayıklama konusunda yardımcı olmaları için gönder:"
+
+msgid "send"
+msgstr "gönder"
+
+msgid "Initializing..."
+msgstr "Başlatılıyor..."
+
+msgid "SETTINGS"
+msgstr "AYARLAR"
+
+msgid "CREDITS"
+msgstr "EMEĞİ GEÇENLER"
+
+msgid "QUIT"
+msgstr "ÇIKIŞ"
+
+msgid "A new version is available! Please update Epicinium via your itch desktop app."
+msgstr "Yeni bir sürüm mevcut! Lütfen Epicinium'u, itch masaüstü uygulamanız aracılığıyla güncelleyin."
+
+msgid "RESTART"
+msgstr "YENİDEN BAŞLAT"
+
+msgid "Connecting to Steam..."
+msgstr "Steam'e bağlanılıyor..."
+
+msgid "Log in to play or play as a guest using your Discord username."
+msgstr "Oynamak için giriş yapın veya Discord kullanıcı adınızı kullanarak misafir olarak oynayın."
+
+msgid "Version mismatch. Please update to version %s."
+msgstr "Sürüm uyuşmazlığı. Lütfen %s sürümüne güncelleyin."
+
+msgid "yellow"
+msgstr "sarı"
+
+msgid "Italian"
+msgstr "İtalyanca"
+
+msgid "Ukrainian"
+msgstr "Ukraynaca"
+
+msgid "Czech"
+msgstr "Çekçe"

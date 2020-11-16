@@ -25,7 +25,8 @@
 #include "source.hpp"
 
 #if INTL_ENABLED
-#include <locale.h>
+#include "libs/tinygettext/tinygettext.hpp"
+#include "libs/tinygettext/log.hpp"
 #endif
 
 #include "settings.hpp"
@@ -49,130 +50,88 @@ void Language::setRoot(const std::string& root)
 	}
 }
 
+
 #if INTL_ENABLED
 /* ######################################################################### */
 
-inline const char* getEnvLanguage()
+static std::string trim_from_tinygettext(const std::string& message)
 {
-	return getenv("LANGUAGE");
+	size_t pos = message.find_last_not_of(" \t\r\n");
+	if (pos == std::string::npos)
+	{
+		return message;
+	}
+	else
+	{
+		return message.substr(0, pos + 1);
+	}
 }
 
-inline void setEnvLanguage(const std::string& newvalue)
+static void logi_for_tinygettext(const std::string& message)
 {
-#ifdef PLATFORMUNIX
-	if (setenv("LANGUAGE", newvalue.c_str(), true) != 0)
+	LOGI << trim_from_tinygettext(message);
+}
+
+static void logw_for_tinygettext(const std::string& message)
+{
+	LOGW << trim_from_tinygettext(message);
+}
+
+static void loge_for_tinygettext(const std::string& message)
+{
+	LOGE << trim_from_tinygettext(message);
+}
+
+static tinygettext::DictionaryManager _language_dictionary_manager;
+
+inline void setLanguage(const std::string& newvalue)
+{
+	auto language = tinygettext::Language::from_env(newvalue);
+	if (language)
 	{
-		LOGE << "Failed to set LANGUAGE to '" << newvalue << "':"
-			" " << errno << ": " << strerror(errno);
+		LOGI << "Setting language to '" << newvalue << "'"
+			" (" << language.str() << ")";
+		_language_dictionary_manager.set_language(language);
 	}
-#else
-	std::string newenv = "LANGUAGE=" + newvalue;
-	if (_putenv(newenv.c_str()) != 0)
+	else
 	{
-		LOGE << "Failed to put '" << newenv << "'";
+		LOGE << "Cannot set language to invalid '" << newvalue << "'";
 	}
-#endif
 }
 
 Language::ScopedOverride::ScopedOverride(const std::string& override)
 {
-	if (getEnvLanguage() == nullptr) LOGV << "Current LANGUAGE is null.";
-	else LOGV << "Current LANGUAGE: " << getEnvLanguage();
+	_oldvalue = _language_dictionary_manager.get_language().str();
 
-	std::stringstream strm;
-	strm << override;
-	if (getEnvLanguage() != nullptr)
-	{
-		strm << ":" << getEnvLanguage();
-		_oldvalue = getEnvLanguage();
-		_oldenvset = true;
-	}
-	std::string newenv = strm.str();
-	setEnvLanguage(newenv);
-
-	if (getEnvLanguage() == nullptr) LOGV << "Current LANGUAGE is null.";
-	else LOGV << "Current LANGUAGE: " << getEnvLanguage();
-
-	bind();
+	setLanguage(override);
 }
 
 Language::ScopedOverride::~ScopedOverride()
 {
-	if (_oldenvset)
+	if (!_oldvalue.empty())
 	{
-		setEnvLanguage(_oldvalue);
+		setLanguage(_oldvalue);
 	}
-
-	if (getEnvLanguage() == nullptr) LOGV << "Current LANGUAGE is null.";
-	else LOGV << "Current LANGUAGE: " << getEnvLanguage();
-
-	bind();
 }
 
 void Language::use(const Settings& settings)
 {
-	// Change LC_MESSAGES from "C" to the system default, e.g. "en_US",
-	// because otherwise localization is disabled and LANGUAGE is ignored.
-	if (setlocale(LC_ALL, NULL) == nullptr) LOGV << "Current locale is null.";
-	else LOGV << "Current locale: " << setlocale(LC_ALL, NULL);
+	tinygettext::Log::set_log_info_callback(logi_for_tinygettext);
+	tinygettext::Log::set_log_warning_callback(logw_for_tinygettext);
+	tinygettext::Log::set_log_error_callback(loge_for_tinygettext);
 
-	if (setlocale(LC_MESSAGES, "") == nullptr)
-	{
-		LOGE << "Failed to set locale to '':"
-			" " << errno << ": " << strerror(errno);
-	}
+	LOGI << "Enabling language support...";
+	_language_dictionary_manager.add_directory(_locdir);
+	LOGI << "Found " << _language_dictionary_manager.get_languages().size()
+		<< " languages";
 
-	if (setlocale(LC_ALL, NULL) == nullptr) LOGV << "Current locale is null.";
-	else LOGI << "Current locale: " << setlocale(LC_ALL, NULL);
-
-	{
-		if (getEnvLanguage() == nullptr) LOGV << "Current LANGUAGE is null.";
-		else LOGV << "Current LANGUAGE: " << getEnvLanguage();
-
-		std::stringstream strm;
-		strm << settings.language.value("en_US");
-		if (getEnvLanguage() != nullptr)
-		{
-			strm << ":" << getEnvLanguage();
-		}
-		std::string language = strm.str();
-		setEnvLanguage(language);
-	}
-
-	if (getEnvLanguage() == nullptr) LOGV << "Current LANGUAGE is null.";
-	else LOGI << "Current LANGUAGE: " << getEnvLanguage();
-
-	bind();
-}
-
-void Language::bind()
-{
-	constexpr const char* TEXTDOMAIN = "epicinium";
-	constexpr const char* CODESET = "UTF-8";
-	if (bindtextdomain(TEXTDOMAIN, _locdir.c_str()) == nullptr)
-	{
-		LOGE << "Failed to bind textdomain:"
-			" " << errno << ": " << strerror(errno);
-	}
-	if (bind_textdomain_codeset(TEXTDOMAIN, CODESET) == nullptr)
-	{
-		LOGE << "Failed to bind textdomain:"
-			" " << errno << ": " << strerror(errno);
-	}
-	if (textdomain(TEXTDOMAIN) == nullptr)
-	{
-		LOGE << "Failed to bind textdomain:"
-			" " << errno << ": " << strerror(errno);
-	}
+	setLanguage(settings.language.value("en_US"));
 }
 
 bool Language::isCurrentlyEnglish()
 {
-	if (getEnvLanguage() != nullptr)
-	{
-		return (strncmp(getEnvLanguage(), "en_", 3) == 0);
-	}
-	return false;
+	auto lang = _language_dictionary_manager.get_language().get_language();
+	return (lang.empty() || lang == "en");
 }
 
 std::vector<std::string> Language::supportedTags()
@@ -185,6 +144,7 @@ std::vector<std::string> Language::supportedTags()
 std::vector<std::string> Language::experimentalTags()
 {
 	return {
+		"es_ES",
 		"pl_PL",
 	};
 }
@@ -193,12 +153,26 @@ std::vector<std::string> Language::incompleteTags()
 {
 	return {
 		"cs_CZ",
+		"de_DE",
+		"fi_FI",
+		"fr_FR",
 		"it_IT",
 		"nl_NL",
 		"pt_BR",
 		"ru_RU",
+		"tr_TR",
 		"uk_UA",
 	};
+}
+
+std::vector<std::string> Language::allDetectedTags()
+{
+	std::vector<std::string> tags;
+	for (const auto& language : _language_dictionary_manager.get_languages())
+	{
+		tags.push_back(language.str());
+	}
+	return tags;
 }
 
 std::string Language::getNameInOwnLanguage(const std::string& tag)
@@ -216,6 +190,22 @@ std::string Language::getNameInActiveLanguage(const std::string& tag)
 	else if (tag == "cs_CZ")
 	{
 		return _("Czech");
+	}
+	else if (tag == "de_DE")
+	{
+		return _("German");
+	}
+	else if (tag == "es_ES")
+	{
+		return _("Spanish");
+	}
+	else if (tag == "fi_FI")
+	{
+		return _("Finnish");
+	}
+	else if (tag == "fr_FR")
+	{
+		return _("French");
 	}
 	else if (tag == "it_IT")
 	{
@@ -237,19 +227,34 @@ std::string Language::getNameInActiveLanguage(const std::string& tag)
 	{
 		return _("Russian");
 	}
+	else if (tag == "tr_TR")
+	{
+		return _("Turkish");
+	}
 	else if (tag == "uk_UA")
 	{
 		return _("Ukrainian");
 	}
-	else
+
+	auto language = tinygettext::Language::from_env(tag);
+	if (language)
 	{
-		LOGW << "Missing language name for '" << tag << "'";
-		return tag;
+		return language.get_name();
 	}
+
+	LOGW << "Missing language name for '" << tag << "'";
+	return tag;
 }
+
+std::string Language::gettext(const char* message)
+{
+	return _language_dictionary_manager.get_dictionary().translate(message);
+}
+
 /* ######################################################################### */
 #else
 /* ######################################################################### */
+
 Language::ScopedOverride::ScopedOverride(const std::string&)
 {
 	LOGW << "Failed to switch languages because INTL_ENABLED is not true";
@@ -261,10 +266,7 @@ Language::ScopedOverride::~ScopedOverride()
 void Language::use(const Settings&)
 {
 	LOGW << "Cannot support other languages because INTL_ENABLED is not true";
-}
 
-void Language::bind()
-{
 	// Nothing to do.
 	(void) _locdir;
 }
@@ -289,15 +291,25 @@ std::vector<std::string> Language::experimentalTags()
 	return {};
 }
 
-std::string Language::getNameInOwnLanguage(const std::string& tag)
+std::vector<std::string> Language::allDetectedTags()
 {
-	Language::ScopedOverride override(tag);
-	return getNameInActiveLanguage(tag);
+	return {};
+}
+
+std::string Language::getNameInOwnLanguage(const std::string&)
+{
+	return "English";
 }
 
 std::string Language::getNameInActiveLanguage(const std::string&)
 {
 	return "English";
 }
+
+std::string Language::gettext(const char* message)
+{
+	return message;
+}
+
 /* ######################################################################### */
 #endif

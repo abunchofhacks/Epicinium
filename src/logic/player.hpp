@@ -57,6 +57,6 @@ constexpr bool isPlayer(const Player& player)
 std::vector<Player> getPlayers(size_t n);
 Player parsePlayer(const std::string& str);
 const char* stringify(const Player& player);
-const char* colorPlayerName(const Player& player);
+std::string colorPlayerName(const Player& player);
 
 std::ostream& operator<<(std::ostream& os, const Player& player);

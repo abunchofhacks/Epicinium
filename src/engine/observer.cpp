@@ -225,12 +225,12 @@ void Observer::postbuild()
 	}
 	getChatHistory().remove("filler");
 
-	static const char* HOPELINES[] = {
+	std::string HOPELINES[] = {
 		_("FUTURE PROMISES PEACE AND PROSPERITY"),
 		_("ECONOMY ON THE RISE"),
 	};
 
-	static const char* RANDOMLINES[] = {
+	std::string RANDOMLINES[] = {
 		_("SEVENTEEN NEW SPECIES OF FROG DISCOVERED"),
 		_("RECORD NUMBER OF CYCLISTS ON CITY STREETS"),
 		_("SURVEY SHOWS CATS MORE POPULAR THAN DOGS"),
@@ -2045,7 +2045,7 @@ constexpr const char* KNOWN_TILE_TYPES[] = {
 
 std::string Observer::unitName(const UnitType& unittype)
 {
-	const char* unitnames[array_size(KNOWN_UNIT_TYPES)] = {
+	std::string unitnames[array_size(KNOWN_UNIT_TYPES)] = {
 		"-", // none
 		_("Rifleman"),
 		_("Gunner"),
@@ -2070,7 +2070,7 @@ std::string Observer::unitName(const UnitType& unittype)
 
 std::string Observer::tileName(const TileType& tiletype)
 {
-	const char* tilenames[array_size(KNOWN_TILE_TYPES)] = {
+	std::string tilenames[array_size(KNOWN_TILE_TYPES)] = {
 		"-", // none
 		_("Grass"),
 		_("Dirt"),
@@ -3074,13 +3074,13 @@ std::unique_ptr<InterfaceElement> Observer::makeChatBox()
 	(*element)["inputline"]["indicator"]["button"].setPaddingVertical(4 * InterfaceElement::scale());
 	int chatw = InterfaceElement::textW(
 		TextStyle(FONTSIZE_MENUBUTTON, Color::broken()),
-		(const char*) _("CHAT"));
+		_("CHAT"));
 	int allw = InterfaceElement::textW(
 		TextStyle(FONTSIZE_MENUBUTTON, Color::broken()),
-		(const char*) _("ALL"));
+		_("ALL"));
 	int gamew = InterfaceElement::textW(
 		TextStyle(FONTSIZE_MENUBUTTON, Color::broken()),
-		(const char*) _("GAME"));
+		_("GAME"));
 	(*element)["inputline"]["indicator"]["button"].content().fixWidth(
 		std::max(chatw, std::max(allw, gamew)));
 	(*element)["inputline"]["indicator"]["button"].settleWidth();
@@ -4653,7 +4653,8 @@ void Observer::update()
 }
 
 void Observer::checkMarkerCard(stringref name, bool on,
-	const char* iconname, const char* title, const char* description)
+	const char* iconname,
+	const std::string& title, const std::string& description)
 {
 	InterfaceElement& cards = getCardView();
 	if (cards.contains(name))
@@ -4720,7 +4721,7 @@ void Observer::checkGroundUnitCard(const UnitType& unittype)
 		auto icon = makeOrderIcon(spritenameOrderIcon(unittype));
 		std::string title = unitName(unittype);
 		std::string description = "";
-		const char* DESCRIPTIONS[array_size(KNOWN_UNIT_TYPES)] = {
+		std::string DESCRIPTIONS[array_size(KNOWN_UNIT_TYPES)] = {
 			// NONE:
 			_("All-round infantry unit that can dig trenches."),
 			// rifleman:
@@ -4772,7 +4773,7 @@ void Observer::checkTileCard(const TileType& tiletype)
 		auto icon = makeOrderIcon(spritenameOrderIcon(tiletype));
 		std::string title = tileName(tiletype);
 		std::string description = "";
-		const char* DESCRIPTIONS[array_size(KNOWN_TILE_TYPES)] = {
+		std::string DESCRIPTIONS[array_size(KNOWN_TILE_TYPES)] = {
 			// NONE:
 			_("Inaccessible to ground units."),
 			// grass:

@@ -49,7 +49,6 @@ public:
 #if INTL_ENABLED
 	private:
 		std::string _oldvalue;
-		bool _oldenvset;
 #endif
 	};
 
@@ -60,10 +59,12 @@ public:
 	static std::vector<std::string> supportedTags();
 	static std::vector<std::string> experimentalTags();
 	static std::vector<std::string> incompleteTags();
+	static std::vector<std::string> allDetectedTags();
 
 	static std::string getNameInOwnLanguage(const std::string& tag);
 	static std::string getNameInActiveLanguage(const std::string& tag);
 
-private:
-	static void bind();
+public:
+	// This replaces libintl's gettext(), except it returns std::string.
+	static std::string gettext(const char* message);
 };

@@ -25,13 +25,14 @@
 #include "source.hpp"
 
 #include "recording.hpp"
+#include "system.hpp"
 
 
 RecordingIterator::RecordingIterator(
 		const TypeNamer& typenamer, const Recording& recording) :
 	_typenamer(typenamer),
 	_name(recording.name()),
-	_file(recording.filename()),
+	_file(System::ifstream(recording.filename())),
 	_linenumber(0)
 {
 	if (!_file) return;

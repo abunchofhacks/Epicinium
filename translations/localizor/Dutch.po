@@ -1,11 +1,17 @@
 msgid ""
 msgstr ""
 
+msgid "Showcase"
+msgstr "Showcase"
+
 msgid "Elimination"
 msgstr "Eliminatie"
 
 msgid "Everything is Free"
 msgstr "Alles is Gratis"
+
+msgid "Tank Derby"
+msgstr "Tank Derby"
 
 msgid "High Speed"
 msgstr "Hoge Snelheid"
@@ -30,6 +36,9 @@ msgstr "Scoor 1 punt."
 
 msgid "Get 25 points."
 msgstr "Scoor 25 punten."
+
+msgid "Get 40 points."
+msgstr "Scoor 40 punten"
 
 msgid "Now go out there and lay claim to this region while there's still something worth claiming!"
 msgstr "Ga er nu heen en claim deze regio nu er nog iets te claimen valt!"
@@ -88,9 +97,6 @@ msgstr "Commando"
 
 msgid "Sapper"
 msgstr "Artillerist"
-
-msgid "Guard"
-msgstr "Dekking"
 
 msgid "Shell"
 msgstr "Belaag"
@@ -205,9 +211,6 @@ msgstr "Uitdaging: %s"
 
 msgid "Language:"
 msgstr "Taal:"
-
-msgid "%s (experimental)"
-msgstr "%s (experimenteel)"
 
 msgid "discard and return to main menu"
 msgstr "verwerpen en terug naar het hoofdmenu"

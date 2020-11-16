@@ -79,6 +79,7 @@ protected:
 	void quit() { _quitting = true; }
 
 	virtual void build();
+	virtual void beforeFirstRefreshOfEachSecond() {}
 	virtual void refresh() = 0;
 
 	virtual void onOpen() {};
@@ -88,6 +89,7 @@ protected:
 
 public:
 	void init();
+	void beforeFirstUpdateOfEachSecond();
 	void update();
 
 	void open();

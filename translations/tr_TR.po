@@ -1,0 +1,2932 @@
+# Turkish translations for Epicinium package.
+# Copyright (C) 2020 A Bunch of Hacks
+# This file is distributed under the same license as the Epicinium package.
+# Automatically generated, 2020.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Epicinium 0.35.0\n"
+"Report-Msgid-Bugs-To: sander@abunchofhacks.coop\n"
+"POT-Creation-Date: 2020-11-09 14:29+0100\n"
+"PO-Revision-Date: 2020-11-09 14:29+0100\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: tr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: src/ai/aichallenge.cpp:183
+msgid "Showcase"
+msgstr ""
+
+#: src/ai/aichallenge.cpp:188
+msgid "Elimination"
+msgstr "Eleme"
+
+#: src/ai/aichallenge.cpp:193
+msgid "Everything is Free"
+msgstr "Her şey Bedava"
+
+#: src/ai/aichallenge.cpp:199
+msgid "Tank Derby"
+msgstr ""
+
+#: src/ai/aichallenge.cpp:204
+msgid "High Speed"
+msgstr "Yüksek Hız"
+
+#: src/ai/aichallenge.cpp:209
+msgid "Economic Growth"
+msgstr "Ekonomik Büyüme"
+
+#: src/ai/aichallenge.cpp:214
+msgid "Morale"
+msgstr "Moral"
+
+#: src/ai/aichallenge.cpp:319 src/ai/aichallenge.cpp:362
+msgid "Listen up, Commander!"
+msgstr "Dinleyin Kumandan!"
+
+#: src/ai/aichallenge.cpp:322
+msgid ""
+"The enemy has dug in among the mountains in the east. The longer they are "
+"allowed to stay, the more damage their industriousness will do to the "
+"surrounding area. Use whatever means necessary to obliterate them. There are "
+"some neutral City and Industry tiles in the northwest of the map. Feel free "
+"to capture them with your Rifleman units."
+msgstr ""
+"Düşman doğudaki dağların arasına yerleşti. Kalmalarına ne kadar çok izin "
+"verirsek, gayretleri çevreye o kadar çok zarar verecek. Yok edilmeleri için "
+"ne gerekiyorsa yap. Haritanın kuzeybatısında bazı doğal Şehir ve Endüstri "
+"karoları var. Piyade birliklerini kullanarak bu karoları ele geçirmekten "
+"çekinme."
+
+#: src/ai/aichallenge.cpp:332 src/ai/aichallenge.cpp:406
+#: src/ai/aichallenge.cpp:482
+msgid ""
+"Defeat your opponent by occupying, capturing or destroying all of their City "
+"tiles. At the end of the game, you get 1 point for every Grass and Forest "
+"tile that remains."
+msgstr ""
+"Rakibinizin tüm Şehir karolarını işgal ederek, ele geçirerek ya da yok "
+"ederek rakibinizi yenin. Oyun sonunda geriye kalan her Çimen ve Orman "
+"karosundan 1 puan alacaksınız."
+
+#: src/ai/aichallenge.cpp:342 src/ai/aichallenge.cpp:412
+#: src/ai/aichallenge.cpp:488
+msgid "Get 1 point."
+msgstr "1 puan kazan."
+
+#: src/ai/aichallenge.cpp:345
+msgid "Get 25 points."
+msgstr "25 puan kazan."
+
+#: src/ai/aichallenge.cpp:348
+msgid "Get 40 points."
+msgstr "40 puan kazan."
+
+#: src/ai/aichallenge.cpp:351
+msgid ""
+"Now go out there and lay claim to this region while there's still something "
+"worth claiming!"
+msgstr ""
+"Ortada hala kıymetli yerler varken oraya git ve bu bölgede hak iddia et!"
+
+#: src/ai/aichallenge.cpp:365
+msgid ""
+"Some of the population of this peninsula has rebelled! Eliminate all of the "
+"rebels in the area using your tanks, gunners and sappers. Don't worry about "
+"capturing cities; they will fall back in line once you have quelled the "
+"rebellion."
+msgstr ""
+"Bu yarımadanın nüfusunun bir kısmı isyan etti! Tanklarınızı, komandolarınızı "
+"ve topçularınızı kullanarak tüm isyancıları yok edin. Şehirleri ele geçirme "
+"konusunda endişelenmeyin, isyanı bastırdıktan sonra yola geleceklerdir."
+
+#: src/ai/aichallenge.cpp:372
+msgid ""
+"Defeat your opponent by eliminating all of their units. At the end of the "
+"game, you get 1 point for every Grass and Forest tile that remains."
+msgstr ""
+"Rakibinizin tüm birimlerini yok ederek rakibinizi yenin. Oyun sonunda geriye "
+"kalan her Çimen ve Orman karosu için 1 puan kazanacaksınız."
+
+#: src/ai/aichallenge.cpp:377
+msgid "Eliminate all enemy units."
+msgstr "Tüm düşman birliklerini ortadan kaldırın."
+
+#: src/ai/aichallenge.cpp:380
+msgid "Get at least 25 points."
+msgstr "En az 25 puan kazanın."
+
+#: src/ai/aichallenge.cpp:383
+msgid "Do not destroy any City, Farm or Industry tiles."
+msgstr "Hiçbir Şehir, Çiftlik ya da Endüstri karosunu yok etmeyin."
+
+#: src/ai/aichallenge.cpp:386
+msgid "Go get rid of those rebels!"
+msgstr "O isyancılardan kurtul!"
+
+#: src/ai/aichallenge.cpp:396 src/ai/aichallenge.cpp:469
+#: src/ai/aichallenge.cpp:507 src/ai/aichallenge.cpp:538
+msgid "Greetings, Commander!"
+msgstr "Selamlar Kumandan!"
+
+#: src/ai/aichallenge.cpp:399
+msgid ""
+"Who needs money anyway?\n"
+"In this challenge, all unit and tile costs have been reduced to zero, and "
+"buildings do not generate any income at night."
+msgstr ""
+"Zaten kimin paraya ihtiyacı olur ki? Bu mücadelede tüm birlik ve karo "
+"maliyetleri sıfıra indirildi. Binalar geceleri gelir sağlamayacak."
+
+#: src/ai/aichallenge.cpp:415 src/ai/aichallenge.cpp:491
+msgid "Get 30 points."
+msgstr "30 puan kazan."
+
+#: src/ai/aichallenge.cpp:418 src/ai/aichallenge.cpp:494
+msgid "Get 80 points."
+msgstr "80 puan kazanın."
+
+#: src/ai/aichallenge.cpp:421 src/ai/aichallenge.cpp:497
+#: src/ai/aichallenge.cpp:528 src/ai/aichallenge.cpp:566
+msgid "Good luck!"
+msgstr ""
+
+#: src/ai/aichallenge.cpp:432
+msgid "Well hello there, partner!"
+msgstr ""
+
+#: src/ai/aichallenge.cpp:435
+msgid ""
+"Are you looking for some no-fuss action? Do you want to wake up at the sound "
+"of tanks thundering down the open fields? Then you should partake in the "
+"spectactular Tank Derby! Hop in one of them beauty's and show 'em what you "
+"got!"
+msgstr ""
+"Yaygarasız bir aksiyon mu arıyorsun? Açık arazilerde gürleyen tankların "
+"sesiyle uyanmak ister misin? O zaman muhteşem Tank Derbisine katılmalısın! "
+"Güzel tanklarından birine atla ve onlara gücünü göster!"
+
+#: src/ai/aichallenge.cpp:443
+msgid ""
+"Defeat all three opponents by destroying their industry and eliminating all "
+"of their tanks. Tanks are cheaper than normal and can do regular attacks, "
+"but only have one hitpoint. you get 1 point for every Grass and Forest tile "
+"that remains."
+msgstr ""
+"Endüstrilerini ve tanklarını yok ederek üç düşmanını da yen. Tanklar "
+"normalden daha ucuzdur ve düzenli saldırı yapabilirler ancak bir canları "
+"vardır. Kalan her Çimen ve Orman karosu için 1 puan kazanacaksınız."
+
+#: src/ai/aichallenge.cpp:450
+msgid "Eliminate all enemy tanks."
+msgstr ""
+
+#: src/ai/aichallenge.cpp:453
+msgid "Get at least 4 points."
+msgstr "En az 4 puan kazanın."
+
+#: src/ai/aichallenge.cpp:456
+msgid "Get at least 10 points."
+msgstr "En az 10 puan kazanın."
+
+#: src/ai/aichallenge.cpp:459
+msgid "Let's rumble!"
+msgstr ""
+
+#: src/ai/aichallenge.cpp:472
+msgid ""
+"What happens when we, ahum, \"spill\" a year's worth of energy drinks into "
+"the water supply of the entire region? Let's find out!\n"
+"\n"
+"In this challenge, all units have their movement speed increased by 2."
+msgstr ""
+"Bir yıl yetecek enerji içeceğini, tüm bölgenin su kaynağına, öhöm, "
+"\"döktüğümüzde\" ne olur? Hadi öğrenelim!\n"
+"\n"
+"Bu mücadelede tüm birimlerin hareket hızı 2 artar."
+
+#: src/ai/aichallenge.cpp:510
+msgid ""
+"In this challenge, there are no enemies to fight or opponents to defeat. "
+"Just focus on growing your economy."
+msgstr ""
+"Bu mücadelede savaşılması ya da yenilmesi gereken bir düşman yok. Sadece "
+"ekonominizi geliştirmeye odaklanın."
+
+#: src/ai/aichallenge.cpp:515
+msgid ""
+"The game ends after the second winter night. Your score is equal to how much "
+"money you have at the end."
+msgstr ""
+"Oyun, ikinci kış gecesinden sonra biter. Puanınız, oyun sonunda sahip "
+"olduğunuz paraya eşittir."
+
+#: src/ai/aichallenge.cpp:519
+msgid "Get 21 points."
+msgstr "21 puan kazanın."
+
+#: src/ai/aichallenge.cpp:522
+msgid "Get 86 points."
+msgstr "86 puan kazanın."
+
+#: src/ai/aichallenge.cpp:525
+msgid "Get 132 points."
+msgstr "132 puan kazanın."
+
+#: src/ai/aichallenge.cpp:541
+msgid ""
+"In this challenge you will use \"Morale\" instead of money and power to "
+"produce units, which is gained on the field of battle. Each enemy unit "
+"killed earns you 1 Morale and each enemy tile you destroy is worth 5 Morale. "
+"Capturing a tile gains you 3 Morale and also lowers enemy Morale by 5."
+msgstr ""
+"Bu mücadelede birim üretmek için para ve güç yerine \"Moral\" "
+"kullanacaksınız, Moral ise savaş alanında kazanılır. Öldürdüğünüz her düşman "
+"birimi 1 Moral, yok ettiğiniz her düşman karosu ise 5 Moral. Ele "
+"geçirdiğiniz karolar size 3 Moral verirken düşmandan 5 Moral düşürür."
+
+#: src/ai/aichallenge.cpp:550
+msgid ""
+"Occupy or destroy your opponent's City to win. Each remaining City tile is "
+"worth 2 points at the end of the game, and each remaining Barracks, Industry "
+"or Airfield tile is worth 1 point."
+msgstr ""
+"Kazanmak için rakibinizin Şehrini işgal edin veya yok edin. Kalan her Şehir "
+"karosu, oyun sonunda 2 puan değerindeyken, kalan her Kışla, Endüstri ve "
+"Havaalanı karosu 1 puan değerindedir."
+
+#: src/ai/aichallenge.cpp:557
+msgid "Get 2 points."
+msgstr "2 puan kazan."
+
+#: src/ai/aichallenge.cpp:560
+msgid "Get 5 points."
+msgstr "5 puan kazan."
+
+#: src/ai/aichallenge.cpp:563
+msgid "Get 8 points."
+msgstr "8 puan kazan."
+
+#: src/build/steamlocalizer.cpp:71
+msgid "In Menu"
+msgstr ""
+
+#: src/build/steamlocalizer.cpp:74
+msgid "Looking to Play"
+msgstr "Oyun Arıyor"
+
+#: src/build/steamlocalizer.cpp:77
+msgid "Playing Tutorial"
+msgstr "Öğreticiyi Oynuyor"
+
+#: src/build/steamlocalizer.cpp:80
+msgid "Playing Challenge"
+msgstr "Mücadele Oynuyor"
+
+#. TRANSLATORS: The argument is a translated challenge name.
+#: src/build/steamlocalizer.cpp:85
+#, c-format
+msgid "Playing %s Challenge"
+msgstr "%s Mücadelesi Oynuyor"
+
+#: src/build/steamlocalizer.cpp:89
+msgid "Watching Replay"
+msgstr "Tekrar İzliyor"
+
+#: src/build/steamlocalizer.cpp:107
+msgid "Playing One vs One"
+msgstr "Bire Bir Oynuyor"
+
+#: src/build/steamlocalizer.cpp:110
+msgid "Playing Free For All"
+msgstr "Herkes Tek Oynuyor"
+
+#: src/build/steamlocalizer.cpp:113
+msgid "Playing Versus AI"
+msgstr "YZ'ye Karşı Oynuyor"
+
+#: src/build/steamlocalizer.cpp:116
+msgid "Playing AI vs AI"
+msgstr "YZ vs YZ Oynuyor"
+
+#: src/build/steamlocalizer.cpp:119
+msgid "Spectating One vs One"
+msgstr "Bire Bir İzliyor"
+
+#: src/build/steamlocalizer.cpp:122
+msgid "Spectating Free For All"
+msgstr "Herkes Tek İzliyor"
+
+#: src/build/steamlocalizer.cpp:125
+msgid "Spectating Versus AI"
+msgstr "YZ'ye Karşı İzliyor"
+
+#: src/build/steamlocalizer.cpp:128
+msgid "Spectating AI vs AI"
+msgstr "YZ vs YZ İzliyor"
+
+#. TRANSLATORS: The two arguments are the current and maximum
+#. number of players in the lobby, respectively.
+#: src/build/steamlocalizer.cpp:134
+#, c-format
+msgid "In One vs One Lobby (%s/%s)"
+msgstr "Bire Bir Lobisinde (%s/%s)"
+
+#. TRANSLATORS: The two arguments are the current and maximum
+#. number of players in the lobby, respectively.
+#: src/build/steamlocalizer.cpp:142
+#, c-format
+msgid "In Free For All Lobby (%s/%s)"
+msgstr "Herkes Tek Lobisinde (%s/%s)"
+
+#. TRANSLATORS: The two arguments are the current and maximum
+#. number of players in the lobby, respectively.
+#: src/build/steamlocalizer.cpp:150
+#, c-format
+msgid "In Versus AI Lobby (%s/%s)"
+msgstr "YZ'ye Karşı Lobisinde (%s/%s)"
+
+#. TRANSLATORS: The two arguments are the current and maximum
+#. number of players in the lobby, respectively.
+#: src/build/steamlocalizer.cpp:158
+#, c-format
+msgid "In AI vs AI Lobby (%s/%s)"
+msgstr "YZ vs YZ Lobisinde (%s/%s)"
+
+#: src/build/termlocalizer.cpp:50
+msgid "Unit"
+msgstr ""
+
+#: src/build/termlocalizer.cpp:52
+msgid "Tile"
+msgstr ""
+
+#: src/build/termlocalizer.cpp:55 src/engine/observer.cpp:2050
+msgid "Rifleman"
+msgstr ""
+
+#: src/build/termlocalizer.cpp:57 src/engine/observer.cpp:2051
+msgid "Gunner"
+msgstr "Komando"
+
+#: src/build/termlocalizer.cpp:60 src/engine/observer.cpp:2052
+msgid "Sapper"
+msgstr "Topçu"
+
+#: src/build/termlocalizer.cpp:63 src/engine/observer.cpp:2053
+msgid "Tank"
+msgstr ""
+
+#: src/build/termlocalizer.cpp:65 src/engine/observer.cpp:2054
+msgid "Settler"
+msgstr ""
+
+#: src/build/termlocalizer.cpp:67 src/engine/observer.cpp:2055
+msgid "Militia"
+msgstr ""
+
+#: src/build/termlocalizer.cpp:70 src/engine/observer.cpp:2075
+msgid "Grass"
+msgstr ""
+
+#: src/build/termlocalizer.cpp:71 src/engine/observer.cpp:2076
+msgid "Dirt"
+msgstr "Toprak"
+
+#: src/build/termlocalizer.cpp:73 src/engine/observer.cpp:2077
+msgid "Desert"
+msgstr ""
+
+#: src/build/termlocalizer.cpp:74 src/engine/observer.cpp:2078
+msgid "Rubble"
+msgstr ""
+
+#: src/build/termlocalizer.cpp:75 src/engine/observer.cpp:2079
+msgid "Ridge"
+msgstr "Tepe"
+
+#: src/build/termlocalizer.cpp:76 src/engine/observer.cpp:2080
+msgid "Mountain"
+msgstr ""
+
+#: src/build/termlocalizer.cpp:77 src/engine/observer.cpp:2081
+msgid "Water"
+msgstr ""
+
+#: src/build/termlocalizer.cpp:78 src/engine/observer.cpp:2082
+msgid "Forest"
+msgstr ""
+
+#: src/build/termlocalizer.cpp:79 src/engine/observer.cpp:2083
+msgid "City"
+msgstr "Şehir"
+
+#: src/build/termlocalizer.cpp:82 src/engine/observer.cpp:2084
+msgid "Town"
+msgstr "Kasaba"
+
+#: src/build/termlocalizer.cpp:84 src/engine/observer.cpp:2085
+msgid "Outpost"
+msgstr ""
+
+#: src/build/termlocalizer.cpp:86 src/engine/observer.cpp:2086
+msgid "Industry"
+msgstr "Endüstri"
+
+#: src/build/termlocalizer.cpp:88 src/engine/observer.cpp:2087
+msgid "Barracks"
+msgstr ""
+
+#: src/build/termlocalizer.cpp:90 src/engine/observer.cpp:2088
+msgid "Airfield"
+msgstr ""
+
+#: src/build/termlocalizer.cpp:92 src/engine/observer.cpp:2089
+msgid "Farm"
+msgstr ""
+
+#: src/build/termlocalizer.cpp:94 src/engine/observer.cpp:2090
+msgid "Soil"
+msgstr "Verimli Toprak"
+
+#: src/build/termlocalizer.cpp:96 src/engine/observer.cpp:2091
+msgid "Crops"
+msgstr ""
+
+#: src/build/termlocalizer.cpp:98 src/engine/observer.cpp:2092
+msgid "Trenches"
+msgstr "Siperler"
+
+#: src/build/termlocalizer.cpp:100 src/engine/observer.cpp:5001
+msgid "Snow"
+msgstr ""
+
+#: src/build/termlocalizer.cpp:101 src/engine/observer.cpp:5007
+msgid "Frostbite"
+msgstr ""
+
+#: src/build/termlocalizer.cpp:103 src/engine/observer.cpp:5013
+msgid "Firestorm"
+msgstr ""
+
+#: src/build/termlocalizer.cpp:105 src/engine/observer.cpp:5019
+msgid "Bonedrought"
+msgstr ""
+
+#: src/build/termlocalizer.cpp:107 src/engine/observer.cpp:5025
+msgid "Gas"
+msgstr ""
+
+#: src/build/termlocalizer.cpp:109 src/engine/observer.cpp:2112
+#: src/engine/observer.cpp:4863
+msgid "Focus"
+msgstr "Odak"
+
+#: src/build/termlocalizer.cpp:111 src/engine/observer.cpp:2111
+#: src/engine/observer.cpp:2113 src/engine/observer.cpp:4874
+msgid "Lockdown"
+msgstr "Kontrol Etme"
+
+#: src/build/termlocalizer.cpp:113 src/engine/observer.cpp:2114
+#: src/engine/observer.cpp:4884
+msgid "Shell"
+msgstr "Bombalama"
+
+#: src/build/termlocalizer.cpp:115 src/engine/observer.cpp:2115
+#: src/engine/observer.cpp:4894
+msgid "Bombard"
+msgstr ""
+
+#: src/build/termlocalizer.cpp:117 src/engine/observer.cpp:2117
+#: src/engine/observer.cpp:4914
+msgid "Capture"
+msgstr "Ele Geçirme"
+
+#: src/build/termlocalizer.cpp:119 src/engine/observer.cpp:2142
+#: src/engine/observer.cpp:4930
+msgid "Upgrade"
+msgstr "Yükselt"
+
+#: src/build/termlocalizer.cpp:122
+msgid "Planning phase"
+msgstr ""
+
+#: src/build/termlocalizer.cpp:124
+msgid "Action phase"
+msgstr ""
+
+#: src/build/termlocalizer.cpp:126
+msgid "Decay phase"
+msgstr ""
+
+#: src/build/termlocalizer.cpp:128
+msgid "Night phase"
+msgstr ""
+
+#: src/build/termlocalizer.cpp:130
+msgid "Weather phase"
+msgstr ""
+
+#: src/common/language.cpp:188
+msgid "English"
+msgstr "İngilizce"
+
+#: src/common/language.cpp:192
+msgid "Czech"
+msgstr "Çekçe"
+
+#: src/common/language.cpp:196
+msgid "German"
+msgstr ""
+
+#: src/common/language.cpp:200
+msgid "Spanish"
+msgstr ""
+
+#: src/common/language.cpp:204
+msgid "Finnish"
+msgstr ""
+
+#: src/common/language.cpp:208
+msgid "French"
+msgstr ""
+
+#: src/common/language.cpp:212
+msgid "Italian"
+msgstr "İtalyanca"
+
+#: src/common/language.cpp:216
+msgid "Dutch"
+msgstr ""
+
+#: src/common/language.cpp:220
+msgid "Polish"
+msgstr ""
+
+#: src/common/language.cpp:224
+msgid "Portuguese (BR)"
+msgstr ""
+
+#: src/common/language.cpp:228
+msgid "Russian"
+msgstr ""
+
+#: src/common/language.cpp:232
+msgid "Turkish"
+msgstr ""
+
+#: src/common/language.cpp:236
+msgid "Ukrainian"
+msgstr "Ukraynaca"
+
+#: src/engine/commander.cpp:112
+msgid "Ready"
+msgstr "Hazır"
+
+#: src/engine/observer.cpp:90 src/engine/observer.cpp:3069
+#: src/engine/observer.cpp:3077 src/main/multiplayermenu.cpp:455
+msgid "CHAT"
+msgstr ""
+
+#: src/engine/observer.cpp:229
+msgid "FUTURE PROMISES PEACE AND PROSPERITY"
+msgstr "GELECEK BARIŞ VE REFAH VADEDİYOR"
+
+#: src/engine/observer.cpp:230
+msgid "ECONOMY ON THE RISE"
+msgstr "EKONOMİ YÜKSELİŞTE"
+
+#: src/engine/observer.cpp:234
+msgid "SEVENTEEN NEW SPECIES OF FROG DISCOVERED"
+msgstr "ONYEDİ YEDİ KURBAĞA TÜRÜ KEŞFEDİLDİ."
+
+#: src/engine/observer.cpp:235
+msgid "RECORD NUMBER OF CYCLISTS ON CITY STREETS"
+msgstr "ŞEHİRDEKİ BİSİKLETÇİ SAYILARI REKOR KIRDI"
+
+#: src/engine/observer.cpp:236
+msgid "SURVEY SHOWS CATS MORE POPULAR THAN DOGS"
+msgstr "ANKETE GÖRE KEDİLER KÖPEKLERDEN DAHA POPÜLER"
+
+#: src/engine/observer.cpp:237
+msgid "SURVEY SHOWS DOGS MORE POPULAR THAN CATS"
+msgstr "ANKETE GÖRE KÖPEKLER KEDİLERDEN DAHA POPÜLER"
+
+#: src/engine/observer.cpp:238
+msgid "BEE POPULATION LARGER THAN EVER ACCORDING TO ENTOMOLOGISTS"
+msgstr "ENTOMOLOGLARA GÖRE ARI NÜFUSU TESPİT EDİLEN EN YÜKSEK SAYIDA"
+
+#: src/engine/observer.cpp:239
+msgid "WOMAN DISCOVERS SAFE CONTAINING 1500 CANS OF MUSHROOM SOUP"
+msgstr "KADIN 1500 KONSERVE MANTARI GÜVENLE SAKLAMAYI KEŞFETTİ"
+
+#: src/engine/observer.cpp:240
+msgid "MAN FINALLY HAPPY AFTER SOLVING CHILDHOOD MATH PROBLEM"
+msgstr "ADAM ÇOCUKLUĞUNDAKİ MATEMATİK PROBLEMİNİ ÇÖZDÜKTEN SONRA MUTLU"
+
+#: src/engine/observer.cpp:241
+msgid "COUPLE CELEBRATES FIVE YEARS WITHOUT USING THE LETTER R"
+msgstr "BİR ÇİFT, 5 YILDIR R HARFİNİ KULLANMIYOR"
+
+#: src/engine/observer.cpp:245
+msgid "A NEW ERA BEGINS"
+msgstr ""
+
+#: src/engine/observer.cpp:246
+msgid "BRAVE PIONEERS SETTLE NEW CITIES"
+msgstr "CESUR ÖNCÜLER YENİ ŞEHİRLER KURUYOR"
+
+#: src/engine/observer.cpp:1136 src/engine/observer.cpp:1205
+#: src/engine/observer.cpp:1284 src/engine/observer.cpp:4099
+msgid "Quit?"
+msgstr "Çıkış?"
+
+#: src/engine/observer.cpp:1138 src/engine/observer.cpp:1207
+#: src/engine/observer.cpp:1286 src/engine/observer.cpp:4104
+msgid "Are you sure you want to quit?"
+msgstr "Çıkmak istediğinizden emin misiniz?"
+
+#: src/engine/observer.cpp:1140 src/engine/observer.cpp:1209
+#: src/engine/observer.cpp:1288 src/engine/observer.cpp:4109
+msgid "quit"
+msgstr "çıkış"
+
+#: src/engine/observer.cpp:1148 src/engine/observer.cpp:1217
+#: src/engine/observer.cpp:1296 src/engine/observer.cpp:3182
+msgid "Quit"
+msgstr "Çıkış"
+
+#. TRANSLATORS: The argument is a username.
+#: src/engine/observer.cpp:1180
+#, c-format
+msgid "%s was defeated."
+msgstr "%s yenildi."
+
+#. TRANSLATORS: The first argument is a username.
+#. The second argument is a numerical score.
+#: src/engine/observer.cpp:1250
+#, c-format
+msgid "%s was victorious. Score: %d."
+msgstr "%s kazandı. Score: %d."
+
+#: src/engine/observer.cpp:1361 src/engine/observer.cpp:1377
+#: src/engine/observer.cpp:1393 src/engine/observer.cpp:1410
+#: src/engine/observer.cpp:1426
+msgid "GLOBAL WARMING WORSENS"
+msgstr "KÜRESEL ISINMA KÖTÜYE GİDİYOR"
+
+#: src/engine/observer.cpp:1364
+msgid "HEAT WAVES CAUSE AVERAGE HUMIDITY TO DROP"
+msgstr "SICAK DALGALARI ORTALAMA NEMİ DÜŞÜRDÜ"
+
+#: src/engine/observer.cpp:1367
+msgid "DROUGHT CURBS GROWTH OF TREES AND CROPS, WARN BOTANISTS"
+msgstr ""
+"BOTANİSTLER UYARIYOR, KURAKLIK BİTKİ VE AĞAÇLARIN GELİŞİMİNİ ENGELLİYOR"
+
+#: src/engine/observer.cpp:1370
+msgid "FROSTBITE EXPECTED TO TERRORIZE OPEN FIELDS IN WINTER"
+msgstr "KIŞ AYLARINDA AYAZ, TARLALARA DERT OLACAK"
+
+#: src/engine/observer.cpp:1380
+msgid "DRY AREAS WITHOUT VEGETATION SUFFER FROM DESERTIFICATION"
+msgstr ""
+
+#: src/engine/observer.cpp:1383
+msgid "DESERT SAND UNSUITABLE FOR BUILDING, SAY CONTRACTORS"
+msgstr ""
+
+#: src/engine/observer.cpp:1386
+msgid "SUMMER FIRESTORM ALERT LIKELY"
+msgstr ""
+
+#: src/engine/observer.cpp:1396
+msgid "EXTREME DROUGHT WEAKENS TROOPS IN DESERTS"
+msgstr ""
+
+#: src/engine/observer.cpp:1399
+msgid "DROUGHT LEAVES TANKS MORE VULNERABLE TO EXTREME WEATHER, SAY MECHANICS"
+msgstr ""
+
+#: src/engine/observer.cpp:1403
+msgid "DEFORESTATION SPREADS AS WAR CONTINUES"
+msgstr ""
+
+#: src/engine/observer.cpp:1413
+msgid "EXTREME DROUGHT ALSO AFFECTS STONE, ASPHALT AND RUBBLE"
+msgstr ""
+
+#: src/engine/observer.cpp:1416
+msgid "STRUCTURAL INTEGRITY OF BUILDINGS FALTERS, WARN ENGINEERS"
+msgstr ""
+
+#: src/engine/observer.cpp:1419
+msgid "INCREASED RISK OF FIRESTORM IN SUMMER"
+msgstr ""
+
+#: src/engine/observer.cpp:1429
+msgid "CITIES VULNERABLE TO INFERNO ONCE FORESTS ARE GONE"
+msgstr ""
+
+#: src/engine/observer.cpp:1432
+msgid "THE END OF DAYS HAS ARRIVED, SAY CULT LEADERS"
+msgstr ""
+
+#: src/engine/observer.cpp:1435
+msgid "CITIZENS IN AFFECTED REGIONS ARE ADVISED TO EVACUATE IMMEDIATELY"
+msgstr ""
+
+#. TRANSLATORS: The argument is a year number.
+#: src/engine/observer.cpp:1550
+#, c-format
+msgid "Spring, Year %d"
+msgstr "İlkbahar, Yıl %d"
+
+#. TRANSLATORS: The argument is a year number.
+#: src/engine/observer.cpp:1558
+#, c-format
+msgid "Summer, Year %d"
+msgstr "Yaz, Yıl %d"
+
+#. TRANSLATORS: The argument is a year number.
+#: src/engine/observer.cpp:1566
+#, c-format
+msgid "Autumn, Year %d"
+msgstr "Sonbahar, Yıl %d"
+
+#. TRANSLATORS: The argument is a year number.
+#: src/engine/observer.cpp:1574
+#, c-format
+msgid "Winter, Year %d"
+msgstr "Kış, Yıl %d"
+
+#: src/engine/observer.cpp:2056
+msgid "Zeppelin"
+msgstr ""
+
+#: src/engine/observer.cpp:2116 src/engine/observer.cpp:4904
+msgid "Drop Gas"
+msgstr "Gaz Atma"
+
+#: src/engine/observer.cpp:2118
+msgid "Dig Trenches"
+msgstr "Siper Kazma"
+
+#. TRANSLATORS: The argument is a tiletype.
+#: src/engine/observer.cpp:2124
+#, c-format
+msgid "Settle %s"
+msgstr "%s Yerleş"
+
+#. TRANSLATORS: The argument is a tiletype.
+#: src/engine/observer.cpp:2133
+#, c-format
+msgid "Build %s"
+msgstr "%s İnşa Et"
+
+#. TRANSLATORS: The argument is a tiletype.
+#: src/engine/observer.cpp:2148
+#, c-format
+msgid "Upgrade to %s"
+msgstr "%s'ye Yükselt"
+
+#. TRANSLATORS: The argument is a tiletype.
+#: src/engine/observer.cpp:2158
+#, c-format
+msgid "Cultivate %s"
+msgstr "%s Yetiştir"
+
+#. TRANSLATORS: The argument is a unittype.
+#: src/engine/observer.cpp:2167
+#, c-format
+msgid "Produce %s"
+msgstr "%s Üret"
+
+#: src/engine/observer.cpp:2172 src/engine/observer.cpp:4922
+msgid "Stop"
+msgstr ""
+
+#: src/engine/observer.cpp:2174
+msgid "Move"
+msgstr "İlerle"
+
+#. TRANSLATORS: The ordinal numeral, not the adverb.
+#: src/engine/observer.cpp:2520
+msgid "first"
+msgstr "birinci"
+
+#. TRANSLATORS: The ordinal numeral, not the measurement of time.
+#: src/engine/observer.cpp:2522
+msgid "second"
+msgstr ""
+
+#: src/engine/observer.cpp:2523
+msgid "third"
+msgstr ""
+
+#: src/engine/observer.cpp:2524
+msgid "fourth"
+msgstr ""
+
+#: src/engine/observer.cpp:2525
+msgid "fifth"
+msgstr ""
+
+#: src/engine/observer.cpp:2526
+msgid "sixth"
+msgstr ""
+
+#: src/engine/observer.cpp:2527
+msgid "seventh"
+msgstr ""
+
+#: src/engine/observer.cpp:2528 src/engine/observer.cpp:2534
+msgid "eighth"
+msgstr ""
+
+#. TRANSLATORS: The argument is an ordinal numeral.
+#: src/engine/observer.cpp:2544
+#, c-format
+msgid "You go %s."
+msgstr ""
+
+#. TRANSLATORS: The first argument is a name and the second
+#. argument is an ordinal numeral.
+#: src/engine/observer.cpp:2566
+#, c-format
+msgid "%s goes %s."
+msgstr ""
+
+#: src/engine/observer.cpp:3080 src/main/multiplayermenu.cpp:482
+#: src/main/multiplayermenu.cpp:1423 src/main/multiplayermenu.cpp:3618
+#: src/main/multiplayermenu.cpp:3701 src/main/onlinediorama.cpp:114
+#: src/main/onlinegame.cpp:61 src/main/onlinereplay.cpp:59
+msgid "ALL"
+msgstr ""
+
+#: src/engine/observer.cpp:3083 src/main/multiplayermenu.cpp:574
+#: src/main/onlinegame.cpp:64 src/main/onlinereplay.cpp:62
+msgid "GAME"
+msgstr ""
+
+#: src/engine/observer.cpp:3094
+msgid "The chat target. Click to switch (also TAB key)."
+msgstr ""
+
+#: src/engine/observer.cpp:3105
+msgid "Send"
+msgstr ""
+
+#: src/engine/observer.cpp:3150
+msgid "Click to open chat."
+msgstr ""
+
+#: src/engine/observer.cpp:3180
+msgid "Open Chat"
+msgstr ""
+
+#: src/engine/observer.cpp:3186
+msgid "Resign & Quit"
+msgstr ""
+
+#: src/engine/observer.cpp:3189
+msgid "Close"
+msgstr ""
+
+#. TRANSLATORS: The price of a fictional newspaper. The first argument
+#. is the number of whole dollars, the next two arguments are the two
+#. digits in the number of cents.
+#. Feel free to change the valuta if that makes sense.
+#: src/engine/observer.cpp:3276
+#, c-format
+msgid "Price: $%d.%d%d"
+msgstr ""
+
+#: src/engine/observer.cpp:3303
+msgid "The Planet"
+msgstr ""
+
+#: src/engine/observer.cpp:3519
+msgid "Mission Briefing"
+msgstr ""
+
+#: src/engine/observer.cpp:3750
+msgid "This player has been defeated."
+msgstr ""
+
+#: src/engine/observer.cpp:4009
+msgid "Defeat!"
+msgstr ""
+
+#: src/engine/observer.cpp:4014
+msgid "All players are defeated!"
+msgstr ""
+
+#: src/engine/observer.cpp:4019
+msgid "You have been defeated."
+msgstr ""
+
+#: src/engine/observer.cpp:4025 src/engine/observer.cpp:4070
+msgid "Score:"
+msgstr ""
+
+#: src/engine/observer.cpp:4059
+msgid "A player is victorious!"
+msgstr ""
+
+#: src/engine/observer.cpp:4064
+msgid "You are victorious."
+msgstr ""
+
+#: src/engine/observer.cpp:4113 src/main/mainmenu.cpp:470
+#: src/main/mainmenu.cpp:516 src/main/mainmenu.cpp:586
+#: src/main/mainmenu.cpp:696 src/main/mainmenu.cpp:745
+#: src/main/mainmenu.cpp:807 src/main/mainmenu.cpp:846
+#: src/main/mainmenu.cpp:920 src/main/mainmenu.cpp:1003
+#: src/main/mainmenu.cpp:1172
+msgid "cancel"
+msgstr ""
+
+#: src/engine/observer.cpp:4122
+msgid "Resign?"
+msgstr ""
+
+#: src/engine/observer.cpp:4124
+msgid "Are you sure you want to resign?"
+msgstr ""
+
+#: src/engine/observer.cpp:4126
+msgid "resign"
+msgstr ""
+
+#: src/engine/observer.cpp:4695
+msgid "Slow air unit that deploys gas in an area."
+msgstr ""
+
+#: src/engine/observer.cpp:4726 src/engine/observer.cpp:4728
+msgid "All-round infantry unit that can dig trenches."
+msgstr ""
+
+#: src/engine/observer.cpp:4730
+msgid "Shoots three times and can lock down a space."
+msgstr ""
+
+#: src/engine/observer.cpp:4732
+msgid "Can bombard far-away tiles."
+msgstr ""
+
+#: src/engine/observer.cpp:4734
+msgid "Does not attack but has a powerful shell ability."
+msgstr ""
+
+#: src/engine/observer.cpp:4736
+msgid "Can build settlements."
+msgstr ""
+
+#: src/engine/observer.cpp:4738
+msgid "Fast but fragile infantry unit that can build outposts."
+msgstr ""
+
+#: src/engine/observer.cpp:4778 src/engine/observer.cpp:4788
+#: src/engine/observer.cpp:4790 src/engine/observer.cpp:4792
+msgid "Inaccessible to ground units."
+msgstr ""
+
+#: src/engine/observer.cpp:4780
+msgid "An inspiring grassland."
+msgstr ""
+
+#: src/engine/observer.cpp:4782
+msgid "Left over after grass was destroyed."
+msgstr ""
+
+#: src/engine/observer.cpp:4784
+msgid "An arid wasteland."
+msgstr ""
+
+#: src/engine/observer.cpp:4786
+msgid "Left over after a structure was destroyed."
+msgstr ""
+
+#: src/engine/observer.cpp:4794
+msgid "Trees provide cover for your troops."
+msgstr ""
+
+#: src/engine/observer.cpp:4796
+msgid "Capture or destroy all enemy Cities to win."
+msgstr ""
+
+#: src/engine/observer.cpp:4798
+msgid "Generates income at night."
+msgstr ""
+
+#: src/engine/observer.cpp:4800
+msgid "Produces militia and settlers."
+msgstr ""
+
+#: src/engine/observer.cpp:4802
+msgid "Produces tanks and generates income at night."
+msgstr ""
+
+#: src/engine/observer.cpp:4804
+msgid "Produces specialized military units."
+msgstr ""
+
+#: src/engine/observer.cpp:4806
+msgid "Produces zeppelins."
+msgstr ""
+
+#: src/engine/observer.cpp:4808
+msgid "Cultivates surrounding spaces when built."
+msgstr ""
+
+#: src/engine/observer.cpp:4810
+msgid "Crops can grow here."
+msgstr ""
+
+#: src/engine/observer.cpp:4812
+msgid "Harvested for income at night."
+msgstr ""
+
+#: src/engine/observer.cpp:4814
+msgid "Provides cover from bullets."
+msgstr ""
+
+#: src/engine/observer.cpp:4864
+msgid ""
+"Attack an enemy. All friendly ground units adjacent to the target join the "
+"attack."
+msgstr ""
+
+#: src/engine/observer.cpp:4875
+msgid ""
+"Attack an enemy and lock down a space. Any enemy entering that space is "
+"attacked immediately and stops moving."
+msgstr ""
+
+#: src/engine/observer.cpp:4885
+msgid ""
+"Fire two volleys of explosive rounds at an adjacent space, dealing "
+"indiscriminate damage."
+msgstr ""
+
+#: src/engine/observer.cpp:4895
+msgid ""
+"Fire mortar rounds at a space at long range, dealing indiscriminate damage."
+msgstr ""
+
+#: src/engine/observer.cpp:4905
+msgid ""
+"Release a lethal gas in the space below. Gas spreads to surrounding spaces "
+"at the end of the Decay phase."
+msgstr ""
+
+#: src/engine/observer.cpp:4915
+msgid "Take control of an enemy tile."
+msgstr ""
+
+#: src/engine/observer.cpp:4923
+msgid "Halt previous activities."
+msgstr ""
+
+#: src/engine/observer.cpp:4931
+msgid "Increase the number of buildings on this tile."
+msgstr ""
+
+#: src/engine/observer.cpp:4949
+msgid "Revoke"
+msgstr ""
+
+#: src/engine/observer.cpp:4950
+msgid "Cancel an order."
+msgstr ""
+
+#: src/engine/observer.cpp:4993
+msgid "Drought"
+msgstr ""
+
+#: src/engine/observer.cpp:4994
+msgid "Crops and trees will no longer grow here."
+msgstr ""
+
+#: src/engine/observer.cpp:5002
+msgid "Ground units are slowed."
+msgstr ""
+
+#: src/engine/observer.cpp:5008
+msgid "Ground units that remain here take damage in the Decay phase."
+msgstr ""
+
+#: src/engine/observer.cpp:5014
+msgid "Units that remain here take damage in the Decay phase."
+msgstr ""
+
+#: src/engine/observer.cpp:5020
+msgid "Units and tiles have fewer hitpoints."
+msgstr ""
+
+#: src/engine/observer.cpp:5026
+msgid ""
+"Ground units have fewer hitpoints. Ground units that remain here take damage "
+"in the Decay phase."
+msgstr ""
+
+#: src/engine/observer.cpp:5521
+msgid "The player was victorious!"
+msgstr ""
+
+#: src/engine/observer.cpp:5527
+msgid "The player was defeated."
+msgstr ""
+
+#: src/engine/ordercontext.cpp:80
+msgid "REVOKE"
+msgstr ""
+
+#: src/engine/ordercontext.cpp:87 src/engine/ordercontext.cpp:959
+msgid "STOP"
+msgstr ""
+
+#: src/engine/ordercontext.cpp:867
+msgid "RIFLEMAN"
+msgstr ""
+
+#: src/engine/ordercontext.cpp:868
+msgid "GUNNER"
+msgstr ""
+
+#: src/engine/ordercontext.cpp:869
+msgid "SAPPER"
+msgstr ""
+
+#: src/engine/ordercontext.cpp:870
+msgid "TANK"
+msgstr ""
+
+#: src/engine/ordercontext.cpp:871
+msgid "SETTLER"
+msgstr ""
+
+#: src/engine/ordercontext.cpp:872
+msgid "MILITIA"
+msgstr ""
+
+#: src/engine/ordercontext.cpp:873
+msgid "ZEPPELIN"
+msgstr ""
+
+#: src/engine/ordercontext.cpp:892
+msgid "GRASS"
+msgstr ""
+
+#: src/engine/ordercontext.cpp:893
+msgid "DIRT"
+msgstr ""
+
+#: src/engine/ordercontext.cpp:894
+msgid "DESERT"
+msgstr ""
+
+#: src/engine/ordercontext.cpp:895
+msgid "RUBBLE"
+msgstr ""
+
+#: src/engine/ordercontext.cpp:896
+msgid "RIDGE"
+msgstr ""
+
+#: src/engine/ordercontext.cpp:897
+msgid "MOUNTAIN"
+msgstr ""
+
+#: src/engine/ordercontext.cpp:898
+msgid "WATER"
+msgstr ""
+
+#: src/engine/ordercontext.cpp:899
+msgid "FOREST"
+msgstr ""
+
+#: src/engine/ordercontext.cpp:900
+msgid "CITY"
+msgstr ""
+
+#: src/engine/ordercontext.cpp:901
+msgid "TOWN"
+msgstr ""
+
+#: src/engine/ordercontext.cpp:902
+msgid "OUTPOST"
+msgstr ""
+
+#: src/engine/ordercontext.cpp:903
+msgid "INDUSTRY"
+msgstr ""
+
+#: src/engine/ordercontext.cpp:904
+msgid "BARRACKS"
+msgstr ""
+
+#: src/engine/ordercontext.cpp:905
+msgid "AIRFIELD"
+msgstr ""
+
+#: src/engine/ordercontext.cpp:906
+msgid "FARM"
+msgstr ""
+
+#: src/engine/ordercontext.cpp:907
+msgid "SOIL"
+msgstr ""
+
+#: src/engine/ordercontext.cpp:908
+msgid "CROPS"
+msgstr ""
+
+#: src/engine/ordercontext.cpp:909
+msgid "TRENCHES"
+msgstr ""
+
+#: src/engine/ordercontext.cpp:928 src/engine/ordercontext.cpp:930
+msgid "LOCKDOWN"
+msgstr ""
+
+#: src/engine/ordercontext.cpp:929
+msgid "FOCUS"
+msgstr ""
+
+#: src/engine/ordercontext.cpp:931
+msgid "SHELL"
+msgstr ""
+
+#: src/engine/ordercontext.cpp:932
+msgid "BOMBARD"
+msgstr ""
+
+#: src/engine/ordercontext.cpp:933
+msgid "DROP GAS"
+msgstr ""
+
+#: src/engine/ordercontext.cpp:934
+msgid "CAPTURE"
+msgstr ""
+
+#: src/engine/ordercontext.cpp:935
+msgid "DIG TRENCHES"
+msgstr ""
+
+#: src/engine/ordercontext.cpp:936
+msgid "CULTIVATE"
+msgstr ""
+
+#: src/engine/ordercontext.cpp:944
+msgid "UPGRADE"
+msgstr ""
+
+#: src/engine/ordercontext.cpp:961
+msgid "MOVE"
+msgstr ""
+
+#: src/engine/selectorcontext.cpp:55
+msgid "GROUND"
+msgstr ""
+
+#: src/engine/selectorcontext.cpp:56 src/engine/selectorcontext.cpp:62
+msgid "UNIT"
+msgstr ""
+
+#: src/engine/selectorcontext.cpp:58
+msgid "TILE"
+msgstr ""
+
+#: src/engine/selectorcontext.cpp:61
+msgid "AIR"
+msgstr ""
+
+#: src/engine/tutorial.cpp:657
+msgid "Hi! This tutorial will teach you how to play Epicinium."
+msgstr ""
+
+#: src/engine/tutorial.cpp:665
+msgid ""
+"Epicinium is a strategy game played in rounds, where each round consists of "
+"multiple phases. In the Planning phase, you can select units by clicking on "
+"them with the LEFT MOUSE BUTTON."
+msgstr ""
+
+#: src/engine/tutorial.cpp:716
+msgid ""
+"Good, you've selected your City tile. Now try selecting one of your Militia "
+"units by clicking on it with the LEFT MOUSE BUTTON."
+msgstr ""
+
+#: src/engine/tutorial.cpp:774
+msgid ""
+"Your units are red. Try selecting one of your Militia units by clicking on "
+"it with the LEFT MOUSE BUTTON."
+msgstr ""
+
+#: src/engine/tutorial.cpp:821
+msgid ""
+"Select one of your Militia units by clicking on it with the LEFT MOUSE "
+"BUTTON."
+msgstr ""
+
+#: src/engine/tutorial.cpp:866
+msgid ""
+"Once selected, units can be ordered to move and attack by clicking on their "
+"destination with the RIGHT MOUSE BUTTON."
+msgstr ""
+
+#: src/engine/tutorial.cpp:900
+msgid ""
+"Give your unit a Move order by clicking on a different location with the "
+"RIGHT MOUSE BUTTON."
+msgstr ""
+
+#: src/engine/tutorial.cpp:934
+msgid ""
+"Excellent! The unit did not yet move, because the game is currently in the "
+"Planning phase. Click the Ready button or press the SPACE BAR to start the "
+"Action phase."
+msgstr ""
+
+#: src/engine/tutorial.cpp:1006 src/engine/tutorial.cpp:1040
+#: src/logic/cycle.cpp:141
+msgid ""
+"In the Action phase, players take turns automatically executing their orders."
+msgstr ""
+
+#: src/engine/tutorial.cpp:1051
+msgid ""
+"Next, a Night phase will take place. (Click the pause sign or press the "
+"SPACE BAR to unpause.)"
+msgstr ""
+
+#: src/engine/tutorial.cpp:1111 src/engine/tutorial.cpp:1160
+msgid ""
+"At night, City tiles can gain power if they are surrounded by enough Grass, "
+"Forest, Crops, Water or snowed tiles. City tiles also generate income at "
+"night."
+msgstr ""
+
+#: src/engine/tutorial.cpp:1174
+msgid ""
+"Afterwards, a new Planning phase begins. Time to issue new orders to your "
+"tiles and units."
+msgstr ""
+
+#: src/engine/tutorial.cpp:1232
+msgid ""
+"Besides units, you can also give orders to tiles. Try selecting one of your "
+"City tiles by clicking on it with the LEFT MOUSE BUTTON."
+msgstr ""
+
+#: src/engine/tutorial.cpp:1279
+msgid ""
+"Tiles you control have red highlights. Try selecting one of your City tiles "
+"by clicking on it with the LEFT MOUSE BUTTON."
+msgstr ""
+
+#: src/engine/tutorial.cpp:1326
+msgid ""
+"Select one of your City tiles by clicking on it with the LEFT MOUSE BUTTON."
+msgstr ""
+
+#: src/engine/tutorial.cpp:1371
+msgid ""
+"Tiles can produce new units and build other buildings. Once selected, access "
+"these abilities by clicking on the tile again with the RIGHT MOUSE BUTTON. "
+"Please order one of your City tiles to produce a Settler unit."
+msgstr ""
+
+#: src/engine/tutorial.cpp:1433
+msgid ""
+"Order your City tile to produce a Settler unit by selecting it with the LEFT "
+"MOUSE BUTTON, clicking on it again with the RIGHT MOUSE BUTTON, then "
+"clicking the upper panel and finally clicking on the tile where you want the "
+"Settler to be created."
+msgstr ""
+
+#: src/engine/tutorial.cpp:1519
+msgid ""
+"Great! Creating new units and tiles costs money and power, but they are only "
+"deducted when the order is executed in the Action phase. Click the Ready "
+"button or press the SPACE BAR to start the next Action phase."
+msgstr ""
+
+#: src/engine/tutorial.cpp:1595 src/engine/tutorial.cpp:1631
+msgid ""
+"If units or tiles cannot complete their order in a single Action phase, they "
+"will keep their order and try again later."
+msgstr ""
+
+#: src/engine/tutorial.cpp:1643
+msgid ""
+"After every Night phase, a new season arrives that begins with a Weather "
+"phase. (Click the pause sign or press the SPACE BAR to unpause.)"
+msgstr ""
+
+#: src/engine/tutorial.cpp:1719 src/engine/tutorial.cpp:1753
+msgid "In the Weather phase, weather effects change and plantlife may grow."
+msgstr ""
+
+#: src/engine/tutorial.cpp:1764
+msgid ""
+"Then a new Planning phase begins as usual. Select your units and give them "
+"some new orders!"
+msgstr ""
+
+#: src/engine/tutorial.cpp:1810
+msgid ""
+"Once your units reach enemy tiles they will automatically occupy them. As "
+"long as a tile is occupied, it cannot execute orders, gain power or provide "
+"income. Occupy all enemy City tiles in order to defeat your opponent."
+msgstr ""
+
+#: src/engine/tutorial.cpp:1852
+msgid ""
+"Militia units will attack when moving into enemy units. They will also fire "
+"back if attacked and attack any units that move past them."
+msgstr ""
+
+#: src/engine/tutorial.cpp:1886
+msgid ""
+"Settler units can be used to build tiles that generate income. Once the "
+"Settler unit is surrounded by Grass and Forest tiles, select it, click on it "
+"again with the RIGHT MOUSE BUTTON and order it to build either a Farm tile "
+"or a Town tile."
+msgstr ""
+
+#: src/engine/tutorial.cpp:1965
+msgid ""
+"Excellent! Buildings generate income at night, and you can spend that money "
+"on new military units such as the Militia unit."
+msgstr ""
+
+#: src/engine/tutorial.cpp:2003
+msgid ""
+"Over the course of the game, global warming will make the world less "
+"habitable. Destroying forests and building new tiles will accelerate this "
+"process."
+msgstr ""
+
+#: src/engine/tutorial.cpp:2030
+msgid ""
+"Industry tiles are a cheap way to generate income and can produce the "
+"powerful Tank unit. However, they also lower the humidity of nearby tiles "
+"and accelerate global warming. To build an Industry tile select one of your "
+"City tiles, click on it again with the RIGHT MOUSE BUTTON, click the left "
+"panel and then click on an adjacent tile."
+msgstr ""
+
+#: src/engine/tutorial.cpp:2120
+msgid ""
+"Great! Industry and Barracks tiles can be upgraded to increase their size. "
+"The more buildings a tile has, the stronger a unit produced there will be."
+msgstr ""
+
+#: src/engine/tutorial.cpp:2170 src/engine/tutorial.cpp:2193
+msgid "Tiles need power to produce units and only gain power at night."
+msgstr ""
+
+#: src/engine/tutorial.cpp:2202
+msgid ""
+"Barracks tiles can produce Rifleman, Gunner and Sapper units. To build a "
+"Barracks tile select one of your City tiles, click on it again with the "
+"RIGHT MOUSE BUTTON, click the lower panel and then click on an adjacent tile."
+msgstr ""
+
+#: src/engine/tutorial.cpp:2309
+msgid ""
+"That's it! Remember: you must occupy or destroy all enemy City tiles in "
+"order to defeat your opponent. Good luck!"
+msgstr ""
+
+#: src/engine/tutorial.cpp:2351
+msgid ""
+"Victory! After every game you win, you are rewarded with a score equal to "
+"the number of grass tiles left on the map. If the score you obtain in a game "
+"is higher than the amount of rating points you have, your rating will rise!"
+msgstr ""
+
+#: src/engine/tutorial.cpp:2386
+msgid ""
+"Try again! Remember: you must occupy or destroy all enemy City tiles in "
+"order to defeat your opponent."
+msgstr ""
+
+#. TRANSLATORS: This is the name of the game. Ideally it is left
+#. untranslated.
+#: src/graphics/graphics.cpp:236
+msgid "Epicinium"
+msgstr ""
+
+#: src/interface/multitextinput.cpp:67 src/interface/textinput.cpp:78
+msgid "Cut"
+msgstr ""
+
+#: src/interface/multitextinput.cpp:73 src/interface/textinput.cpp:84
+msgid "Copy"
+msgstr ""
+
+#: src/interface/multitextinput.cpp:79 src/interface/textinput.cpp:90
+msgid "Paste"
+msgstr ""
+
+#: src/logic/cycle.cpp:107
+msgid ""
+"In the Weather phase, the season changes and crops can grow. In Spring, "
+"trees can grow. In Autumn, global warming worsens."
+msgstr ""
+
+#: src/logic/cycle.cpp:118
+msgid ""
+"In the Night phase, building tiles gain power depending on their "
+"surroundings and generate income."
+msgstr ""
+
+#: src/logic/cycle.cpp:131
+msgid ""
+"In the Planning phase, players decide which orders to give to their units "
+"and tiles. Orders are executed in the Action phase."
+msgstr ""
+
+#: src/logic/cycle.cpp:150
+msgid ""
+"In the Decay phase, any Frostbite, Firestorm or Gas present on the map deals "
+"damage. Gas spreads out or dissipates."
+msgstr ""
+
+#: src/logic/player.cpp:90
+msgid "Red Player"
+msgstr ""
+
+#: src/logic/player.cpp:91
+msgid "Blue Player"
+msgstr ""
+
+#: src/logic/player.cpp:92
+msgid "Yellow Player"
+msgstr ""
+
+#: src/logic/player.cpp:93
+msgid "Teal Player"
+msgstr ""
+
+#: src/logic/player.cpp:94
+msgid "Black Player"
+msgstr ""
+
+#: src/logic/player.cpp:95
+msgid "Pink Player"
+msgstr ""
+
+#: src/logic/player.cpp:96
+msgid "Indigo Player"
+msgstr ""
+
+#: src/logic/player.cpp:97
+msgid "Purple Player"
+msgstr ""
+
+#. TRANSLATORS: This is the title of the credits menu.
+#: src/main/creditsmenu.cpp:59
+msgid "Credits"
+msgstr ""
+
+#. TRANSLATORS: Please translate "a bunch of hacks"
+#. as "A Bunch of Hacks" in non-English languages that use the
+#. Latin script, and as a transliteration (NOT a translation)
+#. in other languages.  The lowercase usage in English
+#. reinforces a pun that only works in English.
+#: src/main/creditsmenu.cpp:81
+msgid "a game by a bunch of hacks"
+msgstr ""
+
+#: src/main/creditsmenu.cpp:91
+msgid "game design, programming, graphic design"
+msgstr ""
+
+#: src/main/creditsmenu.cpp:100
+msgid "game design, programming, engineering, sound design"
+msgstr ""
+
+#: src/main/creditsmenu.cpp:109
+msgid "graphic design"
+msgstr ""
+
+#: src/main/creditsmenu.cpp:118
+msgid "programming, sound design"
+msgstr ""
+
+#: src/main/creditsmenu.cpp:134
+msgid "special thanks"
+msgstr ""
+
+#: src/main/creditsmenu.cpp:144
+msgid "box art"
+msgstr ""
+
+#: src/main/creditsmenu.cpp:153
+msgid "story concepts, copywriting"
+msgstr ""
+
+#: src/main/creditsmenu.cpp:162
+msgid "copywriting"
+msgstr ""
+
+#: src/main/creditsmenu.cpp:171
+msgid "initial os x support"
+msgstr ""
+
+#: src/main/creditsmenu.cpp:186 src/main/multiplayermenu.cpp:514
+msgid "return to main menu"
+msgstr ""
+
+#: src/main/mainmenu.cpp:148
+msgid ""
+"Usernames must be between 3 and 36 characters long and can only contain "
+"letters, numbers, underscores, dashes, periods and tildes."
+msgstr ""
+
+#: src/main/mainmenu.cpp:168 src/main/mainmenu.cpp:3709
+msgid "This is not a valid email address."
+msgstr ""
+
+#: src/main/mainmenu.cpp:186
+msgid ""
+"Passwords must consist of at least 8 characters and must contain a letter "
+"and a non-letter."
+msgstr ""
+
+#: src/main/mainmenu.cpp:205
+msgid "The passwords do not match."
+msgstr ""
+
+#: src/main/mainmenu.cpp:223
+msgid "This is not a valid password reset token."
+msgstr ""
+
+#. TRANSLATORS: "Key" here refers to a sequence of letters and numbers
+#. that the user enters in a textfield to unlock access to the game.
+#: src/main/mainmenu.cpp:243
+msgid "This is not a valid key."
+msgstr ""
+
+#: src/main/mainmenu.cpp:291 src/main/mainmenu.cpp:304
+msgid "Oops! Connection to server was lost."
+msgstr ""
+
+#: src/main/mainmenu.cpp:294
+msgid "Attempting to reconnect..."
+msgstr ""
+
+#: src/main/mainmenu.cpp:307
+msgid "Press PLAY to rejoin."
+msgstr ""
+
+#: src/main/mainmenu.cpp:324
+msgid "LOG OUT"
+msgstr ""
+
+#: src/main/mainmenu.cpp:327
+msgid "LOG IN"
+msgstr "GİRİŞ YAP"
+
+#: src/main/mainmenu.cpp:330
+msgid "REGISTER"
+msgstr "KAYDOL"
+
+#: src/main/mainmenu.cpp:368 src/main/mainmenu.cpp:2983
+#: src/main/mainmenu.cpp:3006 src/main/mainmenu.cpp:3020
+#: src/main/mainmenu.cpp:3034 src/main/mainmenu.cpp:3049
+#: src/main/mainmenu.cpp:3092 src/main/mainmenu.cpp:3104
+#: src/main/mainmenu.cpp:3116 src/main/mainmenu.cpp:3131
+#: src/main/mainmenu.cpp:3159 src/main/mainmenu.cpp:3172
+msgid "PLAY"
+msgstr "OYNA"
+
+#: src/main/mainmenu.cpp:382
+msgid "Download in progress"
+msgstr ""
+
+#: src/main/mainmenu.cpp:385 src/main/mainmenu.cpp:3314
+msgid "Downloading..."
+msgstr "İndiriliyor..."
+
+#: src/main/mainmenu.cpp:408
+msgid "Enter Key"
+msgstr "Anahtar Giriniz"
+
+#: src/main/mainmenu.cpp:411
+msgid "Feedback?"
+msgstr ""
+
+#: src/main/mainmenu.cpp:426 src/main/mainmenu.cpp:496
+#: src/main/mainmenu.cpp:538 src/main/mainmenu.cpp:608
+#: src/main/mainmenu.cpp:712 src/main/mainmenu.cpp:862
+#: src/main/mainmenu.cpp:936 src/main/mainmenu.cpp:1095
+#: src/main/mainmenu.cpp:4374 src/main/multiplayermenu.cpp:300
+msgid "An error has occurred."
+msgstr ""
+
+#: src/main/mainmenu.cpp:437 src/main/mainmenu.cpp:656
+#: src/main/mainmenu.cpp:832 src/main/mainmenu.cpp:879
+#: src/main/mainmenu.cpp:952
+msgid "Email address:"
+msgstr "E-posta adresi?"
+
+#: src/main/mainmenu.cpp:445 src/main/mainmenu.cpp:664
+#: src/main/mainmenu.cpp:960
+msgid "Password:"
+msgstr "Şifre:"
+
+#: src/main/mainmenu.cpp:456
+msgid "Keep me logged in:"
+msgstr ""
+
+#: src/main/mainmenu.cpp:466 src/main/mainmenu.cpp:512
+#: src/main/mainmenu.cpp:582 src/main/mainmenu.cpp:692
+#: src/main/mainmenu.cpp:741 src/main/mainmenu.cpp:768
+#: src/main/mainmenu.cpp:803 src/main/mainmenu.cpp:842
+#: src/main/mainmenu.cpp:916 src/main/mainmenu.cpp:999
+msgid "confirm"
+msgstr "onaylıyorum"
+
+#: src/main/mainmenu.cpp:480
+msgid "forgot password?"
+msgstr "şifrenizi mi unuttunuz?"
+
+#: src/main/mainmenu.cpp:502
+msgid ""
+"You are not logged in. Would you like to play as a guest using your Discord "
+"username?"
+msgstr ""
+
+#: src/main/mainmenu.cpp:524 src/main/mainmenu.cpp:594
+msgid ""
+"If you are on Discord, you can join our community by visiting our Discord "
+"server (click here)."
+msgstr ""
+
+#: src/main/mainmenu.cpp:573
+msgid "Looking for the Discord application..."
+msgstr "Discord uygulaması aranıyor..."
+
+#: src/main/mainmenu.cpp:649
+msgid "Connecting with Steam..."
+msgstr "Steam ile bağlanılıyor..."
+
+#: src/main/mainmenu.cpp:679
+msgid ""
+"I confirm that I want to merge my Steam-based Epicinium account with my "
+"email-based Epicinium account."
+msgstr ""
+
+#. TRANSLATORS: "Key" here refers to a sequence of letters and
+#. numbers that the user enters in a textfield to unlock access
+#. to the game.
+#: src/main/mainmenu.cpp:721
+msgid "If you have a key, activate it here."
+msgstr ""
+
+#. TRANSLATORS: "Key" here refers to a sequence of letters and
+#. numbers that the user enters in a textfield to unlock access
+#. to the game.
+#: src/main/mainmenu.cpp:731
+msgid "Key:"
+msgstr ""
+
+#: src/main/mainmenu.cpp:761
+msgid "Key activation successful!"
+msgstr ""
+
+#: src/main/mainmenu.cpp:785 src/main/mainmenu.cpp:3902
+msgid ""
+"There already exists an Epicinium user with the same name. Please enter a "
+"new username to use within Epicinium."
+msgstr ""
+
+#: src/main/mainmenu.cpp:793 src/main/mainmenu.cpp:944
+msgid "Username:"
+msgstr ""
+
+#: src/main/mainmenu.cpp:823
+msgid ""
+"If you forgot your password and want to reset it, please enter the email "
+"address that you used to register. We will email you a password reset token."
+msgstr ""
+"Şifrenizi unuttuysanız ve sıfırlamak istiyorsanız, lütfen kaydolurken "
+"kullandığınız e-posta adresini giriniz. Size bir şifre sıfırlama kodu "
+"göndereceğiz."
+
+#: src/main/mainmenu.cpp:868
+msgid ""
+"Within a few minutes, you should receive an email containing your password "
+"reset token. Please check your spam folder as well! If you have trouble "
+"restting your password, please contact us at help@epicinium.nl"
+msgstr ""
+"Birkaç dakika içinde, parola sıfırlama kodunuzu içeren bir e-posta "
+"almalısınız. Lütfen spam klasörünüzü de kontrol edin! Şifrenizi sıfırlama "
+"konusunda sorun yaşıyorsanız, lütfen help@epicinium.nl adresinden bizimle "
+"iletişime geçin."
+
+#: src/main/mainmenu.cpp:890
+msgid "Token:"
+msgstr "Kod:"
+
+#: src/main/mainmenu.cpp:898
+msgid "New password:"
+msgstr "Yeni şifre:"
+
+#: src/main/mainmenu.cpp:906 src/main/mainmenu.cpp:968
+msgid "Confirm password:"
+msgstr "Şifreyi onayla:"
+
+#: src/main/mainmenu.cpp:979
+msgid ""
+"Keep me up to date via email with news about Epicinium and other games made "
+"by A Bunch of Hacks."
+msgstr ""
+
+#: src/main/mainmenu.cpp:1013
+msgid ""
+"A valid email address is necessary to recover your account. We will only "
+"send emails related to account management and (if you opt in) updates about "
+"our games. Click here to read our full privacy statement."
+msgstr ""
+
+#: src/main/mainmenu.cpp:1030
+msgid ""
+"Saving files seems not to be working! Please make sure the game is unpacked "
+"or installed in a folder where you have permission to write. Settings might "
+"not be stored correctly when the game closes."
+msgstr ""
+"Dosya kayıt sistemi çalışamıyor gibi gözüküyor. Lütfen oyunu kurduğunuz "
+"klasöre yazma iznine sahip olduğunuzdan emin olun. Oyun kapandığında ayarlar "
+"doğru şekilde saklanmayabilir."
+
+#: src/main/mainmenu.cpp:1042
+msgid "ok"
+msgstr ""
+
+#: src/main/mainmenu.cpp:1059
+msgid "Do you want to keep these settings?"
+msgstr ""
+
+#: src/main/mainmenu.cpp:1066
+msgid "keep changes"
+msgstr ""
+
+#: src/main/mainmenu.cpp:1070
+msgid "revert"
+msgstr ""
+
+#. TRANSLATORS: The argument is a number of seconds.
+#: src/main/mainmenu.cpp:1081 src/main/mainmenu.cpp:2845
+#, c-format
+msgid "Reverting to previous settings in %d seconds."
+msgstr ""
+
+#: src/main/mainmenu.cpp:1114 src/main/multiplayermenu.cpp:319
+msgid "Bug report"
+msgstr ""
+
+#: src/main/mainmenu.cpp:1142 src/main/mainmenu.cpp:2736
+#: src/main/multiplayermenu.cpp:347 src/main/multiplayermenu.cpp:1526
+msgid "Please describe what happened."
+msgstr ""
+
+#: src/main/mainmenu.cpp:1155 src/main/multiplayermenu.cpp:365
+msgid ""
+"Send my Epicinium log files to the developers to help them with debugging:"
+msgstr ""
+"Epicinium log dosyalarımı, geliştiricilere hata ayıklama konusunda yardımcı "
+"olmaları için gönder:"
+
+#: src/main/mainmenu.cpp:1169 src/main/multiplayermenu.cpp:383
+msgid "send"
+msgstr "gönder"
+
+#: src/main/mainmenu.cpp:1192 src/main/mainmenu.cpp:1204
+msgid "Initializing..."
+msgstr "Başlatılıyor..."
+
+#: src/main/mainmenu.cpp:1217 src/main/mainmenu.cpp:3542
+#: src/main/mainmenu.cpp:3649 src/main/mainmenu.cpp:4114
+msgid "Not logged in."
+msgstr ""
+
+#: src/main/mainmenu.cpp:1228 src/main/mainmenu.cpp:4348
+msgid "Find us on Discord!"
+msgstr ""
+
+#: src/main/mainmenu.cpp:1240
+msgid "SETTINGS"
+msgstr "AYARLAR"
+
+#: src/main/mainmenu.cpp:1244
+msgid "CREDITS"
+msgstr "EMEĞİ GEÇENLER"
+
+#. TRANSLATORS: Closes the entire game.
+#: src/main/mainmenu.cpp:1249
+msgid "QUIT"
+msgstr "ÇIKIŞ"
+
+#: src/main/mainmenu.cpp:2718 src/main/mainmenu.cpp:2728
+#: src/main/multiplayermenu.cpp:1500 src/main/multiplayermenu.cpp:1514
+msgid "Please finish the sentence."
+msgstr ""
+
+#: src/main/mainmenu.cpp:2986
+msgid "You need to be connected to the server to play!"
+msgstr ""
+
+#: src/main/mainmenu.cpp:2999 src/main/mainmenu.cpp:3066
+msgid "UPDATE"
+msgstr ""
+
+#: src/main/mainmenu.cpp:3009
+msgid ""
+"A new version is available! Please update Epicinium via your GameJolt client."
+msgstr ""
+
+#: src/main/mainmenu.cpp:3023
+msgid ""
+"A new version is available! Please update Epicinium via your itch desktop "
+"app."
+msgstr ""
+"Yeni bir sürüm mevcut! Lütfen Epicinium'u, itch masaüstü uygulamanız "
+"aracılığıyla güncelleyin."
+
+#: src/main/mainmenu.cpp:3037
+msgid "A new version is available! Please update Epicinium via Steam."
+msgstr ""
+
+#: src/main/mainmenu.cpp:3052
+msgid ""
+"A new version is available! Please download the latest version of Epicinium."
+msgstr ""
+
+#: src/main/mainmenu.cpp:3078
+msgid "RESTART"
+msgstr "YENİDEN BAŞLAT"
+
+#: src/main/mainmenu.cpp:3095
+msgid "Failed to connect to Steam."
+msgstr ""
+
+#: src/main/mainmenu.cpp:3107 src/main/mainmenu.cpp:4397
+msgid "Connecting to Steam..."
+msgstr "Steam'e bağlanılıyor..."
+
+#: src/main/mainmenu.cpp:3134 src/main/mainmenu.cpp:3162
+msgid "Please log in to play!"
+msgstr ""
+
+#: src/main/mainmenu.cpp:3140
+msgid "Log in to play or play as a guest using your Discord username."
+msgstr ""
+"Oynamak için giriş yapın veya Discord kullanıcı adınızı kullanarak misafir "
+"olarak oynayın."
+
+#. TRANSLATORS: The argument is a SemVer number, e.g. "0.35.0".
+#: src/main/mainmenu.cpp:3284
+#, c-format
+msgid "Version mismatch. Please update to version %s."
+msgstr "Sürüm uyuşmazlığı. Lütfen %s sürümüne güncelleyin."
+
+#. TRANSLATORS: The argument is a SemVer number, e.g. "0.35.0".
+#: src/main/mainmenu.cpp:3301
+#, c-format
+msgid "A patch is available! Click to download version %s."
+msgstr ""
+
+#. TRANSLATORS: The argument is a SemVer number, e.g. "0.35.0".
+#: src/main/mainmenu.cpp:3327
+#, c-format
+msgid "Patch downloaded. Click to install version %s."
+msgstr ""
+
+#: src/main/mainmenu.cpp:3340
+msgid "Downloading patch failed."
+msgstr ""
+
+#. TRANSLATORS: The argument is a SemVer number, e.g. "0.35.0".
+#: src/main/mainmenu.cpp:3359
+#, c-format
+msgid "Continuing download of version %s."
+msgstr ""
+
+#: src/main/mainmenu.cpp:3385
+msgid "Downloading additional files..."
+msgstr ""
+
+#. TRANSLATORS: The argument is a filename.
+#: src/main/mainmenu.cpp:3391
+#, c-format
+msgid "Downloading %s..."
+msgstr ""
+
+#: src/main/mainmenu.cpp:3432
+msgid "Connecting to official servers..."
+msgstr ""
+
+#: src/main/mainmenu.cpp:3448
+msgid "Connected to official servers."
+msgstr ""
+
+#: src/main/mainmenu.cpp:3461 src/user/client.cpp:900
+msgid "The server has been shut down for maintenance. We'll be back soon!"
+msgstr ""
+
+#: src/main/mainmenu.cpp:3471
+msgid "An update is required to connect to the server."
+msgstr ""
+
+#: src/main/mainmenu.cpp:3480
+msgid "Failed to connect to official servers."
+msgstr ""
+
+#: src/main/mainmenu.cpp:3498
+msgid "Attempting to log in..."
+msgstr ""
+
+#: src/main/mainmenu.cpp:3509
+msgid "Login successful."
+msgstr ""
+
+#: src/main/mainmenu.cpp:3557 src/main/mainmenu.cpp:3701
+msgid "Could not connect to the login server."
+msgstr ""
+
+#: src/main/mainmenu.cpp:3565 src/main/mainmenu.cpp:4473
+msgid "Unknown email address or incorrect password."
+msgstr ""
+
+#: src/main/mainmenu.cpp:3573 src/main/mainmenu.cpp:3812
+#: src/main/mainmenu.cpp:4485
+msgid ""
+"Your account has been locked due to too many failed login attempts. Please "
+"try again in 2 hours."
+msgstr ""
+
+#: src/main/mainmenu.cpp:3583
+msgid ""
+"Your account has been disabled. If you have any questions about this, you "
+"can reach us at support@epicinium.nl"
+msgstr ""
+
+#: src/main/mainmenu.cpp:3607
+msgid "An unexpected error has occurred while logging in."
+msgstr ""
+
+#: src/main/mainmenu.cpp:3638
+msgid "Attempting to register..."
+msgstr ""
+
+#: src/main/mainmenu.cpp:3675
+msgid "Successfully registered. Please log in."
+msgstr ""
+
+#: src/main/mainmenu.cpp:3717
+msgid "This username is already taken."
+msgstr ""
+
+#: src/main/mainmenu.cpp:3725
+msgid "There is already an account registered for this email address."
+msgstr ""
+
+#: src/main/mainmenu.cpp:3747
+msgid "An unexpected error has occurred while registering."
+msgstr ""
+
+#: src/main/mainmenu.cpp:3781
+msgid "Failed to authenticate using Steam."
+msgstr ""
+
+#: src/main/mainmenu.cpp:3786
+msgid "Your login session has expired. Please log in again."
+msgstr ""
+
+#: src/main/mainmenu.cpp:3796
+msgid "You are already online and logged in with this account elsewhere."
+msgstr ""
+
+#: src/main/mainmenu.cpp:3829
+msgid ""
+"Your account has been disabled. If you have any questions about this, You "
+"can reach us at support@epicinium.nl"
+msgstr ""
+
+#: src/main/mainmenu.cpp:3848
+msgid "You do not own this game on Steam."
+msgstr ""
+
+#: src/main/mainmenu.cpp:3855
+msgid "A key is required to unlock access to the server."
+msgstr ""
+
+#: src/main/mainmenu.cpp:3877
+msgid "Please enter a username to use within Epicinium."
+msgstr ""
+
+#: src/main/mainmenu.cpp:3886 src/main/mainmenu.cpp:3912
+#: src/main/mainmenu.cpp:3943
+msgid ""
+"An unexpected error occurred while validating your login session. Please log "
+"in again."
+msgstr ""
+
+#: src/main/mainmenu.cpp:3935
+msgid ""
+"An unexpected error occurred while authenticating using your Steam account."
+msgstr ""
+
+#: src/main/mainmenu.cpp:3995
+msgid "Attempting to activate key..."
+msgstr ""
+
+#: src/main/mainmenu.cpp:4006
+msgid "Logged in."
+msgstr ""
+
+#: src/main/mainmenu.cpp:4032
+msgid "The key is incorrect."
+msgstr ""
+
+#: src/main/mainmenu.cpp:4040
+msgid "The key has already been activated."
+msgstr ""
+
+#: src/main/mainmenu.cpp:4048
+msgid "Too many attempts. Please try again in 2 hours."
+msgstr ""
+
+#: src/main/mainmenu.cpp:4071
+msgid ""
+"An unexpected error has occurred while activating your key. Please try again."
+msgstr ""
+
+#: src/main/mainmenu.cpp:4103
+msgid "Attempting to reset password..."
+msgstr ""
+
+#: src/main/mainmenu.cpp:4131
+msgid "Successfully reset password."
+msgstr ""
+
+#: src/main/mainmenu.cpp:4155
+msgid "The token is incorrect."
+msgstr ""
+
+#: src/main/mainmenu.cpp:4180
+msgid ""
+"An unexpected error has occurred while resetting your password. Please try "
+"again."
+msgstr ""
+
+#: src/main/mainmenu.cpp:4239 src/main/multiplayermenu.cpp:3544
+msgid "Thanks for your feedback! We will get back to you soon."
+msgstr ""
+
+#: src/main/mainmenu.cpp:4248 src/main/multiplayermenu.cpp:3553
+msgid "Thanks for your feedback! Click here to view your submission."
+msgstr ""
+
+#: src/main/mainmenu.cpp:4285 src/main/multiplayermenu.cpp:3590
+msgid "An unexpected error has occurred while sending feedback."
+msgstr ""
+
+#. TRANSLATORS: The first argument is a Discord username, the second
+#. a Discord discriminator string, e.g. together "Alice#1234".
+#: src/main/mainmenu.cpp:4323 src/main/mainmenu.cpp:4334
+#, c-format
+msgid "Connected as %s#%s on Discord."
+msgstr ""
+
+#: src/main/mainmenu.cpp:4361
+msgid "Disconnected from Discord."
+msgstr ""
+
+#. TRANSLATORS: The argument is a Steam persona name.
+#: src/main/mainmenu.cpp:4412 src/main/mainmenu.cpp:4422
+#, c-format
+msgid "Connected as %s on Steam."
+msgstr ""
+
+#: src/main/mainmenu.cpp:4436
+msgid "Failed to connect with Steam."
+msgstr ""
+
+#: src/main/mainmenu.cpp:4449
+msgid "Failed to detect Steam!"
+msgstr ""
+
+#: src/main/mainmenu.cpp:4514
+msgid "An unexpected error has occurred."
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:103
+msgid "Welcome back!"
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:131
+msgid "LOBBIES"
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:145
+msgid "One vs. One"
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:151
+msgid "Versus A.I."
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:157
+msgid "Custom Lobby"
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:168
+msgid "overview map"
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:174
+msgid "open guide"
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:180
+msgid "watch replay"
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:189
+msgid "Tutorial"
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:195
+msgid "loading..."
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:235
+msgid "USERS"
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:242
+msgid "LEADERBOARD"
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:247
+msgid "The leaderboard is updated once per day, at 01:00 UTC."
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:256
+msgid "FEEDBACK?"
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:421
+msgid "Someone wants to join your lobby."
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:432
+msgid "accept"
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:438
+msgid "deny"
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:471 src/main/multiplayermenu.cpp:479
+#: src/main/multiplayermenu.cpp:1430 src/main/multiplayermenu.cpp:1459
+#: src/main/multiplayermenu.cpp:3678
+msgid "LOBBY"
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:485 src/main/multiplayermenu.cpp:972
+msgid "NAME"
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:492
+msgid "The chat target. When in a lobby, click to switch (also TAB key)."
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:524
+msgid "PLAYERS"
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:561
+msgid "OBSERVERS"
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:588
+msgid "rename"
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:598
+msgid "Private lobby:"
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:602
+msgid "Prevent other users from joining your lobby."
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:616
+msgid "Custom maps:"
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:620
+msgid "Allow picking custom maps and gamemodes."
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:639 src/main/multiplayermenu.cpp:3432
+msgid "start game"
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:646
+msgid ""
+"You can add AI players by clicking the blue \"+\" icon on the right side of "
+"the \"PLAYERS\" list."
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:655
+msgid "leave lobby"
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:696
+msgid "Map:"
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:700
+msgid "The map the game is played on."
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:716 src/main/multiplayermenu.cpp:831
+msgid "unknown"
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:854
+msgid "Planning timer:"
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:858
+msgid "Duration of the planning phase in seconds."
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:880
+msgid "insane"
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:881
+msgid "fast"
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:882
+msgid "standard"
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:883
+msgid "relaxed"
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:884 src/main/multiplayermenu.cpp:904
+msgid "OFF"
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:884
+msgid "unlimited"
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:975
+msgid "Please enter a new lobby name."
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:1289
+msgid "Starting overview mode..."
+msgstr ""
+
+#. TRANSLATORS: Abbreviation of "developer".
+#: src/main/multiplayermenu.cpp:1785
+msgid "dev"
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:1795
+msgid "guest"
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:1857
+msgid "This player is in a lobby."
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:1867
+msgid "This player is in a game."
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:1877
+msgid "This player is spectating a game in progress."
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:1887
+msgid "This player is watching a replay."
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:1907 src/main/multiplayermenu.cpp:1941
+msgid "Looking for opponents? Try our Discord."
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:1994
+msgid "This lobby is locked."
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:2009
+msgid "This game is already in progress."
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:2020
+msgid "Players in this lobby are watching a replay."
+msgstr ""
+
+#. TRANSLATORS: The argument is an English or custom lobby name.
+#: src/main/multiplayermenu.cpp:2044
+#, c-format
+msgid "Lobby \"%s\" was disbanded."
+msgstr ""
+
+#. TRANSLATORS: Short for "one versus one".
+#: src/main/multiplayermenu.cpp:2152
+msgid "1v1"
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:2161
+msgid "custom"
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:2354 src/main/multiplayermenu.cpp:2727
+msgid "normal"
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:2355 src/main/multiplayermenu.cpp:2728
+msgid "normal vision"
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:2360 src/main/multiplayermenu.cpp:2733
+msgid "global"
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:2361 src/main/multiplayermenu.cpp:2734
+msgid "global vision"
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:2419 src/main/multiplayermenu.cpp:2785
+msgid "red"
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:2420 src/main/multiplayermenu.cpp:2786
+msgid "blue"
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:2421 src/main/multiplayermenu.cpp:2787
+msgid "teal"
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:2422 src/main/multiplayermenu.cpp:2788
+msgid "yellow"
+msgstr "sarı"
+
+#: src/main/multiplayermenu.cpp:2423 src/main/multiplayermenu.cpp:2789
+msgid "pink"
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:2424 src/main/multiplayermenu.cpp:2790
+msgid "black"
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:2425 src/main/multiplayermenu.cpp:2791
+msgid "indigo"
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:2426 src/main/multiplayermenu.cpp:2792
+msgid "purple"
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:2427 src/main/multiplayermenu.cpp:2793
+msgid "auto"
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:2483
+msgid "Move to observers"
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:2563
+msgid "Move to players"
+msgstr ""
+
+#. TRANSLATORS: This is a difficulty.
+#: src/main/multiplayermenu.cpp:2673
+msgid "easy"
+msgstr ""
+
+#. TRANSLATORS: This is a difficulty.
+#: src/main/multiplayermenu.cpp:2675
+msgid "medium"
+msgstr ""
+
+#. TRANSLATORS: This is a difficulty.
+#: src/main/multiplayermenu.cpp:2677
+msgid "hard"
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:2848
+msgid "Remove AI player"
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:2857
+msgid "Copy AI player"
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:2942
+msgid "Add AI player"
+msgstr ""
+
+#. TRANSLATORS: The first argument is the name of a custom map,
+#. the second argument is the name of its creator.
+#: src/main/multiplayermenu.cpp:3174
+#, c-format
+msgid "\"%s\" by %s"
+msgstr ""
+
+#. TRANSLATORS: The argument is the name of a challenge.
+#: src/main/multiplayermenu.cpp:3323
+#, c-format
+msgid "%s Challenge"
+msgstr ""
+
+#. TRANSLATORS: The argument is a player's MMR rating.
+#: src/main/multiplayermenu.cpp:3356
+#, c-format
+msgid "Your rating is now %s."
+msgstr ""
+
+#: src/main/multiplayermenu.cpp:3455
+msgid "start replay"
+msgstr ""
+
+#. TRANSLATORS: The argument is an English or custom lobby name.
+#: src/main/multiplayermenu.cpp:3672
+#, c-format
+msgid "You joined lobby \"%s\"."
+msgstr ""
+
+#. TRANSLATORS: The argument is an English or custom lobby name.
+#: src/main/multiplayermenu.cpp:3690
+#, c-format
+msgid "You left lobby \"%s\"."
+msgstr ""
+
+#. TRANSLATORS: The first argument is a Discord username, the second
+#. a Discord discriminator string, e.g. together "Alice#1234".
+#: src/main/multiplayermenu.cpp:3762
+#, c-format
+msgid "%s#%s on Discord wants to join your lobby."
+msgstr ""
+
+#. TRANSLATORS: The header of the video settings section.
+#: src/main/settingsmenu.cpp:199
+msgid "Video"
+msgstr ""
+
+#: src/main/settingsmenu.cpp:215
+msgid "Windowed"
+msgstr ""
+
+#: src/main/settingsmenu.cpp:216
+msgid "Windowed Borderless"
+msgstr ""
+
+#: src/main/settingsmenu.cpp:217
+msgid "Fullscreen"
+msgstr ""
+
+#: src/main/settingsmenu.cpp:218
+msgid "Fullscreen Desktop"
+msgstr ""
+
+#: src/main/settingsmenu.cpp:231
+msgid "Screen Mode:"
+msgstr ""
+
+#: src/main/settingsmenu.cpp:279
+msgid "Screen Resolution:"
+msgstr ""
+
+#: src/main/settingsmenu.cpp:309 src/main/settingsmenu.cpp:555
+msgid "Custom"
+msgstr ""
+
+#: src/main/settingsmenu.cpp:358
+msgid "Screen Width:"
+msgstr ""
+
+#: src/main/settingsmenu.cpp:380
+msgid "Screen Height:"
+msgstr ""
+
+#: src/main/settingsmenu.cpp:407
+msgid "Scale:"
+msgstr ""
+
+#: src/main/settingsmenu.cpp:451
+msgid "Framerate:"
+msgstr ""
+
+#: src/main/settingsmenu.cpp:495
+msgid "Monitor:"
+msgstr ""
+
+#: src/main/settingsmenu.cpp:535
+msgid "Window Position:"
+msgstr ""
+
+#: src/main/settingsmenu.cpp:554
+msgid "Centered"
+msgstr ""
+
+#: src/main/settingsmenu.cpp:583
+msgid "Window Position (X):"
+msgstr ""
+
+#: src/main/settingsmenu.cpp:606
+msgid "Window Position (Y):"
+msgstr ""
+
+#. TRANSLATORS: The header of the audio settings section.
+#: src/main/settingsmenu.cpp:633
+msgid "Audio"
+msgstr ""
+
+#: src/main/settingsmenu.cpp:641
+msgid "Master Volume:"
+msgstr ""
+
+#: src/main/settingsmenu.cpp:651
+msgid "Gameplay Volume:"
+msgstr ""
+
+#: src/main/settingsmenu.cpp:661
+msgid "Music Volume:"
+msgstr ""
+
+#: src/main/settingsmenu.cpp:671
+msgid "Audio Buffer Size:"
+msgstr ""
+
+#. TRANSLATORS: The header of the control settings section.
+#: src/main/settingsmenu.cpp:714
+msgid "Controls"
+msgstr ""
+
+#: src/main/settingsmenu.cpp:723
+msgid "Selection Mode:"
+msgstr ""
+
+#: src/main/settingsmenu.cpp:744
+msgid "Figure-Based"
+msgstr ""
+
+#: src/main/settingsmenu.cpp:745
+msgid "Context Menu"
+msgstr ""
+
+#: src/main/settingsmenu.cpp:769
+msgid "View Scrolling with WASD:"
+msgstr ""
+
+#: src/main/settingsmenu.cpp:780
+msgid "View Scrolling with Arrow Keys:"
+msgstr ""
+
+#: src/main/settingsmenu.cpp:791
+msgid "View Scrolling at Edge of Screen:"
+msgstr ""
+
+#: src/main/settingsmenu.cpp:803
+msgid "Advanced Mode:"
+msgstr ""
+
+#: src/main/settingsmenu.cpp:814
+msgid "Allow orders for tiles without power:"
+msgstr ""
+
+#: src/main/settingsmenu.cpp:825
+msgid "Allow redundant Stop orders:"
+msgstr ""
+
+#: src/main/settingsmenu.cpp:836
+msgid "Allow redundant Cultivate orders:"
+msgstr ""
+
+#: src/main/settingsmenu.cpp:847
+msgid "Allow redundant Upgrade orders:"
+msgstr ""
+
+#: src/main/settingsmenu.cpp:858
+msgid "Allow view scrolling while acting:"
+msgstr ""
+
+#: src/main/settingsmenu.cpp:869
+msgid "Allow view scrolling while panning:"
+msgstr ""
+
+#. TRANSLATORS: The header of the social settings section.
+#: src/main/settingsmenu.cpp:884
+msgid "Social"
+msgstr ""
+
+#: src/main/settingsmenu.cpp:893
+msgid "Enable Discord Rich Presence:"
+msgstr ""
+
+#. TRANSLATORS: The header of the interface settings section.
+#: src/main/settingsmenu.cpp:908
+msgid "Interface"
+msgstr ""
+
+#: src/main/settingsmenu.cpp:917
+msgid "Language:"
+msgstr ""
+
+#: src/main/settingsmenu.cpp:948
+#, c-format
+msgid "%s [experimental]"
+msgstr ""
+
+#: src/main/settingsmenu.cpp:966
+#, c-format
+msgid "%s [incomplete]"
+msgstr ""
+
+#: src/main/settingsmenu.cpp:1006
+msgid "Text scaling:"
+msgstr ""
+
+#: src/main/settingsmenu.cpp:1045
+msgid "High contrast colors:"
+msgstr ""
+
+#: src/main/settingsmenu.cpp:1056
+msgid "Color palette:"
+msgstr ""
+
+#: src/main/settingsmenu.cpp:1095
+msgid "Main menu art panning:"
+msgstr ""
+
+#: src/main/settingsmenu.cpp:1117
+msgid "Off"
+msgstr ""
+
+#: src/main/settingsmenu.cpp:1118
+msgid "Automatic"
+msgstr ""
+
+#: src/main/settingsmenu.cpp:1119
+msgid "Cursor"
+msgstr ""
+
+#: src/main/settingsmenu.cpp:1146
+msgid "apply and restart"
+msgstr ""
+
+#: src/main/settingsmenu.cpp:1155
+msgid "discard and return to main menu"
+msgstr ""
+
+#: src/main/settingsmenu.cpp:1160
+msgid "apply and return to main menu"
+msgstr ""
+
+#: src/user/client.cpp:315
+msgid "Replays are not available at the moment."
+msgstr ""
+
+#. TRANSLATORS: The argument is a username.
+#: src/user/client.cpp:385
+#, c-format
+msgid "Hello %s, welcome to the Epicinium server!"
+msgstr ""
+
+#. TRANSLATORS: The first two arguments are a URL or an
+#. IP address followed by a port number.
+#. The last argument is a username.
+#: src/user/client.cpp:396
+#, c-format
+msgid "Connected to %s:%d as %s."
+msgstr ""
+
+#. TRANSLATORS: The argument is a username.
+#: src/user/client.cpp:415
+#, c-format
+msgid "%s is online."
+msgstr ""
+
+#. TRANSLATORS: The argument is a username.
+#: src/user/client.cpp:437
+#, c-format
+msgid "%s went offline."
+msgstr ""
+
+#: src/user/client.cpp:458
+msgid "Failed to join lobby because it is private or full."
+msgstr ""
+
+#: src/user/client.cpp:466 src/user/client.cpp:551
+msgid "You are already in a lobby."
+msgstr ""
+
+#. TRANSLATORS: The argument is a username.
+#: src/user/client.cpp:488
+#, c-format
+msgid "%s joined the lobby."
+msgstr ""
+
+#: src/user/client.cpp:505
+msgid "You are not in a lobby."
+msgstr ""
+
+#. TRANSLATORS: The argument is a username.
+#: src/user/client.cpp:523
+#, c-format
+msgid "%s left the lobby."
+msgstr ""
+
+#: src/user/client.cpp:744
+msgid "You resigned."
+msgstr ""
+
+#. TRANSLATORS: The argument is a username.
+#: src/user/client.cpp:750
+#, c-format
+msgid "%s has resigned."
+msgstr ""
+
+#: src/user/client.cpp:768 src/user/client.cpp:803
+msgid "Starting game failed."
+msgstr ""
+
+#: src/user/client.cpp:776
+msgid "Starting game..."
+msgstr ""
+
+#: src/user/client.cpp:812
+msgid "Starting tutorial..."
+msgstr ""
+
+#: src/user/client.cpp:824
+msgid "Starting tutorial failed."
+msgstr ""
+
+#: src/user/client.cpp:831
+msgid "Starting challenge failed."
+msgstr ""
+
+#: src/user/client.cpp:880
+msgid "Connection to server resumed."
+msgstr ""
+
+#: src/user/client.cpp:910
+msgid "The server is shutting down for maintenance. (No new games)"
+msgstr ""
+
+#: src/user/client.cpp:927
+msgid "The Epicinium server is online."
+msgstr ""
+
+#: src/user/client.cpp:1022
+msgid ""
+"The Epicinium server is not online at the moment. Please try again later."
+msgstr ""
+
+#: src/user/client.cpp:1120
+msgid "Waiting for response from server..."
+msgstr ""
+
+#: src/user/client.cpp:2452
+msgid "Connecting..."
+msgstr ""
+
+#: src/user/client.cpp:2460
+msgid "Failed to connect to server."
+msgstr ""
+
+#: src/user/client.cpp:2595
+msgid "You have been disconnected from the server."
+msgstr ""
+
+#: src/user/client.cpp:2691
+msgid "Authenticating..."
+msgstr ""

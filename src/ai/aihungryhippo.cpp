@@ -211,7 +211,7 @@ AIHungryHippo::AIHungryHippo(const Player& player, const Difficulty& difficulty,
 		break;
 	}
 	_riflemanCost = NOTFOUND;
-	for (const Bible::UnitBuild& build : _bible.tileProduces(_citytype))
+	for (const Bible::UnitBuild& build : _bible.tileProduces(_barrackstype))
 	{
 		if (build.type != _riflemantype) continue;
 		_riflemanCost = build.cost;

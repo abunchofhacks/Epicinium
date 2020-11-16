@@ -45,6 +45,7 @@
 #include "recordingiterator.hpp"
 #include "challenge.hpp"
 #include "typenamer.hpp"
+#include "system.hpp"
 
 
 Automaton::Automaton(size_t playercount, const std::string& rulesetname) :
@@ -90,7 +91,8 @@ void Automaton::startRecording(Json::Value metadata,
 		recording.start();
 	}
 	_identifier = recording.name();
-	_recording.open(recording.filename(), std::ofstream::out | std::ofstream::app);
+	_recording = System::ofstream(recording.filename(),
+		std::ofstream::out | std::ofstream::app);
 	if (!_recording)
 	{
 		LOGW << "Failed to open " << recording.filename() << " for writing";
@@ -755,7 +757,7 @@ void Automaton::gatherUnfinishedOrders(const Player& player, ChangeSet& cset)
 	_orderlists[player].reserve(_activeorders[player].size());
 	for (size_t j = 0; j < _activeorders[player].size(); j++)
 	{
-		Order& order = _activeorders[player][j];
+		Order order = std::move(_activeorders[player][j]);
 		uint32_t id = _activeidentifiers[player][j];
 		// Make sure the subject of the order was not killed or captured after
 		// the order was declared unfinished; if it was, the order is no longer
@@ -766,6 +768,7 @@ void Automaton::gatherUnfinishedOrders(const Player& player, ChangeSet& cset)
 			Change change(Change::Type::UNFINISHED, oldsubject, player, order);
 			cset.push(change, Vision::only(player));
 
+			LOGV << "keeping old order " << TypeEncoder(&_bible) << order;
 			_orderlists[player].emplace_back(std::move(order));
 		}
 	}
@@ -1543,12 +1546,13 @@ void Automaton::processMove(const Player& player, Order& order)
 	{
 		// If we had to stop moving early because of our movement speed limit,
 		// we update the list of moves still left to make.
-		LOGV << "order to be continued";
 		// The subject of the UNFINISHED change is its original position.
 		Descriptor oldsubject = order.subject;
 		// Update the order by adjusting the subject and list of moves.
 		order.subject = steps[moves];
-		std::vector<Move>(order.moves.begin() + moves, order.moves.end()).swap(order.moves);
+		order.moves.erase(order.moves.begin(), order.moves.begin() + moves);
+		// We will continue this order later.
+		LOGV << "order to be continued: " << TypeEncoder(&_bible) << order;
 		return unfinished(player, oldsubject, order, cset);
 	}
 	else
@@ -5221,6 +5225,8 @@ void Automaton::checkChallengeDefeat()
 void Automaton::doDefeat(const std::vector<Player>& defeats,
 		const Notice& defeatnotice)
 {
+	// This changeset can occur at any point during the Action phase;
+	// usually at the start because the Action phase only lasts a few ms.
 	ChangeSet cset;
 
 	// If players were defeated while still having some homes, they all lose
@@ -5261,7 +5267,22 @@ void Automaton::doDefeat(const std::vector<Player>& defeats,
 		// Throw away their old orders.
 		_activeorders[player].clear();
 		_activeidentifiers[player].clear();
+		// And filter them out of _activeplayers to avoid processing order
+		// _activeorders[_activeorderindices] on the next play() call.
 	}
+
+	// Filter the defeated players out of _activeplayers.
+	std::queue<Player> newactiveplayers;
+	while (!_activeplayers.empty())
+	{
+		Player player = _activeplayers.front();
+		if (!_defeated[player])
+		{
+			newactiveplayers.push(player);
+		}
+		_activeplayers.pop();
+	}
+	_activeplayers = std::move(newactiveplayers);
 
 	// How many players are left undefeated?
 	std::vector<Player> survivors;

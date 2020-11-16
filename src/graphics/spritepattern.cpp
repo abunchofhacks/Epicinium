@@ -48,7 +48,7 @@ std::map<std::string, SpritePattern> SpritePattern::_spritepatterns = {};
 void SpritePattern::preloadFromIndex()
 {
 	std::string indexfname = _spritesfolder + "index.list";
-	std::ifstream indexfile(indexfname);
+	std::ifstream indexfile = System::ifstream(indexfname);
 	if (!indexfile.is_open())
 	{
 		LOGF << "Could not open " << indexfname;
@@ -91,7 +91,7 @@ void SpritePattern::preloadFromIndex()
 				+ ": file does not exist");
 		}
 
-		std::ifstream file(path);
+		std::ifstream file = System::ifstream(path);
 		if (!file.is_open() || !reader.parse(file, json))
 		{
 			LOGF << "Failed to load sprite " << name

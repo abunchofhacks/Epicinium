@@ -289,7 +289,7 @@ int main(int argc, char* argv[])
 #if SELF_PATCH_ENABLED
 	if (System::isFile(Patch::mementofilename()))
 	{
-		std::ifstream file(Patch::mementofilename());
+		std::ifstream file = System::ifstream(Patch::mementofilename());
 		std::string line;
 		if (file && std::getline(file, line))
 		{
@@ -501,6 +501,11 @@ Main::~Main()
 	//        in ~Main()
 	// which occurs after _menu has been destroyed.
 	if (auto game = _game.lock()) game->confirmQuit();
+}
+
+void Main::doFirst()
+{
+	_menu.beforeFirstUpdateOfEachSecond();
 }
 
 void Main::startUpdates()

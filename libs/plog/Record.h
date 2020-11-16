@@ -261,14 +261,11 @@ namespace plog
             return m_line;
         }
 
-#if PLOG_FORCE_UTF8_MESSAGE
+#if defined(_WIN32) && PLOG_FORCE_UTF8_MESSAGE
         virtual const util::nchar* getMessage() const
         {
-            using namespace plog::detail;
-
-            util::nostringstream strm;
-            strm << m_message.str();
-            m_messageStr = strm.str();
+            std::string messageStr = m_message.str();
+            m_messageStr = util::toWide(messageStr.c_str(), codePage::kUTF8);
             return m_messageStr.c_str();
         }
 #else

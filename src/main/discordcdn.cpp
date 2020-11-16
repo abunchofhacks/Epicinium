@@ -57,13 +57,15 @@ DiscordCDN::~DiscordCDN()
 	// We need to wait for the thread to finish or risk memory crashes.
 	if (_threadrunning)
 	{
-		LOGI << "Waiting until thread finishes.";
+		LOGI << "Waiting until thread finishes...";
 
 		// Notify the thread that we are shutting down.
 		// (It might already be awake, but soit.)
 		_requestnotifier.notify_one();
 	}
 	if (_thread.joinable()) _thread.join();
+
+	LOGI << "Thread finished.";
 }
 
 std::string DiscordCDN::getAvatarPicture(const char* userid, const char* avatar)
@@ -156,9 +158,16 @@ void DiscordCDN::runThread()
 			bool ready = false;
 			while (!ready)
 			{
+				if (!_alive)
+				{
+					// Finish this thread.
+					_threadrunning = false;
+					return;
+				}
+
 				_curl->update();
 				ready = (future.wait_for(std::chrono::seconds(0))
-					!= std::future_status::ready);
+					== std::future_status::ready);
 			}
 			Response response = future.get();
 
@@ -185,7 +194,7 @@ void DiscordCDN::runThread()
 
 			System::touchFile(filename);
 
-			std::ofstream file(filename,
+			std::ofstream file = System::ofstream(filename,
 				std::ofstream::binary | std::ofstream::trunc);
 			if (!file.is_open())
 			{
@@ -197,6 +206,8 @@ void DiscordCDN::runThread()
 			}
 
 			file << response.body;
+
+			LOGV << "Downloaded " << filename;
 		}
 
 		{

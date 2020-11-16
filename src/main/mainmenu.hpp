@@ -125,6 +125,7 @@ private:
 
 public:
 	virtual void build() override;
+	virtual void beforeFirstRefreshOfEachSecond() override;
 	virtual void refresh() override;
 
 	virtual void onOpen() override;
