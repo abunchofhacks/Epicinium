@@ -47,12 +47,12 @@ extern "C"
 		AILibrary::setup("libchargingcheetah", argc, argv);
 	}
 
-	AIHungryHippo* allocate(
+	AIChargingCheetah* allocate(
 		const char* player, const char* difficulty,
 		const char* rulesetname, char character)
 	{
 		LOGD << "Allocating " << difficulty << " " << player << ""
-			" AIHungryHippo named '" << character << "'"
+			" AIChargingcheetah named '" << character << "'"
 			" with ruleset " << rulesetname;
 
 		return new AIChargingcheetah(parsePlayer(player),
