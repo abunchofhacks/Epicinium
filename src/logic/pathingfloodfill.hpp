@@ -91,6 +91,7 @@ private:
 	bool _excludePlayers = true;
 	bool _excludeTypes = true;
 	bool _excludeOccupied = false;
+	bool _includeOccupied = false;
 
 	friend PathingFI;
 
@@ -102,6 +103,7 @@ public:
 	void include(std::vector<TileType> types);
 	void exclude(std::vector<TileType> types);
 	void excludeOccupied(bool exclude = true);
+	void includeOccupied(bool include = true);
 };
 
 class UnitFloodfill : public PathingFI<UnitFloodfill>
