@@ -25,6 +25,7 @@
 #include "source.hpp"
 
 #include "aihungryhippo.hpp"
+#include "aichargingcheetah.hpp"
 #include "aiquickquack.hpp"
 #include "aitutorialturtle.hpp"
 #include "airampantrhino.hpp"
@@ -58,6 +59,10 @@ AICommander* AI::allocate(const std::string& ainame,
 	if (lowered == "hungryhippo")
 	{
 		return new AIHungryHippo(player, difficulty, ruleset, character);
+	}
+	if (lowered == "chargingcheetah")
+	{
+		return new AIChargingCheetah(player, difficulty, ruleset, character);
 	}
 	if (lowered == "tutorialturtle")
 	{
@@ -110,6 +115,7 @@ const std::vector<std::string>& AI::pool()
 		"RampantRhino",
 		"HungryHippo",
 		"NeuralNewt",
+		"ChargingCheetah"
 	};
 	return pool;
 }

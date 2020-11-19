@@ -651,6 +651,7 @@ termlocalizer = CPP CORE INTL LAST
 libepicinium = CPP CMON_LIC LGIC_LIC JSON_PIC AINT_LIC LAST
 libquickquack = CMON_PIC LGIC_PIC JSON_PIC AINT_PIC
 libhungryhippo = CMON_PIC LGIC_PIC JSON_PIC AINT_PIC
+libchargingcheetah = CMON_PIC LGIC_PIC JSON_PIC AINT_PIC
 librampantrhino = CMON_PIC LGIC_PIC JSON_PIC AINT_PIC
 quicktest =
 
@@ -825,6 +826,9 @@ $(libquickquack_OUT): $(libquickquack_OBJ) $(libquickquack_DEP)
 	$(COMPILE_AIL) -o $@ $(filter %.o,$^)
 
 $(libhungryhippo_OUT): $(libhungryhippo_OBJ) $(libhungryhippo_DEP)
+	$(COMPILE_AIL) -o $@ $(filter %.o,$^)
+
+$(libchargingcheetah_OUT): $(libchargingcheetah_OBJ) $(libchargingcheetah_DEP)
 	$(COMPILE_AIL) -o $@ $(filter %.o,$^)
 
 $(librampantrhino_OUT): $(librampantrhino_OBJ) $(librampantrhino_DEP)

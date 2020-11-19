@@ -764,6 +764,7 @@ void AIHungryHippo::process()
 	}
 
 	// select orders
+	// shuffle them first to prevent north-south bias
 	std::random_shuffle(_options.begin(), _options.end());
 	std::sort(_options.begin(), _options.end(),
 		[](const Option& lhs, const Option& rhs) {

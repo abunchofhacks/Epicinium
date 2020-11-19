@@ -107,6 +107,15 @@ void TileFloodfill::map(Cell index)
 			&& _bible.unitCanOccupy(unittype)) return;
 	}
 
+
+	if (_includeOccupied)
+	{
+		UnitType unittype = _board.ground(index).type;
+		if (unittype == UnitType::NONE
+			|| _board.ground(index).owner == tileowner
+			|| !(_bible.unitCanOccupy(unittype))) return;
+	}
+
 	put(index);
 }
 
@@ -137,6 +146,11 @@ void TileFloodfill::exclude(std::vector<TileType> types)
 void TileFloodfill::excludeOccupied(bool exclude)
 {
 	_excludeOccupied = exclude;
+}
+
+void TileFloodfill::includeOccupied(bool include)
+{
+	_includeOccupied = include;
 }
 
 void UnitFloodfill::map(Cell index)
