@@ -827,10 +827,10 @@ $(libquickquack_OUT): $(libquickquack_OBJ) $(libquickquack_DEP)
 
 $(libhungryhippo_OUT): $(libhungryhippo_OBJ) $(libhungryhippo_DEP)
 	$(COMPILE_AIL) -o $@ $(filter %.o,$^)
-	
-$(libchargingcheetah_OUT): $(libchargingcheetah_OBJ) $(libchargingcheetaho_DEP)
+
+$(libchargingcheetah_OUT): $(libchargingcheetah_OBJ) $(libchargingcheetah_DEP)
 	$(COMPILE_AIL) -o $@ $(filter %.o,$^)
-	
+
 $(librampantrhino_OUT): $(librampantrhino_OBJ) $(librampantrhino_DEP)
 	$(COMPILE_AIL) -o $@ $(filter %.o,$^)
 

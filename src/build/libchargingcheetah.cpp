@@ -38,7 +38,7 @@
 extern "C"
 {
 	EXPORT void setup(int argc, const char* const argv[]);
-	EXPORT AIHChargingCheetah* allocate(
+	EXPORT AIChargingCheetah* allocate(
 		const char* player, const char* difficulty,
 		const char* rulesetname, char character);
 
@@ -52,10 +52,10 @@ extern "C"
 		const char* rulesetname, char character)
 	{
 		LOGD << "Allocating " << difficulty << " " << player << ""
-			" AIChargingcheetah named '" << character << "'"
+			" AIChargingCheetah named '" << character << "'"
 			" with ruleset " << rulesetname;
 
-		return new AIChargingcheetah(parsePlayer(player),
+		return new AIChargingCheetah(parsePlayer(player),
 			parseDifficulty(difficulty), rulesetname, character);
 	}
 }

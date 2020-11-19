@@ -27,8 +27,8 @@
  *  All credits to Daan Mulder for HungryHippo code on which this is based, and Sander & Daan for all other source code and the great game.
  */
 
-	
-#include "ai.hpp"
+
+#include "aichargingcheetah.hpp"
 #include "source.hpp"
 
 #include "pathingfloodfill.hpp"
@@ -362,7 +362,7 @@ void AIChargingCheetah::determineState()
 		{
 			_enemyCities.emplace_back(makeTile(index));
 		}
-		
+
 		// units
 		if (_board.ground(index).owner == _player)
 		{
@@ -543,21 +543,21 @@ void AIChargingCheetah::doFarming()
 
 void AIChargingCheetah::doFirstTurn()
 {
-	
+
 	TileFloodfill enemycities(_bible, _board);
 	enemycities.include({_citytype});
 	enemycities.exclude({_player});
 	enemycities.execute();
-	
+
 	float minenemydist = 1000000000;
-	Move bestMove;
+	Move bestMove = Move::X;
 	for (Tile& city : _myCities)
 	{
-		Cell cityloc = _board.cell(city.descriptor.position);		
+		Cell cityloc = _board.cell(city.descriptor.position);
 		for (const Move& move : {Move::E, Move::S, Move::W, Move::N})
 		{
 			Cell to = cityloc + move;
-			if (to.edge()) continue; 
+			if (to.edge()) continue;
 			if(!(_bible.tileBuildable(_board.tile(to).type))) continue;
 			if (enemycities.steps(to) < minenemydist)
 			{
@@ -565,12 +565,13 @@ void AIChargingCheetah::doFirstTurn()
 				bestMove = move;
 			}
 		}
-	}	
-	
+	}
+
 	bool barracksorder = false;
 	for (Tile& city : _myCities)
 	{
-		Cell cityloc = _board.cell(city.descriptor.position);		
+		Cell cityloc = _board.cell(city.descriptor.position);
+		if (bestMove == Move::X) continue;
 		Cell to = cityloc + bestMove;
 		if(!(_bible.tileBuildable(_board.tile(to).type))) continue;
 		if (enemycities.steps(to) == minenemydist && barracksorder == false)
@@ -581,13 +582,13 @@ void AIChargingCheetah::doFirstTurn()
 		_queuedBarracks++;
 		//barracksorder == true;
 		}
-	}	
-	
+	}
+
 	TileFloodfill alliedcities(_bible, _board);
 	alliedcities.include({_citytype});
 	alliedcities.include({_player});
 	alliedcities.execute();
-	
+
 	for (Ground& militia : _myMilitia)
 	{
 		minenemydist = 10000;
@@ -609,8 +610,8 @@ void AIChargingCheetah::doFirstTurn()
 			moves.emplace_back(move1);
 			moves.emplace_back(move2);
 			moves.emplace_back(move3);
-			if (to1.edge() || to2.edge() || to3.edge()) continue; 
-			if (!(_bible.tileWalkable(_board.tile(to1).type) && _bible.tileWalkable(_board.tile(to2).type) && _bible.tileWalkable(_board.tile(to3).type))) continue; 
+			if (to1.edge() || to2.edge() || to3.edge()) continue;
+			if (!(_bible.tileWalkable(_board.tile(to1).type) && _bible.tileWalkable(_board.tile(to2).type) && _bible.tileWalkable(_board.tile(to3).type))) continue;
 			if (enemycities.steps(to3) < minenemydist && alliedcities.steps(to3) > 1)
 			{
 				minenemydist = enemycities.steps(to3);
@@ -618,10 +619,11 @@ void AIChargingCheetah::doFirstTurn()
 				bestDestination = to3;
 			}
 		}}}
+		if (bestMoves.empty()) continue;
 		Order order(Order::Type::MOVE, militia.descriptor,
 			Descriptor::cell(bestDestination.pos()), bestMoves);
 		_options.emplace_back(Option{order, 999});
-	}	
+	}
 }
 
 // This makes sure that if a city that a gunner was moving to is captured or destroyed, it changes the order type to none so it can receive new ones.
@@ -653,15 +655,15 @@ void AIChargingCheetah::process()
 {
 	determineState();
 
-	
+
 	// First turn need special orders. It is important that both the first barracks is put in the right spot, and that the first two militia move in the right directions.
 	if (_turnNumber == 1)
 	{
 		doFirstTurn();
 	}
-	
+
 	checkUnfinished();
-	
+
 	bool defense=false;
 	for (Tile& city : _myCities)
 	{
@@ -671,17 +673,17 @@ void AIChargingCheetah::process()
 			defense=true;
 		}
 	}
-	
-	
-	
-	
-	
+
+
+
+
+
 	TileFloodfill occupiedcities(_bible, _board);
 	occupiedcities.include({_citytype});
 	occupiedcities.include({_player});
 	occupiedcities.includeOccupied();
 	occupiedcities.execute();
-	
+
 	// Go to defend a city if you are in range
 	for (Ground& gunner : _myGunners)
 	{
@@ -697,22 +699,22 @@ void AIChargingCheetah::process()
 		Order order(Order::Type::MOVE, gunner.descriptor,
 			Descriptor::cell(destination.pos()), moves);
 		_options.emplace_back(Option{order, 101});
-	}		
+	}
 
 
-	
+
 	TileFloodfill targets(_bible, _board);
 	targets.include(
 		{_citytype, _farmtype, _outposttype, _towntype, _industrytype, _barrackstype});
 	targets.exclude({_player});
 	targets.execute();
-	
+
 	TileFloodfill cities(_bible, _board);
 	cities.include({_citytype});
 	cities.exclude({_player});
 	cities.excludeOccupied();
 	cities.execute();
-	
+
 	// Move sappers within range of cities. Then bombard them. Also bombard units or other buildings along the way.
 	for (Ground& sapper : _mySappers)
 	{
@@ -791,8 +793,8 @@ void AIChargingCheetah::process()
 
 
 
-		
-	
+
+
 	// move gunner to cities! Capture if on something that's not ours
 	for (Ground& gunner : _myGunners)
 	{
@@ -803,7 +805,7 @@ void AIChargingCheetah::process()
 		_options.emplace_back(Option{order, 25});
 		}
 		else
-		{		
+		{
 		Cell target = _board.cell(gunner.unfinished.target.position);
 		if (gunner.unfinished.type != Order::Type::NONE || (gunner.unfinished.type == Order::Type::MOVE && _board.tile(target).owner == _player && cityOccupied(target)==true)) continue;
 		Cell destination = _board.cell(gunner.descriptor.position);
@@ -822,8 +824,8 @@ void AIChargingCheetah::process()
 		_options.emplace_back(Option{order, 15 - int(moves.size())});
 		}
 	}
-	
-	
+
+
 	// focus if we get the chance!
 	for (Ground& enemyUnit : _enemyGround)
 	{
@@ -991,7 +993,7 @@ void AIChargingCheetah::process()
 			if (barracks.power == 0 && !_bible.powerAbolished()) continue;
 			if (barracks.occupied) continue;
 			if (barracks.unfinished.type != Order::Type::NONE) continue;
-		
+
 		if (defense==true)
 		{
 			if (_money - _queuedMoney >= _gunnerCost)
@@ -1003,7 +1005,7 @@ void AIChargingCheetah::process()
 				_options.emplace_back(Option{order, 15});
 				_queuedGunners++;
 				_queuedMoney = _queuedMoney + _gunnerCost;
-			}		
+			}
 		}
 		else
 		{
@@ -1043,7 +1045,7 @@ void AIChargingCheetah::process()
 		}
 		}
 	}
-	
+
 	// make more militia!
 	for (Tile& farm : _myFarms)
 	{
@@ -1060,9 +1062,9 @@ void AIChargingCheetah::process()
 		_queuedMoney = _queuedMoney + _militiaCost;
 	}
 
-	
-	doFarming(); 
-	
+
+	doFarming();
+
 	for (Tile& outpost : _myOutposts)
 	{
 		if (_money - _queuedMoney < _militiaCost || _money - _queuedMoney - (_industryCost * (_myMilitia.size() - _myIndustry.size())) < _militiaCost) break;
@@ -1077,16 +1079,16 @@ void AIChargingCheetah::process()
 		_queuedMilitia++;
 		_queuedMoney = _queuedMoney + _militiaCost;
 	}
-	
+
 	TileFloodfill alliedbarracks(_bible, _board);
 	alliedbarracks.include({_barrackstype});
 	alliedbarracks.include({_player});
 	alliedbarracks.execute();
 
-	
+
 	for (Tile& city : _myCities)
 	{
-		
+
 		if (defense==true)
 		{
 			if (_money - _queuedMoney < _militiaCost) break;
@@ -1096,7 +1098,7 @@ void AIChargingCheetah::process()
 			//	Descriptor::cell(city.descriptor.position),
 			//	_militiatype);
 			//_options.emplace_back(Option{order, 4});
-			//_queuedMilitia++;	
+			//_queuedMilitia++;
 		}
 		else
 		{
@@ -1148,7 +1150,7 @@ void AIChargingCheetah::process()
 		}
 		//We want max 2 farms. And only after we have an industry, barracks, and gunner
 		if ((_queuedSettlers + _mySettlers.size() + _myFarms.size() < 2) && _myBarracks.size() > 0 && _myIndustry.size() > 0)
-		{	
+		{
 			if (city.unfinished.type != Order::Type::NONE) continue;
 			if (city.power < 1 && !_bible.powerAbolished()) continue;
 			if (_money == _gunnerCost) continue;
@@ -1169,7 +1171,8 @@ void AIChargingCheetah::process()
 
 
 	// select orders
-	//std::random_shuffle(_options.begin(), _options.end());
+	// shuffle them first to prevent north-south bias
+	std::random_shuffle(_options.begin(), _options.end());
 	std::sort(_options.begin(), _options.end(),
 		[](const Option& lhs, const Option& rhs) {
 
@@ -1185,20 +1188,20 @@ void AIChargingCheetah::process()
 
 	if (_difficulty == Difficulty::EASY)
 	{
-		// Throw away all but three orders
-		//std::random_shuffle(_newOrders.begin(), _newOrders.end()); //Zanath edit: no randomness, we have a priority ordering!
+		// Throw away all but one order
+		std::random_shuffle(_newOrders.begin(), _newOrders.end());
 		if (_newOrders.size() > 1)
 		{
-			_newOrders = {_newOrders[0], _newOrders[1], _newOrders[2]};
+			_newOrders = {_newOrders[0]};
 		}
 	}
 	else if (_difficulty == Difficulty::MEDIUM)
 	{
-		// Throw away all but four orders
-		//std::random_shuffle(_newOrders.begin(), _newOrders.end()); //Zanath edit: no randomness, we have a priority ordering!
+		// Throw away all but three orders
+		std::random_shuffle(_newOrders.begin(), _newOrders.end());
 		if (_newOrders.size() > 3)
 		{
-			_newOrders = {_newOrders[0], _newOrders[1], _newOrders[2], _newOrders[3]};
+			_newOrders = {_newOrders[0], _newOrders[1], _newOrders[2]};
 		}
 	}
 }
