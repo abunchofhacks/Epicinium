@@ -308,7 +308,7 @@ IFLAGS_CONFIG ?=
 #
 
 IFLAGS_FULL = $(IFLAGS_ROOT) $(IFLAGS_CORE) $(IFLAGS_CONFIG) $(IFLAGS_LIB)
-IFLAGS      = $(IFLAGS_ROOT) $(IFLAGS_LIB)
+IFLAGS      = $(IFLAGS_ROOT) $(IFLAGS_CONFIG) $(IFLAGS_LIB)
 
 ifeq ($(detected_OS),Windows)
 IFLAGS_ROOT = -I .
@@ -649,10 +649,8 @@ printsizes = CPP CMON_PIC LGIC_PIC JSON_PIC LAST
 steamlocalizer = CPP CORE AINT INTL LAST
 termlocalizer = CPP CORE INTL LAST
 libepicinium = CPP CMON_LIC LGIC_LIC JSON_PIC AINT_LIC LAST
-libquickquack = CMON_PIC LGIC_PIC JSON_PIC AINT_PIC
-libhungryhippo = CMON_PIC LGIC_PIC JSON_PIC AINT_PIC
-libchargingcheetah = CMON_PIC LGIC_PIC JSON_PIC AINT_PIC
-librampantrhino = CMON_PIC LGIC_PIC JSON_PIC AINT_PIC
+$(foreach tool,$(TAILNAMES),\
+	$(eval $(tool) = CMON_PIC LGIC_PIC JSON_PIC AINT_PIC))
 quicktest =
 
 $(foreach name,$(NAMES),\
