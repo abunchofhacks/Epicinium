@@ -253,12 +253,16 @@ public:
 
 	static StreamedMessage list_ruleset(
 		const std::string& name);
+	static StreamedMessage list_ruleset(
+		const std::string& name, const Json::Value& metadata);
 
 	static StreamedMessage list_challenge(
 		const std::string& key, const Json::Value& metadata);
 
 	static StreamedMessage list_ai(
 		const std::string& ainame);
+	static StreamedMessage list_ai(
+		const std::string& ainame, const Json::Value& metadata);
 
 	static StreamedMessage ruleset_request(
 		const std::string& rulesetname);
@@ -314,6 +318,10 @@ public:
 	static StreamedMessage order_new(
 		const TypeNamer& typenamer,
 		const std::vector<Order>& orders);
+	static StreamedMessage order_new(
+		const TypeNamer& typenamer,
+		const std::vector<Order>& orders,
+		const Json::Value& metadata);
 
 	static StreamedMessage sync();
 	static StreamedMessage sync(

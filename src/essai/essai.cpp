@@ -45,6 +45,37 @@
 
 static const char* ordinal(uint8_t x);
 
+static constexpr int ABSOLUTE_MAX_TURNS = 100;
+
+class Tracker
+{
+public:
+	static constexpr int NUM_BUCKETS = 101;
+	static constexpr int GLOBAL_SCORE_PER_BUCKET = 1;
+	static constexpr int GLOBAL_WARMING_PER_BUCKET = 5;
+
+	std::array<std::array<size_t, NUM_BUCKETS>,
+		ABSOLUTE_MAX_TURNS + 1> globalScorePerTurn = {0};
+	std::array<std::array<size_t, NUM_BUCKETS>,
+		ABSOLUTE_MAX_TURNS + 1> globalWarmingPerTurn = {0};
+
+	void trackGlobalScorePerTurn(int score, int turn)
+	{
+		int bucket = std::max(0, std::min(
+			score / GLOBAL_SCORE_PER_BUCKET,
+			NUM_BUCKETS - 1));
+		globalScorePerTurn[turn][bucket] += 1;
+	}
+
+	void trackGlobalWarmingPerTurn(int value, int turn)
+	{
+		int bucket = std::max(0, std::min(
+			value / GLOBAL_WARMING_PER_BUCKET,
+			NUM_BUCKETS - 1));
+		globalWarmingPerTurn[turn][bucket] += 1;
+	}
+};
+
 EssAI::EssAI(Settings& settings,
 		const std::string& ruleset,
 		const std::vector<std::string>& ainames,
@@ -131,7 +162,7 @@ EssAI::~EssAI()
 	}
 }
 
-EssAI::Result EssAI::playGame(size_t offset)
+EssAI::Result EssAI::playGame(size_t offset, Tracker& tracker)
 {
 	if (_players.size() <= 2)
 	{
@@ -273,12 +304,16 @@ EssAI::Result EssAI::playGame(size_t offset)
 					phase = Phase::DECAY;
 					break;
 				}
-				else if (turns >= 100)
+				else if (turns >= ABSOLUTE_MAX_TURNS)
 				{
 					draw = true;
 					phase = Phase::DECAY;
 					break;
 				}
+
+				tracker.trackGlobalScorePerTurn(automaton.globalScore(), turns);
+				tracker.trackGlobalWarmingPerTurn(automaton.globalWarming(),
+					turns);
 
 				ChangeSet changeset = automaton.hibernate();
 				for (const auto& aicommander : aicommanders)
@@ -409,7 +444,7 @@ EssAI::Result EssAI::playGame(size_t offset)
 }
 
 Json::Value EssAI::resultsToJson(const std::vector<Result>& results,
-	time_t starttime, char* humantime)
+	time_t starttime, const char* humantime)
 {
 	size_t totalWon = 0;
 	size_t totalLost = 0;
@@ -627,6 +662,117 @@ Json::Value EssAI::resultsToJson(const std::vector<Result>& results,
 	return json;
 }
 
+void EssAI::writeMatchLengthTsv(const std::vector<Result>& results,
+	const std::string& filename)
+{
+	int lastTurnWin[ABSOLUTE_MAX_TURNS + 1] = {0};
+	int lastTurnLoss[ABSOLUTE_MAX_TURNS + 1] = {0};
+	int lastTurnDraw[ABSOLUTE_MAX_TURNS + 1] = {0};
+
+	for (const Result& result : results)
+	{
+		if (result.mutualDestruction)
+		{
+			lastTurnDraw[result.turns] += 1;
+		}
+		else if (result.draw)
+		{
+			lastTurnDraw[result.turns] += 1;
+		}
+		else if (result.defeated[0])
+		{
+			lastTurnLoss[result.turns] += 1;
+		}
+		else if (result.scores[0] == result.totalScore)
+		{
+			lastTurnWin[result.turns] += 1;
+		}
+		else
+		{
+			lastTurnDraw[result.turns] += 1;
+		}
+	}
+
+	LOGD << "Writing TSV to " << filename;
+	System::touchFile(filename);
+	std::ofstream record = System::ofstream(filename);
+	if (!record)
+	{
+		LOGE << "Failed to open " << filename;
+		return;
+	}
+	record << "#\tW\tL\tD" << std::endl;
+	for (size_t t = 0; t < array_size(lastTurnWin); t++)
+	{
+		record << std::to_string(t)
+			<< "\t" << lastTurnWin[t]
+			<< "\t" << lastTurnLoss[t]
+			<< "\t" << lastTurnDraw[t]
+			<< std::endl;
+	}
+	LOGD << "Finished writing TSV";
+}
+
+static void writeTrackerGridTsv(
+	const std::array<std::array<size_t, Tracker::NUM_BUCKETS>,
+		ABSOLUTE_MAX_TURNS + 1>& grid,
+	size_t amount_per_bucket,
+	size_t num_buckets,
+	const std::string& filename)
+{
+	LOGD << "Writing TSV to " << filename;
+	System::touchFile(filename);
+	std::ofstream record = System::ofstream(filename);
+	if (!record)
+	{
+		LOGE << "Failed to open " << filename;
+		return;
+	}
+	assert(num_buckets <= Tracker::NUM_BUCKETS);
+	for (size_t b = 0; b < num_buckets; b++)
+	{
+		if (b == num_buckets - 1)
+		{
+			record << (b * amount_per_bucket) << "+";
+		}
+		else if (amount_per_bucket > 1)
+		{
+			record << (b * amount_per_bucket)
+				<< "-" << ((b + 1) * amount_per_bucket - 1);
+		}
+		else
+		{
+			record << (b * amount_per_bucket);
+		}
+
+		for (size_t t = 0; t < grid.size(); t++)
+		{
+			record << "\t" << grid[t][b];
+		}
+		record << std::endl;
+	}
+	LOGD << "Finished writing TSV";
+}
+
+static void writeGlobalScoreTsv(const Tracker& tracker,
+	const std::string& filename)
+{
+	writeTrackerGridTsv(tracker.globalScorePerTurn,
+		Tracker::GLOBAL_SCORE_PER_BUCKET,
+		Tracker::NUM_BUCKETS,
+		filename);
+}
+
+static void writeGlobalWarmingTsv(const Tracker& tracker,
+	const std::string& filename)
+{
+	writeTrackerGridTsv(tracker.globalWarmingPerTurn,
+		Tracker::GLOBAL_WARMING_PER_BUCKET,
+		std::min(260 / Tracker::GLOBAL_WARMING_PER_BUCKET + 1,
+			Tracker::NUM_BUCKETS),
+		filename);
+}
+
 static const char* ordinal(uint8_t x)
 {
 	switch (x)
@@ -667,10 +813,12 @@ void EssAI::run(size_t games)
 		throw std::runtime_error("failed to open " + logname + " for writing");
 	}
 
+	Tracker tracker;
+
 	std::vector<Result> results;
 	for (size_t i = 0; i < games; i++)
 	{
-		results.emplace_back(playGame(i));
+		results.emplace_back(playGame(i, tracker));
 		Result& result = results.back();
 		std::cout << "Result of game " << i
 			<< " (" << result.recordingName << ")"
@@ -838,6 +986,22 @@ void EssAI::run(size_t games)
 			<< json[tag]["min_turns"].asInt() << std::endl;
 		std::cout << "Maximum number of turns: "
 			<< json[tag]["max_turns"].asInt() << std::endl;
+	}
+
+	{
+		std::string filename = LogInstaller::getLogsFolderWithSlash()
+			+ "graphs/matchlength-output.tsv";
+		writeMatchLengthTsv(results, filename);
+	}
+	{
+		std::string filename = LogInstaller::getLogsFolderWithSlash()
+			+ "graphs/globalscore-output.tsv";
+		writeGlobalScoreTsv(tracker, filename);
+	}
+	{
+		std::string filename = LogInstaller::getLogsFolderWithSlash()
+			+ "graphs/globalwarming-output.tsv";
+		writeGlobalWarmingTsv(tracker, filename);
 	}
 }
 

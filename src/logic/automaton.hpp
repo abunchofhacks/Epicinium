@@ -229,6 +229,7 @@ public:
 
 	int round() const { return _round; }
 
+	int globalWarming();
 	int globalScore();
 	int score(const Player& player) { return _score[player]; }
 	int award(const Player& player) { return _award[player]; }

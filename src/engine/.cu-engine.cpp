@@ -1,3 +1,4 @@
+#include "editortheme.cpp"
 #include "engine.cpp"
 #include "enginekiller.cpp"
 #include "engineloop.cpp"

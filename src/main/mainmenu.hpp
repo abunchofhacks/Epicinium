@@ -94,7 +94,7 @@ private:
 	InterfaceElement& getForms();
 	InterfaceElement& getLogo();
 	InterfaceElement& getStamp();
-	InterfaceElement& getEnterKeyButton();
+	InterfaceElement& getEditorButton();
 	InterfaceElement& getFeedbackButton();
 	InterfaceElement& getPlayOrDownloading();
 	InterfaceElement& getPlay();

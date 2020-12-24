@@ -25,11 +25,9 @@
 #include "header.hpp"
 
 #include "libs/SDL2/SDL.h"
-#include "libs/jsoncpp/json.h"
 
 #include "engineloop.hpp"
-#include "board.hpp"
-#include "level.hpp"
+#include "gameowner.hpp"
 #include "settings.hpp"
 #include "displaysettings.hpp"
 #include "camera.hpp"
@@ -39,21 +37,10 @@
 #include "mixer.hpp"
 #include "input.hpp"
 #include "writer.hpp"
-#include "descriptor.hpp"
-#include "tiletoken.hpp"
-#include "unittoken.hpp"
-#include "bible.hpp"
 #include "library.hpp"
-#include "skinner.hpp"
+#include "mapeditor.hpp"
 #include "skineditor.hpp"
-#include "color.hpp"
 
-class Cursor;
-class ChangeSet;
-
-
-enum class PoolType : uint8_t;
-enum class Popup : uint8_t;
 
 class EditorSDL
 {
@@ -62,22 +49,11 @@ public:
 	~EditorSDL();
 };
 
-class Editor final : virtual private EngineLoop::Owner
+class Editor final : virtual private EngineLoop::Owner,
+	private MapEditor::Owner, private GameOwner
 {
-private:
-	struct HazardPaint
-	{
-		int8_t gas = 0;
-		int8_t radiation = 0;
-
-		bool frostbite = false;
-		bool firestorm = false;
-		bool bonedrought = false;
-		bool death = false;
-	};
-
 public:
-	Editor(Settings& settings, const std::string& filename = "");
+	Editor(Settings& settings, const std::string& mapname = "");
 	~Editor();
 
 	Editor(const Editor&) = delete;
@@ -93,92 +69,41 @@ private:
 	Graphics _graphics;
 	Collector _renderer;
 	Camera _camera;
-	std::shared_ptr<CameraFocus> _camerafocus; // (unique ownership)
 	Mixer _mixer;
 	Input _input;
 	Writer _writer;
 	Library _library;
 
-	std::string _filename;
-	bool _unsavedCached;
-
-	PoolType _pooltype;
-	PoolType _savedpooltype;
-	Bible _bible;
-	Skinner _skinner;
-
-	int _cols;
-	int _rows;
-	Board _board;
-	Level _level;
-	Board _saved;
-
-	int _playercount;
-
-	Popup _activepopup;
-	Popup _openedpopup;
+	std::unique_ptr<MapEditor> _mapeditor;
 
 	SkinEditor _skineditor;
-
-	Descriptor _paintdesc;
-	TileToken _tilepaint;
-	UnitToken _unitpaint;
-	HazardPaint _hazardpaint;
-
-	std::unique_ptr<Cursor> _cursor;
 
 	virtual void doFirst() override;
 	virtual void doFrame() override;
 
+	virtual Settings& settings() override { return _settings; }
+
+	virtual void onConfirmQuit() override;
+
+	virtual std::weak_ptr<Game> startGame(imploding_ptr<Game> game) override;
+	virtual std::weak_ptr<Game> startChallenge(
+		const Challenge& challenge) override;
+	virtual std::weak_ptr<Game> startGame(
+		const Player& player, const std::string& rulesetname,
+		uint32_t planningTime) override;
+	virtual std::weak_ptr<Game> startTutorial(
+		const Player& player, const std::string& rulesetname,
+		uint32_t planningTime) override;
+	virtual std::weak_ptr<Game> startReplay(
+		const Role& role, const std::string& rulesetname,
+		uint32_t planningTime) override;
+	virtual std::weak_ptr<Game> startDiorama() override;
+
+	virtual void stopGame() override;
+
 	void handle(SDL_Event &event);
 
-	void updatePaintMode();
-	void updatePaintBrush();
-	void updateMenuBar();
-	void updateParameters();
-	void updateGlobals();
-	void updatePopup();
-
-	void expandTop();
-	void expandLeft();
-	void expandRight();
-	void expandBottom();
-	void cropTop();
-	void cropLeft();
-	void cropRight();
-	void cropBottom();
-
-	void store(const Position& topleft, ChangeSet& changes);
-	void restore(const ChangeSet& changes);
-
-	void generateBiomes();
-
-	void clear();
-	void onNewDimensions(int cols, int rows);
-	void loadEmpty();
-
-	void load();
-	void loadFrom();
-	void loadCopyFrom();
-	void onOpenFileFilename(const std::string &fname);
-	void onCopyFileFilename(const std::string &fname);
-	void loadFromFile(const std::string& fname);
-	void loaded();
-
-	void save();
-	void saveAs();
-	void saveCopyAs();
-	void onSaveAsFilename(const std::string &fname);
-	void onSaveCopyAsFilename(const std::string &fname);
-	void saveToFile(const std::string& fname);
-	void saved();
-	bool unsaved();
-
-	void changeRuleset();
-	void onChangeRuleset(const PoolType& pooltype, const std::string& name);
-
 	void quit();
-	void onConfirmQuit();
 
 public:
 	void run();

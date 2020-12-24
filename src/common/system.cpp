@@ -103,7 +103,7 @@ void System::touchFile(const std::string& filename)
 void System::touchParentDirectory(const std::string& filename)
 {
 	size_t parent = filename.find_last_of("/");
-	if (parent != std::string::npos)
+	if (parent != 0 && parent != std::string::npos)
 	{
 		touchDirectory(filename.substr(0, parent));
 	}

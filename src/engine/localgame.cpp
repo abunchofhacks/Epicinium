@@ -267,6 +267,11 @@ void LocalGame::load()
 	if (_challenge)
 	{
 		Json::Value briefing = _challenge->getMissionBriefing();
+		if (metadata["challenge"].isObject()
+			&& metadata["challenge"]["briefing"].isObject())
+		{
+			briefing = metadata["challenge"]["briefing"];
+		}
 		for (const auto& commander : _commanders)
 		{
 			commander->receiveBriefing(briefing);

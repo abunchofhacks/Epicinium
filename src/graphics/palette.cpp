@@ -32,11 +32,6 @@
 
 static Palette _installed_master_palette;
 
-void Palette::install(Palette master)
-{
-	_installed_master_palette = std::move(master);
-}
-
 std::string Palette::_sourcepalettesfolder = "resources/palettes/";
 std::string Palette::_palettesfolder = "resources/palettes/";
 
@@ -214,7 +209,7 @@ void Palette::installDefault()
 		DEBUG_ASSERT(false);
 		// Continue.
 	}
-	install(palette);
+	_installed_master_palette = std::move(palette);
 }
 
 void Palette::installNamed(const std::string& palettename)
@@ -224,7 +219,7 @@ void Palette::installNamed(const std::string& palettename)
 	{
 		palette.makeCompleteUsing(_installed_master_palette);
 	}
-	install(palette);
+	_installed_master_palette = std::move(palette);
 }
 
 Color Palette::get(const ColorName& name)

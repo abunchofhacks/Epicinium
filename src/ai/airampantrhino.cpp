@@ -48,104 +48,87 @@ AIRampantRhino::AIRampantRhino(const Player& player,
 	if (_difficulty == Difficulty::NONE)
 	{
 		LOGW << "AI difficulty not set";
-		DEBUG_ASSERT(false);
 	}
 
 	_citytype = _bible.tiletype("city");
 	if (_citytype == TileType::NONE)
 	{
 		LOGE << "Missing type 'city'";
-		DEBUG_ASSERT(false);
 	}
 	_towntype = _bible.tiletype("town");
 	if (_towntype == TileType::NONE)
 	{
 		LOGE << "Missing type 'town'";
-		DEBUG_ASSERT(false);
 	}
 	_outposttype = _bible.tiletype("outpost");
 	if (_outposttype == TileType::NONE)
 	{
 		LOGE << "Missing type 'outpost'";
-		DEBUG_ASSERT(false);
 	}
 	_industrytype = _bible.tiletype("industry");
 	if (_industrytype == TileType::NONE)
 	{
 		LOGE << "Missing type 'industry'";
-		DEBUG_ASSERT(false);
 	}
 	_barrackstype = _bible.tiletype("barracks");
 	if (_barrackstype == TileType::NONE)
 	{
 		LOGE << "Missing type 'barracks'";
-		DEBUG_ASSERT(false);
 	}
 	_airfieldtype = _bible.tiletype("airfield");
 	if (_airfieldtype == TileType::NONE)
 	{
 		LOGE << "Missing type 'airfield'";
-		DEBUG_ASSERT(false);
 	}
 	_farmtype = _bible.tiletype("farm");
 	if (_farmtype == TileType::NONE)
 	{
 		LOGE << "Missing type 'farm'";
-		DEBUG_ASSERT(false);
 	}
 	_soiltype = _bible.tiletype("soil");
 	if (_soiltype == TileType::NONE)
 	{
 		LOGE << "Missing type 'soil'";
-		DEBUG_ASSERT(false);
 	}
 	_cropstype = _bible.tiletype("crops");
 	if (_cropstype == TileType::NONE)
 	{
 		LOGE << "Missing type 'crops'";
-		DEBUG_ASSERT(false);
 	}
 	_trenchestype = _bible.tiletype("trenches");
 	if (_trenchestype == TileType::NONE)
 	{
 		LOGE << "Missing type 'trenches'";
-		DEBUG_ASSERT(false);
 	}
 	_settlertype = _bible.unittype("settler");
 	if (_settlertype == UnitType::NONE)
 	{
 		LOGE << "Missing type 'settler'";
-		DEBUG_ASSERT(false);
 	}
 	_militiatype = _bible.unittype("militia");
 	if (_militiatype == UnitType::NONE)
 	{
 		LOGE << "Missing type 'militia'";
-		DEBUG_ASSERT(false);
 	}
 	_riflemantype = _bible.unittype("rifleman");
 	if (_riflemantype == UnitType::NONE)
 	{
 		LOGE << "Missing type 'rifleman'";
-		DEBUG_ASSERT(false);
 	}
 	_tanktype = _bible.unittype("tank");
 	if (_tanktype == UnitType::NONE)
 	{
 		LOGE << "Missing type 'tank'";
-		DEBUG_ASSERT(false);
 	}
 	_gunnertype = _bible.unittype("gunner");
 	if (_gunnertype == UnitType::NONE)
 	{
 		LOGE << "Missing type 'gunner'";
-		DEBUG_ASSERT(false);
 	}
 	_sappertype = _bible.unittype("sapper");
 	if (_sappertype == UnitType::NONE)
 	{
 		LOGE << "Missing type 'sapper'";
-		DEBUG_ASSERT(false);
 	}
 
 	_settlermoney = 0;

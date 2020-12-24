@@ -115,7 +115,6 @@ const std::vector<std::string>& AI::pool()
 		"RampantRhino",
 		"HungryHippo",
 		"NeuralNewt",
-		"ChargingCheetah"
 	};
 	return pool;
 }
@@ -123,6 +122,7 @@ const std::vector<std::string>& AI::pool()
 const std::vector<std::string>& AI::hiddenPool()
 {
 	static std::vector<std::string> pool = {
+		"ChargingCheetah",
 		"QuickQuack",
 		"TutorialTurtle",
 		"BrawlingBear",

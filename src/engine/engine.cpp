@@ -32,6 +32,7 @@
 #include "spritepattern.hpp"
 #include "clock.hpp"
 #include "palette.hpp"
+#include "editortheme.hpp"
 
 
 EngineSDL::EngineSDL()
@@ -103,6 +104,8 @@ Engine::Engine(Settings& settings) :
 	_graphics.install();
 	_renderer.install();
 
+	EditorTheme::apply();
+
 	SpritePattern::preloadFromIndex();
 
 	_mixer.install();
@@ -134,7 +137,7 @@ Engine::~Engine()
 
 void Engine::doFirst()
 {
-	// If we want to do anything every second, do it here.
+	EditorTheme::apply();
 }
 
 void Engine::doFrame()

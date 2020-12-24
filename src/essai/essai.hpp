@@ -34,6 +34,8 @@ enum class Difficulty : uint8_t;
 class Settings;
 
 
+class Tracker;
+
 class EssAI
 {
 public:
@@ -84,8 +86,10 @@ private:
 	size_t total_divisor = 0;
 
 	Json::Value resultsToJson(const std::vector<Result>& results,
-		time_t starttime, char* humantime);
-	Result playGame(size_t offset);
+		time_t starttime, const char* humantime);
+	void writeMatchLengthTsv(const std::vector<Result>& results,
+		const std::string& filename);
+	Result playGame(size_t offset, Tracker& tracker);
 
 public:
 	void run(size_t games);

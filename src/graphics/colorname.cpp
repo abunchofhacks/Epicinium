@@ -265,6 +265,11 @@ const char* stringify(const ColorName& colorname)
 		case ColorName::TEXTLOBBYCHAT: return "textlobbychat";
 		case ColorName::TEXTSELECTION: return "textselection";
 		case ColorName::SCROLLBAR: return "scrollbar";
+		case ColorName::EDITORFRAME: return "editorframe";
+		case ColorName::EDITORTEXT: return "editortext";
+		case ColorName::EDITORMAIN: return "editormain";
+		case ColorName::EDITORACCENT: return "editoraccent";
+		case ColorName::EDITORHIGHLIGHT: return "editorhighlight";
 		case ColorName::UNITSHADOW: return "unitshadow";
 		case ColorName::TREESHADOW: return "treeshadow";
 		case ColorName::GLAREBLEND: return "glareblend";

@@ -72,6 +72,7 @@ Notice Challenge::check(const Id& id, const Bible&, const Board& board,
 {
 	switch (id)
 	{
+		case CUSTOM:
 		case SHOWCASE:
 		case ELIMINATION:
 		case EVERYTHINGISFREE:
@@ -118,6 +119,7 @@ void Challenge::score(const Id& id, const Bible&, const Board&,
 {
 	switch (id)
 	{
+		case CUSTOM:
 		case SHOWCASE:
 		case ELIMINATION:
 		case EVERYTHINGISFREE:
@@ -152,6 +154,21 @@ void Challenge::award(const Id& id, const Bible& bible, const Board& board,
 {
 	switch (id)
 	{
+		case CUSTOM:
+		{
+			for (const Player& player : info._players)
+			{
+				if (info._defeated[player])
+				{
+					info._award[player] = 0;
+				}
+				else
+				{
+					info._award[player] = 1;
+				}
+			}
+		}
+		break;
 		case SHOWCASE:
 		{
 			for (const Player& player : info._players)

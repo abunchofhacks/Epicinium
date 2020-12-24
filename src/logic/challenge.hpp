@@ -37,6 +37,7 @@ class Challenge
 public:
 	enum Id : uint16_t
 	{
+		CUSTOM,
 		SHOWCASE,
 		ELIMINATION,
 		EVERYTHINGISFREE,

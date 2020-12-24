@@ -186,6 +186,7 @@ void MarkerTransition::map(Cell index)
 				: true));
 		firestorm = (_bible.chaosMinFirestorm(_season) >= 0
 			&& !_bible.randomizedFirestorm()
+			&& !_bible.percentageBasedFirestorm()
 			&& hum <= _bible.humidityMaxFirestorm(_season)
 			&& chaos >= _bible.chaosMinFirestorm(_season));
 		bonedrought = (_bible.tileDesert(tiletype)
@@ -215,6 +216,22 @@ void MarkerTransition::map(Cell index)
 				!= _randomizedFirestorm.end())
 		{
 			firestorm = true;
+		}
+		else if (_bible.percentageBasedFirestorm()
+			&& _bible.chaosMinFirestorm(_season) > 0
+			&& _totalchaos
+					>= (_bible.chaosMinFirestorm(_season) * _board.mass())
+			&& _bible.tileFlammable(tiletype)
+			&& hum <= _bible.humidityMaxFirestorm(_season))
+		{
+			int stage = _totalchaos
+					/ (_bible.chaosMinFirestorm(_season) * _board.mass());
+			bool drought = (hum == 0);
+			int percentage = stage * _bible.firestormBasePercentage()
+				+ drought * _bible.firestormDroughtPercentage()
+				- _bible.tileFirestormResistance(tiletype);
+			int value = (rand() % 100);
+			firestorm = (value < percentage);
 		}
 	}
 	else

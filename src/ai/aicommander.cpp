@@ -104,7 +104,6 @@ void AICommander::receiveChanges(const std::vector<Change>& changes)
 					if (_newOrdersConfirmed < _newOrders.size())
 					{
 						LOGE << descriptivename() << " issued invalid orders";
-						DEBUG_ASSERT(false);
 					}
 				}
 			}
@@ -160,7 +159,6 @@ void AICommander::receiveChanges(const std::vector<Change>& changes)
 				if (change.notice == Notice::ORDERINVALID)
 				{
 					LOGE << descriptivename() << " issued an invalid order";
-					DEBUG_ASSERT(false);
 				}
 			}
 			break;
@@ -173,17 +171,33 @@ void AICommander::receiveChanges(const std::vector<Change>& changes)
 	}
 }
 
+void AICommander::receiveChangesAsJson(const Json::Value& changes)
+{
+	receiveChanges(Change::parseChanges(_bible, changes));
+}
+
 void AICommander::receiveChangesAsString(const std::string& changes)
 {
 	receiveChanges(Change::parseChanges(_bible, changes));
 }
 
+bool AICommander::wantsToPrepareOrders() const
+{
+	return (_phase == Phase::PLANNING && !_finished
+			&& !_gameover && !_defeated);
+}
+
 void AICommander::prepareOrders()
 {
-	if (_gameover || _defeated) return;
 	if (_finished) return;
 
 	_newOrders.clear();
+	if (_gameover || _defeated)
+	{
+		_finished = true;
+		return;
+	}
+
 	bool processed = false;
 	preprocess();
 	while (!processed)
