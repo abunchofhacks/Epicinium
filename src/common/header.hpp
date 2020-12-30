@@ -145,3 +145,7 @@ struct stringref;
 #ifndef DISCORD_GUEST_ENABLED
 #define DISCORD_GUEST_ENABLED false
 #endif
+
+#ifndef EDITOR_DEPRECATED_ENABLED
+#define EDITOR_DEPRECATED_ENABLED false
+#endif

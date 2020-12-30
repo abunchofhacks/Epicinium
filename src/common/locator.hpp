@@ -34,6 +34,7 @@ public:
 	static std::string pictureName(const std::string& filename);
 	static std::string rulesetFilename(const std::string& rulesetname);
 	static std::string rulesetResourceFilename(const std::string& rulesetname);
+	static std::string rulesetAuthoredFilename(const std::string& rulesetname);
 	static std::string rulesetName(const std::string& filename);
 	static std::string fzmodelFilename(const std::string& fzmodelname);
 	static std::string fzmodelName(const std::string& filename);
@@ -43,8 +44,10 @@ public:
 private:
 	static std::string _resourceroot;
 	static std::string _cacheroot;
+	static std::string _authoredroot;
 
 public:
 	static void setResourceRoot(const std::string& root);
 	static void setCacheRoot(const std::string& root);
+	static void setAuthoredRoot(const std::string& root);
 };

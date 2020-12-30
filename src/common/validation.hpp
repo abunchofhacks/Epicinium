@@ -24,15 +24,12 @@
 #pragma once
 #include "header.hpp"
 
-#include "menu.hpp"
 
-
-class CreditsMenu final : public Menu
-{
-public:
-	using Menu::Menu;
-	virtual ~CreditsMenu() = default;
-
-	virtual void build() override;
-	virtual void refresh() override;
-};
+bool isValidUserContentName(const std::string& username);
+bool isValidUserContentChar(char c);
+bool isValidUsername(const std::string& username);
+bool isValidEmail(const std::string& email);
+bool isValidPassword(const std::string& password);
+bool isValidPasswordResetToken(const std::string& token);
+bool isValidKeyToken(const std::string& token);
+std::string canonizeKeyToken(const std::string& token);

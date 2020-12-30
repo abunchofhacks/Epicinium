@@ -49,8 +49,6 @@ public:
 	static void installDefault();
 	static void installNamed(const std::string& palettename);
 
-	static void install(Palette master);
-
 	static Color get(const ColorName& name);
 	static void set(const ColorName& name, Color color);
 

@@ -112,6 +112,7 @@ Bible::Bible(const std::string& name, const Version& version) :
 	_tileSlowMaximum(TILETYPE_SIZE, 0),
 	_tileRegrowthProbabilityDivisor(TILETYPE_SIZE, 0),
 	_tileRegrowthAmount(TILETYPE_SIZE, 0),
+	_tileFirestormResistance(TILETYPE_SIZE, 0),
 	_tileMoraleGainWhenBuilt(TILETYPE_SIZE, 0),
 	_tileMoraleGainWhenLost(TILETYPE_SIZE, 0),
 	_tileMoraleGainWhenDestroyed(TILETYPE_SIZE, 0),
@@ -231,6 +232,8 @@ Bible::Bible(const std::string& name, const Version& version) :
 	_frostbiteThresholdVulnerability(0),
 	_firestormShots(0),
 	_firestormDamage(0),
+	_firestormBasePercentage(0),
+	_firestormDroughtPercentage(0),
 	_gasShots(0),
 	_gasDamage(0),
 	_gasThresholdDamage(0),
@@ -276,6 +279,7 @@ Bible::Bible(const std::string& name, const Version& version) :
 	_planeBasedFrostbite(false),
 	_planeBasedAridification(false),
 	_flammableBasedFirestorm(false),
+	_percentageBasedFirestorm(false),
 	_randomizedFirestorm(false),
 	_randomizedAridification(false),
 	_cumulativeDeath(false),
@@ -389,6 +393,7 @@ void Bible::initialize()
 	_tileNatural[i] = true;
 	_tilePlane[i] = true;
 	_tileFlammable[i] = true;
+	//_tileFirestormResistance[i] = 10;
 	_tileRegrowOnlyInSpring[i] = true;
 	_tileRegrowthProbabilityDivisor[i] = 4;
 	_tileRegrowthAmount[i] = 1;
@@ -461,6 +466,7 @@ void Bible::initialize()
 	_tileGrassy[i] = true;
 	_tileNatural[i] = true;
 	_tileFlammable[i] = true;
+	//_tileFirestormResistance[i] = 10;
 	_tileChaosProtection[i] = true;
 	_tileRegrowOnlyInSpring[i] = true;
 	_tileStacksBuilt[i] = 1;
@@ -492,6 +498,8 @@ void Bible::initialize()
 	_tileHitpoints[i] = 2;
 	_tileIncome[i] = 1;
 	_tileEmission[i] = 2;
+	//_tileFlammable[i] = true;
+	//_tileFirestormResistance[i] = 70;
 	_tileProduces[i] = {{(UnitType) MILITIA, 10}, (UnitType) SETTLER};
 	_tileExpands[i] = {(TileType) INDUSTRY, (TileType) BARRACKS};
 	_tileCost[i] = 50;
@@ -516,6 +524,8 @@ void Bible::initialize()
 	_tileHitpoints[i] = 2;
 	_tileIncome[i] = 1;
 	_tileEmission[i] = 1;
+	//_tileFlammable[i] = true;
+	//_tileFirestormResistance[i] = 70;
 	_tileProduces[i] = {(UnitType) SETTLER};
 	_tileUpgrades[i] = {{TileType::NONE, 4}, {(TileType) CITY, 40}};
 	_tileCost[i] = 10;
@@ -540,6 +550,8 @@ void Bible::initialize()
 	_tileHitpoints[i] = 2;
 	_tileIncome[i] = 0;
 	_tileEmission[i] = 1;
+	//_tileFlammable[i] = true;
+	//_tileFirestormResistance[i] = 70;
 	_tileProduces[i] = {(UnitType) SETTLER, (UnitType) MILITIA};
 	_tileUpgrades[i] = {};
 	_tileCost[i] = 0;
@@ -567,6 +579,8 @@ void Bible::initialize()
 	_tileEmission[i] = 5;
 	_tilePollutionAmount[i] = 1;
 	_tilePollutionRadius[i] = 2;
+	//_tileFlammable[i] = true;
+	//_tileFirestormResistance[i] = 70;
 	_tileProduces[i] = {(UnitType) TANK};
 	_tileExpands[i] = {(TileType) AIRFIELD};
 	_tileUpgrades[i] = {{TileType::NONE, 50}};
@@ -590,6 +604,8 @@ void Bible::initialize()
 	_tileVision[i] = 2;
 	_tileHitpoints[i] = 3;
 	_tileEmission[i] = 1;
+	//_tileFlammable[i] = true;
+	//_tileFirestormResistance[i] = 70;
 	_tileProduces[i] = {(UnitType) RIFLEMAN, (UnitType) GUNNER, (UnitType) SAPPER};
 	_tileUpgrades[i] = {{TileType::NONE, 25}};
 	_tileCost[i] = 5;
@@ -613,6 +629,8 @@ void Bible::initialize()
 	_tileHitpoints[i] = 3;
 	_tileLeakGas[i] = 1;
 	_tileEmission[i] = 1;
+	//_tileFlammable[i] = true;
+	//_tileFirestormResistance[i] = 70;
 	_tileProduces[i] = {(UnitType) ZEPPELIN};
 	_tileCost[i] = 5;
 	_tileDestroyed[i] = (TileType) RUBBLE;
@@ -636,6 +654,8 @@ void Bible::initialize()
 	_tileHitpoints[i] = 2;
 	_tileIncome[i] = 0;
 	_tileEmission[i] = 1;
+	//_tileFlammable[i] = true;
+	//_tileFirestormResistance[i] = 70;
 	_tileProduces[i] = {(UnitType) SETTLER, (UnitType) MILITIA};
 	_tileCultivates[i] = {(TileType) SOIL};
 	_tileCost[i] = 5;
@@ -653,6 +673,7 @@ void Bible::initialize()
 	_tileNatural[i] = false;
 	_tilePlane[i] = true;
 	_tileFlammable[i] = true;
+	//_tileFirestormResistance[i] = 10;
 	_tileRegrowOnlyInSpring[i] = false;
 	_tileVision[i] = 0;
 	_tileIncome[i] = 0;
@@ -674,6 +695,7 @@ void Bible::initialize()
 	_tileNatural[i] = true;
 	_tilePlane[i] = true;
 	_tileFlammable[i] = true;
+	//_tileFirestormResistance[i] = 10;
 	_tileVision[i] = 0;
 	_tileIncome[i] = 1;
 	_tileDestroyed[i] = (TileType) DIRT;
@@ -691,6 +713,7 @@ void Bible::initialize()
 	_tileControllable[i] = false;
 	_tilePlane[i] = false;
 	_tileFlammable[i] = true;
+	//_tileFirestormResistance[i] = 10;
 	_tileTrenches[i] = true;
 	_tileForceOccupy[i] = true;
 	_tileCost[i] = 0;
@@ -938,6 +961,8 @@ void Bible::initialize()
 
 	_firestormShots = 3;
 	_firestormDamage = 2;
+	//_firestormBasePercentage = 30;
+	//_firestormDroughtPercentage = 20;
 
 	_gasShots = 3;
 	_gasDamage = 1;
@@ -985,6 +1010,7 @@ void Bible::initialize()
 	_planeBasedFrostbite = true;
 	_planeBasedAridification = true;
 	_flammableBasedFirestorm = true;
+	_percentageBasedFirestorm = false;
 	_randomizedFirestorm = true;
 	_randomizedAridification = true;
 	_cumulativeDeath = true;
@@ -1579,6 +1605,7 @@ Bible::Bible(const std::string& biblename, const Json::Value& json) :
 	AUTO(PARSETILEINTS, tileSlowMaximum)
 	AUTO(PARSETILEINTS, tileRegrowthProbabilityDivisor)
 	AUTO(PARSETILEINTS, tileRegrowthAmount)
+	AUTO(PARSETILEINTS, tileFirestormResistance)
 	AUTO(PARSETILEINTS, tileMoraleGainWhenBuilt)
 	AUTO(PARSETILEINTS, tileMoraleGainWhenLost)
 	AUTO(PARSETILEINTS, tileMoraleGainWhenDestroyed)
@@ -1964,6 +1991,8 @@ Bible::Bible(const std::string& biblename, const Json::Value& json) :
 	AUTO(PARSEINT, frostbiteThresholdVulnerability)
 	AUTO(PARSEINT, firestormShots)
 	AUTO(PARSEINT, firestormDamage)
+	AUTO(PARSEINT, firestormBasePercentage)
+	AUTO(PARSEINT, firestormDroughtPercentage)
 	AUTO(PARSEINT, gasShots)
 	AUTO(PARSEINT, gasDamage)
 	AUTO(PARSEINT, gasThresholdDamage)
@@ -2168,6 +2197,7 @@ Bible::Bible(const std::string& biblename, const Json::Value& json) :
 	AUTO(PARSEBOOL, planeBasedFrostbite);
 	AUTO(PARSEBOOL, planeBasedAridification);
 	AUTO(PARSEBOOL, flammableBasedFirestorm);
+	AUTO(PARSEBOOL, percentageBasedFirestorm);
 	AUTO(PARSEBOOL, randomizedFirestorm);
 	AUTO(PARSEBOOL, randomizedAridification);
 	AUTO(PARSEBOOL, cumulativeDeath);
@@ -2658,6 +2688,7 @@ Json::Value Bible::toJson() const
 	AUTO(PUTTILEINTS, tileSlowMaximum)
 	AUTO(PUTTILEINTS, tileRegrowthProbabilityDivisor)
 	AUTO(PUTTILEINTS, tileRegrowthAmount)
+	AUTO(PUTTILEINTS, tileFirestormResistance)
 	AUTO(PUTTILEINTS, tileMoraleGainWhenBuilt)
 	AUTO(PUTTILEINTS, tileMoraleGainWhenLost)
 	AUTO(PUTTILEINTS, tileMoraleGainWhenDestroyed)
@@ -2801,6 +2832,8 @@ Json::Value Bible::toJson() const
 	AUTO(PUTINT, frostbiteThresholdVulnerability)
 	AUTO(PUTINT, firestormShots)
 	AUTO(PUTINT, firestormDamage)
+	AUTO(PUTINT, firestormBasePercentage)
+	AUTO(PUTINT, firestormDroughtPercentage)
 	AUTO(PUTINT, gasShots)
 	AUTO(PUTINT, gasDamage)
 	AUTO(PUTINT, gasThresholdDamage)
@@ -2851,6 +2884,7 @@ Json::Value Bible::toJson() const
 	AUTO(PUTBOOL, planeBasedFrostbite)
 	AUTO(PUTBOOL, planeBasedAridification)
 	AUTO(PUTBOOL, flammableBasedFirestorm)
+	AUTO(PUTBOOL, percentageBasedFirestorm)
 	AUTO(PUTBOOL, randomizedFirestorm)
 	AUTO(PUTBOOL, randomizedAridification)
 	AUTO(PUTBOOL, cumulativeDeath)
@@ -3029,6 +3063,7 @@ bool Bible::operator==(const Bible& other) const
 	AUTO(CHECKTILESTATS, tileSlowMaximum)
 	AUTO(CHECKTILESTATS, tileRegrowthProbabilityDivisor)
 	AUTO(CHECKTILESTATS, tileRegrowthAmount)
+	AUTO(CHECKTILESTATS, tileFirestormResistance)
 	AUTO(CHECKTILESTATS, tileMoraleGainWhenBuilt)
 	AUTO(CHECKTILESTATS, tileMoraleGainWhenLost)
 	AUTO(CHECKTILESTATS, tileMoraleGainWhenDestroyed)
@@ -3173,6 +3208,8 @@ bool Bible::operator==(const Bible& other) const
 
 	AUTO(CHECK, firestormShots)
 	AUTO(CHECK, firestormDamage)
+	AUTO(CHECK, firestormBasePercentage)
+	AUTO(CHECK, firestormDroughtPercentage)
 
 	AUTO(CHECK, gasShots)
 	AUTO(CHECK, gasDamage)
@@ -3225,6 +3262,7 @@ bool Bible::operator==(const Bible& other) const
 	AUTO(CHECK, planeBasedFrostbite)
 	AUTO(CHECK, planeBasedAridification)
 	AUTO(CHECK, flammableBasedFirestorm)
+	AUTO(CHECK, percentageBasedFirestorm)
 	AUTO(CHECK, randomizedFirestorm)
 	AUTO(CHECK, randomizedAridification)
 	AUTO(CHECK, cumulativeDeath)

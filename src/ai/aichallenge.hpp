@@ -52,7 +52,6 @@ public:
 	AIChallenge& operator=(const Challenge&) = delete;
 	AIChallenge& operator=(Challenge&&) = delete;
 
-public:
 	std::string getKey();
 	std::vector<Player> getPlayers();
 	std::vector<Bot> getBots();

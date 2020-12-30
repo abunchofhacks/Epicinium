@@ -26,7 +26,7 @@
 
 #include <chrono>
 
-	#include "libs/SDL2/SDL_net.h"
+#include "libs/SDL2/SDL_net.h"
 
 #if FEMTOZIP_ENABLED
 #include "libs/femtozip/CompressionModel.h"
@@ -3462,6 +3462,9 @@ std::string Client::getVersionDebugString() const
 #endif
 #if VALGRIND_INTEGRATION_ENABLED
 	strm << "V";
+#endif
+#if EDITOR_DEPRECATED_ENABLED
+	strm << "Ed";
 #endif
 	strm << ")";
 	return strm.str();

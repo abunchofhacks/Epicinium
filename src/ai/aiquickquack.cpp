@@ -53,7 +53,6 @@ AIQuickQuack::AIQuickQuack(const Player& player, const Difficulty& difficulty,
 	if (_difficulty == Difficulty::NONE)
 	{
 		LOGW << "AI difficulty not set";
-		DEBUG_ASSERT(false);
 	}
 
 	for (TileType tiletype : _bible.tiletypes())

@@ -27,6 +27,26 @@
 #include "base32.hpp"
 
 
+static const char* VALID_USER_CONTENT_CHARS = ""
+	" !"
+	// not "#$%&
+	"'()"
+	// not *+
+	",-."
+	// not /
+	"0123456789"
+	// not :;<=>
+	"?"
+	// not @
+	"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	// not [\]^
+	"_"
+	// not `
+	"abcdefghijklmnopqrstuvwxyz"
+	// not {|}
+	"~"
+	"";
+
 bool isValidUserContentName(const std::string& name)
 {
 	if (name.size() < 3)
@@ -37,30 +57,17 @@ bool isValidUserContentName(const std::string& name)
 	{
 		return false;
 	}
-	size_t ill = name.find_first_not_of(
-		" !"
-		// not "#$%&
-		"'()"
-		// not *+
-		",-."
-		// not /
-		"0123456789"
-		// not :;<=>
-		"?"
-		// not @
-		"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-		// not [\]^
-		"_"
-		// not `
-		"abcdefghijklmnopqrstuvwxyz"
-		// not {|}
-		"~"
-		"");
+	size_t ill = name.find_first_not_of(VALID_USER_CONTENT_CHARS);
 	if (ill != std::string::npos)
 	{
 		return false;
 	}
 	return true;
+}
+
+bool isValidUserContentChar(char c)
+{
+	return (strchr(VALID_USER_CONTENT_CHARS, c) != nullptr);
 }
 
 bool isValidUsername(const std::string& username)

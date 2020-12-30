@@ -76,7 +76,7 @@ private:
 
 private:
 	friend class Library;
-	friend class Editor;
+	friend class MapEditor;
 
 	Bible();
 
@@ -147,6 +147,7 @@ private:
 	std::vector<int8_t> _tileSlowMaximum;
 	std::vector<int8_t> _tileRegrowthProbabilityDivisor;
 	std::vector<int8_t> _tileRegrowthAmount;
+	std::vector<int8_t> _tileFirestormResistance;
 	std::vector<int8_t> _tileMoraleGainWhenBuilt;
 	std::vector<int8_t> _tileMoraleGainWhenLost;
 	std::vector<int8_t> _tileMoraleGainWhenDestroyed;
@@ -291,6 +292,8 @@ private:
 
 	int8_t _firestormShots;
 	int8_t _firestormDamage;
+	int8_t _firestormBasePercentage;
+	int8_t _firestormDroughtPercentage;
 
 	int8_t _gasShots;
 	int8_t _gasDamage;
@@ -343,6 +346,7 @@ private:
 	bool _planeBasedFrostbite;
 	bool _planeBasedAridification;
 	bool _flammableBasedFirestorm;
+	bool _percentageBasedFirestorm;
 	bool _randomizedFirestorm;
 	bool _randomizedAridification;
 	bool _cumulativeDeath;
@@ -417,6 +421,7 @@ public:
 	int8_t tileSlowMaximum(  const TileType& x) const { return _tileSlowMaximum[(size_t) x];   }
 	int8_t tileRegrowthProbabilityDivisor(const TileType& x) const { return _tileRegrowthProbabilityDivisor[(size_t) x]; }
 	int8_t tileRegrowthAmount(const TileType& x) const { return _tileRegrowthAmount[(size_t) x]; }
+	int8_t tileFirestormResistance(const TileType& x) const { return _tileFirestormResistance[(size_t) x]; }
 	int8_t tileMoraleGainWhenBuilt(const TileType& x) const { return _tileMoraleGainWhenBuilt[(size_t) x]; }
 	int8_t tileMoraleGainWhenLost(const TileType& x) const { return _tileMoraleGainWhenLost[(size_t) x]; }
 	int8_t tileMoraleGainWhenDestroyed(const TileType& x) const { return _tileMoraleGainWhenDestroyed[(size_t) x]; }
@@ -592,6 +597,8 @@ public:
 
 	int8_t firestormShots()  const { return _firestormShots;  }
 	int8_t firestormDamage() const { return _firestormDamage; }
+	int8_t firestormBasePercentage() const { return _firestormBasePercentage; }
+	int8_t firestormDroughtPercentage() const { return _firestormDroughtPercentage; }
 
 	int8_t gasShots()                  const { return _gasShots;                  }
 	int8_t gasDamage()                 const { return _gasDamage;                 }
@@ -643,6 +650,7 @@ public:
 	bool planeBasedFrostbite()               const { return _planeBasedFrostbite;              }
 	bool planeBasedAridification()           const { return _planeBasedAridification;          }
 	bool flammableBasedFirestorm()           const { return _flammableBasedFirestorm;          }
+	bool percentageBasedFirestorm()          const { return _percentageBasedFirestorm;              }
 	bool randomizedFirestorm()               const { return _randomizedFirestorm;              }
 	bool randomizedAridification()           const { return _randomizedAridification;          }
 	bool cumulativeDeath()                   const { return _cumulativeDeath;                  }

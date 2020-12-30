@@ -2624,14 +2624,16 @@ void MultiplayerMenu::addBot(const std::string& botslot)
 			auto& dropdown = options["dropdown"];
 			dropdown.put(new VerticalLayout());
 
-			for (auto& ainame : _ainames)
+			for (size_t i = 0; i < _ainames.size(); i++)
 			{
+				std::string ainame = _ainames[i];
+				std::string desc = _aidescriptions[i];
 				content.add(ainame, Frame::makeItem());
 				content[ainame].put(new TextField(ainame, FONTSIZE_MENUBUTTON,
 					ColorName::TEXT800));
 				content[ainame].makeClickable();
 				dropdown.add(ainame, Frame::makeItem());
-				dropdown[ainame].put(new TextField(ainame, FONTSIZE_MENUBUTTON,
+				dropdown[ainame].put(new TextField(desc, FONTSIZE_MENUBUTTON,
 					ColorName::TEXT800));
 				dropdown[ainame].makeClickable();
 			}
@@ -3169,8 +3171,8 @@ void MultiplayerMenu::listMap(const std::string& mapname,
 		size_t seppos = mapname.find_first_of("/");
 		description = "(" + std::to_string(playercount) + ") "
 			+ ::format(
-				// TRANSLATORS: The first argument is the name of a custom map,
-				// the second argument is the name of its creator.
+				// TRANSLATORS: The first argument is the name of a custom map
+				// or AI, the second argument is the name of its creator.
 				_("\"%s\" by %s"),
 				mapname.substr(seppos + 1).c_str(),
 				mapname.substr(0, seppos).c_str());
@@ -3303,11 +3305,63 @@ void MultiplayerMenu::listRuleset(const std::string& rulesetname,
 	}
 }
 
-void MultiplayerMenu::listAI(const std::string& ainame, const Json::Value&)
+void MultiplayerMenu::listAI(const std::string& ainame,
+	const Json::Value& metadata)
 {
 	if (std::find(_ainames.begin(), _ainames.end(), ainame) == _ainames.end())
 	{
+		std::string desc;
+		if (metadata["authors"].isString())
+		{
+			desc = ::format(
+				// TRANSLATORS: The first argument is the name of a custom map
+				// or AI, the second argument is the name of its creator.
+				_("\"%s\" by %s"),
+				ainame.c_str(),
+				metadata["authors"].asString().c_str());
+		}
+		else
+		{
+			desc = ainame;
+		}
+
 		_ainames.emplace_back(ainame);
+		_aidescriptions.emplace_back(desc);
+
+		const int FONTSIZE_MENUBUTTON = _settings.getFontSizeMenuButton();
+		auto& players = _layout["left"]["inlobby"]["players"]["players"];
+		for (size_t i = 0; i < players.size(); i++)
+		{
+			std::string name = players.name(i);
+			if (players[name].contains("ainame"))
+			{
+				auto& options = players[name]["ainame"];
+				auto& content = options["content"];
+				auto& dropdown = options["dropdown"];
+
+				content.add(ainame, Frame::makeItem());
+				content[ainame].put(new TextField(ainame, FONTSIZE_MENUBUTTON,
+					ColorName::TEXT800));
+				content[ainame].makeClickable();
+				dropdown.add(ainame, Frame::makeItem());
+				dropdown[ainame].put(new TextField(desc, FONTSIZE_MENUBUTTON,
+					ColorName::TEXT800));
+				dropdown[ainame].makeClickable();
+
+				content.unfixWidth();
+				content.settleWidth();
+				content.settleHeight();
+				content.fixWidth();
+
+				dropdown.unfixWidth();
+				dropdown.settleWidth();
+				dropdown.settleHeight();
+				dropdown.fixWidth();
+
+				players[name].setWidth(players[name].width());
+				players[name].place(players[name].topleft());
+			}
+		}
 	}
 }
 
@@ -3657,6 +3711,7 @@ void MultiplayerMenu::outServer()
 
 	resetMapDropdown();
 	_ainames.clear();
+	_aidescriptions.clear();
 }
 
 void MultiplayerMenu::inLobby(const std::string& lobby)
@@ -3703,6 +3758,7 @@ void MultiplayerMenu::outLobby()
 
 	resetMapDropdown();
 	_ainames.clear();
+	_aidescriptions.clear();
 }
 
 void MultiplayerMenu::serverClosing()

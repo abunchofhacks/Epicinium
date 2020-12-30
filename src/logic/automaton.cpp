@@ -5147,6 +5147,16 @@ int Automaton::globalScore()
 	return score;
 }
 
+int Automaton::globalWarming()
+{
+	int total = 0;
+	for (Cell index : _board)
+	{
+		total += (int) _board.chaos(index);
+	}
+	return total;
+}
+
 void Automaton::checkRegularDefeat()
 {
 	// Check if any players are defeated.

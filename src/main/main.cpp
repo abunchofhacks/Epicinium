@@ -220,6 +220,7 @@ int main(int argc, char* argv[])
 	if (settings.dataRoot.defined())
 	{
 		Map::setAuthoredRoot(settings.dataRoot.value());
+		Locator::setAuthoredRoot(settings.dataRoot.value());
 		Palette::setAuthoredRoot(settings.dataRoot.value());
 		Account::setRoot(settings.dataRoot.value());
 		Recording::setRoot(settings.dataRoot.value());
@@ -505,6 +506,8 @@ Main::~Main()
 
 void Main::doFirst()
 {
+	Engine::doFirst();
+
 	_menu.beforeFirstUpdateOfEachSecond();
 }
 

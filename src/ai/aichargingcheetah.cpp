@@ -106,98 +106,82 @@ AIChargingCheetah::AIChargingCheetah(const Player& player, const Difficulty& dif
 	if (_difficulty == Difficulty::NONE)
 	{
 		LOGW << "AI difficulty not set";
-		DEBUG_ASSERT(false);
 	}
 
 	_citytype = _bible.tiletype("city");
 	if (_citytype == TileType::NONE)
 	{
 		LOGE << "Missing type 'city'";
-		DEBUG_ASSERT(false);
 	}
 	_towntype = _bible.tiletype("town");
 	if (_towntype == TileType::NONE)
 	{
 		LOGE << "Missing type 'town'";
-		DEBUG_ASSERT(false);
 	}
 	_outposttype = _bible.tiletype("outpost");
 	if (_outposttype == TileType::NONE)
 	{
 		LOGE << "Missing type 'outpost'";
-		DEBUG_ASSERT(false);
 	}
 	_industrytype = _bible.tiletype("industry");
 	if (_industrytype == TileType::NONE)
 	{
 		LOGE << "Missing type 'industry'";
-		DEBUG_ASSERT(false);
 	}
 	_barrackstype = _bible.tiletype("barracks");
 	if (_barrackstype == TileType::NONE)
 	{
 		LOGE << "Missing type 'barracks'";
-		DEBUG_ASSERT(false);
 	}
 	_farmtype = _bible.tiletype("farm");
 	if (_farmtype == TileType::NONE)
 	{
 		LOGE << "Missing type 'farm'";
-		DEBUG_ASSERT(false);
 	}
 	_soiltype = _bible.tiletype("soil");
 	if (_soiltype == TileType::NONE)
 	{
 		LOGE << "Missing type 'soil'";
-		DEBUG_ASSERT(false);
 	}
 	_cropstype = _bible.tiletype("crops");
 	if (_cropstype == TileType::NONE)
 	{
 		LOGE << "Missing type 'crops'";
-		DEBUG_ASSERT(false);
 	}
 	_settlertype = _bible.unittype("settler");
 	if (_settlertype == UnitType::NONE)
 	{
 		LOGE << "Missing type 'settler'";
-		DEBUG_ASSERT(false);
 	}
 	_militiatype = _bible.unittype("militia");
 	if (_militiatype == UnitType::NONE)
 	{
 		LOGE << "Missing type 'militia'";
-		DEBUG_ASSERT(false);
 	}
 	_riflemantype = _bible.unittype("rifleman");
 	if (_riflemantype == UnitType::NONE)
 	{
 		LOGE << "Missing type 'rifleman'";
-		DEBUG_ASSERT(false);
 	}
 	_tanktype = _bible.unittype("tank");
 	if (_tanktype == UnitType::NONE)
 	{
 		LOGE << "Missing type 'tank'";
-		DEBUG_ASSERT(false);
 	}
 	_gunnertype = _bible.unittype("gunner");
 	if (_gunnertype == UnitType::NONE)
 	{
 		LOGE << "Missing type 'gunner'";
-		DEBUG_ASSERT(false);
 	}
 	_sappertype = _bible.unittype("sapper");
 	if (_sappertype == UnitType::NONE)
 	{
 		LOGE << "Missing type 'sapper'";
-		DEBUG_ASSERT(false);
 	}
 	_trenchestype = _bible.tiletype("trenches");
 	if (_trenchestype == TileType::NONE)
 	{
 		LOGE << "Missing type 'trenches'";
-		DEBUG_ASSERT(false);
 	}
 
 	// Arbitrary number bigger than maxMoney but where +20 does not overflow.
@@ -209,12 +193,20 @@ AIChargingCheetah::AIChargingCheetah(const Player& player, const Difficulty& dif
 		_barracksCost = build.cost;
 		break;
 	}
+	if (_barracksCost == NOTFOUND)
+	{
+		LOGW << "Missing _barracksCost";
+	}
 	_industryCost = NOTFOUND;
 	for (const Bible::TileBuild& build : _bible.tileExpands(_citytype))
 	{
 		if (build.type != _industrytype) continue;
 		_industryCost = build.cost;
 		break;
+	}
+	if (_industryCost == NOTFOUND)
+	{
+		LOGW << "Missing _industryCost";
 	}
 	_tankCost = NOTFOUND;
 	for (const Bible::UnitBuild& build : _bible.tileProduces(_industrytype))
@@ -223,12 +215,20 @@ AIChargingCheetah::AIChargingCheetah(const Player& player, const Difficulty& dif
 		_tankCost = build.cost;
 		break;
 	}
+	if (_tankCost == NOTFOUND)
+	{
+		LOGW << "Missing _tankCost";
+	}
 	_riflemanCost = NOTFOUND;
-	for (const Bible::UnitBuild& build : _bible.tileProduces(_citytype))
+	for (const Bible::UnitBuild& build : _bible.tileProduces(_barrackstype))
 	{
 		if (build.type != _riflemantype) continue;
 		_riflemanCost = build.cost;
 		break;
+	}
+	if (_riflemanCost == NOTFOUND)
+	{
+		LOGW << "Missing _riflemanCost";
 	}
 	_gunnerCost = NOTFOUND;
 	for (const Bible::UnitBuild& build : _bible.tileProduces(_barrackstype))
@@ -237,12 +237,20 @@ AIChargingCheetah::AIChargingCheetah(const Player& player, const Difficulty& dif
 		_gunnerCost = build.cost;
 		break;
 	}
+	if (_gunnerCost == NOTFOUND)
+	{
+		LOGW << "Missing _gunnerCost";
+	}
 	_sapperCost = NOTFOUND;
 	for (const Bible::UnitBuild& build : _bible.tileProduces(_barrackstype))
 	{
 		if (build.type != _sappertype) continue;
 		_sapperCost = build.cost;
 		break;
+	}
+	if (_sapperCost == NOTFOUND)
+	{
+		LOGW << "Missing _sapperCost";
 	}
 	_militiaCost = NOTFOUND;
 	for (const Bible::UnitBuild& build : _bible.tileProduces(_farmtype))
@@ -251,6 +259,10 @@ AIChargingCheetah::AIChargingCheetah(const Player& player, const Difficulty& dif
 		_militiaCost = build.cost;
 		break;
 	}
+	if (_militiaCost == NOTFOUND)
+	{
+		LOGW << "Missing _militiaCost";
+	}
 	_settlerCost = NOTFOUND;
 	for (const Bible::UnitBuild& build : _bible.tileProduces(_citytype))
 	{
@@ -258,11 +270,9 @@ AIChargingCheetah::AIChargingCheetah(const Player& player, const Difficulty& dif
 		_settlerCost = build.cost;
 		break;
 	}
-	for (const Bible::TileBuild& build : _bible.tileUpgrades(_industrytype))
+	if (_settlerCost == NOTFOUND)
 	{
-		if (build.type != TileType::NONE) continue;
-		_industryUpgradeCost = build.cost;
-		break;
+		LOGW << "Missing _settlerCost";
 	}
 	_barracksUpgradeCost = NOTFOUND;
 	for (const Bible::TileBuild& build : _bible.tileUpgrades(_barrackstype))
@@ -271,6 +281,10 @@ AIChargingCheetah::AIChargingCheetah(const Player& player, const Difficulty& dif
 		_barracksUpgradeCost = build.cost;
 		break;
 	}
+	if (_barracksUpgradeCost == NOTFOUND)
+	{
+		LOGW << "Missing _barracksUpgradeCost";
+	}
 	_industryUpgradeCost = NOTFOUND;
 	for (const Bible::TileBuild& build : _bible.tileUpgrades(_industrytype))
 	{
@@ -278,12 +292,20 @@ AIChargingCheetah::AIChargingCheetah(const Player& player, const Difficulty& dif
 		_industryUpgradeCost = build.cost;
 		break;
 	}
+	if (_industryUpgradeCost == NOTFOUND)
+	{
+		LOGW << "Missing _industryUpgradeCost";
+	}
 	_farmCost = NOTFOUND;
 	for (const Bible::TileBuild& build : _bible.unitSettles(_settlertype))
 	{
 		if (build.type != _farmtype) continue;
 		_farmCost = build.cost;
 		break;
+	}
+	if (_farmCost == NOTFOUND)
+	{
+		LOGW << "Missing _farmCost";
 	}
 }
 

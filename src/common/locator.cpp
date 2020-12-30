@@ -29,6 +29,7 @@
 
 std::string Locator::_resourceroot = "";
 std::string Locator::_cacheroot = "";
+std::string Locator::_authoredroot = "";
 
 void Locator::setResourceRoot(const std::string& root)
 {
@@ -62,6 +63,22 @@ void Locator::setCacheRoot(const std::string& root)
 	}
 }
 
+void Locator::setAuthoredRoot(const std::string& root)
+{
+	if (root.empty())
+	{
+		_authoredroot = "";
+	}
+	else if (root.back() == '/')
+	{
+		_authoredroot = root;
+	}
+	else
+	{
+		_authoredroot = root + "/";
+	}
+}
+
 std::string Locator::getRelativeFilename(const std::string& filename)
 {
 	if (filename.size() > _cacheroot.size()
@@ -75,6 +92,12 @@ std::string Locator::getRelativeFilename(const std::string& filename)
 	{
 		// Cut off the root.
 		return filename.substr(_resourceroot.size());
+	}
+	else if (filename.size() > _authoredroot.size()
+		&& filename.compare(0, _authoredroot.size(), _authoredroot) == 0)
+	{
+		// Cut off the root.
+		return filename.substr(_authoredroot.size());
 	}
 	else
 	{
@@ -120,6 +143,11 @@ std::string Locator::rulesetFilename(const std::string& rulesetname)
 std::string Locator::rulesetResourceFilename(const std::string& rulesetname)
 {
 	return _resourceroot + "rulesets/" + rulesetname + ".json";
+}
+
+std::string Locator::rulesetAuthoredFilename(const std::string& rulesetname)
+{
+	return _authoredroot + "rulesets/" + rulesetname + ".json";
 }
 
 std::string Locator::rulesetName(const std::string& fullfilename)

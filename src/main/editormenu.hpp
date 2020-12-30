@@ -25,14 +25,23 @@
 #include "header.hpp"
 
 #include "menu.hpp"
+#include "mapeditor.hpp"
 
 
-class CreditsMenu final : public Menu
+class EditorMenu final : public Menu, private MapEditor::Owner
 {
+private:
+	std::unique_ptr<MapEditor> _mapeditor;
+
 public:
 	using Menu::Menu;
-	virtual ~CreditsMenu() = default;
+	virtual ~EditorMenu() = default;
 
 	virtual void build() override;
+	virtual void beforeFirstRefreshOfEachSecond() override;
 	virtual void refresh() override;
+
+	virtual Settings& settings() override { return _settings; }
+
+	virtual void onConfirmQuit() override;
 };

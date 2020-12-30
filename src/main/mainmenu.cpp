@@ -45,6 +45,7 @@
 #include "multiplayermenu.hpp"
 #include "settingsmenu.hpp"
 #include "creditsmenu.hpp"
+#include "editormenu.hpp"
 #include "filler.hpp"
 #include "textfield.hpp"
 #include "multitextfield.hpp"
@@ -68,6 +69,7 @@ enum
 	MULTIPLAYER,
 	SETTINGS,
 	CREDITS,
+	EDITOR,
 };
 
 MainMenu::MainMenu(Owner& owner, GameOwner& gameowner) :
@@ -81,6 +83,7 @@ MainMenu::MainMenu(Owner& owner, GameOwner& gameowner) :
 	_submenus.emplace_back((Menu*) new MultiplayerMenu(_owner, _gameowner));
 	_submenus.emplace_back((Menu*) new SettingsMenu(_owner, _gameowner));
 	_submenus.emplace_back((Menu*) new CreditsMenu(_owner, _gameowner));
+	_submenus.emplace_back((Menu*) new EditorMenu(_owner, _gameowner));
 }
 
 MainMenu::~MainMenu()
@@ -404,8 +407,8 @@ void MainMenu::build()
 		buttons["play"].setTag("mp");
 		buttons["play"].align(HorizontalAlignment::CENTER);
 		buttons["play"].align(VerticalAlignment::MIDDLE);
-		buttons.add("enterkey", makeButtonSmall(
-			_("Enter Key"),
+		buttons.add("editor", makeButtonSmall(
+			_("Map Editor"),
 			FONTSIZE_MENUBUTTON));
 		buttons.add("feedback", makeButtonSmall(
 			_("Feedback?"),
@@ -1402,9 +1405,9 @@ InterfaceElement& MainMenu::getStamp()
 	return _layout["mid"]["buttons"]["logo"]["stamp"];
 }
 
-InterfaceElement& MainMenu::getEnterKeyButton()
+InterfaceElement& MainMenu::getEditorButton()
 {
-	return _layout["mid"]["buttons"]["enterkey"];
+	return _layout["mid"]["buttons"]["editor"];
 }
 
 InterfaceElement& MainMenu::getFeedbackButton()
@@ -2642,23 +2645,24 @@ void MainMenu::refresh()
 	}
 
 	{
-		InterfaceElement& enterkeybutton = getEnterKeyButton();
-		enterkeybutton.bearIf(
-			_client.accessedPortal()
-			&& !_client.isSteamEnabled());
-		enterkeybutton.enableIf(
-			_connectionStatus == ConnectionStatus::CONNECTED
-			&& _loginStatus == LoginStatus::LOGGEDIN);
-
-		if (enterkeybutton.clicked())
+		InterfaceElement& editorbutton = getEditorButton();
+		// TODO does the user need to be logged in?
+		if (editorbutton.clicked())
 		{
-			_toForm = "keyform";
-			InterfaceElement& forms = getForms();
-			forms["keyform"]["error"].kill();
-			forms["keyform"]["token"]["input"].power();
-			forms["keyform"].fixWidth();
-			forms["keyform"].settle();
+			kill();
+			_submenus[EDITOR]->open();
 		}
+	}
+
+	if (Input::get()->wasKeyPressed(SDL_SCANCODE_K)
+		&& Input::get()->isKeyHeld(SDL_SCANCODE_ALT))
+	{
+		_toForm = "keyform";
+		InterfaceElement& forms = getForms();
+		forms["keyform"]["error"].kill();
+		forms["keyform"]["token"]["input"].power();
+		forms["keyform"].fixWidth();
+		forms["keyform"].settle();
 	}
 
 	{

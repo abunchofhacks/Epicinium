@@ -48,7 +48,8 @@ private:
 	std::string _mapBuffer;
 	std::string _ownLobby = "";
 	std::string _username;
-	std::vector<std::string> _ainames;
+	std::vector<std::string> _ainames; // (married)
+	std::vector<std::string> _aidescriptions; // (married)
 	bool _linkWasHovered = false;
 
 	void addPlayer(const std::string& username, bool isSelf);

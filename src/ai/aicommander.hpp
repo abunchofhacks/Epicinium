@@ -74,8 +74,11 @@ protected:
 	Order hasNew(const Descriptor& subject) const;
 
 public:
+	const Bible& bible() const { return _bible; }
+
 	// hiding AILibrary::receiveChanges()
 	void receiveChanges(const std::vector<Change>& changes);
+	void receiveChangesAsJson(const Json::Value& json);
 	virtual void receiveChangesAsString(const std::string& changes) override;
 
 	virtual void preprocess() {};
@@ -87,6 +90,8 @@ public:
 	// hiding AILibrary::orders()
 	std::vector<Order> orders();
 	virtual std::string ordersAsString() override;
+
+	bool wantsToPrepareOrders() const;
 
 	// hiding AILibrary::players() and ::difficulty()
 	Player player() const { return _player; }

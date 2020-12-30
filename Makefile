@@ -308,7 +308,7 @@ IFLAGS_CONFIG ?=
 #
 
 IFLAGS_FULL = $(IFLAGS_ROOT) $(IFLAGS_CORE) $(IFLAGS_CONFIG) $(IFLAGS_LIB)
-IFLAGS      = $(IFLAGS_ROOT) $(IFLAGS_LIB)
+IFLAGS      = $(IFLAGS_ROOT) $(IFLAGS_CONFIG) $(IFLAGS_LIB)
 
 ifeq ($(detected_OS),Windows)
 IFLAGS_ROOT = -I .
@@ -474,8 +474,13 @@ COMPILE_BIN = $(C_CXX)
 COMPILE_CBN = $(C_CC)
 COMPILE_ALB = $(AR) rvs
 COMPILE_AIL = $(C_CXX) -shared -nodefaultlibs $(FPIC) -Wl,--gc-sections
-FPIC        = -fPIC -fvisibility=hidden -fvisibility-inlines-hidden\
+FPIC        = $(REAL_FPIC) -fvisibility=hidden -fvisibility-inlines-hidden\
               -ffunction-sections -fdata-sections
+ifeq ($(detected_OS),Windows)
+REAL_FPIC   =
+else
+REAL_FPIC   = -fPIC
+endif
 POSTCOMPILE = mv -f .dep/$*.Td .dep/$*.d
 
 # Headers and source files
@@ -600,8 +605,10 @@ ALL_INCL_DEP = $(wildcard .dep/*.d) $(wildcard .dep/.*.d)\
 MAINNAMES = launcher game server editor essai\
             automatonlib libepicinium quicktest
 TOOLNAMES = $(TOOL_SRC:src/build/%.cpp=%)
+TBOTNAMES = $(filter bot%,$(TOOLNAMES))
 TAILNAMES = $(filter-out $(MAINNAMES),$(filter lib%,$(TOOLNAMES)))
-TBINNAMES = $(filter-out $(TAILNAMES),$(filter-out $(MAINNAMES),$(TOOLNAMES)))
+TBINNAMES = $(filter-out $(TAILNAMES),$(filter-out $(TBOTNAMES),\
+            $(filter-out $(MAINNAMES),$(TOOLNAMES))))
 NAMES     = $(MAINNAMES) $(TOOLNAMES)
 
 # Binaries
@@ -615,6 +622,7 @@ automatonlib_OUT = bin/$(GAMENAME)-automaton.lib
 $(foreach tool,$(TBINNAMES),$(eval $(tool)_OUT = bin/$(tool).exe))
 libepicinium_OUT = bin/libepicinium.lib
 $(foreach tool,$(TAILNAMES),$(eval $(tool)_OUT = $(tool:lib%=bin/ai%.dll)))
+$(foreach tool,$(TBOTNAMES),$(eval $(tool)_OUT = $(tool:%=bin/%.exe)))
 else
 launcher_OUT = $(GAMENAME)
 game_OUT = bin/game
@@ -625,6 +633,7 @@ automatonlib_OUT = bin/$(GAMENAME)-automaton.a
 $(foreach tool,$(TBINNAMES),$(eval $(tool)_OUT = bin/$(tool)))
 libepicinium_OUT = bin/libepicinium.a
 $(foreach tool,$(TAILNAMES),$(eval $(tool)_OUT = $(tool:lib%=bin/ai%.so)))
+$(foreach tool,$(TBOTNAMES),$(eval $(tool)_OUT = $(tool:%=bin/%)))
 endif
 quicktest_OUT =
 ALL_OUT = $(foreach name,$(NAMES),$($(name)_OUT))
@@ -649,10 +658,11 @@ printsizes = CPP CMON_PIC LGIC_PIC JSON_PIC LAST
 steamlocalizer = CPP CORE AINT INTL LAST
 termlocalizer = CPP CORE INTL LAST
 libepicinium = CPP CMON_LIC LGIC_LIC JSON_PIC AINT_LIC LAST
-libquickquack = CMON_PIC LGIC_PIC JSON_PIC AINT_PIC
-libhungryhippo = CMON_PIC LGIC_PIC JSON_PIC AINT_PIC
-libchargingcheetah = CMON_PIC LGIC_PIC JSON_PIC AINT_PIC
-librampantrhino = CMON_PIC LGIC_PIC JSON_PIC AINT_PIC
+$(foreach tool,$(TAILNAMES),\
+	$(eval $(tool) = CMON_PIC LGIC_PIC JSON_PIC AINT_PIC))
+$(foreach tool,$(TBOTNAMES),\
+	$(eval $(tool) = CPP CMON_PIC LGIC_PIC JSON_PIC AINT_PIC \
+		NETW MESG SDLN SSL CURL LAST))
 quicktest =
 
 $(foreach name,$(NAMES),\
@@ -672,6 +682,12 @@ $(foreach tool,libepicinium,\
 	)
 
 $(foreach tool,$(TAILNAMES),\
+	$(eval $(tool)_OBJ    = .obj/.pic/src/build/$(tool).o $($(tool)_OBJ))\
+	$(eval $(tool)_DEP    = .dep/.pic/src/build/$(tool).d $($(tool)_DEP))\
+	)
+
+$(foreach tool,$(TBOTNAMES),\
+	$(eval $(name)_LFLAGS = $(foreach part,$($(name)),$(LFLAGS_$(part))))\
 	$(eval $(tool)_OBJ    = .obj/.pic/src/build/$(tool).o $($(tool)_OBJ))\
 	$(eval $(tool)_DEP    = .dep/.pic/src/build/$(tool).d $($(tool)_DEP))\
 	)
@@ -732,9 +748,11 @@ libepicinium: $(libepicinium_OUT)
 
 ifeq ($(detected_OS),Windows)
 $(TBINNAMES): %: bin/%.exe
+$(TBOTNAMES): %: bin/%.exe
 $(TAILNAMES): lib%: bin/ai%.dll
 else
 $(TBINNAMES): %: bin/%
+$(TBOTNAMES): %: bin/%
 $(TAILNAMES): lib%: bin/ai%.so
 endif
 .PHONY: $(TOOLNAMES)
@@ -833,6 +851,12 @@ $(libchargingcheetah_OUT): $(libchargingcheetah_OBJ) $(libchargingcheetah_DEP)
 
 $(librampantrhino_OUT): $(librampantrhino_OBJ) $(librampantrhino_DEP)
 	$(COMPILE_AIL) -o $@ $(filter %.o,$^)
+
+$(botquickquack_OUT): $(botquickquack_OBJ) $(botquickquack_DEP)
+	$(COMPILE_BIN) -o $@ $(filter %.o,$^) $(LPATH) $(botquickquack_LFLAGS)
+
+$(botchargingcheetah_OUT): $(botchargingcheetah_OBJ) $(botchargingcheetah_DEP)
+	$(COMPILE_BIN) -o $@ $(filter %.o,$^) $(LPATH) $(botchargingcheetah_LFLAGS)
 
 all: $(ALL_OUT)
 .PHONY: all

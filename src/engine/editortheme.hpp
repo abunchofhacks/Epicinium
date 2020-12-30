@@ -19,16 +19,13 @@
  *
  * [authors:]
  * Sander in 't Veld (sander@abunchofhacks.coop)
- * Daan Mulder (daan@abunchofhacks.coop)
  */
 #pragma once
 #include "header.hpp"
 
 
-bool isValidUserContentName(const std::string& username);
-bool isValidUsername(const std::string& username);
-bool isValidEmail(const std::string& email);
-bool isValidPassword(const std::string& password);
-bool isValidPasswordResetToken(const std::string& token);
-bool isValidKeyToken(const std::string& token);
-std::string canonizeKeyToken(const std::string& token);
+class EditorTheme
+{
+public:
+	static void apply();
+};

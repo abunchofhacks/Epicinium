@@ -47,14 +47,14 @@ IConv::IConv(const std::string& from_charset_, const std::string& to_charset_)
 IConv::~IConv()
 {
   if (cd)
-    iconv_close(cd);
+    tinygettext::iconv_close(cd);
 }
 
 void
 IConv::set_charsets(const std::string& from_charset_, const std::string& to_charset_)
 {
   if (cd)
-    iconv_close(cd);
+    tinygettext::iconv_close(cd);
 
   from_charset = from_charset_;
   to_charset   = to_charset_;
@@ -116,7 +116,7 @@ IConv::convert(const std::string& text)
     {
       if (errno == EILSEQ || errno == EINVAL)
       { // invalid multibyte sequence
-        iconv(cd, nullptr, nullptr, nullptr, nullptr); // reset state
+        tinygettext::iconv(cd, nullptr, nullptr, nullptr, nullptr); // reset state
 
         // FIXME: Could try to skip the invalid byte and continue
         log_error << "error: tinygettext:iconv: invalid multibyte sequence in:  \"" << text << "\"" << std::endl;

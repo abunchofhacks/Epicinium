@@ -59,7 +59,7 @@ void SkinEditor::updatePalettes()
 				if (ImGui::Selectable(name.c_str()))
 				{
 					_activepalettename = name;
-					Palette::install(Palette::load(_activepalettename));
+					Palette::installNamed(_activepalettename);
 				}
 			}
 		}
@@ -73,7 +73,7 @@ void SkinEditor::updatePalettes()
 
 		if (ImGui::Button("Load"))
 		{
-			Palette::install(Palette::load(_activepalettename));
+			Palette::installNamed(_activepalettename);
 		}
 		ImGui::SameLine();
 		if (ImGui::Button("Save"))

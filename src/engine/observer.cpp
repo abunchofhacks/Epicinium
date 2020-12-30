@@ -1302,7 +1302,23 @@ void Observer::processChange(const std::shared_ptr<AnimationGroup> group,
 		{
 			for (auto str : {stringref("defeat"), stringref("victory")})
 			{
+				int maxstars = 3;
+				{
+					auto& briefing = getMissionBox();
+					if (briefing.contains("lines"))
+					{
+						if (!briefing["lines"].contains("2"))
+						{
+							maxstars = 1;
+						}
+						else if (!briefing["lines"].contains("3"))
+						{
+							maxstars = 2;
+						}
+					}
+				}
 				int amount = std::min((int) change.level, 3);
+				maxstars = std::max(amount, maxstars);
 				if (strncmp(str, "defeat", 1) == 0 && _player == Player::OBSERVER
 					&& isChallenge() && change.player != Player::RED)
 				{
@@ -1314,7 +1330,7 @@ void Observer::processChange(const std::shared_ptr<AnimationGroup> group,
 				{
 					element.add("stars", new HorizontalLayout());
 					element["stars"].add("filler1", new HorizontalFiller());
-					for (int i = 1; i <= 3; i++)
+					for (int i = 1; i <= maxstars; i++)
 					{
 						std::string index = std::to_string(i);
 						element["stars"].add(index, new Image("effects/star1"));
@@ -3593,6 +3609,10 @@ void Observer::fillMissionBox(const Json::Value& json)
 			12 * InterfaceElement::scale());
 	}
 
+	int maxstars = 1;
+	if (json["3"].isString()) maxstars = 3;
+	else if (json["2"].isString()) maxstars = 2;
+
 	for (int x = 0; x < 3; x++)
 	{
 		std::string index = std::to_string(x + 1);
@@ -3601,7 +3621,7 @@ void Observer::fillMissionBox(const Json::Value& json)
 		it["lines"][index].add("filler", new HorizontalFiller());
 		it["lines"][index]["filler"].fixWidth(
 			8 * InterfaceElement::scale());
-		for (int i = 1; i <= 3; i++)
+		for (int i = 1; i <= maxstars; i++)
 		{
 			std::string subindex = "star" + std::to_string(i);
 			it["lines"][index].add(subindex, new Image("effects/star1"));
@@ -4982,10 +5002,10 @@ void Observer::updateCards()
 				&& (_bible.tileGrassy(_hoversquare->tile().type)
 					|| _bible.tileBuildable(_hoversquare->tile().type)));
 		snow = _hoversquare->snow();
-		frostbite = _hoversquare->frostbite();
-		firestorm = _hoversquare->firestorm();
-		bonedrought = _hoversquare->bonedrought();
-		gas = _hoversquare->gas();
+		frostbite = _hoversquare->frostbite() && _hoversquare->current();
+		firestorm = _hoversquare->firestorm() && _hoversquare->current();
+		bonedrought = _hoversquare->bonedrought() && _hoversquare->current();
+		gas = _hoversquare->gas() && _hoversquare->current();
 	}
 
 	checkMarkerCard("drought", drought,
@@ -5456,7 +5476,6 @@ void Observer::message(const std::string& message)
 {
 	const int FONTSIZE = _settings.getFontSize();
 
-	DEBUG_ASSERT(isChatEnabled());
 	if (!isChatEnabled()) return;
 
 	emplaceInHistory(getChatHistoryPreview(),
@@ -5470,7 +5489,6 @@ void Observer::chat(const std::string& user, const std::string& message,
 {
 	const int FONTSIZE = _settings.getFontSize();
 
-	DEBUG_ASSERT(isChatEnabled());
 	if (!isChatEnabled()) return;
 
 	size_t m = getChatmode(target);

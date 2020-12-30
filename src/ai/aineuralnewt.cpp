@@ -50,7 +50,6 @@ AINeuralNewt::AINeuralNewt(const Player& player, const Difficulty& difficulty,
 	if (_difficulty == Difficulty::NONE)
 	{
 		LOGW << "AI difficulty not set";
-		DEBUG_ASSERT(false);
 	}
 
 	_pathingFloodfillCache.reserve(30);

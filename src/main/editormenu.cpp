@@ -21,18 +21,35 @@
  * Sander in 't Veld (sander@abunchofhacks.coop)
  * Daan Mulder (daan@abunchofhacks.coop)
  */
-#pragma once
-#include "header.hpp"
+#include "editormenu.hpp"
+#include "source.hpp"
 
-#include "menu.hpp"
+#include "settings.hpp"
+#include "mapeditor.hpp"
 
 
-class CreditsMenu final : public Menu
+void EditorMenu::build()
 {
-public:
-	using Menu::Menu;
-	virtual ~CreditsMenu() = default;
+	_mapeditor.reset(new MapEditor(*this, _gameowner, ""));
+}
 
-	virtual void build() override;
-	virtual void refresh() override;
-};
+void EditorMenu::beforeFirstRefreshOfEachSecond()
+{
+	if (_layout.alive())
+	{
+		_mapeditor->beforeFirstUpdateOfEachSecond();
+	}
+}
+
+void EditorMenu::refresh()
+{
+	if (_layout.alive())
+	{
+		_mapeditor->update();
+	}
+}
+
+void EditorMenu::onConfirmQuit()
+{
+	quit();
+}

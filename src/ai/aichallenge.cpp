@@ -36,6 +36,7 @@ const char* AIChallenge::getKey(const Challenge::Id& id)
 {
 	switch (id)
 	{
+		case CUSTOM: return "";
 		case SHOWCASE: return "showcase_2018_07_04";
 		case ELIMINATION: return "elimination_2017_07_20";
 		case EVERYTHINGISFREE: return "everythingisfree_2018_07_16";
@@ -52,6 +53,7 @@ std::vector<Player> AIChallenge::getPlayers()
 {
 	switch (_id)
 	{
+		case CUSTOM: return ::getPlayers(2);
 		case SHOWCASE: return ::getPlayers(2);
 		case ELIMINATION: return ::getPlayers(2);
 		case EVERYTHINGISFREE: return ::getPlayers(2);
@@ -83,6 +85,7 @@ size_t AIChallenge::getNumBots(const Challenge::Id& id)
 {
 	switch (id)
 	{
+		case CUSTOM: return 1;
 		case SHOWCASE: return 1;
 		case ELIMINATION: return 1;
 		case HIGHSPEED: return 1;
@@ -99,6 +102,7 @@ const char* AIChallenge::getBotName(const Challenge::Id& id)
 {
 	switch (id)
 	{
+		case CUSTOM: return "BrawlingBear";
 		case SHOWCASE: return "BrawlingBear";
 		case ELIMINATION: return "BrawlingBear";
 		case HIGHSPEED: return "BrawlingBear";
@@ -115,6 +119,7 @@ Difficulty AIChallenge::getBotDifficulty(const Challenge::Id& id)
 {
 	switch (id)
 	{
+		case CUSTOM: return Difficulty::MEDIUM;
 		case SHOWCASE: return Difficulty::MEDIUM;
 		case ELIMINATION: return Difficulty::MEDIUM;
 		case HIGHSPEED: return Difficulty::MEDIUM;
@@ -136,6 +141,7 @@ const char* AIChallenge::getMapName(const Challenge::Id& id)
 {
 	switch (id)
 	{
+		case CUSTOM: return "challenge_custom";
 		case SHOWCASE: return "challenge_showcase";
 		case ELIMINATION: return "challenge_elimination";
 		case EVERYTHINGISFREE: return "spruce1v1";
@@ -157,6 +163,7 @@ const char* AIChallenge::getRulesetName(const Challenge::Id& id)
 {
 	switch (id)
 	{
+		case CUSTOM: return "";
 		case SHOWCASE: return "";
 		case ELIMINATION: return "";
 		case EVERYTHINGISFREE: return "challenge_everythingisfree";
@@ -178,6 +185,7 @@ std::string AIChallenge::getDisplayName(const Challenge::Id& id)
 {
 	switch (id)
 	{
+		case CUSTOM:
 		case SHOWCASE:
 		{
 			return _("Showcase");
@@ -227,6 +235,7 @@ const char* AIChallenge::getPanelPictureName(const Challenge::Id& id)
 {
 	switch (id)
 	{
+		case CUSTOM: return "panels/challenge_showcase";
 		case SHOWCASE: return "panels/challenge_showcase";
 		case ELIMINATION: return "panels/challenge_elimination";
 		case EVERYTHINGISFREE: return "panels/challenge_everythingisfree";
@@ -248,6 +257,7 @@ const char* AIChallenge::getDiscordImageKey(const Challenge::Id& id)
 {
 	switch (id)
 	{
+		case CUSTOM: return "challenge_showcase";
 		case SHOWCASE: return "challenge_showcase";
 		case ELIMINATION: return "challenge_elimination";
 		case EVERYTHINGISFREE: return "challenge_everythingisfree";
@@ -269,6 +279,7 @@ const char* AIChallenge::getSteamShortKey(const Challenge::Id& id)
 {
 	switch (id)
 	{
+		case CUSTOM: return "showcase";
 		case SHOWCASE: return "showcase";
 		case ELIMINATION: return "elimination";
 		case EVERYTHINGISFREE: return "everythingisfree";
@@ -312,6 +323,7 @@ std::string AIChallenge::getBrief(const Challenge::Id& id,
 {
 	switch (id)
 	{
+		case CUSTOM:
 		case SHOWCASE:
 		{
 			switch (brief)

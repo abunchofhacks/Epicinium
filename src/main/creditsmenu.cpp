@@ -136,6 +136,15 @@ void CreditsMenu::build()
 	}
 
 	{
+		_layout["it"]["credits"]["names"].add("tom",
+			new TextField("Tom van den Bosch",
+				FONTSIZEMEDIUM, NAMECOLOR));
+		_layout["it"]["credits"]["roles"].add("tom",
+			new TextField(
+				_("game balance, additional content"),
+				FONTSIZEMEDIUM, ROLECOLOR));
+	}
+	{
 		_layout["it"]["credits"]["names"].add("noppy",
 			new TextField("Thomas Noppers",
 				FONTSIZEMEDIUM, NAMECOLOR));
@@ -177,6 +186,33 @@ void CreditsMenu::build()
 	_layout["it"]["credits"].setMarginBottom(15 * InterfaceElement::scale());
 
 	_layout["it"].add("attributions", new VerticalLayout());
+
+	_layout["it"]["attributions"].add("translations",
+			new TextField(
+				_("community translation project"),
+				FONTSIZEMEDIUM, ROLECOLOR));
+	_layout["it"]["attributions"]["translations"].align(
+		HorizontalAlignment::LEFT);
+	_layout["it"]["attributions"].add("translators",
+			new HorizontalLayout());
+	auto& translators = _layout["it"]["attributions"]["translators"];
+	for (const char* name : {
+			"JoeKerr555",
+			"AlexisBarroso",
+			"1diyabl",
+		})
+	{
+		translators.add(stringref(name),
+				new TextField(name, FONTSIZEMEDIUM, NAMECOLOR));
+		translators[stringref(name)].setMarginHorizontal(
+			10 * InterfaceElement::scale());
+	}
+	translators[translators.name(translators.size() - 1)].fixWidth();
+	_layout["it"]["attributions"].add("others",
+			new TextField(
+				_("and many others"),
+				FONTSIZEMEDIUM, ROLECOLOR));
+	_layout["it"]["attributions"]["others"].align(HorizontalAlignment::RIGHT);
 
 	_layout["it"]["attributions"].fixWidth();
 	_layout["it"]["attributions"].fixHeight();

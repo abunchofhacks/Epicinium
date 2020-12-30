@@ -768,6 +768,21 @@ StreamedMessage Message::list_ruleset(
 	return message;
 }
 
+StreamedMessage Message::list_ruleset(
+		const std::string& name, const Json::Value& metadata)
+{
+	StreamedMessage message;
+	message._type = Message::Type::LIST_RULESET;
+	std::stringstream strm;
+	strm << "{\"type\":\"list_ruleset\"";
+	strm << ",\"content\":"
+		<< Json::valueToQuotedString(name.c_str());
+	strm << ",\"metadata\":" << Writer::write(metadata);
+	strm << "}";
+	message._str = strm.str();
+	return message;
+}
+
 StreamedMessage Message::list_challenge(
 		const std::string& key, const Json::Value& metadata)
 {
@@ -792,6 +807,21 @@ StreamedMessage Message::list_ai(
 	strm << "{\"type\":\"list_ai\"";
 	strm << ",\"content\":"
 		<< Json::valueToQuotedString(ainame.c_str());
+	strm << "}";
+	message._str = strm.str();
+	return message;
+}
+
+StreamedMessage Message::list_ai(
+		const std::string& ainame, const Json::Value& metadata)
+{
+	StreamedMessage message;
+	message._type = Message::Type::LIST_AI;
+	std::stringstream strm;
+	strm << "{\"type\":\"list_ai\"";
+	strm << ",\"content\":"
+		<< Json::valueToQuotedString(ainame.c_str());
+	strm << ",\"metadata\":" << Writer::write(metadata);
 	strm << "}";
 	message._str = strm.str();
 	return message;
@@ -1068,6 +1098,31 @@ StreamedMessage Message::order_new(
 	message._type = Message::Type::ORDER_NEW;
 	std::stringstream strm;
 	strm << "{\"type\":\"order_new\"";
+	strm << ",\"orders\":[";
+	strm << TypeEncoder(&typenamer);
+	bool empty = true;
+	for (auto& order : orders)
+	{
+		if (empty) empty = false;
+		else strm << ",";
+		strm << order;
+	}
+	strm << "]";
+	strm << "}";
+	message._str = strm.str();
+	return message;
+}
+
+StreamedMessage Message::order_new(
+		const TypeNamer& typenamer,
+		const std::vector<Order>& orders,
+		const Json::Value& metadata)
+{
+	StreamedMessage message;
+	message._type = Message::Type::ORDER_NEW;
+	std::stringstream strm;
+	strm << "{\"type\":\"order_new\"";
+	strm << ",\"metadata\":" << Writer::write(metadata);
 	strm << ",\"orders\":[";
 	strm << TypeEncoder(&typenamer);
 	bool empty = true;
@@ -1698,6 +1753,10 @@ ParsedMessage::ParsedMessage(Json::Value&& json) :
 				{
 					_time = _json["time"].asUInt();
 				}
+			}
+			if (_json["difficulty"].isString())
+			{
+				_difficulty = parseDifficulty(json["difficulty"].asString());
 			}
 		}
 		break;
