@@ -792,12 +792,34 @@ void AIChargingCheetah::process()
 	}
 
 
-
+	// This tilefloodfill should find all enemy units, as it doesn't include/exclude any tiletype. If I understand correctly at least. 
+	TileFloodfill enemyunits(_bible, _board);
+	enemyunits.exclude({_player});
+	enemyunits.includeOccupied();
+	enemyunits.execute();
 
 
 	// move gunner to cities! Capture if on something that's not ours
 	for (Ground& gunner : _myGunners)
 	{
+		
+		
+		// move onto enemy unit if they're close enough.
+		if (enemyunits.steps(_board.cell(gunner.descriptor.position)) < 3)
+		{
+		Cell destination = _board.cell(gunner.descriptor.position);
+		std::vector<Move> moves;
+		Move current;
+		while ((current = enemyunits.step(destination)) != Move::X)
+		{
+			moves.emplace_back(current);
+			destination = destination + current;
+		}
+		Order order(Order::Type::MOVE, gunner.descriptor,
+			Descriptor::cell(destination.pos()), moves);
+		_options.emplace_back(Option{order, 15 - int(moves.size())});
+		}
+		
 		Cell at = _board.cell(gunner.descriptor.position);
 		if (_bible.tileOwnable(_board.tile(at).type) && !(_board.tile(at).owner == _player) && !(_board.tile(at).type == _soiltype) && !(_board.tile(at).type == _cropstype))
 		{
