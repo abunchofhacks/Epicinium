@@ -814,10 +814,10 @@ void AIChargingCheetah::process()
 	}
 
 
-	// This tilefloodfill should find all enemy units, as it doesn't include/exclude any tiletype. If I understand correctly at least. 
-	TileFloodfill enemyunits(_bible, _board);
+	// This tilefloodfill should find all enemy units (in vision?)
+	UnitFloodfill enemyunits(_bible, _board);
+	enemyunits.exclude({_settlertype});
 	enemyunits.exclude({_player});
-	enemyunits.includeOccupied();
 	enemyunits.execute();
 
 
