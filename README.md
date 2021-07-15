@@ -25,9 +25,9 @@ Epicinium is and will remain free software. If you wish to support Epicinium and
 ## External dependencies
 
 *  [OpenGL](https://www.opengl.org//)
-*  [zlib](https://zlib.net/)
-*  [GNU Make](https://www.gnu.org/software/make/)
-*  [GnuWin32](http://gnuwin32.sourceforge.net/) (on Windows)
+*  [CMake](https://cmake.org/download/) (on Windows)
+*  [Visual Studio](https://visualstudio.microsoft.com/downloads/) (on Windows)
+*  [GNU Make](https://www.gnu.org/software/make/) (on Mac or Linux)
 
 ## Locating the assets
 
@@ -48,13 +48,39 @@ On Mac, the assets are stored inside the application bundle:
 However you cannot redistribute assets that came with the game to anyone other than yourself, as they do not come with a license.
 Also beware that running anything other than the steps from _Getting started_ below may overwrite and thus corrupt the assets.
 
-## Getting started
+## Getting started (Windows)
+
+1. Open this project in Visual Studio.
+2. Right-click _CMakeLists.txt_ in the Visual Studio's Solution Explorer and select "Add Debug Configuration". This opens a file called _launch.vs.json_. Change or add the fields "projectTarget", "name" and "args" as below:
+```json
+{
+  "version": "0.2.1",
+  "defaults": {},
+  "configurations": [
+    {
+        "type": "default",
+        "project": "CMakeLists.txt",
+        "projectTarget": "epicinium.exe",
+        "name": "epicinium.exe",
+        "args": [
+            "--font-filename=C:\\PATH\\TO\\FONT",
+            "--resource-root=C:\\PATH\\TO\\RESOURCES"
+        ]
+    }
+  ]
+}
+```
+3. Replace `C:\\PATH\\TO\\RESOURCES` to a folder containing Epicinium's assets (see _Locating the assets_ above).
+4. Replace `C:\\PATH\\TO\\FONT` to the path of a TTF font file. If using assets downloaded from Steam or itch.io, you may instead remove that line altogether, which causes the font included with the assets to be used.
+5. Compile and run the target named "epicinium.exe" from within Visual Studio.
+
+## Getting started (Mac or Linux)
 
 1. Create _settings.json_ by copying _settings.template.json_, leaving "config-root" as is.
 2. Edit _settings.json_ so that "resource-root" is set to a folder containing Epicinium's assets (see _Locating the assets_ above).
 3. Edit _settings.json_ so that "font-filename" is set to the path of a TTF font file. If using assets downloaded from Steam or itch.io, you may instead remove the setting from _settings.json_ altogether, which causes the font included with the assets to be used.
-5. Compile the game with `make` (or `make -j` to speed up compilation).
-6. Run the resulting launcher: `.\epicinium.exe` on Windows or `./epicinium` on Mac and Linux.
+5. Compile the game with `make`.
+6. Run the resulting launcher: `./epicinium`.
 
 ## License
 
