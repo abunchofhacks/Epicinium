@@ -956,6 +956,11 @@ void Observer::prepareAnimationGroup()
 
 		// Prevent flashlights if lighting is disabled.
 		group->skiplighting = _skiplighting;
+
+		// Prevent Frostbite hazard markers if frostbite is used to mark
+		// the "Chilled" status effect on units in Spring.
+		group->coldfeet = (_bible.frostbiteGivesColdFeet()
+			&& _bible.chaosMinFrostbite(_season) < 0);
 	}
 }
 
@@ -3576,7 +3581,7 @@ void Observer::fillMissionBox(const Json::Value& json)
 	if (it.contains("lines")) it.remove("lines");
 	it.add("lines", new VerticalLayout());
 
-	if (json["greeting"].isString())
+	if (json["greeting"].isString() && !json["greeting"].asString().empty())
 	{
 		std::string text = json["greeting"].asString();
 		it["lines"].add("greeting", new MultiTextField(
@@ -3587,7 +3592,8 @@ void Observer::fillMissionBox(const Json::Value& json)
 			12 * InterfaceElement::scale());
 	}
 
-	if (json["description"].isString())
+	if (json["description"].isString()
+		&& !json["description"].asString().empty())
 	{
 		std::string text = json["description"].asString();
 		it["lines"].add("description", new MultiTextField(
@@ -3598,7 +3604,7 @@ void Observer::fillMissionBox(const Json::Value& json)
 			12 * InterfaceElement::scale());
 	}
 
-	if (json["objective"].isString())
+	if (json["objective"].isString() && !json["objective"].asString().empty())
 	{
 		std::string text = json["objective"].asString();
 		it["lines"].add("objective", new MultiTextField(
@@ -3639,6 +3645,10 @@ void Observer::fillMissionBox(const Json::Value& json)
 				2 * InterfaceElement::scale());
 		}
 		std::string text = json[index].asString();
+		if (x == 0 && text.empty())
+		{
+			text = "Defeat the enemy.";
+		}
 		it["lines"][index].add("text", new TextField(
 			GETTEXT_FROM_SERVER(text.c_str()),
 			_settings.getFontSizeTutorial(),
@@ -3649,7 +3659,7 @@ void Observer::fillMissionBox(const Json::Value& json)
 			4 * InterfaceElement::scale());
 	}
 
-	if (json["sendoff"].isString())
+	if (json["sendoff"].isString() && !json["sendoff"].asString().empty())
 	{
 		std::string text = json["sendoff"].asString();
 		it["lines"].add("sendoff", new MultiTextField(
@@ -3982,7 +3992,7 @@ std::unique_ptr<InterfaceElement> Observer::makeViewport()
 	(*element).content().put(new Filler());
 	(*element).content().makeMassless();
 	(*element).content().kill();
-	(*element).setPadding(Camera::get()->SCALE * Surface::WIDTH / 2);
+	(*element).setPadding(Camera::get()->scale() * Surface::WIDTH / 2);
 
 	return element;
 }
@@ -4304,13 +4314,13 @@ void Observer::adjustCameraToViewport()
 int Observer::viewportWidth()
 {
 	InterfaceElement& viewport = getViewport();
-	return viewport.width() / Camera::get()->SCALE;
+	return viewport.width() / Camera::get()->scale();
 }
 
 int Observer::viewportHeight()
 {
 	InterfaceElement& viewport = getViewport();
-	return viewport.height() / Camera::get()->SCALE;
+	return viewport.height() / Camera::get()->scale();
 }
 
 void Observer::update()
@@ -4983,18 +4993,24 @@ Order Observer::getHoveredOrder()
 void Observer::updateCards()
 {
 	if (getViewBoxHolder().getTag() != "main") return;
+	if (getCardView().hovered()) return;
 
 	Order order = getHoveredOrder();
 
 	bool drought = false;
 	bool snow = false;
 	bool frostbite = false;
+	bool coldfeet = false;
 	bool firestorm = false;
 	bool bonedrought = false;
 	bool gas = false;
 	if (order.type != Order::Type::NONE)
 	{
 		gas = (order.type == Order::Type::BOMB);
+		coldfeet = (_bible.frostbiteGivesColdFeet()
+			&& _selector.type == Descriptor::Type::GROUND
+			&& _selectsquare->frostbite()
+			&& _bible.chaosMinFrostbite(_season) < 0);
 	}
 	else if (_hoversquare)
 	{
@@ -5003,6 +5019,13 @@ void Observer::updateCards()
 					|| _bible.tileBuildable(_hoversquare->tile().type)));
 		snow = _hoversquare->snow();
 		frostbite = _hoversquare->frostbite() && _hoversquare->current();
+		if (_bible.frostbiteGivesColdFeet() && frostbite
+			// Show a different card in Spring than in Winter.
+			&& _bible.chaosMinFrostbite(_season) < 0)
+		{
+			frostbite = false;
+			coldfeet = true;
+		}
 		firestorm = _hoversquare->firestorm() && _hoversquare->current();
 		bonedrought = _hoversquare->bonedrought() && _hoversquare->current();
 		gas = _hoversquare->gas() && _hoversquare->current();
@@ -5026,7 +5049,14 @@ void Observer::updateCards()
 		"ui/markericon_frostbite",
 		_("Frostbite"),
 		_(""
-		"Ground units that remain here take damage in the Decay phase."
+		"Ground units that remain here become Chilled in the Decay phase."
+		" Chilled units cannot attack or use abilities until they move."
+		""));
+	checkMarkerCard("coldfeet", coldfeet,
+		"ui/markericon_frostbite",
+		_("Chilled"),
+		_(""
+		"This unit cannot attack or use abilities until it moves."
 		""));
 	checkMarkerCard("firestorm", firestorm,
 		"ui/markericon_firestorm",

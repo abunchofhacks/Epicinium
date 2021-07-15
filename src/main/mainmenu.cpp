@@ -61,7 +61,7 @@
 #include "challenge.hpp"
 #include "validation.hpp"
 #include "locator.hpp"
-#include "openurl.hpp"
+#include "skin.hpp"
 
 
 enum
@@ -354,7 +354,7 @@ void MainMenu::build()
 		logo["stamp"]["tooltip"].hide();
 		logo["stamp"].add("url", new HiddenTag(""));
 		logo["stamp"].align(HorizontalAlignment::RIGHT);
-		logo.add("title", new Image("logos/title"));
+		logo.add("title", new Image(Skin::get("logos/title")));
 		logo["title"].settle();
 		logo.align(HorizontalAlignment::RIGHT);
 		logo.align(VerticalAlignment::TOP);
@@ -387,22 +387,9 @@ void MainMenu::build()
 		buttons["play"]["downloading"]["texts"].add("2", new TextField(
 			_("Downloading..."),
 			FONTSIZESMALL, ColorName::TEXT400));
-		buttons["play"]["downloading"].add("icon", new Image("ui/downloading"));
-		{
-			InterfaceElement& icon = buttons["play"]["downloading"]["icon"];
-			int i = 0;
-			icon.setColor(i++, Paint::blend(ColorName::LOGOTEXT, ColorName::SHINEBLEND));
-			icon.setColor(i++, ColorName::LOGOTEXT);
-			icon.setColor(i++, Paint::blend(ColorName::LOGOTEXT, ColorName::SHADEBLEND));
-			icon.setColor(i++, Paint::blend(ColorName::FRAME200, ColorName::SHINEBLEND));
-			icon.setColor(i++, ColorName::FRAME200);
-			icon.setColor(i++, Paint::blend(ColorName::FRAME200, ColorName::SHADEBLEND));
-			icon.setColor(i++, Paint::blend(ColorName::FRAME600, ColorName::SHINEBLEND, 0.5f));
-			icon.setColor(i++, ColorName::FRAME600);
-			icon.setColor(i++, Paint::blend(ColorName::FRAME600, ColorName::SHADEBLEND, 0.5f));
-			icon.setColor(i++, Color::transparent());
-			icon.setTag("Spinning");
-		}
+		buttons["play"]["downloading"].add("icon", new Image(
+			Skin::get("ui/downloading")));
+		buttons["play"]["downloading"]["icon"].setTag("Spinning");
 		buttons["play"]["downloading"].align(VerticalAlignment::MIDDLE);
 		buttons["play"].setTag("mp");
 		buttons["play"].align(HorizontalAlignment::CENTER);
@@ -410,9 +397,11 @@ void MainMenu::build()
 		buttons.add("editor", makeButtonSmall(
 			_("Map Editor"),
 			FONTSIZE_MENUBUTTON));
+		buttons["editor"].setAltHotkeyScancode(SDL_SCANCODE_E);
 		buttons.add("feedback", makeButtonSmall(
 			_("Feedback?"),
 			FONTSIZE_MENUBUTTON));
+		buttons["feedback"].setAltHotkeyScancode(SDL_SCANCODE_F);
 		buttons.align(HorizontalAlignment::CENTER);
 		buttons.setMarginHorizontal(
 			(InterfaceElement::windowW() < 600 * InterfaceElement::scale())
@@ -548,22 +537,9 @@ void MainMenu::build()
 		form["content"].add("avatar", makeAvatarFrame());
 		form["content"]["avatar"].put(new StackedLayout());
 		form["content"]["avatar"].add("filler", new Filler());
-		form["content"]["avatar"].add("spinning", new Image("ui/discord"));
+		form["content"]["avatar"].add("spinning", new Image(
+			Skin::get("ui/discord")));
 		form["content"]["avatar"]["spinning"].setTag("Spinning");
-		{
-			InterfaceElement& icon = form["content"]["avatar"]["spinning"];
-			int i = 0;
-			icon.setColor(i++, Paint::mix(Paint::blend(ColorName::LOGOTEXT, ColorName::SHINEBLEND), ColorName::FRAME400, 0.5f));
-			icon.setColor(i++, Paint::mix(ColorName::LOGOTEXT, ColorName::FRAME400, 0.5f));
-			icon.setColor(i++, Paint::mix(Paint::blend(ColorName::LOGOTEXT, ColorName::SHADEBLEND), ColorName::FRAME400, 0.5f));
-			icon.setColor(i++, Paint::mix(Paint::blend(ColorName::LOGOICE, ColorName::SHINEBLEND), ColorName::FRAME400, 0.5f));
-			icon.setColor(i++, Paint::mix(ColorName::LOGOICE, ColorName::FRAME400, 0.5f));
-			icon.setColor(i++, Paint::mix(Paint::blend(ColorName::LOGOICE, ColorName::SHADEBLEND), ColorName::FRAME400, 0.5f));
-			icon.setColor(i++, Paint::mix(Paint::blend(ColorName::FRAME800, ColorName::SHINEBLEND, 0.5f), ColorName::FRAME400, 0.5f));
-			icon.setColor(i++, Paint::mix(ColorName::FRAME800, ColorName::FRAME400, 0.5f));
-			icon.setColor(i++, Paint::mix(Paint::blend(ColorName::FRAME800, ColorName::SHADEBLEND, 0.5f), ColorName::FRAME400, 0.5f));
-			icon.setColor(i++, Color::transparent());
-		}
 		form["content"]["avatar"].align(HorizontalAlignment::CENTER);
 		form["content"]["avatar"].align(VerticalAlignment::MIDDLE);
 		form["content"]["avatar"].fixWidth(
@@ -618,28 +594,9 @@ void MainMenu::build()
 		form["steam"].add("avatar", makeAvatarFrame());
 		form["steam"]["avatar"].put(new StackedLayout());
 		form["steam"]["avatar"].add("filler", new Filler());
-		form["steam"]["avatar"].add("spinning", new Image("ui/steam"));
+		form["steam"]["avatar"].add("spinning", new Image(
+			Skin::get("ui/steam_nub")));
 		form["steam"]["avatar"]["spinning"].setTag("Spinning");
-		{
-			InterfaceElement& icon = form["steam"]["avatar"]["spinning"];
-			int i = 0;
-			icon.setColor(i++, Paint::blend(ColorName::LOGOTEXT,
-				ColorName::SHINEBLEND));
-			icon.setColor(i++, ColorName::LOGOTEXT);
-			icon.setColor(i++, Paint::blend(ColorName::LOGOTEXT,
-				ColorName::SHADEBLEND));
-			icon.setColor(i++, Paint::blend(ColorName::LOGOWATER,
-				ColorName::SHINEBLEND));
-			icon.setColor(i++, ColorName::LOGOWATER);
-			icon.setColor(i++, Paint::blend(ColorName::LOGOWATER,
-				ColorName::SHADEBLEND));
-			icon.setColor(i++, Paint::blend(ColorName::FRAME100,
-				ColorName::SHINEBLEND, 0.5f));
-			icon.setColor(i++, ColorName::FRAME100);
-			icon.setColor(i++, Paint::blend(ColorName::FRAME100,
-				ColorName::SHADEBLEND, 0.5f));
-			icon.setColor(i++, Color::transparent());
-		}
 		form["steam"]["avatar"].align(HorizontalAlignment::CENTER);
 		form["steam"]["avatar"].align(VerticalAlignment::MIDDLE);
 		form["steam"]["avatar"].fixWidth(
@@ -1189,7 +1146,10 @@ void MainMenu::build()
 		_layout["right"].add("topright", new VerticalLayout());
 		InterfaceElement& topright = _layout["right"]["topright"];
 		topright.add("connection", new TooltipLayout());
-		topright["connection"].add("icon", new Image("ui/connection"));
+		topright["connection"].add("icon", new Image(
+			Skin::get("ui/connection_nub")));
+		topright["connection"]["icon"].setTag("Empty");
+		topright["connection"]["icon"].makeHoverable();
 		topright["connection"].add("tooltip", Frame::makeTooltip());
 		topright["connection"]["tooltip"].put(new MultiTextField(
 			_("Initializing..."),
@@ -1201,7 +1161,10 @@ void MainMenu::build()
 		if (_client.isSteamEnabled())
 		{
 			topright.add("steam", new TooltipLayout());
-			topright["steam"].add("icon", new Image("ui/steam"));
+			topright["steam"].add("icon", new Image(
+				Skin::get("ui/steam_nub")));
+			topright["steam"]["icon"].setTag("Empty");
+			topright["steam"]["icon"].makeHoverable();
 			topright["steam"].add("tooltip", Frame::makeTooltip());
 			topright["steam"]["tooltip"].put(new MultiTextField(
 				_("Initializing..."),
@@ -1214,7 +1177,10 @@ void MainMenu::build()
 		else
 		{
 			topright.add("login", new TooltipLayout());
-			topright["login"].add("icon", new Image("ui/login"));
+			topright["login"].add("icon", new Image(
+				Skin::get("ui/login_nub")));
+			topright["login"]["icon"].setTag("Empty");
+			topright["login"]["icon"].makeClickable();
 			topright["login"].add("tooltip", Frame::makeTooltip());
 			topright["login"]["tooltip"].put(new MultiTextField(
 				_("Not logged in."),
@@ -1225,7 +1191,10 @@ void MainMenu::build()
 				5 * InterfaceElement::scale());
 		}
 		topright.add("discord", new TooltipLayout());
-		topright["discord"].add("icon", new Image("ui/discord"));
+		topright["discord"].add("icon", new Image(
+			Skin::get("ui/discord_nub")));
+		topright["discord"]["icon"].setTag("Empty");
+		topright["discord"]["icon"].makeClickable();
 		topright["discord"].add("tooltip", Frame::makeTooltip());
 		topright["discord"]["tooltip"].put(new MultiTextField(
 			_("Find us on Discord!"),
@@ -1254,93 +1223,6 @@ void MainMenu::build()
 		_layout["right"]["quit"].setHotkeyScancode(SDL_SCANCODE_ESCAPE);
 
 		_layout["right"].align(HorizontalAlignment::RIGHT);
-	}
-
-	{
-		InterfaceElement& icon = _layout["right"]["topright"]["connection"]["icon"];
-		int i = 0;
-		icon.setColor(i++, Paint::blend(ColorName::LOGOTEXT, ColorName::SHINEBLEND));
-		icon.setColor(i++, ColorName::LOGOTEXT);
-		icon.setColor(i++, Paint::blend(ColorName::LOGOTEXT, ColorName::SHADEBLEND));
-		icon.setColor(i++, Paint::blend(ColorName::LOGODIRT, ColorName::SHINEBLEND));
-		icon.setColor(i++, ColorName::LOGODIRT);
-		icon.setColor(i++, Paint::blend(ColorName::LOGODIRT, ColorName::SHADEBLEND));
-		icon.setColor(i++, Paint::blend(ColorName::LOGOGRASS, ColorName::SHINEBLEND));
-		icon.setColor(i++, ColorName::LOGOGRASS);
-		icon.setColor(i++, Paint::blend(ColorName::LOGOGRASS, ColorName::SHADEBLEND));
-		icon.setColor(i++, Paint::blend(ColorName::LOGOWATER, ColorName::SHINEBLEND));
-		icon.setColor(i++, ColorName::LOGOWATER);
-		icon.setColor(i++, Paint::blend(ColorName::LOGOWATER, ColorName::SHADEBLEND));
-		icon.setColor(i++, Color::transparent());
-		icon.setTag("Empty");
-		icon.makeHoverable();
-	}
-
-	if (_layout["right"]["topright"].contains("login"))
-	{
-		InterfaceElement& icon = _layout["right"]["topright"]["login"]["icon"];
-		int i = 0;
-		icon.setColor(i++, Paint::blend(ColorName::LOGOTEXT, ColorName::SHINEBLEND));
-		icon.setColor(i++, ColorName::LOGOTEXT);
-		icon.setColor(i++, Paint::blend(ColorName::LOGOTEXT, ColorName::SHADEBLEND));
-		icon.setColor(i++, Paint::blend(ColorName::FRAME400, ColorName::SHINEBLEND));
-		icon.setColor(i++, ColorName::FRAME400);
-		icon.setColor(i++, Paint::blend(ColorName::FRAME400, ColorName::SHADEBLEND));
-		icon.setColor(i++, Paint::blend(ColorName::FRAME800, ColorName::SHINEBLEND, 0.5f));
-		icon.setColor(i++, ColorName::FRAME800);
-		icon.setColor(i++, Paint::blend(ColorName::FRAME800, ColorName::SHADEBLEND, 0.5f));
-		icon.setColor(i++, Color::transparent());
-		icon.setTag("Empty");
-		icon.makeClickable();
-	}
-
-	if (_layout["right"]["topright"].contains("steam"))
-	{
-		InterfaceElement& icon = _layout["right"]["topright"]["steam"]["icon"];
-		int i = 0;
-		icon.setColor(i++, Paint::blend(ColorName::LOGOTEXT, ColorName::SHINEBLEND));
-		icon.setColor(i++, ColorName::LOGOTEXT);
-		icon.setColor(i++, Paint::blend(ColorName::LOGOTEXT, ColorName::SHADEBLEND));
-		icon.setColor(i++, Paint::blend(ColorName::LOGOWATER, ColorName::SHINEBLEND));
-		icon.setColor(i++, ColorName::LOGOWATER);
-		icon.setColor(i++, Paint::blend(ColorName::LOGOWATER, ColorName::SHADEBLEND));
-		icon.setColor(i++, Paint::blend(ColorName::FRAME100, ColorName::SHINEBLEND, 0.5f));
-		icon.setColor(i++, ColorName::FRAME100);
-		icon.setColor(i++, Paint::blend(ColorName::FRAME100, ColorName::SHADEBLEND, 0.5f));
-		icon.setColor(i++, Color::transparent());
-		icon.setTag("Empty");
-		icon.makeHoverable();
-	}
-
-	if (_layout["right"]["topright"].contains("discord"))
-	{
-		InterfaceElement& icon = _layout["right"]["topright"]["discord"]["icon"];
-		int i = 0;
-		icon.setColor(i++, Paint::blend(ColorName::LOGOTEXT, ColorName::SHINEBLEND));
-		icon.setColor(i++, ColorName::LOGOTEXT);
-		icon.setColor(i++, Paint::blend(ColorName::LOGOTEXT, ColorName::SHADEBLEND));
-		icon.setColor(i++, Paint::blend(ColorName::LOGOICE, ColorName::SHINEBLEND));
-		icon.setColor(i++, ColorName::LOGOICE);
-		icon.setColor(i++, Paint::blend(ColorName::LOGOICE, ColorName::SHADEBLEND));
-		icon.setColor(i++, Paint::blend(ColorName::FRAME800, ColorName::SHINEBLEND, 0.5f));
-		icon.setColor(i++, ColorName::FRAME800);
-		icon.setColor(i++, Paint::blend(ColorName::FRAME800, ColorName::SHADEBLEND, 0.5f));
-		icon.setColor(i++, Color::transparent());
-		icon.setTag("Empty");
-		icon.makeClickable();
-	}
-
-	{
-		InterfaceElement& logo = _layout["mid"]["buttons"]["logo"]["title"];
-		int i = 0;
-
-		logo.setColor(i++, Paint::blend(ColorName::LOGOTEXT, ColorName::SHINEBLEND));
-		logo.setColor(i++, ColorName::LOGOTEXT);
-		logo.setColor(i++, Paint::blend(ColorName::LOGOTEXT, ColorName::SHADEBLEND));
-
-		logo.setColor(i++, ColorName::LOGOTEXTBORDER);
-		logo.setColor(i++, ColorName::LOGOTEXTBORDER);
-		logo.setColor(i++, Paint::blend(ColorName::LOGOTEXTBORDER, ColorName::SHADEBLEND, 2.00f));
 	}
 
 	_layout.fixWidth(InterfaceElement::windowW());
@@ -1541,7 +1423,7 @@ void MainMenu::refresh()
 			linkHovered = true;
 			if (stamp.clicked())
 			{
-				System::openURL(stamp["url"].text());
+				_client.openUrl(stamp["url"].text());
 			}
 		}
 	}
@@ -1779,7 +1661,7 @@ void MainMenu::refresh()
 			linkHovered = true;
 			if (form["info"].clicked())
 			{
-				System::openURL("https://discord.gg/vQhTURC");
+				_client.openUrl("https://discord.gg/vQhTURC");
 			}
 		}
 
@@ -1808,7 +1690,7 @@ void MainMenu::refresh()
 			linkHovered = true;
 			if (form["info"].clicked())
 			{
-				System::openURL("https://discord.gg/vQhTURC");
+				_client.openUrl("https://discord.gg/vQhTURC");
 			}
 		}
 
@@ -2296,7 +2178,9 @@ void MainMenu::refresh()
 		{
 			linkHovered = true;
 			if (form["disclosure"].clicked())
-				System::openURL("https://epicinium.nl/privacy.php");
+			{
+				_client.openUrl("https://epicinium.nl/privacy.php");
+			}
 		}
 
 		if (Input::get()->wasKeyPressed(SDL_SCANCODE_TAB))
@@ -2632,7 +2516,7 @@ void MainMenu::refresh()
 			linkHovered = true;
 			if (discord["icon"].clicked())
 			{
-				System::openURL("https://discord.gg/vQhTURC");
+				_client.openUrl("https://discord.gg/vQhTURC");
 			}
 		}
 #if DISCORD_GUEST_ENABLED
@@ -2799,7 +2683,7 @@ void MainMenu::refresh()
 			linkHovered = true;
 			if (form["info"].clicked())
 			{
-				System::openURL(form["info"]["url"].text());
+				_client.openUrl(form["info"]["url"].text());
 			}
 		}
 	}

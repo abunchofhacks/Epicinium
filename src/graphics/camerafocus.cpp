@@ -123,10 +123,10 @@ void CameraFocus::update()
 				||   (_scrollingEdge   && mousepixel.xenon < 3);
 		bool down =  (_keysEnabled && _scrollingWasd   && input->isKeyHeld(SDL_SCANCODE_S))
 				||   (_keysEnabled && _scrollingArrows && input->isKeyHeld(SDL_SCANCODE_DOWN))
-				||   (_scrollingEdge   && mousepixel.yahoo > camera->WINDOW_H - 3);
+				|| (_scrollingEdge && mousepixel.yahoo > camera->height() - 3);
 		bool right = (_keysEnabled && _scrollingWasd   && input->isKeyHeld(SDL_SCANCODE_D))
 				||   (_keysEnabled && _scrollingArrows && input->isKeyHeld(SDL_SCANCODE_RIGHT))
-				||   (_scrollingEdge   && mousepixel.xenon > camera->WINDOW_W - 3);
+				|| (_scrollingEdge && mousepixel.xenon > camera->width() - 3);
 		if (up    && _point.yahoo <= _topleftLimit.yahoo)         up    = false;
 		if (left  && _point.xenon <= _topleftLimit.xenon)         left  = false;
 		if (down  && _point.yahoo >= _bottomrightLimit.yahoo - 1) down  = false;
@@ -197,8 +197,8 @@ void CameraFocus::update()
 	}
 	else if (_shake > 0.001f)
 	{
-		camera->offset.xenon = randomshakeamount(camera->SCALE * _shake);
-		camera->offset.yahoo = randomshakeamount(camera->SCALE * _shake);
+		camera->offset.xenon = randomshakeamount(camera->scale() * _shake);
+		camera->offset.yahoo = randomshakeamount(camera->scale() * _shake);
 	}
 	else
 	{
@@ -236,8 +236,8 @@ void CameraFocus::update()
 				ImGuiInputTextFlags_AutoSelectAll);
 			ImGui::InputInt("Focus Y", &(_point.yahoo), 0, 0,
 				ImGuiInputTextFlags_AutoSelectAll);
-			ImGui::Value("Focus pixel-X", camera->FOCUS_XENON);
-			ImGui::Value("Focus pixel-Y", camera->FOCUS_YAHOO);
+			ImGui::Value("Focus pixel-X", camera->_focusXenon);
+			ImGui::Value("Focus pixel-Y", camera->_focusYahoo);
 			ImGui::Value("Offset pixel-X", camera->offset.xenon);
 			ImGui::Value("Offset pixel-Y", camera->offset.yahoo);
 			ImGui::Value("Adjust pixel-X", camera->adjust.xenon);

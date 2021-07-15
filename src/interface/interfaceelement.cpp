@@ -32,17 +32,17 @@
 
 int InterfaceElement::scale()
 {
-	return Camera::get()->SCALE;
+	return Camera::get()->scale();
 }
 
 int InterfaceElement::windowW()
 {
-	return Camera::get()->WINDOW_W;
+	return Camera::get()->width();
 }
 
 int InterfaceElement::windowH()
 {
-	return Camera::get()->WINDOW_H;
+	return Camera::get()->height();
 }
 
 int InterfaceElement::fontH(int fontsize)

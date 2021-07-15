@@ -352,7 +352,7 @@ else
 ifeq ($(detected_OS),Darwin) # Mac OS X
 LFLAGS_LDOT = -Wl,-rpath,@executable_path/ -Lbin
 LFLAGS_LBIN = -Wl,-rpath,@executable_path/bin -Lbin
-LFLAGS_CPP  = -lstdc++
+LFLAGS_CPP  = -lstdc++ -lstdc++fs
 LFLAGS_CONS =
 LFLAGS_AINT = -ldl
 LFLAGS_SDL  = -lfreetype -lpng\
@@ -366,7 +366,7 @@ LFLAGS_INTL = -lstdc++fs
 else
 LFLAGS_LDOT = -Wl,-rpath,'$$ORIGIN'
 LFLAGS_LBIN = -Wl,-rpath,'$$ORIGIN/bin'
-LFLAGS_CPP  = -lstdc++
+LFLAGS_CPP  = -lstdc++ -lstdc++fs
 LFLAGS_CONS =
 LFLAGS_AINT = -ldl
 LFLAGS_SDL  = -Wl,--no-as-needed\
@@ -521,6 +521,7 @@ JSON_SRC    = $(wildcard libs/jsoncpp/*.cpp)
 IMGU_SRC    = $(wildcard libs/imgui/*.cpp)
 SDL_SRC     = $(wildcard libs/SDL2/*.c)
 INTL_SRC    = $(wildcard libs/tinygettext/*.cpp)
+STB_SRC     = $(wildcard libs/stb/*.c)
 MAIN_SRC    = $(call listsrc,main)
 SERV_SRC    = $(call listsrc,server)
 EDIT_SRC    = $(call listsrc,edit)
@@ -531,18 +532,19 @@ LNCH_SRC    = src/build/launcher.c
 # Build targets are composed of parts
 PARTS       = LNCH MAIN SERV EDIT ESSA\
               CMON LGIC AINT NETW MESG USER GRFX ACTN AUDI INFC ENGI\
-              JSON SDL SLDN IMGU GL SSL CURL FZIP DISC INTL\
-              CORE UNET ENGN LAST
+              JSON SDL SLDN IMGU GL SSL CURL FZIP DISC INTL STB\
+              CORE UNET ENGN EXT LAST
 
 CPP_PARTS   = MAIN SERV EDIT ESSA\
               CMON LGIC AINT NETW MESG USER GRFX ACTN AUDI INFC ENGI\
               JSON IMGU INTL\
               TOOL
-C_PARTS     = LNCH SDL
-COMP_PARTS  = CORE UNET ENGN
+C_PARTS     = LNCH SDL STB
+COMP_PARTS  = CORE UNET EXT ENGN
 
 CORE_ELEMS  = CMON LGIC JSON
 UNET_ELEMS  = NETW MESG USER
+EXT_ELEMS   = DISC STM STB
 ENGN_ELEMS  = ENGI GRFX AUDI ACTN INFC
 
 SRC_PARTS   = $(CPP_PARTS) $(C_PARTS)\
@@ -554,6 +556,8 @@ $(foreach part,$(PARTS),\
 	$(eval LFLAGS_$(part)_PIC = $(LFLAGS_$(part))))
 $(foreach part,$(PARTS),\
 	$(eval LFLAGS_$(part)_LIC = $(LFLAGS_$(part))))
+$(foreach part,$(COMP_PARTS),\
+	$(eval LFLAGS_$(part) = $(foreach elem,$($(part)_ELEMS),$(LFLAGS_$(elem)))))
 
 # Objects
 $(foreach part,$(CPP_PARTS),\
@@ -640,7 +644,7 @@ ALL_OUT = $(foreach name,$(NAMES),$($(name)_OUT))
 
 # Build parts
 launcher = LNCH
-game = CPP MAIN CORE AINT UNET ENGN SDL IMGU GL SSL CURL FZIP DISC INTL STM LAST
+game = CPP MAIN CORE AINT UNET ENGN SDL IMGU GL SSL CURL FZIP INTL EXT LAST
 server = CPP SERV CORE AINT NETW MESG SDLN SSL CURL FZIP INTL LAST
 editor = CPP EDIT CORE AINT ENGN SDL IMGU GL INTL LAST
 essai = CPP ESSA CORE AINT INTL LAST
@@ -720,9 +724,10 @@ XXLOC_FILES = $(patsubst %,data/loc/%.po,$(XX_LOCALES))
 SPECIFIES   = $(patsubst %/,.dep/specify-%,\
               $(filter-out package/,$(wildcard */)))
 SPCFD_FILES = $(patsubst %,.dep/specify-%,$(SPECIFIEDS))
-SPECIFIEDS  = accounts ai archive audio bin brainstorm data docs downloads\
-              essailogs\
-              fonts keys libs logs maps patches packages pictures recordings\
+SPECIFIEDS  = accounts ai archive audio bin brainstorm build\
+              data docs downloads essailogs\
+              fonts keys libs logs maps out\
+              patches packages pictures recordings\
               resources rulesets sessions sprites src tools translations\
               $(GAMENAME).app
 
@@ -1095,8 +1100,7 @@ RULESETS         = $(filter-out $(wildcard rulesets/*test*),\
 MAPS             = $(filter-out $(wildcard maps/*test*),\
                    $(wildcard maps/*.map))
 
-package: game $(LOC_FILES) bin/check
-package: | $(SPECIFIES)
+asset-package: | $(SPECIFIES)
 	rm -rf ./package/
 	$(MKDIR) -p ./package
 	$(MKDIR) -p ./package/pictures
@@ -1134,12 +1138,16 @@ package: | $(SPECIFIES)
 	cp -RP $(RULESETS) ./package/rulesets/
 	cp -RP maps/ABOUT.txt ./package/maps/
 	cp -RP $(MAPS) ./package/maps/
+	cp -RP data/ABOUT.txt ./package/data/
+	cp -RP $(LOC_FILES) ./package/data/loc/
+.PHONY: asset-package
+
+package: asset-package game $(LOC_FILES) bin/check
+package: | $(SPECIFIES)
 	cp -RP $(launcher_OUT) ./package/$(launcher_OUT)
 	cp -RP $(game_OUT) ./package/$(game_OUT)
 	cp -RP bin/ABOUT.txt ./package/bin/
 	cp -RP $(LIBRARIES) ./package/bin/
-	cp -RP data/ABOUT.txt ./package/data/
-	cp -RP $(LOC_FILES) ./package/data/loc/
 .PHONY: package
 
 # Evaluate PVERSION only when it is called because VERSIONFILE might not exist;

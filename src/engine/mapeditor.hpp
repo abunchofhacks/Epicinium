@@ -38,6 +38,7 @@ class Cursor;
 class ChangeSet;
 class GameOwner;
 class Settings;
+class Screenshot;
 
 
 enum class PoolType : uint8_t;
@@ -61,6 +62,15 @@ public:
 		virtual ~Owner() = default;
 
 		virtual Settings& settings() = 0;
+
+		virtual bool isTakingScreenshot() = 0;
+
+		virtual bool hasWorkshop() { return false; };
+		virtual void openWorkshop(const std::string& /*mapname*/,
+			const std::string& /*rulesetname*/) {};
+		virtual void closeWorkshop() {};
+
+		virtual void openPaletteEditor() = 0;
 
 		virtual void onConfirmQuit() = 0;
 	};
@@ -94,6 +104,14 @@ private:
 	std::string _mapname;
 	bool _unsavedCached;
 
+	bool _showRulesetEditor;
+	std::string _rulesetname;
+	std::vector<char> _rulesetbuffer;
+	bool _rulesetvalid;
+	bool _rulesetunsaved;
+	bool _rulesetsaving;
+	std::string _ruleseterrormessage;
+
 	PoolType _pooltype;
 	PoolType _savedpooltype;
 	Bible _bible;
@@ -110,6 +128,8 @@ private:
 
 	Popup _activepopup;
 	Popup _openedpopup;
+	std::vector<std::string> _cachedMapNames;
+	std::vector<std::string> _cachedRulesetNames;
 
 	Descriptor _paintdesc;
 	TileToken _tilepaint;
@@ -130,6 +150,8 @@ protected:
 	void updateParameters();
 	void updateGlobals();
 	void updatePopup();
+
+	void updateRulesetEditor();
 
 	void expandTop();
 	void expandLeft();
@@ -174,7 +196,12 @@ protected:
 	void playTestGame();
 	void playVersusAI();
 
+	void switchToRulesetEditor();
+	void switchToPaletteEditor();
+
 public:
 	void quit();
 	void onConfirmQuit();
+
+	std::shared_ptr<Screenshot> prepareScreenshotOfMap();
 };

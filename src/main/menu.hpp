@@ -54,9 +54,14 @@ public:
 		virtual DisplaySettings& displaysettings() = 0;
 		virtual Client& client() = 0;
 
+		virtual bool isTakingScreenshot() = 0;
+
 		virtual void quit(ExitCode exitcode = ExitCode::DONE) = 0;
 
-		virtual std::string getPicture(const std::string& name) = 0;
+		virtual void getPicture(const std::string& name) = 0;
+
+		virtual std::string activePaletteName() const = 0;
+		virtual void openPaletteEditor(const std::string& palettename) = 0;
 	};
 
 	Menu(Owner& owner, GameOwner& gameowner);

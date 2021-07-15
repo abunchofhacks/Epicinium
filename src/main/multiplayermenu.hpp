@@ -35,6 +35,7 @@ class MultiplayerMenu final : public Menu, public ClientHandler
 {
 private:
 	std::unique_ptr<InterfaceElement> makeMapDropdown();
+	std::unique_ptr<InterfaceElement> makeRulesetDropdown();
 	std::unique_ptr<InterfaceElement> makeTimerDropdown();
 
 	static std::string formatRating(float rating);
@@ -50,6 +51,9 @@ private:
 	std::string _username;
 	std::vector<std::string> _ainames; // (married)
 	std::vector<std::string> _aidescriptions; // (married)
+	bool _isSelfHosting = false;
+	std::vector<std::string> _challengekeys; // (married)
+	std::vector<int> _challengestars; // (married)
 	bool _linkWasHovered = false;
 
 	void addPlayer(const std::string& username, bool isSelf);
@@ -60,15 +64,20 @@ private:
 	void resetMapDropdown();
 	void straightenLobbySettings();
 	void restrictLobbySettingsForOneVsOne();
+	void rethinkLobbySettingsForSelfHostedContent();
+	void reloadChallengeList();
 
 	void becomeGameLobby();
 	void becomeReplayLobby();
 
+	bool joinSpectatable(bool dryrun = false);
 	bool joinOneVsOne();
 	bool joinFreeForAll();
 
 	std::unique_ptr<InterfaceElement> makePanel(const std::string& text,
 		const std::string& background, const Paint& framecolor);
+	std::unique_ptr<InterfaceElement> makeChallengePanel(
+		const std::string& text, int maxStars);
 
 public:
 	virtual void build() override;
@@ -108,6 +117,7 @@ public:
 	void unlockOwnLobby();
 	void maxPlayers(const std::string& lobby, uint32_t count);
 	void numPlayers(const std::string& lobby, uint32_t count);
+	virtual void assignHost(const std::string& user, bool isSelf) override;
 	virtual void assignRole(const std::string& user, const Role& role, bool isSelf) override;
 	virtual void assignColor(const std::string& user, const Player& color) override;
 	virtual void assignVisionType(const std::string& user, const VisionType& type) override;
@@ -116,6 +126,7 @@ public:
 	virtual void pickMap(const std::string& mapname) override;
 	virtual void pickTimer(uint32_t timer) override;
 	virtual void pickReplay(const std::string& mapname) override;
+	virtual void pickRuleset(const std::string& rulesetname) override;
 	virtual void addBot(const std::string& name) override;
 	virtual void removeBot(const std::string& name) override;
 	virtual void listMap(const std::string& name, const Json::Value& metadata) override;
@@ -124,10 +135,12 @@ public:
 	virtual void listAI(const std::string& name, const Json::Value& metadata) override;
 	virtual void listChallenge(const std::string& name, const Json::Value& metadata) override;
 
+	virtual void startHostedGame() override;
+
 	virtual void updateOwnRating(float rating) override;
 	virtual void updateRating(const std::string& name, float rating) override;
 	virtual void updateStars(const std::string& name, int stars) override;
-	virtual void updateRecentStars(int stars) override;
+	virtual void updateRecentStars(const std::string& key, int stars) override;
 
 	virtual void displayRankings(const std::vector<Ranking>& rankings) override;
 

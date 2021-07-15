@@ -154,7 +154,7 @@ void Primitive::render(GLuint shader, int x, int y)
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, _textureID);
 
-	int scale = Camera::get()->SCALE;
+	int scale = Camera::get()->scale();
 	int x0 = x;
 	int x1 = x0 + scale * _width;
 	int y0 = y;

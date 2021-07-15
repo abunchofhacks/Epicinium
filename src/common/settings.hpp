@@ -119,6 +119,7 @@ public:
 	Setting<int> width;
 	Setting<int> height;
 	Setting<int> scale;
+	Setting<int> scaleEditor;
 	Setting<int> framerate;
 	Setting<bool> finishRendering;
 	Setting<bool> steam;
@@ -206,6 +207,8 @@ public:
 	int getFontSizeWallet() const;
 	int getFontSizeTutorial() const;
 	int getFontSizeHeadline() const;
+
+	int getEditorScale() const;
 
 private:
 	static std::string _configroot;

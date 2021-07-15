@@ -70,6 +70,7 @@ Settings::Settings(std::unique_ptr<Settings> fallback) :
 	width(this, "width"),
 	height(this, "height"),
 	scale(this, "scale"),
+	scaleEditor(this, "scale-editor"),
 	framerate(this, "framerate"),
 	finishRendering(this, "finish-rendering"),
 	steam(this, "steam"),
@@ -148,16 +149,16 @@ Settings::Settings() :
 	gameplayVolume = 1.0f;
 	musicVolume = 1.0f;
 
-#ifdef DEVELOPMENT
 #ifdef CANDIDATE
 	dataRoot = System::getPersistentDataRoot();
 	cacheRoot = System::getPersistentCacheRoot();
 #else
+#ifdef DEVELOPMENT
 	// Use the working directory.
-#endif
 #else
 	dataRoot = System::getPersistentDataRoot();
 	cacheRoot = System::getPersistentCacheRoot();
+#endif
 #endif
 
 #ifdef PLATFORMOSX
@@ -710,6 +711,11 @@ int Settings::getFontSizeTutorial() const
 int Settings::getFontSizeHeadline() const
 {
 	return fontSizeHeadline.value(3 * getFontSize());
+}
+
+int Settings::getEditorScale() const
+{
+	return scaleEditor.value(std::max(1, scale.value(2) / 2));
 }
 
 void Settings::determineCompatibleRoot(const std::string& settingsfilename,

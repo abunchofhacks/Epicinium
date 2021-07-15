@@ -48,10 +48,13 @@ Image::Image(const char* sname) :
 Image::Image(const Skin& skin) :
 	_sprite(new Sprite(skin.spritename.c_str()))
 {
-	// TODO skin.trimmed
-	if (false)
+	if (skin.trimmed)
 	{
 		_sprite->trimMargins();
+	}
+	if (skin.ninepatched)
+	{
+		_sprite->setNinePatch();
 	}
 
 	_width = _sprite->scaledWidth();

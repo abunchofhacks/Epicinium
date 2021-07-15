@@ -359,6 +359,7 @@ private:
 	bool _moraleGatheredInSummer;
 	bool _moraleGatheredWhenBuilt;
 	bool _snowCoversNiceness;
+	bool _frostbiteGivesColdFeet;
 
 	int8_t _snowSlowAmount;
 	int8_t _snowSlowMaximum;
@@ -663,6 +664,7 @@ public:
 	bool moraleGatheredInSummer()            const { return _moraleGatheredInSummer;           }
 	bool moraleGatheredWhenBuilt()           const { return _moraleGatheredWhenBuilt;          }
 	bool snowCoversNiceness()                const { return _snowCoversNiceness;      }
+	bool frostbiteGivesColdFeet()                const { return _frostbiteGivesColdFeet;      }
 
 	int8_t snowSlowAmount()            const { return _snowSlowAmount;              }
 	int8_t snowSlowMaximum()           const { return _snowSlowMaximum;             }

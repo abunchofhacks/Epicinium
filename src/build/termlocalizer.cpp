@@ -106,6 +106,10 @@ int main(int argc, char* argv[])
 		" The affected area is extremely dry.");
 	record("Gas", _("Gas"), "A lethal gas.");
 
+	record("Chilled", _("Chilled"), "Status effect."
+		" The affected unit is cold and numb."
+		" Not 'Frozen' as that implies being unable to move.");
+
 	record("Focus", _("Focus"), "Ability name."
 		" Causes multiple units to focus on one enemy.");
 	record("Lockdown", _("Lockdown"), "Ability name."

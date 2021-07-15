@@ -30,7 +30,8 @@ struct Skin;
 class SkinEditor
 {
 private:
-	bool _show = false;
+	bool _showPaletteEditor = false;
+	bool _showSkinEditor = false;
 
 	std::string _activepalettename = "default";
 
@@ -38,6 +39,10 @@ private:
 	std::string _activeskinname;
 
 public:
+	std::string activePaletteName() const { return _activepalettename; }
+
+	void openPaletteEditor(const std::string& palettename);
+
 	void updateIfEnabled();
 
 	void updatePalettes();

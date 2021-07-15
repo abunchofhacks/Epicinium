@@ -31,8 +31,17 @@ enum class ColorName : uint8_t;
 
 class Palette
 {
+public:
+	struct ExternalItem
+	{
+		std::string uniqueTag;
+		std::string quotedName;
+		std::string sourceFilename;
+	};
+
 private:
 	std::vector<Color> _colors;
+	std::vector<Color> _savedColors;
 
 public:
 	static Palette parse(const Json::Value& json);
@@ -42,8 +51,12 @@ public:
 
 	void makeCompleteUsing(const Palette& other);
 
+	bool hasUnsavedChanges() const;
+
 	void save(const std::string& palettename);
 	static Palette load(const std::string& palettename);
+	static bool exists(const std::string& palettename);
+	static bool unsaved();
 
 	static void saveInstalledAs(const std::string& palettename);
 	static void installDefault();
@@ -53,13 +66,14 @@ public:
 	static void set(const ColorName& name, Color color);
 
 	static void loadIndex();
-	static void saveIndex();
-	static void addToIndex(std::string palettename);
+	static void listExternalItem(ExternalItem&& item);
+	static void unlistExternalItem(const std::string& uniqueTag);
 
 	static const std::vector<std::string>& indexedNames();
+	static const std::vector<ExternalItem>& externalItems();
 
 private:
-	static void loadIndexFromFile(const std::string& indexfilename);
+	static void loadIndexFromDirectory(const std::string& dirname);
 
 	static std::string _sourcepalettesfolder;
 	static std::string _palettesfolder;
@@ -67,4 +81,9 @@ private:
 public:
 	static void setResourceRoot(const std::string& root);
 	static void setAuthoredRoot(const std::string& root);
+
+	static std::string sourceFilename(const std::string& name);
+	static std::string authoredFilename(const std::string& name);
+
+	static std::string paletteNameFromWorkshopId(const std::string& id);
 };

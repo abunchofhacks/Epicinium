@@ -1068,16 +1068,39 @@ void SettingsMenu::buildTopRightInterface()
 
 		for (std::string name : Palette::indexedNames())
 		{
-			if (name == "default") continue;
+			if (name == "custom") continue;
 			std::string tagname = name;
 			content.add(tagname, Frame::makeItem(ColorName::FRAMEITEM));
 			content[tagname].put(new TextField(name, FONTSIZE));
 			content[tagname].align(HorizontalAlignment::LEFT);
 			content[tagname].makeClickable();
+			if (name == "default") continue;
 			dropdown.add(tagname, Frame::makeItem());
 			dropdown[tagname].put(new TextField(name, FONTSIZE));
 			dropdown[tagname].align(HorizontalAlignment::LEFT);
 			dropdown[tagname].makeClickable();
+		}
+		for (const auto& item : Palette::externalItems())
+		{
+			std::string tagname = item.uniqueTag;
+			content.add(tagname, Frame::makeItem(ColorName::FRAMEITEM));
+			content[tagname].put(new TextField(item.quotedName, FONTSIZE));
+			content[tagname].align(HorizontalAlignment::LEFT);
+			content[tagname].makeClickable();
+			dropdown.add(tagname, Frame::makeItem());
+			dropdown[tagname].put(new TextField(item.quotedName, FONTSIZE));
+			dropdown[tagname].align(HorizontalAlignment::LEFT);
+			dropdown[tagname].makeClickable();
+		}
+		{
+			content.add("custom", Frame::makeItem(ColorName::FRAMEITEM));
+			content["custom"].put(new TextField("custom", FONTSIZE));
+			content["custom"].align(HorizontalAlignment::LEFT);
+			content["custom"].makeClickable();
+			dropdown.add("custom", Frame::makeItem());
+			dropdown["custom"].put(new TextField("custom...", FONTSIZE));
+			dropdown["custom"].align(HorizontalAlignment::LEFT);
+			dropdown["custom"].makeClickable();
 		}
 		content.settleWidth();
 		content.settleHeight();
@@ -1842,19 +1865,18 @@ void SettingsMenu::refresh()
 		if (options.getTag() == "Empty")
 		{
 			_settings.palette = "highcontrast";
+			Palette::installNamed("highcontrast");
 			options.setTag("Checked");
 		}
 		else
 		{
 			_settings.palette.clear();
+			Palette::installDefault();
 			options.setTag("Empty");
 
 			auto& palette = _layout["top"]["right"]["palette"]["options"];
-			palette["content"].setTag(palette["content"].name(0));
+			palette["content"].setTag("default");
 		}
-
-		_layout["bot"]["apply"].enable();
-		_layout["bot"]["return"].setTag("discard");
 	}
 
 	_layout["top"]["right"]["palette"]["options"].enableIf(
@@ -1868,14 +1890,26 @@ void SettingsMenu::refresh()
 		for (size_t i = 0; i < content.size(); i++)
 		{
 			std::string name = content.name(i);
-			if (dropdown.contains(name) && dropdown[name].clicked()
-				&& content.getTag() != name)
+			if (dropdown.contains(name) && dropdown[name].clicked())
 			{
-				_settings.palette = name;
-				content.setTag(name);
+				if (name == "custom")
+				{
+					if (!Palette::exists("custom"))
+					{
+						Palette::saveInstalledAs("custom");
+					}
+					_owner.openPaletteEditor("custom");
+				}
 
-				_layout["bot"]["apply"].enable();
-				_layout["bot"]["return"].setTag("discard");
+				if (content.getTag() != name)
+				{
+					if (Palette::exists(name))
+					{
+						_settings.palette = name;
+						Palette::installNamed(name);
+						content.setTag(name);
+					}
+				}
 			}
 		}
 	}
@@ -1910,6 +1944,8 @@ void SettingsMenu::onOpen()
 
 void SettingsMenu::load()
 {
+	const int FONTSIZE = _settings.getFontSize();
+
 	{
 		InterfaceElement& options =
 			_layout["top"]["left"]["display"]["options"];
@@ -2210,24 +2246,75 @@ void SettingsMenu::load()
 		_layout["top"]["right"]["highcontrast"]["options"].setTag("Empty");
 	}
 
+	{
+		InterfaceElement& x = _layout["top"]["right"]["palette"];
+		InterfaceElement& options = x["options"];
+		InterfaceElement& content = options["content"];
+		InterfaceElement& dropdown = options["dropdown"];
+		for (size_t i = 0; i < dropdown.size(); i++)
+		{
+			const std::string& name = dropdown.name(i);
+			if (name == "default") continue;
+			if (name == "custom") continue;
+			if (!Palette::exists(name))
+			{
+				dropdown.remove(name);
+				break;
+			}
+		}
+		bool anychanges = false;
+		for (const auto& item : Palette::externalItems())
+		{
+			const std::string& tagname = item.uniqueTag;
+			if (!content.contains(tagname))
+			{
+				anychanges = true;
+				content.add(tagname, Frame::makeItem(ColorName::FRAMEITEM));
+				content[tagname].put(new TextField(item.quotedName, FONTSIZE));
+				content[tagname].align(HorizontalAlignment::LEFT);
+				content[tagname].makeClickable();
+			}
+			if (!dropdown.contains(tagname))
+			{
+				anychanges = true;
+				dropdown.add(tagname, Frame::makeItem());
+				dropdown[tagname].put(new TextField(item.quotedName, FONTSIZE));
+				dropdown[tagname].align(HorizontalAlignment::LEFT);
+				dropdown[tagname].makeClickable();
+			}
+		}
+		if (anychanges)
+		{
+			int w = x.width();
+			content.unfixWidth();
+			content.settleWidth();
+			content.fixWidth();
+			options.settleWidth();
+			x.setWidth(w);
+			x.place(x.topleft());
+			auto custom = dropdown.remove("custom");
+			if (custom)
+			{
+				dropdown.add("custom", std::move(custom));
+			}
+			dropdown.unfixWidth();
+			dropdown.settle();
+			dropdown.fixWidth();
+		}
+	}
+
 	if (_settings.palette.defined())
 	{
 		InterfaceElement& x = _layout["top"]["right"]["palette"];
 		InterfaceElement& options = x["options"];
 		InterfaceElement& content = options["content"];
-		bool found = false;
-		for (size_t i = 0; i < content.size(); i++)
+		if (content.contains(_settings.palette.value()))
 		{
-			const std::string& name = content.name(i);
-			if (name == _settings.palette.value())
-			{
-				content.setTag(name);
-				found = true;
-			}
+			content.setTag(_settings.palette.value());
 		}
-		if (!found)
+		else
 		{
-			x.disable(1);
+			content.setTag("custom");
 		}
 	}
 

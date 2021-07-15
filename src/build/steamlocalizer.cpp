@@ -54,6 +54,10 @@ int main(int argc, char* argv[])
 
 	std::vector<SteamLanguage> languages = {
 		{"en_US", "english"},
+		{"es_US", "spanish"},
+		{"fr_FR", "french"},
+		{"pl_PL", "polish"},
+		{"tr_TR", "turkish"},
 	};
 
 	std::cout << "\"lang\"" << std::endl;
@@ -78,12 +82,6 @@ int main(int argc, char* argv[])
 			<< "\"" << std::endl;
 		std::cout << "\t\t\t\"#playing_challenge\" \""
 			<< _("Playing Challenge")
-			<< "\"" << std::endl;
-		std::cout << "\t\t\t\"#playing_challenge_keyed\" \""
-			<< ::format(
-				// TRANSLATORS: The argument is a translated challenge name.
-				_("Playing %s Challenge"),
-				"{#challenge_name_" "%" "challenge_key" "%" "}")
 			<< "\"" << std::endl;
 		std::cout << "\t\t\t\"#watching_replay\" \""
 			<< _("Watching Replay")
@@ -161,15 +159,6 @@ int main(int argc, char* argv[])
 			<< "\"" << std::endl;
 
 		std::cout << std::endl;
-
-		for (size_t i = 0; i < Challenge::ID_SIZE; i++)
-		{
-			AIChallenge challenge = (Challenge::Id) i;
-			std::string key = challenge.getSteamShortKey();
-			std::cout << "\t\t\t\"#challenge_name_" << key << "\" \""
-				<< challenge.getDisplayName()
-				<< "\"" << std::endl;
-		}
 
 		std::cout << "\t\t}" << std::endl;
 		std::cout << "\t}" << std::endl;

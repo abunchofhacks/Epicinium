@@ -34,7 +34,8 @@ class Picture;
 class Frame : public Image
 {
 public:
-	Frame(const char* sname);
+	explicit Frame(const char* sname);
+	explicit Frame(const Skin& skin);
 	Frame(const Frame&) = delete;
 	Frame(Frame&&) = delete;
 	Frame& operator=(const Frame&) = delete;

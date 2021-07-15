@@ -38,6 +38,7 @@
 #include "clienthandler.hpp"
 #include "gameowner.hpp"
 #include "game.hpp"
+#include "hostedgame.hpp"
 #include "settings.hpp"
 #include "writer.hpp"
 #include "player.hpp"
@@ -60,19 +61,19 @@
 #include "loginstaller.hpp"
 
 
-#ifdef DEVELOPMENT
 #ifdef CANDIDATE
 // The test website url for testing release candidates.
 #define WEBSITE_ORIGIN "https://test.epicinium.nl"
 #else
+#ifdef DEVELOPMENT
 // During development, a non-https connection to localhost is fine.
 #define WEBSITE_ORIGIN "http://epicinium.localhost"
-#endif
 #else
 // The official website url. This url should always be kept alive
 // and backwards compatibility with older game clients, in particular
 // older api versions, should be preserved. It cannot be overridden.
 #define WEBSITE_ORIGIN "https://server.epicinium.nl"
+#endif
 #endif
 
 #if DISCORD_GUEST_ENABLED
@@ -283,8 +284,8 @@ void Client::handleMessage(const ParsedMessage& message)
 		case Message::Type::REQUEST:
 		case Message::Type::ENABLE_CUSTOM_MAPS:
 		case Message::Type::LINK_ACCOUNTS:
+		case Message::Type::HOST_REJOIN_CHANGES:
 		case Message::Type::ORDER_OLD:
-		case Message::Type::ORDER_NEW:
 		{
 			LOGW << "Got invalid message (ignored): " << message;
 			DEBUG_ASSERT(false);
@@ -313,6 +314,7 @@ void Client::handleMessage(const ParsedMessage& message)
 							GETTEXT_FROM_SERVER(message.content().c_str()));
 						// We expect the following messages:
 						(void) _("Replays are not available at the moment.");
+						(void) _("Game interrupted: host left.");
 					}
 					else
 					{
@@ -356,7 +358,7 @@ void Client::handleMessage(const ParsedMessage& message)
 		break;
 		case Message::Type::RECENT_STARS:
 		{
-			_owner.updateRecentStars(message.time());
+			_owner.updateRecentStars(message.content(), message.time());
 		}
 		break;
 		case Message::Type::JOIN_SERVER:
@@ -573,6 +575,22 @@ void Client::handleMessage(const ParsedMessage& message)
 			DEBUG_ASSERT(false && "deprecated");
 		}
 		break;
+		case Message::Type::CLAIM_HOST:
+		{
+			if (message.sender() == _account.username())
+			{
+				_owner.assignHost(message.sender(), true);
+			}
+			else if (message.sender() != "")
+			{
+				_owner.assignHost(message.sender(), false);
+			}
+			else
+			{
+				LOGE << "No sender set";
+			}
+		}
+		break;
 		case Message::Type::CLAIM_ROLE:
 		{
 			std::string rname = ::stringify(message.role());
@@ -697,8 +715,16 @@ void Client::handleMessage(const ParsedMessage& message)
 		break;
 		case Message::Type::RULESET_REQUEST:
 		{
-			// Not yet implemented. (#1304)
-			send(Message::ruleset_unknown(message.content()));
+			if (Library::existsBible(message.content()))
+			{
+				Bible bible = Library::getBible(message.content());
+				Json::Value json = bible.toJson();
+				send(Message::ruleset_data(message.content(), json));
+			}
+			else
+			{
+				send(Message::ruleset_unknown(message.content()));
+			}
 		}
 		break;
 		case Message::Type::RULESET_DATA:
@@ -750,6 +776,11 @@ void Client::handleMessage(const ParsedMessage& message)
 					_("%s has resigned."),
 					message.content().c_str()));
 			}
+
+			if (auto hosted = _hosted.lock())
+			{
+				hosted->handleResign(message.content());
+			}
 		}
 		break;
 		case Message::Type::SKINS:
@@ -777,6 +808,7 @@ void Client::handleMessage(const ParsedMessage& message)
 
 				switch (message.role())
 				{
+					case Role::NONE:
 					case Role::PLAYER:
 					{
 						_game = _gameowner.startGame(
@@ -785,7 +817,7 @@ void Client::handleMessage(const ParsedMessage& message)
 							message.time());
 					}
 					break;
-					default:
+					case Role::OBSERVER:
 					{
 						_game = _gameowner.startReplay(
 							message.role(),
@@ -851,6 +883,38 @@ void Client::handleMessage(const ParsedMessage& message)
 		{
 			if (auto game = _game.lock()) game->sync(message.time());
 			else LOGW << "Received sync message while not in a game or replay";
+		}
+		break;
+		case Message::Type::HOST_SYNC:
+		{
+			if (auto hosted = _hosted.lock()) hosted->sync();
+			else if (_game.lock())
+			{
+				_owner.startHostedGame();
+			}
+			else
+			{
+				// We probably just left our own self-hosted game.
+				LOGV << "Ignoring host sync outside of game.";
+			}
+		}
+		break;
+		case Message::Type::HOST_REJOIN_REQUEST:
+		{
+			if (auto hosted = _hosted.lock())
+			{
+				hosted->handleRejoin(message.content(), message.player());
+			}
+			else LOGW << "Received rejoin request while not hosting";
+		}
+		break;
+		case Message::Type::ORDER_NEW:
+		{
+			if (auto hosted = _hosted.lock())
+			{
+				hosted->receiveOrders(message.orders(), message.metadata());
+			}
+			else LOGW << "Received orders while not in a hosted game";
 		}
 		break;
 		case Message::Type::PULSE:
@@ -3582,6 +3646,51 @@ void Client::steamJoinGame(const std::string& secret)
 	_hotJoinSecret = secret;
 	hotJoin();
 }
+
+void Client::openWorkshopForMap(const std::string& mapname)
+{
+	_owner.openWorkshopForMap(mapname);
+}
+
+void Client::openWorkshopForRuleset(const std::string& name)
+{
+	_owner.openWorkshopForRuleset(name);
+}
+
+void Client::openWorkshopForPalette(const std::string& name)
+{
+	_owner.openWorkshopForPalette(name);
+}
+
+void Client::closeAllWorkshops()
+{
+	_owner.closeAllWorkshops();
+}
+
+void Client::openUrl(const std::string& url)
+{
+	_owner.openUrl(url);
+}
+
+void Client::takeScreenshot(std::weak_ptr<Screenshot> screenshot)
+{
+	_owner.takeScreenshot(screenshot);
+}
+
+void Client::takeScreenshotOfMap()
+{
+	_owner.takeScreenshotOfMap();
+}
+
+void Client::hostedGameStarted(std::weak_ptr<HostedGame> hostedGame)
+{
+	_hosted = hostedGame;
+	if (auto hosted = _hosted.lock())
+	{
+		hosted->sync();
+	}
+}
+
 
 #if DICTATOR_ENABLED
 /* ############################ DICTATOR_ENABLED ############################ */

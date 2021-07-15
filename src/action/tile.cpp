@@ -1848,7 +1848,7 @@ void Tile::enact(const Change& change, std::shared_ptr<AnimationGroup> group)
 				figure->animate(change, group, _square);
 			}
 
-			if(group && change.frostbite) {
+			if (group && change.frostbite && !group->coldfeet) {
 				Mixer::get()->queue(Clip::Type::FROSTBITE, group->delay, Surface::convertOrigin(_square->position()));
 				group->delay += 0.1f;
 			}

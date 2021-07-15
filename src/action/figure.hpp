@@ -78,10 +78,12 @@ protected:
 	int _yahooOffset;
 	bool _selected;
 	bool _dying;
+	bool _chilled;
 	bool _moveGroup;
 	bool _deathSound;
 	FormType _formtype;
 	PowerType _powertype;
+	float _chillTimer;
 	float _moved1;
 	float _moved2;
 
@@ -141,6 +143,9 @@ public:
 	void setPlayer(const Player& player);
 	void animate(const Change& change,
 		std::shared_ptr<AnimationGroup> group, Square* square);
+
+	void animateChill(std::shared_ptr<AnimationGroup> group,
+		bool shiver, float delay = 0);
 
 	PlacementBox& box();
 	const PlacementBox& box() const;

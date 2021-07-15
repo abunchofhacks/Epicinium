@@ -45,6 +45,7 @@
 #include "notice.hpp"
 #include "skin.hpp"
 #include "mixer.hpp"
+#include "loop.hpp"
 
 Figure::Figure(PlacementBox&& box, 	const Skin& skin, const Player& player,
 		const PowerType& powertype) :
@@ -62,10 +63,12 @@ Figure::Figure(PlacementBox&& box, 	const Skin& skin, const Player& player,
 	_yahooOffset(skin.yahooOffset),
 	_selected(false),
 	_dying(false),
+	_chilled(false),
 	_moveGroup(false),
 	_deathSound(skin.deathsound),
 	_formtype(skin.formtype),
 	_powertype(powertype),
+	_chillTimer(0),
 	_moved1(0),
 	_moved2(0)
 {
@@ -187,6 +190,44 @@ void Figure::update()
 		else               _shadowsprite->setTagActive("Death");
 
 		_shadowsprite->update();
+	}
+
+	if (_chilled)
+	{
+		_chillTimer -= Loop::delta() * Loop::tempo();
+		if (_chillTimer <= 0)
+		{
+			bool shiver = (rand() % 100 < 40);
+			animateChill(nullptr, shiver);
+		}
+	}
+}
+
+void Figure::animateChill(std::shared_ptr<AnimationGroup> group,
+	bool shiver, float delay)
+{
+	_chillTimer = 0.6f + 0.4 * (rand() % 1000) * 0.001;
+	_particlebuffer.add(Particle::frostflame(group, &_point,
+		(rand() % 7) - 3, 0, 4, 0.0f));
+
+	if (shiver)
+	{
+		int offset = (1 - 2 * (rand() % 2)) * 2;
+		float duration = 0.020f;
+		transition(group, TRANSITION_STUN, 1, 0.0f, delay);
+		transition(group, TRANSITION_DISPLACE_X, offset,
+			duration, delay); delay += duration;
+		transition(group, TRANSITION_DISPLACE_X, 0,
+			duration, delay); delay += duration;
+		transition(group, TRANSITION_DISPLACE_X, -offset,
+			duration, delay); delay += duration;
+		transition(group, TRANSITION_DISPLACE_X, 0,
+			duration, delay); delay += duration;
+		transition(group, TRANSITION_DISPLACE_X, offset,
+			duration, delay); delay += duration;
+		transition(group, TRANSITION_DISPLACE_X, 0,
+			duration, delay); delay += duration;
+		transition(group, TRANSITION_STUN, 0, 0.0f, delay + 0.020f);
 	}
 }
 
@@ -315,6 +356,7 @@ void Figure::reposition(std::shared_ptr<AnimationGroup> group,
 	PlacementBox&& box)
 {
 	_placementbox = std::move(box);
+	_chilled = false;
 
 	// Get a new spawn point now, before _placementbox is overridden again.
 	Point spawnpoint = _placementbox.random();
@@ -440,6 +482,8 @@ float Figure::move(std::shared_ptr<AnimationGroup> group,
 	float durationX = abs(dx) / visualspeed;
 	float durationY = abs(dy) / visualspeed;
 	float duration;
+
+	_chilled = false;
 
 	if (group)
 	{
@@ -1329,6 +1373,7 @@ bool Figure::isLethal(const Change& change)
 
 void Figure::triggerDefaultDeathAnimation(std::shared_ptr<AnimationGroup> group, float delay)
 {
+	_chilled = false;
 	setTrigger(group, "Death", delay);
 	addAnimation(Animation(group, [this](float) {
 
@@ -1342,6 +1387,7 @@ void Figure::triggerDefaultDeathAnimation(std::shared_ptr<AnimationGroup> group,
 
 void Figure::triggerInvisibleDeathAnimation(std::shared_ptr<AnimationGroup> group, float delay)
 {
+	_chilled = false;
 	setVisible(group, false, delay);
 	addAnimation(Animation(group, [this](float) {
 
@@ -1352,6 +1398,7 @@ void Figure::triggerInvisibleDeathAnimation(std::shared_ptr<AnimationGroup> grou
 
 void Figure::triggerDeathAnimation(std::shared_ptr<AnimationGroup> group, float delay)
 {
+	_chilled = false;
 	setTrigger(group, "Death", delay);
 	if (_placementbox.entrenched())
 	{
@@ -1375,6 +1422,7 @@ void Figure::triggerDeathAnimation(std::shared_ptr<AnimationGroup> group, float 
 
 void Figure::triggerDeathHeadshotAnimation(std::shared_ptr<AnimationGroup> group, float delay)
 {
+	_chilled = false;
 	setTrigger(group, "Death", delay);
 	setTrigger(group, "Death Headshot", delay);
 	if (_placementbox.entrenched())
@@ -1399,6 +1447,7 @@ void Figure::triggerDeathHeadshotAnimation(std::shared_ptr<AnimationGroup> group
 
 void Figure::triggerDeathExplodeAnimation(std::shared_ptr<AnimationGroup> group, float delay)
 {
+	_chilled = false;
 	setTrigger(group, "Death", delay);
 	setTrigger(group, "Death Explode", delay);
 	if (_placementbox.entrenched())
@@ -1870,7 +1919,7 @@ void Figure::animate(const Change& change,
 
 		case Change::Type::FROSTBITTEN:
 		{
-			Mixer::get()->queue(Clip::Type::FROSTHURT, 0.0f);
+			Mixer::get()->queue(Clip::Type::FROSTHURT, delay, _point);
 
 			displace(change, group, delay);
 			impact(change, group, square, delay);
@@ -1955,7 +2004,18 @@ void Figure::animate(const Change& change,
 		}
 		break;
 
+		case Change::Type::REVEAL:
 		case Change::Type::FROSTBITE:
+		{
+			if (change.frostbite && group && group->coldfeet)
+			{
+				_chilled = true;
+			}
+			else if (!change.frostbite)
+			{
+				_chilled = false;
+			}
+		}
 		break;
 
 		case Change::Type::FIRESTORM:
@@ -2054,7 +2114,7 @@ float Figure::spawnMoving(std::shared_ptr<AnimationGroup> group,
 	float speed)
 {
 	Point destination(_point);
-	destination.yahoo += 5 * Camera::get()->SCALE;
+	destination.yahoo += 5 * Camera::get()->scale();
 	return move(group, group ? group->delay : 0, Move::X, speed, destination);
 }
 

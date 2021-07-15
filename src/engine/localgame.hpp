@@ -71,6 +71,10 @@ public:
 		bool silentConfirmQuit = false, bool enableRecording = true);
 	LocalGame(GameOwner& owner, Settings& settings,
 		std::shared_ptr<AIChallenge> challenge,
+		const std::string& mapname, const std::string& rulesetname,
+		bool silentConfirmQuit = false, bool enableRecording = true);
+	LocalGame(GameOwner& owner, Settings& settings,
+		std::shared_ptr<AIChallenge> challenge,
 		bool silentConfirmQuit = false, bool enableRecording = true);
 
 	LocalGame(const LocalGame&) = delete;
@@ -79,7 +83,7 @@ public:
 	LocalGame& operator=(LocalGame&&) = delete;
 	virtual ~LocalGame() = default;
 
-private:
+protected:
 	GameOwner& _owner;
 	Settings& _settings;
 

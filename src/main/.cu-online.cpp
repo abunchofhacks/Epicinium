@@ -2,3 +2,4 @@
 #include "onlinereplay.cpp"
 #include "onlinetutorial.cpp"
 #include "onlinediorama.cpp"
+#include "onlinelocalgame.cpp"

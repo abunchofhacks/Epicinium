@@ -28,8 +28,11 @@
 
 class Game;
 class Challenge;
+class HostedGame;
+struct Bot;
 enum class Player : uint8_t;
 enum class Role : uint8_t;
+enum class VisionType : uint8_t;
 
 
 class GameOwner
@@ -45,7 +48,8 @@ public:
 	virtual ~GameOwner() = default;
 
 	virtual std::weak_ptr<Game> startGame(imploding_ptr<Game> game) = 0;
-	virtual std::weak_ptr<Game> startChallenge(const Challenge& challenge) = 0;
+	virtual std::weak_ptr<Game> startChallenge(const Challenge& challenge,
+		const std::string& name = "") = 0;
 	virtual std::weak_ptr<Game> startGame(
 		const Player& player, const std::string& rulesetname,
 		uint32_t planningTime) = 0;
@@ -57,5 +61,15 @@ public:
 		uint32_t planningTime) = 0;
 	virtual std::weak_ptr<Game> startDiorama() = 0;
 
+	virtual std::weak_ptr<HostedGame> startHostedGame(
+		const std::vector<Player>& colors,
+		const std::vector<VisionType>& visiontypes,
+		const std::vector<std::string>& usernames,
+		const std::vector<Bot>& bots,
+		bool hasObservers,
+		const std::string& mapname, const std::string& rulesetname) = 0;
+
 	virtual void stopGame() = 0;
+
+	virtual void reportAwardedStars(int /*amount*/) {};
 };

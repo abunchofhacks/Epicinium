@@ -34,7 +34,7 @@
 
 
 static std::map<std::thread::id, Writer*> _installed;
-static std::mutex _mutex;
+static std::mutex _writerMutex;
 
 std::string Writer::write(const Json::Value& json)
 {
@@ -62,7 +62,7 @@ Writer::Writer()
 
 void Writer::install()
 {
-	std::lock_guard<std::mutex> lock(_mutex);
+	std::lock_guard<std::mutex> lock(_writerMutex);
 	_installed[std::this_thread::get_id()] = this;
 }
 

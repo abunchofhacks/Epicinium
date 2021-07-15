@@ -32,6 +32,7 @@ enum class Difficulty : uint8_t;
 enum class ResponseStatus : uint8_t;
 struct Version;
 struct Ranking;
+class Screenshot;
 
 enum class PortalStatus : uint8_t
 {
@@ -83,6 +84,7 @@ public:
 	virtual void listOwnLobby(const std::string& /*name*/, const Json::Value& /*metadata*/) {};
 	virtual void joinsOwnLobby(const std::string& /*sender*/, bool /*isSelf*/) {};
 	virtual void leavesOwnLobby(const std::string& /*sender*/) {};
+	virtual void assignHost(const std::string& /*user*/, bool /*isSelf*/) {};
 	virtual void assignRole(const std::string& /*user*/, const Role& /*role*/, bool /*isSelf*/) {};
 	virtual void assignColor(const std::string& /*user*/, const Player& /*color*/) {};
 	virtual void assignVisionType(const std::string& /*user*/, const VisionType& /*type*/) {};
@@ -103,13 +105,14 @@ public:
 	virtual void receiveSecrets(const Json::Value& /*metadata*/) {};
 	virtual void startGame(const Role& /*role*/) {};
 	virtual void startTutorial() {};
+	virtual void startHostedGame() {};
 	virtual void setSkins(const Json::Value& /*metadata*/) {};
 	virtual void receiveBriefing(const Json::Value& /*metadata*/) {};
 
 	virtual void updateOwnRating(float /*rank*/) {};
 	virtual void updateRating(const std::string& /*user*/, float /*rating*/) {};
 	virtual void updateStars(const std::string& /*user*/, int /*stars*/) {};
-	virtual void updateRecentStars(int /*stars*/) {};
+	virtual void updateRecentStars(const std::string& /*key*/, int /*stars*/) {};
 
 	virtual void displayRankings(const std::vector<Ranking>& /*rankings*/) {};
 
@@ -187,5 +190,16 @@ public:
 	virtual void steamMissing() {}
 	virtual void steamAccountMergeTokenResult(const ResponseStatus& /*responsestatus*/) {}
 
+	virtual void openWorkshopForMap(const std::string& /*mapname*/) {};
+	virtual void openWorkshopForRuleset(const std::string& /*rulesetname*/) {};
+	virtual void openWorkshopForPalette(const std::string& /*palettename*/) {};
+	virtual void closeAllWorkshops() {};
+
+	virtual void openUrl(const std::string& /*url*/) {};
+
 	virtual void sendStomt(bool /*positive*/, const std::string& /*text*/) {};
+
+	virtual void takeScreenshot(std::weak_ptr<Screenshot> /*screenshot*/) {}
+	virtual void takeScreenshotOfMap() {}
+	virtual void screenshotTaken(std::weak_ptr<Screenshot> /*screenshot*/) {}
 };

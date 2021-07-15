@@ -38,13 +38,14 @@ enum class UnitType : uint8_t;
 struct Order;
 enum class Move : uint8_t;
 class Paint;
+enum class Season : uint8_t;
 
 
 class OrderContext : public Context
 {
 public:
 	OrderContext(const Bible& bible, const Board& board, const Skinner& skinner,
-		const Settings& settings,
+		const Settings& settings, Season season,
 		Cell cell, const Descriptor& subject,
 		const Player& player, bool hasOldOrder, bool hasNewOrder,
 		bool canGiveOrders);
@@ -59,6 +60,7 @@ private:
 	const Board& _board;
 	const Skinner& _skinner;
 	const Settings& _settings;
+	const Season _season;
 	const Cell _cell;
 	const Descriptor _subject;
 	const Player _player;

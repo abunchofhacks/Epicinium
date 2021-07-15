@@ -38,7 +38,7 @@ private:
 public:
 	static Camera* get() { return _installed; }
 
-	Camera(Settings& settings, int width, int height);
+	Camera(int width, int height, int scale);
 
 	Camera(const Camera&) = delete;
 	Camera(Camera&&) = delete;
@@ -61,18 +61,18 @@ public:
 	{
 		int dx = point.xenon - focus.xenon;
 		int dy = point.yahoo - focus.yahoo;
-		pixel.xenon = FOCUS_XENON + offset.xenon + adjust.xenon + SCALE * dx;
-		pixel.yahoo = FOCUS_YAHOO + offset.yahoo + adjust.yahoo + SCALE * dy;
+		pixel.xenon = _focusXenon + offset.xenon + adjust.xenon + _scale * dx;
+		pixel.yahoo = _focusYahoo + offset.yahoo + adjust.yahoo + _scale * dy;
 		pixel.proximity = z;
 	}
 
 	Point convert(const Pixel& pixel) const;
 	void convertTo(const Pixel& pixel, Point& point) const
 	{
-		int dx = pixel.xenon - FOCUS_XENON - offset.xenon - adjust.xenon;
-		int dy = pixel.yahoo - FOCUS_YAHOO - offset.yahoo - adjust.yahoo;
-		point.xenon = focus.xenon + dx / SCALE;
-		point.yahoo = focus.yahoo + dy / SCALE;
+		int dx = pixel.xenon - _focusXenon - offset.xenon - adjust.xenon;
+		int dy = pixel.yahoo - _focusYahoo - offset.yahoo - adjust.yahoo;
+		point.xenon = focus.xenon + dx / _scale;
+		point.yahoo = focus.yahoo + dy / _scale;
 	}
 
 	bool isOnScreen(const Point& point) const
@@ -84,14 +84,14 @@ public:
 
 	bool isOnScreen(const Pixel& pixel) const
 	{
-		return (   pixel.xenon >= 0 && pixel.xenon <= WINDOW_W
-				&& pixel.yahoo >= 0 && pixel.yahoo <= WINDOW_H);
+		return (   pixel.xenon >= 0 && pixel.xenon <= _width
+				&& pixel.yahoo >= 0 && pixel.yahoo <= _height);
 	}
 
 	void adjustFocus(const Pixel& pixel)
 	{
-		adjust.xenon = pixel.xenon - FOCUS_XENON;
-		adjust.yahoo = pixel.yahoo - FOCUS_YAHOO;
+		adjust.xenon = pixel.xenon - _focusXenon;
+		adjust.yahoo = pixel.yahoo - _focusYahoo;
 	}
 
 	void update();
@@ -102,12 +102,17 @@ private:
 	Pixel offset;
 	Pixel adjust;
 
-public:
-	const int WINDOW_W;
-	const int WINDOW_H;
-	const int SCALE;
+	int _width;
+	int _height;
+	int _focusXenon;
+	int _focusYahoo;
+	int _scale;
 
-private:
-	const int FOCUS_XENON = WINDOW_W / 2;
-	const int FOCUS_YAHOO = WINDOW_H / 2;
+public:
+	int width() const { return _width; }
+	int height() const { return _height; }
+	int scale() const { return _scale; }
+
+	void changeViewport(int width, int height);
+	void changeScale(int scale);
 };

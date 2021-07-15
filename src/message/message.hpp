@@ -68,6 +68,7 @@ public:
 		NAME_LOBBY,
 		MAX_PLAYERS,
 		NUM_PLAYERS,
+		CLAIM_HOST,
 		CLAIM_ROLE,
 		CLAIM_COLOR,
 		CLAIM_VISIONTYPE,
@@ -104,6 +105,9 @@ public:
 		ORDER_OLD,
 		ORDER_NEW,
 		SYNC,
+		HOST_SYNC,
+		HOST_REJOIN_REQUEST,
+		HOST_REJOIN_CHANGES,
 		PING,
 		PONG,
 		QUIT,
@@ -204,6 +208,8 @@ public:
 
 	static StreamedMessage num_players(
 		const std::string& lobbyid, int value);
+
+	static StreamedMessage claim_host();
 
 	static StreamedMessage claim_role(
 		const Role& role, const std::string& username);
@@ -310,6 +316,10 @@ public:
 	static StreamedMessage change(
 		const TypeNamer& typenamer,
 		const std::vector<Change>& changes);
+	static StreamedMessage change(
+		const TypeNamer& typenamer,
+		const std::vector<Change>& changes,
+		const Json::Value& metadata);
 
 	static StreamedMessage order_old(
 		const TypeNamer& typenamer,
@@ -326,6 +336,14 @@ public:
 	static StreamedMessage sync();
 	static StreamedMessage sync(
 		uint32_t time);
+
+	static StreamedMessage host_sync();
+	static StreamedMessage host_sync(const Json::Value& metadata);
+
+	static StreamedMessage host_rejoin_changes(
+		const TypeNamer& typenamer,
+		const std::vector<Change>& changes,
+		const Player& player, const std::string& username);
 
 	static StreamedMessage ping();
 

@@ -162,6 +162,22 @@ LocalGame::LocalGame(GameOwner& owner, Settings& settings,
 
 LocalGame::LocalGame(GameOwner& owner, Settings& settings,
 		std::shared_ptr<AIChallenge> challenge,
+		const std::string& mapname, const std::string& rulesetname,
+		bool silentConfirmQuit,
+		bool enableRecording) :
+	LocalGame(owner, settings,
+		challenge,
+		challenge->getPlayers(),
+		challenge->getBots(),
+		mapname,
+		rulesetname,
+		1,
+		silentConfirmQuit,
+		enableRecording)
+{}
+
+LocalGame::LocalGame(GameOwner& owner, Settings& settings,
+		std::shared_ptr<AIChallenge> challenge,
 		bool silentConfirmQuit,
 		bool enableRecording) :
 	LocalGame(owner, settings,
@@ -341,7 +357,7 @@ void LocalGame::update()
 	static bool show = false;
 	bool wasshown = show;
 
-	if (Input::get()->isDebugKeyHeld())
+	if (test() && Input::get()->isDebugKeyHeld())
 	{
 		if (ImGui::Begin("Windows", nullptr,
 			ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoCollapse))
@@ -503,7 +519,15 @@ void LocalGame::leaveActionPhase()
 {
 	_phase = Phase::RESTING;
 
-	if (_automaton.gameover()) return;
+	if (_automaton.gameover())
+	{
+		if (_challenge && _commanders.size() > 0)
+		{
+			_owner.reportAwardedStars(_automaton.award(_commanders[0]->player()));
+		}
+
+		return;
+	}
 
 	pipe(_automaton.hibernate());
 

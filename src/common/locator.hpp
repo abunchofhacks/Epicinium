@@ -28,6 +28,12 @@
 class Locator
 {
 public:
+	struct ExternalFolder
+	{
+		std::string uniqueTag;
+		std::string sourcePath;
+	};
+
 	static std::string picture(const std::string& picturename);
 
 	static std::string pictureFilename(const std::string& picturename);
@@ -45,9 +51,18 @@ private:
 	static std::string _resourceroot;
 	static std::string _cacheroot;
 	static std::string _authoredroot;
+	static std::vector<ExternalFolder> _externalfolders;
 
 public:
 	static void setResourceRoot(const std::string& root);
 	static void setCacheRoot(const std::string& root);
 	static void setAuthoredRoot(const std::string& root);
+
+	static void useExternalFolder(ExternalFolder&& folder);
+	static void forgetExternalFolder(const std::string& uniqueTag);
+
+	static std::vector<std::string> externalRulesets();
+	static const std::vector<ExternalFolder>& externalFolders();
+
+	static std::vector<std::string> listAuthoredRulesets();
 };

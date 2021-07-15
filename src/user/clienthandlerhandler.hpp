@@ -100,6 +100,9 @@ public:
 		leavesOwnLobby(const std::string& s),
 		leavesOwnLobby(s));
 	IMPLEMENT_CHH_METHOD_VOID(
+		assignHost(const std::string& u, bool i),
+		assignHost(u, i));
+	IMPLEMENT_CHH_METHOD_VOID(
 		assignRole(const std::string& u, const Role& r, bool i),
 		assignRole(u, r, i));
 	IMPLEMENT_CHH_METHOD_VOID(
@@ -160,6 +163,9 @@ public:
 		startTutorial(),
 		startTutorial());
 	IMPLEMENT_CHH_METHOD_VOID(
+		startHostedGame(),
+		startHostedGame());
+	IMPLEMENT_CHH_METHOD_VOID(
 		setSkins(const Json::Value& m),
 		setSkins(m));
 	IMPLEMENT_CHH_METHOD_VOID(
@@ -176,8 +182,8 @@ public:
 		updateStars(const std::string& u, int s),
 		updateStars(u, s));
 	IMPLEMENT_CHH_METHOD_VOID(
-		updateRecentStars(int s),
-		updateRecentStars(s));
+		updateRecentStars(const std::string& k, int s),
+		updateRecentStars(k, s));
 
 	IMPLEMENT_CHH_METHOD_VOID(
 		displayRankings(const std::vector<Ranking>& r),
@@ -384,6 +390,33 @@ public:
 		steamAccountMergeTokenResult(r));
 
 	IMPLEMENT_CHH_METHOD_VOID(
+		openWorkshopForMap(const std::string& n),
+		openWorkshopForMap(n));
+	IMPLEMENT_CHH_METHOD_VOID(
+		openWorkshopForRuleset(const std::string& n),
+		openWorkshopForRuleset(n));
+	IMPLEMENT_CHH_METHOD_VOID(
+		openWorkshopForPalette(const std::string& n),
+		openWorkshopForPalette(n));
+	IMPLEMENT_CHH_METHOD_VOID(
+		closeAllWorkshops(),
+		closeAllWorkshops());
+
+	IMPLEMENT_CHH_METHOD_VOID(
+		openUrl(const std::string& u),
+		openUrl(u));
+
+	IMPLEMENT_CHH_METHOD_VOID(
 		sendStomt(bool p, const std::string& t),
 		sendStomt(p, t));
+
+	IMPLEMENT_CHH_METHOD_VOID(
+		takeScreenshot(std::weak_ptr<Screenshot> s),
+		takeScreenshot(s));
+	IMPLEMENT_CHH_METHOD_VOID(
+		takeScreenshotOfMap(),
+		takeScreenshotOfMap());
+	IMPLEMENT_CHH_METHOD_VOID(
+		screenshotTaken(std::weak_ptr<Screenshot> s),
+		screenshotTaken(s));
 };

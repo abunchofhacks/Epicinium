@@ -30,8 +30,13 @@ struct Position
 	// The board size must be strictly smaller than 128x128 because we use
 	// int8_t to store _rows in Cell, so it can have values 1 to 127 inclusive.
 	// We use a much smaller maximum value to help train neural networks.
+#if NEURALNEWT_20x13_ENABLED
+	static constexpr int MAX_COLS = 20;
+	static constexpr int MAX_ROWS = 13;
+#else
 	static constexpr int MAX_COLS = 32;
 	static constexpr int MAX_ROWS = MAX_COLS;
+#endif
 
 	int8_t row;
 	int8_t col;

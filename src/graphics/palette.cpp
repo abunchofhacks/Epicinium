@@ -31,6 +31,7 @@
 
 
 static Palette _installed_master_palette;
+static std::string _last_requested_master_palette_name;
 
 std::string Palette::_sourcepalettesfolder = "resources/palettes/";
 std::string Palette::_palettesfolder = "resources/palettes/";
@@ -67,6 +68,17 @@ void Palette::setAuthoredRoot(const std::string& root)
 	}
 }
 
+std::string Palette::authoredFilename(const std::string& name)
+{
+	if (name.find_first_of('/') != std::string::npos)
+	{
+		LOGE << "Cannot determine authored filename for " << name;
+		DEBUG_ASSERT(false);
+		return "";
+	}
+	return _palettesfolder + name + ".json";
+}
+
 Palette Palette::parse(const Json::Value& json)
 {
 	Palette palette;
@@ -98,6 +110,7 @@ Palette Palette::parse(const Json::Value& json)
 			palette._colors.push_back(Color::broken());
 		}
 	}
+	palette._savedColors = palette._colors;
 	return palette;
 }
 
@@ -148,9 +161,19 @@ void Palette::makeCompleteUsing(const Palette& other)
 	}
 }
 
+bool Palette::hasUnsavedChanges() const
+{
+	return _savedColors != _colors;
+}
+
+bool Palette::unsaved()
+{
+	return _installed_master_palette.hasUnsavedChanges();
+}
+
 void Palette::save(const std::string& palettename)
 {
-	std::string fname = _palettesfolder + palettename + ".json";
+	std::string fname = authoredFilename(palettename);
 	LOGI << "Saving " << fname;
 
 	System::touchFile(fname);
@@ -165,15 +188,20 @@ void Palette::save(const std::string& palettename)
 	Json::StyledWriter writer;
 	file << writer.write(toJson());
 
+	_savedColors = _colors;
 	LOGI << "Saved " << fname;
 }
 
 Palette Palette::load(const std::string& palettename)
 {
-	std::string fname = _palettesfolder + palettename + ".json";
-	if (!System::isFile(fname))
+	std::string fname;
+	if (palettename.find_first_of('/') == std::string::npos)
 	{
-		fname = _sourcepalettesfolder + palettename + ".json";
+		fname = authoredFilename(palettename);
+	}
+	if (fname.empty() || !System::isFile(fname))
+	{
+		fname = sourceFilename(palettename);
 	}
 
 	std::ifstream file = System::ifstream(fname);
@@ -186,6 +214,20 @@ Palette Palette::load(const std::string& palettename)
 		return Palette();
 	}
 	return parse(json);
+}
+
+bool Palette::exists(const std::string& palettename)
+{
+	std::string fname;
+	if (palettename.find_first_of('/') == std::string::npos)
+	{
+		fname = authoredFilename(palettename);
+	}
+	if (fname.empty() || !System::isFile(fname))
+	{
+		return System::isFile(sourceFilename(palettename));
+	}
+	return true;
 }
 
 void Palette::saveInstalledAs(const std::string& palettename)
@@ -202,6 +244,7 @@ void Palette::saveInstalledAs(const std::string& palettename)
 
 void Palette::installDefault()
 {
+	_last_requested_master_palette_name = "default";
 	Palette palette = load("default");
 	if (!palette.isComplete())
 	{
@@ -214,6 +257,12 @@ void Palette::installDefault()
 
 void Palette::installNamed(const std::string& palettename)
 {
+	_last_requested_master_palette_name = palettename;
+	if (!Palette::exists(palettename))
+	{
+		LOGD << "Cannot yet install " << palettename;
+		return;
+	}
 	Palette palette = load(palettename);
 	if (!palette.isComplete())
 	{
@@ -268,31 +317,21 @@ void Palette::loadIndex()
 {
 	_indexed_master_palette_names = {"default"};
 
-	std::string fname = _palettesfolder + "index.list";
-
-	std::string sourcefname = _sourcepalettesfolder + "index.list";
-	if (sourcefname != fname && System::isFile(sourcefname))
+	if (_sourcepalettesfolder != _palettesfolder
+		&& System::isDirectory(_sourcepalettesfolder))
 	{
-		loadIndexFromFile(sourcefname);
+		loadIndexFromDirectory(_sourcepalettesfolder);
 	}
 
-	if (System::isFile(fname))
+	if (System::isDirectory(_palettesfolder))
 	{
-		loadIndexFromFile(fname);
+		loadIndexFromDirectory(_palettesfolder);
 	}
 }
 
-void Palette::loadIndexFromFile(const std::string& fname)
+void Palette::loadIndexFromDirectory(const std::string& dirname)
 {
-	std::ifstream indexfile = System::ifstream(fname);
-	if (!indexfile.is_open())
-	{
-		LOGE << "Could not open " << fname;
-		return;
-	}
-
-	std::string name;
-	while (std::getline(indexfile, name))
+	for (std::string name : System::listDirectory(dirname, ".json"))
 	{
 		if (name.empty()) continue;
 		if (name == "default") continue;
@@ -306,35 +345,72 @@ void Palette::loadIndexFromFile(const std::string& fname)
 
 		_indexed_master_palette_names.push_back(name);
 	}
-}
 
-void Palette::saveIndex()
-{
-	std::string fname = _palettesfolder + "index.list";
-	std::ofstream indexfile = System::ofstream(fname, std::ios::trunc);
-	if (!indexfile.is_open())
-	{
-		LOGE << "Could not save " << fname;
-		DEBUG_ASSERT(false);
-		return;
-	}
-
-	for (const std::string& name : _indexed_master_palette_names)
-	{
-		if (name == "default") continue;
-
-		indexfile << name << std::endl;
-	}
-}
-
-void Palette::addToIndex(std::string palettename)
-{
-	DEBUG_ASSERT(palettename != "default");
-	DEBUG_ASSERT(palettename.find("test") == std::string::npos);
-	_indexed_master_palette_names.emplace_back(std::move(palettename));
+	// Sort, but keep "default" at the top.
+	std::sort(_indexed_master_palette_names.begin() + 1,
+		_indexed_master_palette_names.end());
 }
 
 const std::vector<std::string>& Palette::indexedNames()
 {
 	return _indexed_master_palette_names;
+}
+
+static std::vector<Palette::ExternalItem> _cached_external_items;
+
+std::string Palette::sourceFilename(const std::string& name)
+{
+	for (const auto& item : _cached_external_items)
+	{
+		if (item.uniqueTag == name)
+		{
+			return item.sourceFilename;
+		}
+	}
+
+	return _sourcepalettesfolder + name + ".json";
+}
+
+void Palette::listExternalItem(ExternalItem&& newItem)
+{
+	LOGD << "Listing '" << newItem.uniqueTag << "'"
+		" (a.k.a. " << newItem.quotedName << ")"
+		": " << newItem.sourceFilename;
+
+	for (auto& item : _cached_external_items)
+	{
+		if (item.uniqueTag == newItem.uniqueTag)
+		{
+			item = newItem;
+			return;
+		}
+	}
+
+	_cached_external_items.emplace_back(newItem);
+
+	if (_cached_external_items.back().uniqueTag
+			== _last_requested_master_palette_name
+		&& !_installed_master_palette.hasUnsavedChanges())
+	{
+		LOGD << "Installing awaited " << _last_requested_master_palette_name;
+		installNamed(_last_requested_master_palette_name);
+	}
+}
+
+void Palette::unlistExternalItem(const std::string& uniqueTag)
+{
+	LOGD << "Unlisting '" << uniqueTag << "'";
+	_cached_external_items.erase(
+		std::remove_if(
+			_cached_external_items.begin(),
+			_cached_external_items.end(),
+			[&](const ExternalItem& item) {
+				return item.uniqueTag == uniqueTag;
+			}),
+		_cached_external_items.end());
+}
+
+const std::vector<Palette::ExternalItem>& Palette::externalItems()
+{
+	return _cached_external_items;
 }

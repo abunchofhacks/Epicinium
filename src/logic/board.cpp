@@ -78,9 +78,30 @@ void Board::load(const std::string& mapname)
 	std::string line;
 
 	std::string fname = Map::readOnlyFilename(mapname);
+	if (!System::isFile(fname))
+	{
+		LOGF << "Failed to load map '" << mapname << "' (" << fname << "): "
+			<< "file does not exist";
+		throw std::runtime_error("failed to load map " + mapname + ": \t"
+				+ "file does not exist");
+	}
+
 	std::ifstream file = System::ifstream(fname);
-	if (!std::getline(file, line) || !reader.parse(line, metadata)
-		|| !metadata.isObject())
+	if (!file)
+	{
+		LOGF << "Failed to load map '" << mapname << "' (" << fname << "): "
+			<< "failed to open file";
+		throw std::runtime_error("failed to load map " + mapname + ": \t"
+				+ "failed to open file");
+	}
+	else if (!std::getline(file, line) || line.empty())
+	{
+		LOGF << "Failed to load map '" << mapname << "' (" << fname << "): "
+			<< "failed to read line";
+		throw std::runtime_error("failed to load map " + mapname + ": \t"
+				+ "failed to read line");
+	}
+	else if (!reader.parse(line, metadata) || !metadata.isObject())
 	{
 		// Try old style.
 		file.close();
@@ -129,6 +150,7 @@ void Board::load(const std::string& mapname)
 
 void Board::loadCellFromJson(Cell index, const Json::Value& celljson)
 {
+	DEBUG_ASSERT(index.valid());
 	{
 		tile(index) = TileToken(_typenamer, celljson["tile"]);
 	}
@@ -266,6 +288,8 @@ std::vector<Player> Board::players()
 
 void Board::enact(const Change& change)
 {
+	DEBUG_ASSERT(_spaces.back().tile().type == TileType::NONE);
+
 	switch (change.type)
 	{
 		case Change::Type::STARTS:
@@ -275,6 +299,9 @@ void Board::enact(const Change& change)
 		{
 			Cell from = cell(change.subject.position);
 			Cell to   = cell(change.target.position);
+			DEBUG_ASSERT(from.valid());
+			DEBUG_ASSERT(to.valid());
+			DEBUG_ASSERT(from != to);
 			// Swap the unit data.
 			std::swap(unit(from, change.subject.type), unit(to, change.target.type));
 		}
@@ -283,6 +310,7 @@ void Board::enact(const Change& change)
 		case Change::Type::REVEAL:
 		{
 			Cell index = cell(change.subject.position);
+			DEBUG_ASSERT(index.valid());
 			vision(index).add(Player::SELF);
 			// Update the tile.
 			tile(index) = change.tile;
@@ -304,6 +332,7 @@ void Board::enact(const Change& change)
 		case Change::Type::OBSCURE:
 		{
 			Cell index = cell(change.subject.position);
+			DEBUG_ASSERT(index.valid());
 			vision(index).remove(Player::SELF);
 		}
 		break;
@@ -311,6 +340,7 @@ void Board::enact(const Change& change)
 		case Change::Type::TRANSFORMED:
 		{
 			Cell index = cell(change.subject.position);
+			DEBUG_ASSERT(index.valid());
 			tile(index) = change.tile;
 			tile(index).resetId();
 		}
@@ -319,6 +349,7 @@ void Board::enact(const Change& change)
 		case Change::Type::CONSUMED:
 		{
 			Cell index = cell(change.subject.position);
+			DEBUG_ASSERT(index.valid());
 			tile(index) = change.tile;
 			tile(index).resetId();
 		}
@@ -330,6 +361,7 @@ void Board::enact(const Change& change)
 		case Change::Type::SHAPED:
 		{
 			Cell index = cell(change.subject.position);
+			DEBUG_ASSERT(index.valid());
 			tile(index) = change.tile;
 			tile(index).resetId();
 		}
@@ -338,6 +370,7 @@ void Board::enact(const Change& change)
 		case Change::Type::SETTLES:
 		{
 			Cell index = cell(change.subject.position);
+			DEBUG_ASSERT(index.valid());
 			unit(index, change.subject.type) = UnitToken();
 		}
 		break;
@@ -345,6 +378,7 @@ void Board::enact(const Change& change)
 		case Change::Type::SETTLED:
 		{
 			Cell index = cell(change.subject.position);
+			DEBUG_ASSERT(index.valid());
 			tile(index) = change.tile;
 			tile(index).resetId();
 		}
@@ -353,6 +387,7 @@ void Board::enact(const Change& change)
 		case Change::Type::EXPANDS:
 		{
 			Cell index = cell(change.subject.position);
+			DEBUG_ASSERT(index.valid());
 			tile(index).power += change.power;
 		}
 		break;
@@ -360,6 +395,7 @@ void Board::enact(const Change& change)
 		case Change::Type::EXPANDED:
 		{
 			Cell index = cell(change.subject.position);
+			DEBUG_ASSERT(index.valid());
 			tile(index) = change.tile;
 			tile(index).resetId();
 		}
@@ -368,6 +404,7 @@ void Board::enact(const Change& change)
 		case Change::Type::UPGRADES:
 		{
 			Cell index = cell(change.subject.position);
+			DEBUG_ASSERT(index.valid());
 			tile(index).power += change.power;
 		}
 		break;
@@ -375,6 +412,7 @@ void Board::enact(const Change& change)
 		case Change::Type::UPGRADED:
 		{
 			Cell index = cell(change.subject.position);
+			DEBUG_ASSERT(index.valid());
 			tile(index) = change.tile;
 			tile(index).resetId();
 		}
@@ -383,6 +421,7 @@ void Board::enact(const Change& change)
 		case Change::Type::CULTIVATES:
 		{
 			Cell index = cell(change.subject.position);
+			DEBUG_ASSERT(index.valid());
 			tile(index).power += change.power;
 		}
 		break;
@@ -390,6 +429,7 @@ void Board::enact(const Change& change)
 		case Change::Type::CULTIVATED:
 		{
 			Cell index = cell(change.subject.position);
+			DEBUG_ASSERT(index.valid());
 			tile(index) = change.tile;
 			tile(index).resetId();
 		}
@@ -400,6 +440,7 @@ void Board::enact(const Change& change)
 		case Change::Type::CAPTURED:
 		{
 			Cell index = cell(change.subject.position);
+			DEBUG_ASSERT(index.valid());
 			tile(index).owner = change.player;
 			tile(index).resetId();
 		}
@@ -408,6 +449,7 @@ void Board::enact(const Change& change)
 		case Change::Type::PRODUCES:
 		{
 			Cell index = cell(change.subject.position);
+			DEBUG_ASSERT(index.valid());
 			tile(index).power += change.power;
 		}
 		break;
@@ -415,6 +457,7 @@ void Board::enact(const Change& change)
 		case Change::Type::PRODUCED:
 		{
 			Cell index = cell(change.subject.position);
+			DEBUG_ASSERT(index.valid());
 			unit(index, change.subject.type) = change.unit;
 			unit(index, change.subject.type).resetId();
 		}
@@ -423,6 +466,7 @@ void Board::enact(const Change& change)
 		case Change::Type::ENTERED:
 		{
 			Cell index = cell(change.subject.position);
+			DEBUG_ASSERT(index.valid());
 			unit(index, change.subject.type) = change.unit;
 			unit(index, change.subject.type).resetId();
 		}
@@ -431,6 +475,7 @@ void Board::enact(const Change& change)
 		case Change::Type::EXITED:
 		{
 			Cell index = cell(change.subject.position);
+			DEBUG_ASSERT(index.valid());
 			unit(index, change.subject.type) = UnitToken();
 		}
 		break;
@@ -438,6 +483,7 @@ void Board::enact(const Change& change)
 		case Change::Type::DIED:
 		{
 			Cell index = cell(change.subject.position);
+			DEBUG_ASSERT(index.valid());
 			unit(index, change.subject.type) = UnitToken();
 		}
 		break;
@@ -445,6 +491,7 @@ void Board::enact(const Change& change)
 		case Change::Type::DESTROYED:
 		{
 			Cell index = cell(change.subject.position);
+			DEBUG_ASSERT(index.valid());
 			tile(index) = change.tile;
 			tile(index).resetId();
 		}
@@ -472,6 +519,7 @@ void Board::enact(const Change& change)
 		case Change::Type::IRRADIATED:
 		{
 			Cell index = cell(change.subject.position);
+			DEBUG_ASSERT(index.valid());
 			switch (change.subject.type)
 			{
 				// If the cell is hit, this indicates that the shot missed.
@@ -515,6 +563,7 @@ void Board::enact(const Change& change)
 		case Change::Type::GROWS:
 		{
 			Cell index = cell(change.subject.position);
+			DEBUG_ASSERT(index.valid());
 			tile(index).stacks += change.stacks;
 			tile(index).power += change.power;
 		}
@@ -523,6 +572,7 @@ void Board::enact(const Change& change)
 		case Change::Type::SNOW:
 		{
 			Cell index = cell(change.subject.position);
+			DEBUG_ASSERT(index.valid());
 			snow(index) = change.snow;
 		}
 		break;
@@ -530,6 +580,7 @@ void Board::enact(const Change& change)
 		case Change::Type::FROSTBITE:
 		{
 			Cell index = cell(change.subject.position);
+			DEBUG_ASSERT(index.valid());
 			frostbite(index) = change.frostbite;
 		}
 		break;
@@ -537,6 +588,7 @@ void Board::enact(const Change& change)
 		case Change::Type::FIRESTORM:
 		{
 			Cell index = cell(change.subject.position);
+			DEBUG_ASSERT(index.valid());
 			firestorm(index) = change.firestorm;
 		}
 		break;
@@ -544,6 +596,7 @@ void Board::enact(const Change& change)
 		case Change::Type::BONEDROUGHT:
 		{
 			Cell index = cell(change.subject.position);
+			DEBUG_ASSERT(index.valid());
 			bonedrought(index) = change.bonedrought;
 		}
 		break;
@@ -551,6 +604,7 @@ void Board::enact(const Change& change)
 		case Change::Type::DEATH:
 		{
 			Cell index = cell(change.subject.position);
+			DEBUG_ASSERT(index.valid());
 			death(index) = change.death;
 		}
 		break;
@@ -558,6 +612,7 @@ void Board::enact(const Change& change)
 		case Change::Type::GAS:
 		{
 			Cell index = cell(change.subject.position);
+			DEBUG_ASSERT(index.valid());
 			gas(index) += change.gas;
 		}
 		break;
@@ -565,6 +620,7 @@ void Board::enact(const Change& change)
 		case Change::Type::RADIATION:
 		{
 			Cell index = cell(change.subject.position);
+			DEBUG_ASSERT(index.valid());
 			radiation(index) += change.radiation;
 		}
 		break;
@@ -572,6 +628,7 @@ void Board::enact(const Change& change)
 		case Change::Type::TEMPERATURE:
 		{
 			Cell index = cell(change.subject.position);
+			DEBUG_ASSERT(index.valid());
 			temperature(index) += change.temperature;
 		}
 		break;
@@ -579,6 +636,7 @@ void Board::enact(const Change& change)
 		case Change::Type::HUMIDITY:
 		{
 			Cell index = cell(change.subject.position);
+			DEBUG_ASSERT(index.valid());
 			humidity(index) += change.humidity;
 		}
 		break;
@@ -586,6 +644,7 @@ void Board::enact(const Change& change)
 		case Change::Type::CHAOS:
 		{
 			Cell index = cell(change.subject.position);
+			DEBUG_ASSERT(index.valid());
 			chaos(index) += change.chaos;
 		}
 		break;
@@ -593,6 +652,7 @@ void Board::enact(const Change& change)
 		case Change::Type::VISION:
 		{
 			Cell index = cell(change.subject.position);
+			DEBUG_ASSERT(index.valid());
 			vision(index) = change.vision;
 		}
 		break;

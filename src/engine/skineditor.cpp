@@ -27,7 +27,17 @@
 #include "skin.hpp"
 #include "paint.hpp"
 #include "parseerror.hpp"
+#include "validation.hpp"
 
+
+void SkinEditor::openPaletteEditor(const std::string& palettename)
+{
+	if (!palettename.empty() && Palette::exists(palettename))
+	{
+		_activepalettename = palettename;
+	}
+	_showPaletteEditor = true;
+}
 
 void SkinEditor::updateIfEnabled()
 {
@@ -36,21 +46,34 @@ void SkinEditor::updateIfEnabled()
 		if (ImGui::Begin("Windows", nullptr,
 			ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoCollapse))
 		{
-			ImGui::Checkbox("Skin Editor", &_show);
+			ImGui::Checkbox("Palette Editor", &_showPaletteEditor);
+			ImGui::Checkbox("Skin Editor", &_showSkinEditor);
 		}
 		ImGui::End();
 	}
 
-	if (_show)
+	if (_showPaletteEditor)
 	{
 		updatePalettes();
+	}
+	if (_showSkinEditor)
+	{
 		updateSkins();
 	}
 }
 
+static int filterValidUserContentChar(ImGuiInputTextCallbackData* data)
+{
+	bool discarded = !isValidUserContentChar(data->EventChar);
+	return discarded;
+}
+
 void SkinEditor::updatePalettes()
 {
-	if (ImGui::Begin("Master Palette"))
+	ImGui::SetNextWindowSizeConstraints(ImVec2(400, 400), ImVec2(1000, 1000));
+	if (ImGui::Begin("Palette Editor", &_showPaletteEditor, 0
+			| ((Palette::unsaved()) ? ImGuiWindowFlags_UnsavedDocument : 0)
+		))
 	{
 		if (ImGui::BeginChild("indexed master palettes", ImVec2(0, 100)))
 		{
@@ -65,39 +88,22 @@ void SkinEditor::updatePalettes()
 		}
 		ImGui::EndChild();
 
-		ImGui::Separator();
-
-		static ImVec4 headercolor(0.2f, 1.0f, 0.4f, 1.0f);
-
-		ImGui::InputText("Name", &_activepalettename);
-
-		if (ImGui::Button("Load"))
+		if (_activepalettename != "default")
 		{
-			Palette::installNamed(_activepalettename);
-		}
-		ImGui::SameLine();
-		if (ImGui::Button("Save"))
-		{
-			Palette::saveInstalledAs(_activepalettename);
-		}
-		ImGui::SameLine();
-		if (_activepalettename == "default")
-		{
-			ImGui::Text("(default)");
-		}
-		else
-		{
-			if (ImGui::Button("Add to list"))
-			{
-				Palette::addToIndex(_activepalettename);
-				Palette::saveIndex();
-			}
+			ImGui::Separator();
+			ImGui::InputText("Name", &_activepalettename,
+				ImGuiInputTextFlags_CallbackCharFilter,
+				filterValidUserContentChar);
 			ImGui::SameLine();
-			if (ImGui::Button("Set as default"))
+			if (ImGui::Button("Save"))
 			{
-				Palette::saveInstalledAs("default");
+				Palette::saveInstalledAs(_activepalettename);
+				Palette::loadIndex();
 			}
 		}
+
+		ImGui::Separator();
+		ImGui::Text("Colors:");
 
 		static ImGuiTextFilter filter;
 		filter.Draw();
@@ -129,7 +135,7 @@ void SkinEditor::updatePalettes()
 
 void SkinEditor::updateSkins()
 {
-	if (ImGui::Begin("Skins"))
+	if (ImGui::Begin("Skins", &_showSkinEditor))
 	{
 		static ImGuiTextFilter filter;
 		filter.Draw();

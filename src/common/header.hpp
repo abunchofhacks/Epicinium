@@ -149,3 +149,7 @@ struct stringref;
 #ifndef EDITOR_DEPRECATED_ENABLED
 #define EDITOR_DEPRECATED_ENABLED false
 #endif
+
+#ifndef NEURALNEWT_20x13_ENABLED
+#define NEURALNEWT_20x13_ENABLED false
+#endif

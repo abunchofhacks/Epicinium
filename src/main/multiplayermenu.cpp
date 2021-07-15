@@ -56,10 +56,14 @@
 #include "system.hpp"
 #include "locator.hpp"
 #include "library.hpp"
-#include "openurl.hpp"
 #include "parseerror.hpp"
 #include "gameowner.hpp"
 #include "settings.hpp"
+#include "bot.hpp"
+#include "ai.hpp"
+#include "challenge.hpp"
+#include "aichallenge.hpp"
+#include "hostedgame.hpp"
 
 
 enum class InputMode
@@ -104,6 +108,11 @@ void MultiplayerMenu::onShow()
 		_client.requestLeaderboard();
 		Mixer::get()->fade(Mixer::get()->getOSTid(), 0.2f, 1.5f);
 		Mixer::get()->fade(Mixer::get()->getMidiOSTid(), 0.8f, 1.5f);
+
+		if (_layout["left"].getTag() == "inlobby")
+		{
+			_client.send(Message::leave_lobby());
+		}
 	}
 }
 
@@ -120,13 +129,153 @@ void MultiplayerMenu::build()
 	const int FONTSIZE_MENUBUTTON = _settings.getFontSizeMenuButton();
 
 	_layout.add("left", new SlideshowLayout());
+	_layout["left"].add("gamemodes", new VerticalLayout());
+	_layout["left"].add("campaign", new VerticalLayout());
+	_layout["left"].add("challenges", new VerticalLayout());
 	_layout["left"].add("browser", new VerticalLayout());
 	_layout["left"].add("inlobby", new VerticalLayout());
 	_layout.add("right", new VerticalLayout());
 
 	{
-		InterfaceElement& container = _layout["left"]["browser"];
+		InterfaceElement& container = _layout["left"]["gamemodes"];
 
+		container.add("t_learntoplay", new TextField(
+			_("LEARN TO PLAY"),
+			FONTSIZE, ColorName::TEXT200));
+
+		container.add("panels1", new HorizontalLayout());
+		container["panels1"].add("tutorial", makePanel(
+			_("Tutorial"),
+			"panels/tutorial",
+			ColorName::FRAME200));
+		container["panels1"]["tutorial"].setMargin(
+			4 * InterfaceElement::scale());
+		container["panels1"].add("overview", makePanel(
+			_("Overview"),
+			"panels/overview",
+			ColorName::FRAME200));
+		container["panels1"]["overview"].setMargin(
+			4 * InterfaceElement::scale());
+
+		container.add("buttons", new HorizontalLayout());
+		container["buttons"].add("guide",
+			makeButton(
+				_("open guide"),
+				FONTSIZE_MENUBUTTON));
+		container["buttons"]["guide"].setMargin(
+			4 * InterfaceElement::scale());
+		container["buttons"].add("spectate",
+			makeButton(
+				_("spectate game"),
+				FONTSIZE_MENUBUTTON));
+		container["buttons"]["spectate"].setMargin(
+			4 * InterfaceElement::scale());
+		container["buttons"].add("replay",
+			makeButton(
+				_("watch replay"),
+				FONTSIZE_MENUBUTTON));
+		container["buttons"]["replay"].setMargin(
+			4 * InterfaceElement::scale());
+		container["buttons"].settleHeight();
+		container["buttons"].fixHeight();
+
+		container.add("t_singleplayer", new TextField(
+			_("SINGLEPLAYER"),
+			FONTSIZE, ColorName::TEXT200));
+
+		container.add("panels2", new HorizontalLayout());
+		container["panels2"].add("campaign", makePanel(
+			_("Campaign"),
+			"panels/campaign",
+			ColorName::FRAME200));
+		container["panels2"]["campaign"].setMargin(
+			4 * InterfaceElement::scale());
+		container["panels2"].add("challenges", makePanel(
+			_("Challenges"),
+			"panels/challenges",
+			ColorName::FRAME200));
+		container["panels2"]["challenges"].setMargin(
+			4 * InterfaceElement::scale());
+		container["panels2"].add("versusai", makePanel(
+			_("Versus A.I."),
+			"panels/versusai",
+			ColorName::FRAME200));
+		container["panels2"]["versusai"].setMargin(
+			4 * InterfaceElement::scale());
+
+		container.add("t_multiplayer", new TextField(
+			_("MULTIPLAYER"),
+			FONTSIZE, ColorName::TEXT200));
+
+		container.add("panels3", new HorizontalLayout());
+		container["panels3"].add("onevsone", makePanel(
+			_("One vs. One"),
+			"panels/onevsone",
+			ColorName::FRAME200));
+		container["panels3"]["onevsone"].setMargin(
+			4 * InterfaceElement::scale());
+		container["panels3"].add("browse", makePanel(
+			_("Custom Lobbies"),
+			"panels/freeforall",
+			ColorName::FRAME200));
+		container["panels3"]["browse"].setMargin(
+			4 * InterfaceElement::scale());
+	}
+
+	{
+		InterfaceElement& container = _layout["left"]["campaign"];
+		container.add("t_campaign", new TextField(
+			_("CAMPAIGN"),
+			FONTSIZE, ColorName::TEXT200));
+		container.add("levels", new Frame("ui/frame_screen_9"));
+		int fontHeight = InterfaceElement::fontH(FONTSIZE);
+		container["levels"].put(new ScrollableLayout(false));
+		container["levels"].add("filler", new Filler());
+		container["levels"]["filler"].fixHeight(fontHeight);
+		container["levels"].setMargin(4 * InterfaceElement::scale());
+		container["levels"].setMarginTop(2 * InterfaceElement::scale());
+		container["levels"].setPadding(6 * InterfaceElement::scale());
+		container["levels"].settleHeight();
+
+		container.add("buttons", new HorizontalLayout());
+		container["buttons"].add("back",
+			makeButton(
+				_("back"),
+				FONTSIZE_MENUBUTTON));
+		container["buttons"]["back"].setMargin(
+			4 * InterfaceElement::scale());
+		container["buttons"].settleHeight();
+		container["buttons"].fixHeight();
+	}
+
+	{
+		InterfaceElement& container = _layout["left"]["challenges"];
+		container.add("t_challenges", new TextField(
+			_("CHALLENGES"),
+			FONTSIZE, ColorName::TEXT200));
+		container.add("levels", new Frame("ui/frame_screen_9"));
+		int fontHeight = InterfaceElement::fontH(FONTSIZE);
+		container["levels"].put(new ScrollableLayout(false));
+		container["levels"].add("filler", new Filler());
+		container["levels"]["filler"].fixHeight(fontHeight);
+		container["levels"].setMargin(4 * InterfaceElement::scale());
+		container["levels"].setMarginTop(2 * InterfaceElement::scale());
+		container["levels"].setPadding(6 * InterfaceElement::scale());
+		container["levels"].settleHeight();
+
+		container.add("buttons", new HorizontalLayout());
+		container["buttons"].add("back",
+			makeButton(
+				_("back"),
+				FONTSIZE_MENUBUTTON));
+		container["buttons"]["back"].setMargin(
+			4 * InterfaceElement::scale());
+		container["buttons"].settleHeight();
+		container["buttons"].fixHeight();
+	}
+
+	{
+		InterfaceElement& container = _layout["left"]["browser"];
 		container.add("t_lobbies", new TextField(
 			_("LOBBIES"),
 			FONTSIZE, ColorName::TEXT200));
@@ -140,89 +289,21 @@ void MultiplayerMenu::build()
 		container["lobbies"].setPadding(6 * InterfaceElement::scale());
 		container["lobbies"].settleHeight();
 
-		container.add("panels2", new HorizontalLayout());
-		container["panels2"].add("onevsone", makePanel(
-			_("One vs. One"),
-			"panels/onevsone",
-			ColorName::FRAME200));
-		container["panels2"]["onevsone"].setMargin(
-			4 * InterfaceElement::scale());
-		container["panels2"].add("versusai", makePanel(
-			_("Versus A.I."),
-			"panels/versusai",
-			ColorName::FRAME200));
-		container["panels2"]["versusai"].setMargin(
-			4 * InterfaceElement::scale());
-		container["panels2"].add("create", makePanel(
-			_("Custom Lobby"),
-			"panels/freeforall",
-			ColorName::FRAME200));
-		container["panels2"]["create"].setMargin(
-			4 * InterfaceElement::scale());
-		container["panels2"].settleHeight();
-		container["panels2"].fixHeight();
-
 		container.add("buttons", new HorizontalLayout());
-		container["buttons"].add("overview",
+		container["buttons"].add("create",
 			makeButton(
-				_("overview map"),
+				_("create lobby"),
 				FONTSIZE_MENUBUTTON));
-		container["buttons"]["overview"].setMargin(
+		container["buttons"]["create"].setMargin(
 			4 * InterfaceElement::scale());
-		container["buttons"].add("guide",
+		container["buttons"].add("back",
 			makeButton(
-				_("open guide"),
+				_("back"),
 				FONTSIZE_MENUBUTTON));
-		container["buttons"]["guide"].setMargin(
-			4 * InterfaceElement::scale());
-		container["buttons"].add("replay",
-			makeButton(
-				_("watch replay"),
-				FONTSIZE_MENUBUTTON));
-		container["buttons"]["replay"].setMargin(
+		container["buttons"]["back"].setMargin(
 			4 * InterfaceElement::scale());
 		container["buttons"].settleHeight();
 		container["buttons"].fixHeight();
-
-		container.add("panels1", new HorizontalLayout());
-		container["panels1"].add("tutorial", makePanel(
-			_("Tutorial"),
-			"panels/tutorial",
-			ColorName::UIACCENT));
-		container["panels1"]["tutorial"].setMargin(
-			4 * InterfaceElement::scale());
-		container["panels1"].add("challenge", makePanel(
-			_("loading..."),
-			"unknown",
-			ColorName::STAR));
-		{
-			InterfaceElement& element = container["panels1"]["challenge"];
-			element.add("stars", new HorizontalLayout());
-			element["stars"].add("filler1", new HorizontalFiller());
-			for (int i = 1; i <= 3; i++)
-			{
-				std::string index = std::to_string(i);
-				element["stars"].add(index, new Image("effects/star1"));
-
-				auto& icon = element["stars"][index];
-				icon.setColor(0, Paint::blend(ColorName::FRAME600,
-					ColorName::SHINEBLEND, 0.2f));
-				icon.setColor(1, ColorName::FRAME600);
-				icon.setColor(2, Paint::blend(ColorName::FRAME600,
-					ColorName::SHADEBLEND));
-				icon.setPowerColor(0, Paint::blend(ColorName::STAR,
-					ColorName::SHINEBLEND));
-				icon.setPowerColor(1, ColorName::STAR);
-				icon.setPowerColor(2, Paint::blend(ColorName::STAR,
-					ColorName::SHADEBLEND, 0.2f));
-				icon.setMargin(8 * InterfaceElement::scale());
-			}
-			element["stars"].add("filler2", new HorizontalFiller());
-		}
-		container["panels1"]["challenge"].setMargin(
-			4 * InterfaceElement::scale());
-		container["panels1"].settleHeight();
-		container["panels1"].fixHeight();
 	}
 
 	{
@@ -589,7 +670,35 @@ void MultiplayerMenu::build()
 			FONTSIZE, ColorName::TEXT900));
 		name["rename"].makeClickable();
 		name["rename"].fixWidth();
+		name["rename"].setMarginVertical(2 * InterfaceElement::scale());
 		name.align(VerticalAlignment::MIDDLE);
+
+		container["settings"].add("host", new HorizontalLayout());
+		auto& host = container["settings"]["host"];
+		host.add("title", new TooltipLayout());
+		host["title"].add("text", new TextField(
+			_("Host:"),
+			FONTSIZE));
+		host["title"].add("tooltip", Frame::makeTooltip());
+		host["title"]["tooltip"].put(new TextField(
+			_("Only the host can change lobby settings."
+				" If the host leaves, the lobby is disbanded."),
+			FONTSIZE));
+		host["title"]["tooltip"].setMargin(
+			5 * InterfaceElement::scale());
+		host.add("text", new TextField("", FONTSIZE, ColorName::TEXT900));
+		host["text"].setMarginLeft(
+			12 * InterfaceElement::scale());
+		host["text"].setMarginRight(
+			10 * InterfaceElement::scale());
+		host.add("claim", Frame::makeItem());
+		host["claim"].put(new TextField(
+			_("claim"),
+			FONTSIZE, ColorName::TEXT900));
+		host["claim"].makeClickable();
+		host["claim"].fixWidth();
+		host["claim"].setMarginVertical(2 * InterfaceElement::scale());
+		host.align(VerticalAlignment::MIDDLE);
 
 		container["settings"].add("lock", new HorizontalLayout());
 		auto& lock = container["settings"]["lock"];
@@ -628,6 +737,7 @@ void MultiplayerMenu::build()
 		custom.align(VerticalAlignment::MIDDLE);
 
 		container["settings"].add("map", makeMapDropdown());
+		container["settings"].add("ruleset", makeRulesetDropdown());
 		container["settings"].add("planningtime", makeTimerDropdown());
 		container["settings"].settleWidth();
 		straightenLobbySettings();
@@ -666,6 +776,8 @@ void MultiplayerMenu::build()
 	_layout.place(Pixel(0, 0, Layer::INTERFACE));
 
 	_layout["right"]["chat"].remove("filler");
+	_layout["left"]["campaign"]["levels"].remove("filler");
+	_layout["left"]["challenges"]["levels"].remove("filler");
 	_layout["left"]["browser"]["lobbies"].remove("filler");
 	_layout["left"]["inlobby"]["players"]["players"].remove("filler");
 	_layout["left"]["inlobby"]["players"]["replays"].remove("filler");
@@ -680,7 +792,7 @@ void MultiplayerMenu::build()
 	_layout["right"]["users"]["discord"].fixHeight();
 	_layout["right"]["users"]["discord"]["content"]["text"].fixWidth();
 
-	_layout["left"].setTag("browser");
+	_layout["left"].setTag("gamemodes");
 }
 
 std::unique_ptr<InterfaceElement> MultiplayerMenu::makeMapDropdown()
@@ -721,6 +833,55 @@ std::unique_ptr<InterfaceElement> MultiplayerMenu::makeMapDropdown()
 			dropdown[map].put(new TextField(description, FONTSIZE_MENUBUTTON,
 				ColorName::TEXT700));
 			content.setTag(map);
+		}
+		dropdown.settleWidth();
+		dropdown.settleHeight();
+	}
+	element["options"].setMarginLeft(10 * InterfaceElement::scale());
+	element.align(VerticalAlignment::MIDDLE);
+	element.setMarginTop(1 * InterfaceElement::scale());
+
+	return it;
+}
+
+std::unique_ptr<InterfaceElement> MultiplayerMenu::makeRulesetDropdown()
+{
+	const int FONTSIZE = _settings.getFontSize();
+	const int FONTSIZE_MENUBUTTON = _settings.getFontSizeMenuButton();
+
+	std::unique_ptr<InterfaceElement> it(new HorizontalLayout());
+	auto& element = *it;
+
+	element.add("title", new TooltipLayout());
+	element["title"].add("text", new TextField(
+		_("Ruleset:"),
+		FONTSIZE));
+	element["title"].add("tooltip", Frame::makeTooltip());
+	element["title"]["tooltip"].put(new TextField(
+		_("The version of the game rules the game is played with."),
+		FONTSIZE));
+	element["title"]["tooltip"].setMargin(
+		5 * InterfaceElement::scale());
+	element.add("options", new TooltipLayout(/*dropdown=*/true));
+	{
+		auto& options = element["options"];
+
+		options.add("content", new SlideshowLayout());
+		auto& content = options["content"];
+
+		options.add("dropdown", Frame::makeTooltip(/*dropdown=*/true));
+		auto& dropdown = options["dropdown"];
+		dropdown.put(new VerticalLayout());
+		{
+			std::string name = "unknown";
+			std::string description = _("unknown");
+			content.add(name, Frame::makeItem());
+			content[name].put(new TextField(description, FONTSIZE_MENUBUTTON,
+				ColorName::TEXT700));
+			dropdown.add(name, Frame::makeItem());
+			dropdown[name].put(new TextField(description, FONTSIZE_MENUBUTTON,
+				ColorName::TEXT700));
+			content.setTag(name);
 		}
 		dropdown.settleWidth();
 		dropdown.settleHeight();
@@ -808,16 +969,157 @@ std::unique_ptr<InterfaceElement> MultiplayerMenu::makePanel(
 	return it;
 }
 
+std::unique_ptr<InterfaceElement> MultiplayerMenu::makeChallengePanel(
+	const std::string& text, int maxStars)
+{
+	const int FONTSIZE_MENUBUTTON = _settings.getFontSizeMenuButton();
+	Paint framecolor = ColorName::FRAMESTONE;
+	Paint fadecolor = ColorName::FRAMESAND;
+
+	std::unique_ptr<InterfaceElement> it(new Frame("ui/frame_level_9"));
+	InterfaceElement& element = *it;
+	element.setPicture("unknown");
+	element.setColor(0, Paint::alpha(
+		ColorName::FRAME200,
+		25));
+	element.setColor(1, Paint::alpha(
+		framecolor,
+		245));
+	element.setColor(2, Paint::blend(framecolor, ColorName::SHINEBLEND, 0.5f));
+	element.setColor(3, Paint::blend(framecolor, ColorName::SHADEBLEND, 0.5f));
+	element.setColor(4, Paint::alpha(
+		fadecolor,
+		200));
+	element.setColor(5, Color::transparent());
+	element.setDisabledColor(0, Paint::alpha(
+		Paint::blend(ColorName::FRAME200, ColorName::DISABLEDBLEND),
+		230));
+	element.setDisabledColor(1, Paint::alpha(
+		Paint::blend(framecolor, ColorName::DISABLEDBLEND),
+		245));
+	element.setDisabledColor(2, Paint::blend(
+		Paint::blend(framecolor, ColorName::SHINEBLEND, 0.5f),
+		ColorName::DISABLEDBLEND));
+	element.setDisabledColor(3, Paint::blend(
+		Paint::blend(framecolor, ColorName::SHADEBLEND, 0.5f),
+		ColorName::DISABLEDBLEND));
+	element.setDisabledColor(4, Paint::alpha(
+		Paint::blend(fadecolor, ColorName::DISABLEDBLEND),
+		230));
+	element.setDisabledColor(5, Color::transparent());
+	element.setHoveredColor(0, Paint::alpha(
+		Paint::blend(ColorName::FRAME200, ColorName::HOVEREDBLEND),
+		12));
+	element.setHoveredColor(1, Paint::alpha(
+		Paint::blend(framecolor, ColorName::HOVEREDBLEND),
+		245));
+	element.setHoveredColor(2, Paint::blend(
+		Paint::blend(framecolor, ColorName::SHINEBLEND, 0.5f),
+		ColorName::HOVEREDBLEND));
+	element.setHoveredColor(3, Paint::blend(
+		Paint::blend(framecolor, ColorName::SHADEBLEND, 0.5f),
+		ColorName::HOVEREDBLEND));
+	element.setHoveredColor(4, Paint::alpha(
+		Paint::blend(fadecolor, ColorName::HOVEREDBLEND),
+		87));
+	element.setHoveredColor(5, Color::transparent());
+	element.setPressedColor(0, Paint::alpha(
+		Paint::blend(ColorName::FRAME200, ColorName::PRESSEDBLEND),
+		64));
+	element.setPressedColor(1, Paint::alpha(
+		Paint::blend(framecolor, ColorName::PRESSEDBLEND),
+		245));
+	element.setPressedColor(2, Paint::blend(
+		Paint::blend(framecolor, ColorName::SHINEBLEND, 0.5f),
+		ColorName::PRESSEDBLEND));
+	element.setPressedColor(3, Paint::blend(
+		Paint::blend(framecolor, ColorName::SHADEBLEND, 0.5f),
+		ColorName::PRESSEDBLEND));
+	element.setPressedColor(4, Paint::alpha(
+		Paint::blend(fadecolor, ColorName::PRESSEDBLEND),
+		195));
+	element.setPressedColor(5, Color::transparent());
+	element.put(new VerticalLayout());
+	element.add("title", new TextField(text,
+		FONTSIZE_MENUBUTTON, ColorName::TEXT200,
+		InterfaceElement::scale(),
+		ColorName::TEXT800));
+	element["title"].align(HorizontalAlignment::LEFT);
+	element.add("filler", new Filler());
+	element.add("stars", new HorizontalLayout());
+	for (int i = 1; i <= std::min(maxStars, 3); i++)
+	{
+		std::string index = std::to_string(i);
+		element["stars"].add(index, new Image("effects/star1"));
+
+		auto& icon = element["stars"][index];
+		icon.setColor(0, Paint::blend(ColorName::FRAME600,
+		ColorName::SHINEBLEND, 0.2f));
+		icon.setColor(1, ColorName::FRAME600);
+		icon.setColor(2, Paint::blend(ColorName::FRAME600,
+		ColorName::SHADEBLEND));
+		icon.setPowerColor(0, Paint::blend(ColorName::STAR,
+		ColorName::SHINEBLEND));
+		icon.setPowerColor(1, ColorName::STAR);
+		icon.setPowerColor(2, Paint::blend(ColorName::STAR,
+		ColorName::SHADEBLEND, 0.2f));
+		icon.setMargin(8 * InterfaceElement::scale());
+	}
+	element["stars"].add("filler2", new HorizontalFiller());
+	element.setPadding(6 * InterfaceElement::scale());
+	element.settleHeight();
+	element.makeClickable();
+	return it;
+}
+
 void MultiplayerMenu::resetMapDropdown()
 {
 	const int FONTSIZE_MENUBUTTON = _settings.getFontSizeMenuButton();
 
 	auto& settings = _layout["left"]["inlobby"]["settings"];
 
+	if (settings.contains("host"))
+	{
+		settings["host"]["text"].setText("");
+		settings["host"]["claim"].enable();
+
+		// Reset disabled settings now that there is no host.
+		settings["name"]["rename"].enable();
+		settings["lock"]["options"].enable();
+		// (custom, ruleset and maps will be reset below)
+		settings["planningtime"]["options"].enable();
+
+		// Reset disabled start buttons now that there is no host.
+		_layout["left"]["inlobby"]["buttons"]["start"].enable();
+	}
+
 	if (settings.contains("custom"))
 	{
 		settings["custom"]["options"].setTag("Empty");
 		settings["custom"]["options"].enable();
+	}
+
+	if (settings.contains("ruleset"))
+	{
+		auto& options = settings["ruleset"]["options"];
+		auto& content = options["content"];
+		auto& dropdown = options["dropdown"];
+		content.reset();
+		dropdown.reset();
+		{
+			std::string map = "unknown";
+			std::string description = _("unknown");
+			content.add(map, Frame::makeItem());
+			content[map].put(new TextField(description, FONTSIZE_MENUBUTTON,
+				ColorName::TEXT700));
+			dropdown.add(map, Frame::makeItem());
+			dropdown[map].put(new TextField(description, FONTSIZE_MENUBUTTON,
+				ColorName::TEXT700));
+			content.setTag(map);
+		}
+		dropdown.settleWidth();
+		dropdown.settleHeight();
+		options.enable();
 	}
 
 	if (!settings.contains("map")) return;
@@ -870,14 +1172,14 @@ std::unique_ptr<InterfaceElement> MultiplayerMenu::makeTimerDropdown()
 		auto& dropdown = options["dropdown"];
 		dropdown.put(new VerticalLayout());
 
-		for (int x : {10, 20, 30, 45, 60, 90, 120, 180, 0})
+		for (int x : {5, 10, 20, 30, 40, 50, 60, 75, 90, 120, 180, 300, 0})
 		{
 			std::string tagname = std::to_string(x);
 			std::string name = tagname;
 			std::string desc = "";
 			switch (x)
 			{
-				case 10: desc = _("insane"); break;
+				case 5: desc = _("insane"); break;
 				case 30: desc = _("fast"); break;
 				case 60: desc = _("standard"); break;
 				case 120: desc = _("relaxed"); break;
@@ -993,6 +1295,24 @@ void MultiplayerMenu::refresh()
 		}
 	}
 
+	if (settings.contains("ruleset")
+		&& settings["ruleset"]["options"]["dropdown"].hovered())
+	{
+		auto& options = settings["ruleset"]["options"];
+		auto& content = options["content"];
+		auto& dropdown = options["dropdown"];
+		for (size_t i = 0; i < content.size(); i++)
+		{
+			std::string name = content.name(i);
+			if (dropdown.contains(name) && dropdown[name].clicked()
+				&& content.getTag() != name)
+			{
+				_client.send(Message::pick_ruleset(name));
+				content.setTag(name);
+			}
+		}
+	}
+
 	if (settings["lock"]["options"].clicked())
 	{
 		auto& options = settings["lock"]["options"];
@@ -1006,6 +1326,12 @@ void MultiplayerMenu::refresh()
 			_client.send(Message::unlock_lobby());
 			options.setTag("Empty");
 		}
+	}
+
+	if (settings["host"]["claim"].clicked())
+	{
+		_client.send(Message::claim_host());
+		settings["host"]["claim"].disable();
 	}
 
 	if (settings["custom"]["options"].clicked())
@@ -1270,12 +1596,15 @@ void MultiplayerMenu::refresh()
 		}
 	}
 
-	if (_layout["left"]["browser"]["buttons"]["guide"].hovered())
+	_layout["left"]["gamemodes"]["buttons"]["spectate"].enableIf(
+		joinSpectatable(/*dryrun=*/true));
+
+	if (_layout["left"]["gamemodes"]["buttons"]["guide"].hovered())
 	{
 		linkHovered = true;
 	}
 
-	if (_layout["left"]["browser"]["buttons"]["replay"].clicked())
+	if (_layout["left"]["gamemodes"]["buttons"]["replay"].clicked())
 	{
 		Json::Value metadata = Json::objectValue;
 		metadata["lobby_type"] = "replay";
@@ -1283,17 +1612,21 @@ void MultiplayerMenu::refresh()
 		_client.send(Message::make_lobby(metadata));
 		_client.send(Message::save_lobby());
 	}
-	else if (_layout["left"]["browser"]["buttons"]["overview"].clicked())
+	else if (_layout["left"]["gamemodes"]["buttons"]["spectate"].clicked())
+	{
+		joinSpectatable();
+	}
+	else if (_layout["left"]["gamemodes"]["panels1"]["overview"].clicked())
 	{
 		message(
 			_("Starting overview mode..."));
 		_gameowner.startDiorama();
 	}
-	else if (_layout["left"]["browser"]["buttons"]["guide"].clicked())
+	else if (_layout["left"]["gamemodes"]["buttons"]["guide"].clicked())
 	{
-		System::openURL("https://epicinium.nl/resources/guide.pdf");
+		_client.openUrl("https://epicinium.nl/resources/guide.pdf");
 	}
-	else if (_layout["left"]["browser"]["panels1"]["tutorial"].clicked())
+	else if (_layout["left"]["gamemodes"]["panels1"]["tutorial"].clicked())
 	{
 		Json::Value metadata = Json::objectValue;
 		metadata["lobby_type"] = "tutorial";
@@ -1302,16 +1635,17 @@ void MultiplayerMenu::refresh()
 		_client.send(Message::start());
 		_client.send(Message::save_lobby());
 	}
-	else if (_layout["left"]["browser"]["panels1"]["challenge"].clicked())
+	else if (_layout["left"]["gamemodes"]["panels2"]["campaign"].clicked())
 	{
-		Json::Value metadata = Json::objectValue;
-		metadata["lobby_type"] = "challenge";
-		metadata["is_public"] = true;
-		_client.send(Message::make_lobby(metadata));
-		_client.send(Message::start());
-		_client.send(Message::save_lobby());
+		reloadChallengeList();
+		_layout["left"].setTag("campaign");
 	}
-	else if (_layout["left"]["browser"]["panels2"]["onevsone"].clicked())
+	else if (_layout["left"]["gamemodes"]["panels2"]["challenges"].clicked())
+	{
+		reloadChallengeList();
+		_layout["left"].setTag("challenges");
+	}
+	else if (_layout["left"]["gamemodes"]["panels3"]["onevsone"].clicked())
 	{
 		if (joinOneVsOne()) {}
 		else
@@ -1324,15 +1658,15 @@ void MultiplayerMenu::refresh()
 			_client.send(Message::save_lobby());
 		}
 	}
-	else if (_layout["left"]["browser"]["panels2"]["create"].clicked())
+	else if (_layout["left"]["browser"]["buttons"]["create"].clicked())
 	{
 		Json::Value metadata = Json::objectValue;
-		metadata["max_players"] = 4;
+		metadata["max_players"] = 2;
 		metadata["is_public"] = true;
 		_client.send(Message::make_lobby(metadata));
 		_client.send(Message::save_lobby());
 	}
-	else if (_layout["left"]["browser"]["panels2"]["versusai"].clicked())
+	else if (_layout["left"]["gamemodes"]["panels2"]["versusai"].clicked())
 	{
 		Json::Value metadata = Json::objectValue;
 		metadata["max_players"] = 2;
@@ -1340,7 +1674,24 @@ void MultiplayerMenu::refresh()
 		metadata["is_public"] = true;
 		_client.send(Message::make_lobby(metadata));
 		_client.send(Message::pick_timer(0));
+		_client.send(Message::claim_host());
 		_client.send(Message::save_lobby());
+	}
+	else if (_layout["left"]["gamemodes"]["panels3"]["browse"].clicked())
+	{
+		_layout["left"].setTag("browser");
+	}
+	else if (_layout["left"]["campaign"]["buttons"]["back"].clicked())
+	{
+		_layout["left"].setTag("gamemodes");
+	}
+	else if (_layout["left"]["challenges"]["buttons"]["back"].clicked())
+	{
+		_layout["left"].setTag("gamemodes");
+	}
+	else if (_layout["left"]["browser"]["buttons"]["back"].clicked())
+	{
+		_layout["left"].setTag("gamemodes");
 	}
 	else if (_layout["left"]["inlobby"]["buttons"]["leave"].clicked())
 	{
@@ -1349,6 +1700,81 @@ void MultiplayerMenu::refresh()
 	else if (_layout["left"]["inlobby"]["buttons"]["start"]["it"].clicked())
 	{
 		_client.send(Message::start());
+	}
+	else if (_layout["left"]["campaign"]["levels"].clicked())
+	{
+		auto& levels = _layout["left"]["campaign"]["levels"];
+		for (size_t i = 0; i < levels.size(); i++)
+		{
+			std::string name = levels.name(i);
+			if (levels[name].clicked())
+			{
+				Challenge::Id pickedId = Challenge::Id::CUSTOM;
+				std::string mapname;
+				for (const Challenge::Id& id : Challenge::campaign())
+				{
+					std::string key = AIChallenge::getKey(id);
+					if (name == key + "@" + key)
+					{
+						pickedId = id;
+						mapname = AIChallenge::getMapName(id);
+						break;
+					}
+				}
+				if (pickedId != Challenge::Id::CUSTOM)
+				{
+					Json::Value metadata = Json::objectValue;
+					metadata["lobby_type"] = "challenge";
+					metadata["is_public"] = false;
+					_client.send(Message::make_lobby(metadata));
+					// This is a self-hosted challenge.
+					_client.send(Message::claim_host());
+					_client.send(Message::enable_custom_maps());
+					_client.send(Message::pick_challenge(name));
+					// Start the challenge locally, and then also start the
+					// lobby, which should have no effect other than making
+					// it seem like we are in a lobby playing a game.
+					_gameowner.startChallenge(pickedId, mapname);
+					_client.send(Message::start());
+					_client.send(Message::save_lobby());
+				}
+				break;
+			}
+		}
+	}
+	else if (_layout["left"]["challenges"]["levels"].clicked())
+	{
+		auto& levels = _layout["left"]["challenges"]["levels"];
+		for (size_t i = 0; i < levels.size(); i++)
+		{
+			std::string name = levels.name(i);
+			if (levels[name].clicked())
+			{
+				bool external = (name.find_first_of('@') != std::string::npos);
+				Json::Value metadata = Json::objectValue;
+				metadata["lobby_type"] = "challenge";
+				metadata["is_public"] = !external;
+				_client.send(Message::make_lobby(metadata));
+				if (external)
+				{
+					// This is a self-hosted challenge.
+					_client.send(Message::claim_host());
+					_client.send(Message::enable_custom_maps());
+					_client.send(Message::pick_challenge(name));
+					// Start the challenge locally, and then also start the
+					// lobby, which should have no effect other than making
+					// it seem like we are in a lobby playing a game.
+					_gameowner.startChallenge(Challenge::CUSTOM, name);
+				}
+				else
+				{
+					_client.send(Message::pick_challenge(name));
+				}
+				_client.send(Message::start());
+				_client.send(Message::save_lobby());
+				break;
+			}
+		}
 	}
 	else if (_layout["right"]["return"].clicked())
 	{
@@ -1581,7 +2007,7 @@ void MultiplayerMenu::refresh()
 			linkHovered = true;
 			if (form["info"].clicked())
 			{
-				System::openURL(form["info"]["url"].text());
+				_client.openUrl(form["info"]["url"].text());
 			}
 		}
 
@@ -1624,7 +2050,7 @@ void MultiplayerMenu::refresh()
 			linkHovered = true;
 			if (users["discord"].clicked())
 			{
-				System::openURL("https://discord.gg/vQhTURC");
+				_client.openUrl("https://discord.gg/vQhTURC");
 			}
 		}
 	}
@@ -1643,7 +2069,7 @@ void MultiplayerMenu::refresh()
 					if (url.compare(0, 8, "https://") == 0)
 					{
 						LOGI << "Opening server chat url '" << url << "'";
-						System::openURL(url);
+						_client.openUrl(url);
 					}
 					else
 					{
@@ -1669,6 +2095,29 @@ void MultiplayerMenu::refresh()
 			SDL_SetCursor(cursor);
 		}
 	}
+}
+
+bool MultiplayerMenu::joinSpectatable(bool dryrun)
+{
+	InterfaceElement& lobbies = _layout["left"]["browser"]["lobbies"];
+	for (size_t i = 0; i < lobbies.size(); i++)
+	{
+		std::string lobbyid = lobbies.name(i);
+		InterfaceElement& lobby = lobbies[lobbyid];
+		if (!lobby.contains("name")) continue;
+		if (!lobby.contains("type")) continue;
+		if (!lobby.contains("status")) continue;
+		if (lobby["status"].getTag() != "unlocked") continue;
+		if (lobby["status"]["unlocked"].getTag() != "ingame") continue;
+
+		if (!dryrun)
+		{
+			_client.send(Message::join_lobby(lobbyid));
+		}
+		return true;
+	}
+
+	return false;
 }
 
 bool MultiplayerMenu::joinOneVsOne()
@@ -2384,13 +2833,6 @@ void MultiplayerMenu::addPlayer(const std::string& username, bool isSelf)
 			dropdown.settleWidth();
 			dropdown.settleHeight();
 			dropdown.fixWidth();
-
-			// A little hack to detect OneVsOne lobbies.
-			auto& settings = _layout["left"]["inlobby"]["settings"];
-			if (!settings["planningtime"].enabled())
-			{
-				options.kill(1);
-			}
 		}
 		player["visiontype"].setMarginHorizontal(
 			(InterfaceElement::windowW() < 600 * InterfaceElement::scale())
@@ -2500,6 +2942,22 @@ void MultiplayerMenu::addPlayer(const std::string& username, bool isSelf)
 		player.align(VerticalAlignment::MIDDLE);
 		player.settleWidth();
 		player.settleHeight();
+
+		{
+			auto& settings = _layout["left"]["inlobby"]["settings"];
+			if (!settings["host"]["text"].text().empty()
+				&& !settings["name"]["rename"].enabled())
+			{
+				player.disable();
+			}
+			// A little hack to detect OneVsOne lobbies.
+			else if (!settings["planningtime"].enabled()
+				&& settings["map"].enabled())
+			{
+				player["visiontype"].kill(1);
+			}
+		}
+
 		players.add(username, std::move(element));
 	}
 
@@ -2580,6 +3038,16 @@ void MultiplayerMenu::addObserver(const std::string& username, bool isSelf)
 		observer.align(VerticalAlignment::MIDDLE);
 		observer.settleWidth();
 		observer.settleHeight();
+
+		{
+			auto& settings = _layout["left"]["inlobby"]["settings"];
+			if (!settings["host"]["text"].text().empty()
+				&& !settings["name"]["rename"].enabled())
+			{
+				observer.disable();
+			}
+		}
+
 		observers.add(username, std::move(element));
 	}
 
@@ -2876,6 +3344,15 @@ void MultiplayerMenu::addBot(const std::string& botslot)
 		player.align(VerticalAlignment::MIDDLE);
 		player.settleWidth();
 		player.settleHeight();
+
+		{
+			auto& settings = _layout["left"]["inlobby"]["settings"];
+			if (!settings["host"]["text"].text().empty()
+				&& !settings["name"]["rename"].enabled())
+			{
+				player.disable();
+			}
+		}
 	}
 
 	// Enable the start game button for now;
@@ -2962,9 +3439,15 @@ void MultiplayerMenu::addAddBot()
 		player.settleWidth();
 		player.settleHeight();
 
-		// A little hack to detect OneVsOne lobbies.
 		auto& settings = _layout["left"]["inlobby"]["settings"];
-		if (!settings["planningtime"].enabled())
+		if (!settings["host"]["text"].text().empty()
+			&& !settings["name"]["rename"].enabled())
+		{
+			player.disable();
+		}
+		// A little hack to detect OneVsOne lobbies.
+		else if (!settings["planningtime"].enabled()
+			&& settings["map"].enabled())
 		{
 			player.kill(1);
 		}
@@ -2979,6 +3462,52 @@ void MultiplayerMenu::addAddBot()
 		players.width());
 	players.place(
 		players.topleft());
+}
+
+void MultiplayerMenu::assignHost(const std::string& username, bool isSelf)
+{
+	_layout["left"]["inlobby"]["settings"]["host"]["text"].setText(username);
+	_layout["left"]["inlobby"]["settings"]["host"]["claim"].disable();
+
+	if (isSelf)
+	{
+		auto& settings = _layout["left"]["inlobby"]["settings"];
+		if (settings["custom"]["options"].getTag() != "Empty")
+		{
+			rethinkLobbySettingsForSelfHostedContent();
+		}
+	}
+	else
+	{
+		// Disable all players and observers, preventing them from being
+		// dragged, preventing their settings being changed and preventing
+		// adding new bots.
+		auto& players = _layout["left"]["inlobby"]["players"]["players"];
+		for (size_t i = 0; i < players.size(); i++)
+		{
+			std::string name = players.name(i);
+			players[name].disable();
+		}
+		auto& observers = _layout["left"]["inlobby"]["observers"];
+		for (size_t i = 0; i < observers.size(); i++)
+		{
+			std::string name = observers.name(i);
+			observers[name].disable();
+		}
+
+		// Disable various settings
+		auto& settings = _layout["left"]["inlobby"]["settings"];
+		settings["name"]["rename"].disable();
+		settings["lock"]["options"].disable();
+		settings["custom"]["options"].disable();
+		settings["map"]["options"].disable();
+		settings["ruleset"]["options"].disable();
+		settings["planningtime"]["options"].disable();
+
+		// Disable the start button and its tooltip.
+		// On a higher level than the start button disabling in addAddBot().
+		_layout["left"]["inlobby"]["buttons"]["start"].disable();
+	}
 }
 
 void MultiplayerMenu::assignRole(const std::string& username, const Role& role,
@@ -3115,6 +3644,21 @@ void MultiplayerMenu::pickReplay(const std::string& replayname)
 	}
 }
 
+void MultiplayerMenu::pickRuleset(const std::string& rulesetname)
+{
+	auto& x = _layout["left"]["inlobby"]["settings"]["ruleset"];
+	auto& content = x["options"]["content"];
+	if (content.contains(rulesetname))
+	{
+		content.setTag(rulesetname);
+	}
+	else
+	{
+		LOGE << "Missing from options";
+		DEBUG_ASSERT(false);
+	}
+}
+
 void MultiplayerMenu::listMap(const std::string& mapname,
 	const Json::Value& metadata)
 {
@@ -3127,8 +3671,9 @@ void MultiplayerMenu::listMap(const std::string& mapname,
 
 	if (content.contains(mapname)) return;
 
+	bool external = (mapname.find_first_of('@') != std::string::npos);
 	bool usermade = (mapname.find_first_of('/') != std::string::npos);
-	bool custom = usermade;
+	bool custom = external || usermade;
 	PoolType pooltype = PoolType::NONE;
 	if (metadata["pool"].isString())
 	{
@@ -3166,7 +3711,13 @@ void MultiplayerMenu::listMap(const std::string& mapname,
 	std::string description = mapname;
 	int playercount = (metadata["playercount"].isInt()) ?
 		metadata["playercount"].asInt() : 2;
-	if (usermade)
+	if (external)
+	{
+		size_t seppos = mapname.find_first_of("@");
+		description = "(" + std::to_string(playercount) + ") "
+			+ "\"" + mapname.substr(0, seppos) + "\"";
+	}
+	else if (usermade)
 	{
 		size_t seppos = mapname.find_first_of("/");
 		description = "(" + std::to_string(playercount) + ") "
@@ -3303,6 +3854,63 @@ void MultiplayerMenu::listRuleset(const std::string& rulesetname,
 		// Confirm that we have the ruleset.
 		_client.send(Message::list_ruleset(rulesetname));
 	}
+
+	const int FONTSIZE_MENUBUTTON = _settings.getFontSizeMenuButton();
+
+	becomeGameLobby();
+	auto& x = _layout["left"]["inlobby"]["settings"]["ruleset"];
+	auto& options = x["options"];
+	auto& content = options["content"];
+	auto& dropdown = options["dropdown"];
+
+	if (content.contains(rulesetname)) return;
+
+	bool external = (rulesetname.find_first_of('@') != std::string::npos);
+	bool usermade = (rulesetname.find_first_of('/') != std::string::npos);
+
+	std::string description = rulesetname;
+	if (external)
+	{
+		size_t seppos = rulesetname.find_first_of("@");
+		description = "\"" + rulesetname.substr(0, seppos) + "\"";
+	}
+	else if (usermade)
+	{
+		size_t seppos = rulesetname.find_first_of("/");
+		description = ::format(
+				// TRANSLATORS: The first argument is the name of a custom map
+				// or AI, the second argument is the name of its creator.
+				_("\"%s\" by %s"),
+				rulesetname.substr(seppos + 1).c_str(),
+				rulesetname.substr(0, seppos).c_str());
+	}
+	else
+	{
+		description = rulesetname;
+	}
+
+	content.add(rulesetname, Frame::makeItem());
+	content[rulesetname].put(
+		new TextField(description, FONTSIZE_MENUBUTTON, ColorName::TEXT900));
+	content[rulesetname].makeClickable();
+	dropdown.add(rulesetname, Frame::makeItem());
+	dropdown[rulesetname].put(
+		new TextField(description, FONTSIZE_MENUBUTTON, ColorName::TEXT900));
+	dropdown[rulesetname].makeClickable();
+
+	if (content.contains("unknown"))
+	{
+		content.remove("unknown");
+		dropdown.remove("unknown");
+		content.setTag(rulesetname);
+	}
+
+	options.settleWidth();
+	options.settleHeight();
+	options.place(options.topleft());
+	_layout["left"]["inlobby"]["settings"]["ruleset"].fixWidth();
+	dropdown.settleWidth();
+	dropdown.setWidth(dropdown.width());
 }
 
 void MultiplayerMenu::listAI(const std::string& ainame,
@@ -3365,24 +3973,214 @@ void MultiplayerMenu::listAI(const std::string& ainame,
 	}
 }
 
-void MultiplayerMenu::listChallenge(const std::string& /**/,
+void MultiplayerMenu::listChallenge(const std::string& name,
 		const Json::Value& metadata)
 {
-	auto& element = _layout["left"]["browser"]["panels1"]["challenge"];
+	std::string displayname = name;
 	if (metadata["display-name"].isString())
 	{
-		std::string displayname = metadata["display-name"].asString();
-		element["title"].setText(::format(
-			// TRANSLATORS: The argument is the name of a challenge.
-			_("%s Challenge"),
-			GETTEXT_FROM_SERVER(displayname.c_str()).c_str()));
+		std::string englishname = metadata["display-name"].asString();
+		displayname = GETTEXT_FROM_SERVER(englishname.c_str());
 	}
+	else if (metadata["name"].isString()
+		&& !metadata["name"].asString().empty())
+	{
+		displayname = metadata["name"].asString();
+	}
+	else if (name.find_first_of('@') != std::string::npos)
+	{
+		displayname = "\"" + name.substr(0, name.find_first_of('@')) + "\"";
+	}
+	else
+	{
+		LOGW << "Challenge '" << name << "' has no display-name";
+	}
+
+	int maxStars = 1;
+	if (metadata["max-stars"].isInt())
+	{
+		maxStars = std::max(1, std::min(metadata["max-stars"].asInt(), 3));
+	}
+
+	auto element = makeChallengePanel(displayname, maxStars);
+
 	if (metadata["panel-picture-name"].isString())
 	{
 		std::string picturename = metadata["panel-picture-name"].asString();
-		element.setPicture(picturename);
+		element->setPicture(picturename);
 		_owner.getPicture(picturename);
 	}
+	else
+	{
+		std::string picturename = "panels/" + name;
+		element->setPicture(picturename);
+	}
+
+	auto& levels = _layout["left"]["challenges"]["levels"];
+	if (levels.contains(name))
+	{
+		levels.replace(name, std::move(element));
+	}
+	else
+	{
+		levels.add(name, std::move(element));
+	}
+	levels.fixHeight();
+	levels.fixWidth(levels.width());
+	levels.settle();
+}
+
+void MultiplayerMenu::startHostedGame()
+{
+	LOGD << "Starting self-hosted game...";
+
+	std::vector<Player> playercolors;
+	std::vector<VisionType> playervisiontypes;
+	std::vector<std::string> playerusernames;
+	std::vector<Player> botcolors;
+	std::vector<VisionType> botvisiontypes;
+	std::vector<Bot> bots;
+
+	auto& players = _layout["left"]["inlobby"]["players"]["players"];
+	for (size_t i = 0; i < players.size(); i++)
+	{
+		std::string name = players.name(i);
+		if (name.compare(0, 7, "%""addbot") == 0)
+		{
+			LOGW << "Starting hosted game in non-full lobby";
+			continue;
+		}
+
+		if (!players[name].contains("color"))
+		{
+			LOGW << "Skipping player '" << name << "' without color";
+			continue;
+		}
+		Player playercolor = Player::NONE;
+		try
+		{
+			playercolor = parsePlayer(
+				players[name]["color"]["content"].getTag());
+		}
+		catch (ParseError& error)
+		{
+			LOGE << "Failed to parse player color: " << error.what();
+			RETHROW_IF_DEV();
+		}
+		switch (playercolor)
+		{
+			case Player::RED:
+			case Player::BLUE:
+			case Player::YELLOW:
+			case Player::TEAL:
+			case Player::BLACK:
+			case Player::PINK:
+			case Player::INDIGO:
+			case Player::PURPLE:
+			break;
+			case Player::BLIND:
+			case Player::OBSERVER:
+			case Player::SELF:
+			case Player::NONE:
+			{
+				LOGE << "Cannot start game without player colors"
+					"; '" << name << "' has invalid color"
+					" '" << players[name]["color"]["content"].getTag() << "'";
+				return;
+			}
+			break;
+		}
+
+		VisionType visiontype = VisionType::NONE;
+		if (players[name].contains("visiontype"))
+		{
+			try
+			{
+				visiontype = parseVisionType(
+					players[name]["visiontype"]["content"].getTag());
+			}
+			catch (ParseError& error)
+			{
+				LOGE << "Failed to parse vision type: " << error.what();
+				RETHROW_IF_DEV();
+			}
+		}
+
+		if (name.size() >= 2 && name[0] == '%'
+			&& players[name].contains("ainame")
+			&& players[name].contains("difficulty"))
+		{
+			std::string ainame = players[name]["ainame"]["content"].getTag();
+			if (!AI::exists(ainame))
+			{
+				LOGE << "Cannot start game: unknown AI '" << ainame << "'";
+				return;
+			}
+			Difficulty difficulty = Difficulty::NONE;
+			try
+			{
+				difficulty = parseDifficulty(
+					players[name]["difficulty"]["content"].getTag());
+			}
+			catch (ParseError& error)
+			{
+				LOGE << "Failed to parse difficulty: " << error.what();
+				RETHROW_IF_DEV();
+			}
+
+			botcolors.emplace_back(playercolor);
+			botvisiontypes.emplace_back(visiontype);
+			bots.emplace_back(name, ainame, difficulty);
+		}
+		else
+		{
+			playercolors.emplace_back(playercolor);
+			playervisiontypes.emplace_back(visiontype);
+			playerusernames.emplace_back(name);
+		}
+	}
+
+	bool hasObservers = false;
+	auto& observers = _layout["left"]["inlobby"]["observers"];
+	for (size_t i = 0; i < observers.size(); i++)
+	{
+		if (observers[observers.name(i)].contains("name"))
+		{
+			hasObservers = true;
+		}
+	}
+
+	auto& settings = _layout["left"]["inlobby"]["settings"];
+	std::string mapname = settings["map"]["options"]["content"].getTag();
+	if (!Map::exists(mapname))
+	{
+		LOGE << "Cannot start game: missing map '" << mapname << "'";
+		return;
+	}
+
+	std::string rulesetname = Library::nameCurrentBible();
+	if (settings["ruleset"]["options"]["content"].getTag() != "unknown")
+	{
+		rulesetname = settings["ruleset"]["options"]["content"].getTag();
+	}
+	if (!Library::existsBible(rulesetname))
+	{
+		LOGE << "Cannot start game: missing ruleset '" << rulesetname << "'";
+		return;
+	}
+
+	// Concatenate the arrays, except usernames and bots.
+	auto colors = std::move(playercolors);
+	colors.insert(colors.end(),
+		botcolors.begin(), botcolors.end());
+	auto visiontypes = std::move(playervisiontypes);
+	visiontypes.insert(visiontypes.end(),
+		botvisiontypes.begin(), botvisiontypes.end());
+
+	auto hostedGame = _gameowner.startHostedGame(
+		colors, visiontypes, playerusernames, bots, hasObservers,
+		mapname, rulesetname);
+	_client.hostedGameStarted(hostedGame);
 }
 
 void MultiplayerMenu::requestFulfilled(const std::string& filename)
@@ -3429,14 +4227,58 @@ void MultiplayerMenu::updateStars(const std::string& name, int stars)
 	}
 }
 
-void MultiplayerMenu::updateRecentStars(int stars)
+void MultiplayerMenu::updateRecentStars(const std::string& key, int stars)
 {
-	auto& element = _layout["left"]["browser"]["panels1"]["challenge"];
-	for (int i = 1; i <= std::min(stars, 3); i++)
 	{
-		std::string index = std::to_string(i);
-		auto& icon = element["stars"][index];
-		icon.power();
+		auto x = std::find(_challengekeys.begin(), _challengekeys.end(), key);
+		if (x == _challengekeys.end())
+		{
+			_challengekeys.push_back(key);
+			_challengestars.push_back(stars);
+		}
+		else
+		{
+			_challengestars[x - _challengekeys.begin()] = stars;
+		}
+	}
+
+	auto& levels = _layout["left"]["campaign"]["levels"];
+	for (size_t i = 0; i < levels.size(); i++)
+	{
+		std::string name = levels.name(i);
+		if (name.find_first_of('@') != std::string::npos)
+		{
+			if (name.substr(name.find_first_of('@') + 1) != key) continue;
+		}
+		else if (name != key) continue;
+		auto& element = levels[name];
+		for (int s = 1; s <= std::min(stars, 3); s++)
+		{
+			std::string index = std::to_string(s);
+			if (element["stars"].contains(index))
+			{
+				element["stars"][index].power();
+			}
+		}
+	}
+	auto& challenges = _layout["left"]["challenges"]["levels"];
+	for (size_t i = 0; i < challenges.size(); i++)
+	{
+		std::string name = challenges.name(i);
+		if (name.find_first_of('@') != std::string::npos)
+		{
+			if (name.substr(name.find_first_of('@') + 1) != key) continue;
+		}
+		else if (name != key) continue;
+		auto& element = challenges[name];
+		for (int s = 1; s <= std::min(stars, 3); s++)
+		{
+			std::string index = std::to_string(s);
+			if (element["stars"].contains(index))
+			{
+				element["stars"][index].power();
+			}
+		}
 	}
 }
 
@@ -3486,6 +4328,7 @@ void MultiplayerMenu::becomeGameLobby()
 		_("start game"));
 	auto& settings = _layout["left"]["inlobby"]["settings"];
 	if (!settings.contains("map")) settings.add("map", makeMapDropdown());
+	if (!settings.contains("ruleset")) settings.add("ruleset", makeRulesetDropdown());
 	if (!settings.contains("planningtime")) settings.add("planningtime", makeTimerDropdown());
 	settings.settleWidth();
 	straightenLobbySettings();
@@ -3509,6 +4352,7 @@ void MultiplayerMenu::becomeReplayLobby()
 		_("start replay"));
 	auto& settings = _layout["left"]["inlobby"]["settings"];
 	if (settings.contains("map")) settings.remove("map");
+	if (settings.contains("ruleset")) settings.remove("ruleset");
 	if (settings.contains("planningtime")) settings.remove("planningtime");
 	settings.settleWidth();
 	straightenLobbySettings();
@@ -3535,6 +4379,10 @@ void MultiplayerMenu::restrictLobbySettingsForOneVsOne()
 	}
 
 	auto& settings = _layout["left"]["inlobby"]["settings"];
+	if (settings.contains("host"))
+	{
+		settings["host"].disable();
+	}
 	if (settings.contains("custom"))
 	{
 		settings["custom"].disable();
@@ -3563,9 +4411,214 @@ void MultiplayerMenu::restrictLobbySettingsForOneVsOne()
 		options.place(options.topleft());
 		settings["map"].fixWidth();
 	}
+	if (settings.contains("ruleset"))
+	{
+		settings["ruleset"].disable();
+	}
 	if (settings.contains("planningtime"))
 	{
 		settings["planningtime"].disable();
+	}
+}
+
+void MultiplayerMenu::rethinkLobbySettingsForSelfHostedContent()
+{
+	if (_isSelfHosting) return;
+
+	_isSelfHosting = true;
+
+	std::string currentmap;
+	std::string currentruleset;
+	{
+		auto& settings = _layout["left"]["inlobby"]["settings"];
+		auto& options = settings["map"]["options"];
+		auto& content = options["content"];
+		auto& dropdown = options["dropdown"];
+		currentmap = content.getTag();
+		content.reset();
+		dropdown.reset();
+	}
+	{
+		auto& settings = _layout["left"]["inlobby"]["settings"];
+		auto& options = settings["ruleset"]["options"];
+		auto& content = options["content"];
+		auto& dropdown = options["dropdown"];
+		currentruleset = content.getTag();
+		content.reset();
+		dropdown.reset();
+	}
+	_ainames.clear();
+	_aidescriptions.clear();
+	{
+		auto& players = _layout["left"]["inlobby"]["players"]["players"];
+		for (size_t i = 0; i < players.size(); i++)
+		{
+			std::string name = players.name(i);
+			if (players[name].contains("ainame"))
+			{
+				auto& options = players[name]["ainame"];
+				auto& content = options["content"];
+				auto& dropdown = options["dropdown"];
+				content.reset();
+				dropdown.reset();
+			}
+		}
+	}
+
+	for (const std::string& mapname : Map::pool())
+	{
+		Json::Value metadata = Map::loadMetadata(mapname);
+		_client.send(Message::list_map(mapname, metadata));
+		listMap(mapname, metadata);
+		if (currentmap == mapname)
+		{
+			currentmap = "";
+		}
+	}
+	for (const Map::ExternalItem& item : Map::externalItems())
+	{
+		_client.send(Message::list_map(item.uniqueTag, item.metadata));
+		listMap(item.uniqueTag, item.metadata);
+		if (currentmap == item.uniqueTag)
+		{
+			currentmap = "";
+		}
+	}
+	if (!currentmap.empty() && Map::exists(currentmap))
+	{
+		Json::Value metadata = Map::loadMetadata(currentmap);
+		_client.send(Message::list_map(currentmap, metadata));
+		listMap(currentmap, metadata);
+	}
+
+	{
+		std::string rulesetname = Library::nameCurrentBible();
+		Json::Value metadata = Json::objectValue;
+		metadata["self_hosted"] = true;
+		_client.send(Message::list_ruleset(rulesetname, metadata));
+		listRuleset(rulesetname, metadata);
+		if (currentruleset == rulesetname)
+		{
+			currentruleset = "";
+		}
+	}
+	for (const std::string& rulesetname : Locator::externalRulesets())
+	{
+		bool belongsToMap = false;
+		for (const Map::ExternalItem& map : Map::externalItems())
+		{
+			if (rulesetname == map.uniqueTag)
+			{
+				belongsToMap = true;
+			}
+		}
+		if (belongsToMap)
+		{
+			continue;
+		}
+		Json::Value metadata = Json::objectValue;
+		metadata["self_hosted"] = true;
+		_client.send(Message::list_ruleset(rulesetname, metadata));
+		listRuleset(rulesetname, metadata);
+		if (currentruleset == rulesetname)
+		{
+			currentruleset = "";
+		}
+	}
+	if (!currentruleset.empty() && Library::existsBible(currentruleset))
+	{
+		Json::Value metadata = Json::objectValue;
+		metadata["self_hosted"] = true;
+		_client.send(Message::list_ruleset(currentruleset, metadata));
+		listRuleset(currentruleset, metadata);
+	}
+
+	for (const std::string& ainame : AI::selfHostedPool())
+	{
+		Json::Value metadata = Json::objectValue;
+		metadata["self_hosted"] = true;
+		_client.send(Message::list_ai(ainame, metadata));
+		listAI(ainame, metadata);
+	}
+}
+
+void MultiplayerMenu::reloadChallengeList()
+{
+	{
+		auto& levels = _layout["left"]["campaign"]["levels"];
+		bool any = false;
+		for (const Challenge::Id& id : Challenge::campaign())
+		{
+			std::string key = AIChallenge::getKey(id);
+			// The challenge key should contain an @ because we will self-host.
+			std::string name = key + "@" + key;
+			if (!levels.contains(name))
+			{
+				std::string displayname = AIChallenge::getDisplayName(id);
+				int maxStars = 1;
+				Json::Value metadata = Map::loadMetadata(
+					AIChallenge::getMapName(id));
+				if (metadata["challenge"].isObject())
+				{
+					if (metadata["challenge"]["max-stars"].isInt())
+					{
+						maxStars = std::max(1, std::min(
+							metadata["challenge"]["max-stars"].asInt(), 3));
+					}
+					else if (metadata["challenge"]["max_stars"].isInt())
+					{
+						maxStars = std::max(1, std::min(
+							metadata["challenge"]["max_stars"].asInt(), 3));
+					}
+				}
+				std::string picturename = AIChallenge::getPanelPictureName(id);
+
+				auto element = makeChallengePanel(displayname, maxStars);
+				element->setPicture(picturename);
+
+				levels.add(name, std::move(element));
+				any = true;
+			}
+		}
+		if (any)
+		{
+			levels.fixHeight();
+			levels.fixWidth(levels.width());
+			levels.settle();
+		}
+	}
+
+	{
+		std::vector<std::string> removals;
+		auto& levels = _layout["left"]["challenges"]["levels"];
+		for (size_t i = 0; i < levels.size(); i++)
+		{
+			std::string name = levels.name(i);
+			if (name.find_first_of('@') != std::string::npos)
+			{
+				// This is a self-hosted challenge.
+				removals.push_back(name);
+			}
+		}
+		for (const std::string& name : removals)
+		{
+			levels.remove(name);
+		}
+	}
+
+	for (const Map::ExternalItem& item : Map::externalItems())
+	{
+		if (item.metadata["challenge"].isObject())
+		{
+			listChallenge(item.uniqueTag, item.metadata["challenge"]);
+		}
+	}
+
+	for (size_t i = 0; i < _challengekeys.size(); i++)
+	{
+		std::string key = _challengekeys[i];
+		int stars = _challengestars[i];
+		updateRecentStars(key, stars);
 	}
 }
 
@@ -3658,15 +4711,8 @@ void MultiplayerMenu::feedbackFailed(const ResponseStatus& responsestatus)
 
 void MultiplayerMenu::inServer()
 {
-	_layout["left"].setTag("browser");
-	_layout["left"]["browser"]["panels2"]["onevsone"].enable();
-	_layout["left"]["browser"]["panels2"]["create"].enable();
-	_layout["left"]["browser"]["panels2"]["versusai"].enable();
-	_layout["left"]["browser"]["buttons"]["replay"].enable();
-	_layout["left"]["browser"]["panels1"]["tutorial"].enable();
-	_layout["left"]["browser"]["panels1"]["challenge"].enable();
-	_layout["left"]["browser"]["buttons"]["overview"].enable();
-	_layout["left"]["browser"]["buttons"]["guide"].enable();
+	_layout["left"].setTag("gamemodes");
+	_layout["left"].enable();
 	_inputMode = InputMode::CHAT_GENERAL;
 	_layout["right"]["inputline"]["indicator"]["button"].setText(
 		_("ALL"));
@@ -3687,6 +4733,8 @@ void MultiplayerMenu::inServer()
 
 void MultiplayerMenu::outServer()
 {
+	_layout["left"]["campaign"]["levels"].reset();
+	_layout["left"]["challenges"]["levels"].reset();
 	_layout["left"]["browser"]["lobbies"].reset();
 	_layout["left"]["inlobby"]["players"]["players"].reset();
 	_layout["left"]["inlobby"]["players"]["replays"].reset();
@@ -3696,22 +4744,19 @@ void MultiplayerMenu::outServer()
 	_layout["right"]["chat"].reset();
 	_layout["right"]["inputline"]["input"].reset();
 	_layout["right"]["inputline"]["input"].disable();
-	_layout["left"]["browser"]["panels2"]["onevsone"].disable();
-	_layout["left"]["browser"]["panels2"]["create"].disable();
-	_layout["left"]["browser"]["panels2"]["versusai"].disable();
-	_layout["left"]["browser"]["buttons"]["replay"].disable();
-	_layout["left"]["browser"]["panels1"]["tutorial"].disable();
-	_layout["left"]["browser"]["panels1"]["challenge"].disable();
-	_layout["left"]["browser"]["buttons"]["overview"].disable();
-	_layout["left"]["browser"]["buttons"]["guide"].disable();
-	_layout["left"]["browser"].bear();
+	_layout["left"].disable();
+	_layout["left"]["inlobby"]["settings"]["host"].enable();
 	_layout["left"]["inlobby"]["settings"]["custom"].enable();
+	_layout["left"]["inlobby"]["settings"]["ruleset"].enable();
 	_layout["left"]["inlobby"]["settings"]["planningtime"].enable();
-	_layout["left"]["inlobby"].kill();
 
 	resetMapDropdown();
 	_ainames.clear();
 	_aidescriptions.clear();
+	_isSelfHosting = false;
+
+	_challengekeys.clear();
+	_challengestars.clear();
 }
 
 void MultiplayerMenu::inLobby(const std::string& lobby)
@@ -3745,11 +4790,13 @@ void MultiplayerMenu::outLobby()
 			_("You left lobby \"%s\"."),
 			lobbyname.c_str()));
 	}
-	_layout["left"].setTag("browser");
+	_layout["left"].setTag("gamemodes");
 	_layout["left"]["inlobby"]["players"]["players"].reset();
 	_layout["left"]["inlobby"]["players"]["replays"].reset();
 	_layout["left"]["inlobby"]["observers"].reset();
+	_layout["left"]["inlobby"]["settings"]["host"].enable();
 	_layout["left"]["inlobby"]["settings"]["custom"].enable();
+	_layout["left"]["inlobby"]["settings"]["ruleset"].enable();
 	_layout["left"]["inlobby"]["settings"]["planningtime"].enable();
 	_inputMode = InputMode::CHAT_GENERAL;
 	_layout["right"]["inputline"]["indicator"]["button"].setText(
@@ -3759,18 +4806,13 @@ void MultiplayerMenu::outLobby()
 	resetMapDropdown();
 	_ainames.clear();
 	_aidescriptions.clear();
+	_isSelfHosting = false;
 }
 
 void MultiplayerMenu::serverClosing()
 {
-	_layout["left"]["browser"]["panels2"]["onevsone"].disable();
-	_layout["left"]["browser"]["panels2"]["create"].disable();
-	_layout["left"]["browser"]["panels2"]["versusai"].disable();
-	_layout["left"]["browser"]["buttons"]["replay"].disable();
-	_layout["left"]["browser"]["panels1"]["tutorial"].disable();
-	_layout["left"]["browser"]["panels1"]["challenge"].disable();
-	_layout["left"]["browser"]["buttons"]["overview"].disable();
-	_layout["left"]["browser"]["buttons"]["guide"].disable();
+	_layout["left"].setTag("gamemodes");
+	_layout["left"].disable();
 }
 
 void MultiplayerMenu::hotJoin(const std::string& secret)

@@ -409,6 +409,7 @@ void Level::enact(const Change& change, std::shared_ptr<AnimationGroup> group)
 			// Update the markers and counters.
 			square.snow() = change.snow;
 			square.frostbite() = change.frostbite;
+			square.coldfeet() = change.frostbite && group && group->coldfeet;
 			square.firestorm() = change.firestorm;
 			square.bonedrought() = change.bonedrought;
 			square.death() = change.death;
@@ -419,6 +420,8 @@ void Level::enact(const Change& change, std::shared_ptr<AnimationGroup> group)
 			square.chaos() = change.chaos;
 			// Enact it.
 			square.tile().enact(change, group);
+			// Also animate it for Chilled ground units.
+			square.ground().enact(change, group);
 		}
 		break;
 
@@ -581,6 +584,7 @@ void Level::enact(const Change& change, std::shared_ptr<AnimationGroup> group)
 		{
 			Square& square = at(change.subject.position);
 			square.frostbite() = change.frostbite;
+			square.coldfeet() = change.frostbite && group && group->coldfeet;
 			square.tile().enact(change, group);
 			square.ground().enact(change, group);
 			square.air().enact(change, group);

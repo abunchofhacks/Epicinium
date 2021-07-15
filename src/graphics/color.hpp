@@ -26,7 +26,7 @@
 
 #include "libs/GLEW/glew.h"
 
-#define INTERPOLATE(A, B, RATIO) (1 - (RATIO)) * (A) + (RATIO) * (B)
+#define INTERPOLATE(A, B, RATIO) ((1 - (RATIO)) * (A) + (RATIO) * (B))
 
 struct Color
 {
@@ -62,10 +62,10 @@ struct Color
 	static constexpr Color mix(const Color& a, const Color& b, float ratio)
 	{
 		return Color(
-			INTERPOLATE(a.r, b.r, ratio),
-			INTERPOLATE(a.g, b.g, ratio),
-			INTERPOLATE(a.b, b.b, ratio),
-			INTERPOLATE(a.a, b.a, ratio)
+			(GLubyte) INTERPOLATE(a.r, b.r, ratio),
+			(GLubyte) INTERPOLATE(a.g, b.g, ratio),
+			(GLubyte) INTERPOLATE(a.b, b.b, ratio),
+			(GLubyte) INTERPOLATE(a.a, b.a, ratio)
 		);
 	}
 
@@ -79,16 +79,16 @@ struct Color
 	static constexpr Color blend(const Color& a, const Color& b, float ratio)
 	{
 		return Color(
-			INTERPOLATE(a.r, b.r, b.a * (1.0f / 255) * ratio),
-			INTERPOLATE(a.g, b.g, b.a * (1.0f / 255) * ratio),
-			INTERPOLATE(a.b, b.b, b.a * (1.0f / 255) * ratio),
+			(GLubyte) INTERPOLATE(a.r, b.r, b.a * (1.0f / 255) * ratio),
+			(GLubyte) INTERPOLATE(a.g, b.g, b.a * (1.0f / 255) * ratio),
+			(GLubyte) INTERPOLATE(a.b, b.b, b.a * (1.0f / 255) * ratio),
 			a.a
 		);
 	}
 
 	static constexpr Color alpha(const Color& a, int value)
 	{
-		return Color(a.r, a.g, a.b, value);
+		return Color(a.r, a.g, a.b, (GLubyte) value);
 	}
 
 	static Color alpha(const Color& a, float ratio) = delete;

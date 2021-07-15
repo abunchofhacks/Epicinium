@@ -31,6 +31,9 @@ namespace System
 	std::wstring utf16FromUtf8(const std::string& str);
 #endif
 
+	std::vector<std::string> listDirectory(const std::string& filename,
+		const std::string& extension);
+
 	FILE* fopen(const std::string& filename, const char* mode);
 	std::ifstream ifstream(const std::string& filename);
 	std::ifstream ifstream(const std::string& filename,
@@ -60,6 +63,8 @@ namespace System
 	bool isLink(const std::string& filename);
 	std::string readLink(const std::string& filename);
 	void makeLink(const std::string& filename, const char* target);
+
+	std::string absolutePath(const std::string& filename);
 
 	bool hasStorageIssuesForSelfPatch();
 

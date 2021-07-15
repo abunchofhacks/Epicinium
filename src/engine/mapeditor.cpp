@@ -36,7 +36,6 @@
 #include "typenamer.hpp"
 #include "parseerror.hpp"
 #include "treetype.hpp"
-#include "skin.hpp"
 #include "system.hpp"
 #include "library.hpp"
 #include "input.hpp"
@@ -49,6 +48,8 @@
 #include "ai.hpp"
 #include "aichallenge.hpp"
 #include "difficulty.hpp"
+#include "camera.hpp"
+#include "screenshot.hpp"
 
 
 static std::vector<Player> allPlayers;
@@ -63,12 +64,14 @@ enum class Popup : uint8_t
 	SAVE_AS,
 	SAVE_COPY_AS,
 	CHANGE_RULESET,
+	SAVE_RULESET,
 	ERROR,
 };
 
 class ChallengeEditData
 {
 public:
+	bool advanced = false;
 	std::array<char, 20> name = {};
 	int stars = 1;
 	std::array<char, 50> greeting = {};
@@ -90,6 +93,12 @@ MapEditor::MapEditor(Owner& owner, GameOwner& gameowner,
 	_owner(owner),
 	_gameowner(gameowner),
 	_mapname(mapname),
+	_showRulesetEditor(false),
+	_rulesetbuffer(32000, '\0'),
+	_rulesetvalid(false),
+	_rulesetunsaved(false),
+	_rulesetsaving(false),
+	_ruleseterrormessage("Loading..."),
 	_pooltype(PoolType::NONE),
 	_savedpooltype(PoolType::NONE),
 	_bible(),
@@ -142,6 +151,17 @@ void MapEditor::beforeFirstUpdateOfEachSecond()
 	_unsavedCached = unsaved();
 }
 
+std::shared_ptr<Screenshot> MapEditor::prepareScreenshotOfMap()
+{
+	_camerafocus->set(_level.centerPoint());
+
+	// Make the screenshot slightly smaller than the map so we can cut off
+	// the ugly corners a little bit.
+	int w = Camera::get()->scale() * (_cols - 1) * Surface::WIDTH;
+	int h = Camera::get()->scale() * (_rows - 1) * Surface::HEIGHT;
+	return std::make_shared<Screenshot>(w, h, "map");
+}
+
 void MapEditor::update()
 {
 	if (_activepopup == Popup::NONE
@@ -161,10 +181,20 @@ void MapEditor::update()
 		_cursor->set(index);
 	}
 
-	updatePaintMode();
-	updatePaintBrush();
-	updateParameters();
-	updateGlobals();
+	if (_mapname != "colorsample"
+		&& !(_showRulesetEditor && _mapname.empty()))
+	{
+		updatePaintMode();
+		updatePaintBrush();
+		updateParameters();
+		updateGlobals();
+	}
+
+	if (_showRulesetEditor)
+	{
+		updateRulesetEditor();
+	}
+
 	updateMenuBar();
 	updatePopup();
 
@@ -173,7 +203,7 @@ void MapEditor::update()
 		_challenge->update();
 	}
 
-	if (_cursor)
+	if (_cursor && !_owner.isTakingScreenshot())
 	{
 		_cursor->update();
 	}
@@ -216,6 +246,14 @@ void MapEditor::updateMenuBar()
 		{
 			clear();
 		}
+		else if (Input::get()->wasKeyPressed(SDL_SCANCODE_U))
+		{
+			if (_owner.hasWorkshop()
+				&& (!_mapname.empty() || !_rulesetname.empty()))
+			{
+				_owner.openWorkshop(_mapname, _rulesetname);
+			}
+		}
 		else if (Input::get()->wasKeyPressed(SDL_SCANCODE_T))
 		{
 			playTestGame();
@@ -223,6 +261,15 @@ void MapEditor::updateMenuBar()
 		else if (Input::get()->wasKeyPressed(SDL_SCANCODE_P))
 		{
 			playVersusAI();
+		}
+		else if (Input::get()->wasKeyPressed(SDL_SCANCODE_J))
+		{
+			onNewDimensions(_cols, _rows);
+			switchToRulesetEditor();
+		}
+		else if (Input::get()->wasKeyPressed(SDL_SCANCODE_H))
+		{
+			switchToPaletteEditor();
 		}
 	}
 
@@ -265,6 +312,14 @@ void MapEditor::updateMenuBar()
 			{
 				saveCopyAs();
 			}
+			if (_owner.hasWorkshop() && !_mapname.empty()
+				&& _mapname != "colorsample")
+			{
+				if (ImGui::MenuItem("Publish to Steam Workshop...", "Ctrl+U"))
+				{
+					_owner.openWorkshop(_mapname, _rulesetname);
+				}
+			}
 			ImGui::Separator();
 			if (ImGui::MenuItem("Quit...", "Esc"))
 			{
@@ -273,7 +328,8 @@ void MapEditor::updateMenuBar()
 			ImGui::EndMenu();
 		}
 
-		if (!_mapname.empty() && ImGui::BeginMenu("Play"))
+		if (!_mapname.empty() && _mapname != "colorsample"
+			&& ImGui::BeginMenu("Play"))
 		{
 			if (ImGui::MenuItem("Play Test Game", "Ctrl+T"))
 			{
@@ -285,6 +341,41 @@ void MapEditor::updateMenuBar()
 			}
 			ImGui::EndMenu();
 		}
+
+		if (ImGui::BeginMenu("Ruleset"))
+		{
+			if (ImGui::MenuItem("Switch to Ruleset Editor", "Ctrl+J"))
+			{
+				onNewDimensions(_cols, _rows);
+				switchToRulesetEditor();
+			}
+			if (_owner.hasWorkshop() && _mapname.empty()
+				&& !_rulesetname.empty())
+			{
+				if (ImGui::MenuItem("Publish to Steam Workshop...", "Ctrl+U"))
+				{
+					_owner.openWorkshop(_mapname, _rulesetname);
+				}
+			}
+			ImGui::EndMenu();
+		}
+
+		if (ImGui::BeginMenu("Palette"))
+		{
+			if (ImGui::MenuItem("Switch to Palette Editor", "Ctrl+H"))
+			{
+				switchToPaletteEditor();
+			}
+			if (_owner.hasWorkshop() && _mapname == "colorsample")
+			{
+				if (ImGui::MenuItem("Publish to Steam Workshop...", "Ctrl+U"))
+				{
+					_owner.openWorkshop(_mapname, _rulesetname);
+				}
+			}
+			ImGui::EndMenu();
+		}
+
 		ImGui::EndMainMenuBar();
 	}
 }
@@ -626,8 +717,30 @@ void MapEditor::updateParameters()
 	if (ImGui::Begin("Parameters", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
 	{
 		ImGui::Text("Map Pool: %s", ::stringify(_pooltype));
+		switch (_pooltype)
+		{
+			case PoolType::MULTIPLAYER:
+			case PoolType::CUSTOM:
+			break;
+			case PoolType::NONE:
+			case PoolType::DIORAMA:
+			{
+				ImVec4 invalidcolor(1.0f, 0.4f, 0.2f, 1.0f);
+				ImGui::TextColored(invalidcolor,
+					"Invalid Map Pool!");
+			}
+			break;
+		}
 		ImGui::Text("Ruleset: %s", _bible.name().c_str());
-		if (ImGui::Button("Change")) changeRuleset();
+		if (ImGui::Button("Change"))
+		{
+			changeRuleset();
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Edit"))
+		{
+			switchToRulesetEditor();
+		}
 		{
 			bool isChallenge = (bool) _challenge;
 			ImGui::Checkbox("Challenge", &isChallenge);
@@ -639,10 +752,21 @@ void MapEditor::updateParameters()
 			{
 				_challenge.reset();
 			}
+			if (_challenge)
+			{
+				ImGui::SameLine();
+				bool wasAdvanced = _challenge->advanced;
+				ImGui::Checkbox("Advanced", &(_challenge->advanced));
+				if (!_challenge->advanced && wasAdvanced)
+				{
+					_challenge->stars = 1;
+					_playercount = 2;
+				}
+			}
 		}
 		ImGui::Separator();
 
-		if (_challenge)
+		if (_challenge && !_challenge->advanced)
 		{
 			ImGui::SliderInt("Players", &_playercount, 2, 2);
 		}
@@ -748,7 +872,10 @@ void ChallengeEditData::update()
 		ImGuiWindowFlags_AlwaysAutoResize))
 	{
 		ImGui::InputText("Challenge name", name.data(), name.size());
-		ImGui::SliderInt("Max stars", &stars, 1, 3);
+		if (advanced)
+		{
+			ImGui::SliderInt("Max stars", &stars, 1, 3);
+		}
 
 		ImGui::Separator();
 		ImGui::Text("Mission Briefing");
@@ -758,17 +885,24 @@ void ChallengeEditData::update()
 			description.data(), description.size());
 		ImGui::InputTextMultiline("Objective",
 			objective.data(), objective.size());
-		ImGui::InputText("First star",
-			one.data(), one.size());
-		if (stars >= 2)
+		if (advanced)
 		{
-			ImGui::InputText("Second star",
-				two.data(), two.size());
+			ImGui::InputText("First star",
+				one.data(), one.size());
+			if (stars >= 2)
+			{
+				ImGui::InputText("Second star",
+					two.data(), two.size());
+			}
+			if (stars >= 3)
+			{
+				ImGui::InputText("Third star",
+					three.data(), three.size());
+			}
 		}
-		if (stars >= 3)
+		else
 		{
-			ImGui::InputText("Third star",
-				three.data(), three.size());
+			ImGui::LabelText("First star", "Defeat the enemy.");
 		}
 		ImGui::InputTextWithHint("Sendoff", "Good luck!",
 			sendoff.data(), sendoff.size());
@@ -865,6 +999,138 @@ void MapEditor::updateGlobals()
 	ImGui::End();
 }
 
+void MapEditor::updateRulesetEditor()
+{
+	if (ImGui::Begin("Ruleset Editor", &_showRulesetEditor,
+			ImGuiWindowFlags_AlwaysAutoResize
+			| (_rulesetunsaved ? ImGuiWindowFlags_UnsavedDocument : 0)))
+	{
+		ImGui::Text("Ruleset: %s", _rulesetname.c_str());
+		if (ImGui::Button("Load"))
+		{
+			changeRuleset();
+		}
+		if (_rulesetbuffer[0] != '\0' && _rulesetvalid)
+		{
+			if (System::isFile(Locator::rulesetAuthoredFilename(
+					_rulesetname)))
+			{
+				ImGui::SameLine();
+				if (ImGui::Button("Save"))
+				{
+					_rulesetsaving = true;
+				}
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("Save As"))
+			{
+				_activepopup = Popup::SAVE_RULESET;
+			}
+		}
+
+		std::unique_ptr<Bible> parsed;
+		bool loaded = false;
+		if (_rulesetbuffer[0] == '\0' && _rulesetname == _bible.name())
+		{
+			Json::Value json = _bible.toJson();
+			std::stringstream strm;
+			strm << json;
+			std::string str = strm.str();
+			if (str.size() >= _rulesetbuffer.size())
+			{
+				str = "{}";
+			}
+			strncpy(_rulesetbuffer.data(), str.c_str(),
+				_rulesetbuffer.size() - 1);
+			loaded = true;
+		}
+		bool updated = ImGui::InputTextMultiline("Json",
+			_rulesetbuffer.data(), _rulesetbuffer.size(),
+			ImVec2(600.0f, 500.0f));
+		if (_rulesetbuffer[0] == '\0')
+		{
+			_rulesetvalid = false;
+			_rulesetunsaved = false;
+			_rulesetsaving = false;
+			_ruleseterrormessage = "Empty";
+		}
+		else if (loaded || updated || _rulesetsaving)
+		{
+			std::string str = _rulesetbuffer.data();
+			Json::Reader reader;
+			Json::Value json;
+			_rulesetvalid = reader.parse(str, json);
+			if (!_rulesetvalid)
+			{
+				// Do not show actual error message because it contains
+				// line numbers, but this is not a text editor.
+				_ruleseterrormessage = "Invalid JSON";
+			}
+
+			if (_rulesetvalid)
+			{
+				try
+				{
+					parsed.reset(new Bible(_rulesetname, std::move(json)));
+				}
+				catch (const ParseError& error)
+				{
+					_rulesetvalid = false;
+					_ruleseterrormessage = error.what();
+				}
+				catch (const Json::Exception& error)
+				{
+					_rulesetvalid = false;
+					_ruleseterrormessage = error.what();
+				}
+			}
+		}
+
+		_rulesetunsaved |= updated;
+
+		if (_rulesetsaving)
+		{
+			_rulesetsaving = false;
+			if (_rulesetvalid && parsed)
+			{
+				// Convert the parsed ruleset back into JSON. This strips
+				// any unused properties and normalizes the output a bit.
+				Json::Value json = parsed->toJson();
+				std::stringstream strm;
+				strm << json;
+				std::string fname = Locator::rulesetAuthoredFilename(
+					_rulesetname);
+				System::touchFile(fname);
+				std::ofstream file = System::ofstream(fname);
+				if (file)
+				{
+					file << strm.rdbuf();
+					_rulesetunsaved = false;
+				}
+				else
+				{
+					_rulesetvalid = false;
+					_ruleseterrormessage = "Failed to write to file";
+				}
+			}
+		}
+
+		if (_rulesetvalid)
+		{
+			ImVec4 validcolor(0.1f, 0.8f, 0.4f, 1.0f);
+			ImGui::TextColored(validcolor, "Valid");
+			ImGui::TextDisabled("No errors.");
+		}
+		else
+		{
+			ImVec4 invalidcolor(1.0f, 0.4f, 0.2f, 1.0f);
+			ImGui::TextColored(invalidcolor, "Error");
+			ImGui::Text("%s", _ruleseterrormessage.c_str());
+		}
+	}
+	ImGui::End();
+}
+
 void MapEditor::generateBiomes()
 {
 	if (_pooltype != PoolType::DIORAMA)
@@ -896,6 +1162,8 @@ void MapEditor::onNewDimensions(int cols, int rows)
 	loadEmpty();
 
 	_mapname = "";
+	_showRulesetEditor = false;
+	_owner.closeWorkshop();
 }
 
 void MapEditor::expandTop()
@@ -1032,8 +1300,10 @@ void MapEditor::restore(const ChangeSet& changes)
 	for (const Change& change : changes.get(Player::OBSERVER))
 	{
 		if (change.subject.type != Descriptor::Type::NONE
-			&& (change.subject.position.row >= _board.rows()
-				|| change.subject.position.col >= _board.cols())) continue;
+			&& !_board.cell(change.subject.position).valid())
+		{
+			continue;
+		}
 
 		_board.enact(change);
 		_level.enact(change, nullptr);
@@ -1116,22 +1386,29 @@ void MapEditor::load()
 void MapEditor::loadFrom()
 {
 	_activepopup = Popup::OPEN_FILE;
+	_cachedMapNames = Map::listAuthored();
 }
 
 void MapEditor::loadCopyFrom()
 {
 	_activepopup = Popup::COPY_FILE;
+	_cachedMapNames = Map::listAuthored();
 }
 
 void MapEditor::onOpenMapName(const std::string& mapname)
 {
 	_mapname = mapname;
 	loadFromFile(mapname);
+	_showRulesetEditor = false;
+	_owner.closeWorkshop();
 }
 
 void MapEditor::onCopyMapName(const std::string& mapname)
 {
+	_mapname = "";
 	loadFromFile(mapname);
+	_showRulesetEditor = false;
+	_owner.closeWorkshop();
 }
 
 void MapEditor::loadFromFile(const std::string& mapname)
@@ -1261,6 +1538,35 @@ void MapEditor::loadFromFile(const std::string& mapname)
 	{
 		// For custom maps, load the named ruleset.
 		_bible = Library::getBible(rulesetname);
+		// For authored rulesets, load it directly to avoid caching.
+		if (System::isFile(Locator::rulesetAuthoredFilename(rulesetname)))
+		{
+			std::ifstream rulesetfile = System::ifstream(
+				Locator::rulesetAuthoredFilename(rulesetname));
+			Json::Value rulesetjson;
+			if (reader.parse(rulesetfile, rulesetjson))
+			{
+				try
+				{
+					_bible = Bible(rulesetname, std::move(rulesetjson));
+				}
+				catch (const ParseError& error)
+				{
+					LOGW << "Failed to parse authored ruleset: "
+						<< error.what();
+				}
+				catch (const Json::Exception& error)
+				{
+					LOGW << "Failed to parse authored ruleset: "
+						<< error.what();
+				}
+			}
+			else
+			{
+				LOGW << "Failed to open authored ruleset from file "
+					<< Locator::rulesetAuthoredFilename(rulesetname);
+			}
+		}
 	}
 
 	// Read the board.
@@ -1317,6 +1623,10 @@ void MapEditor::loadFromFile(const std::string& mapname)
 	{
 		_challenge.reset(new ChallengeEditData());
 		_challenge->load(metadata);
+		if (_playercount != 2)
+		{
+			_challenge->advanced = true;
+		}
 	}
 	else _challenge.reset();
 
@@ -1440,6 +1750,8 @@ void MapEditor::onSaveAsMapName(const std::string& mapname)
 {
 	_mapname = mapname;
 	saveToFile(mapname);
+	_showRulesetEditor = false;
+	_owner.closeWorkshop();
 }
 
 void MapEditor::onSaveCopyAsMapName(const std::string& mapname)
@@ -1602,6 +1914,7 @@ bool MapEditor::unsaved()
 void MapEditor::changeRuleset()
 {
 	_activepopup = Popup::CHANGE_RULESET;
+	_cachedRulesetNames = Locator::listAuthoredRulesets();
 }
 
 void MapEditor::onChangeRuleset(const PoolType& pooltype,
@@ -1615,6 +1928,32 @@ void MapEditor::onChangeRuleset(const PoolType& pooltype,
 
 	Bible& oldbible = _bible;
 	Bible newbible = Library::getBible(rulesetname);
+	if (System::isFile(Locator::rulesetAuthoredFilename(rulesetname)))
+	{
+		std::string fname = Locator::rulesetAuthoredFilename(rulesetname);
+		std::ifstream file = System::ifstream(fname);
+		Json::Reader reader;
+		Json::Value json;
+		if (reader.parse(file, json))
+		{
+			try
+			{
+				newbible = Bible(rulesetname, std::move(json));
+			}
+			catch (const ParseError& error)
+			{
+				LOGW << "Failed to parse authored ruleset: " << error.what();
+			}
+			catch (const Json::Exception& error)
+			{
+				LOGW << "Failed to parse authored ruleset: " << error.what();
+			}
+		}
+		else
+		{
+			LOGW << "Failed to open authored ruleset from file " << fname;
+		}
+	}
 
 	try
 	{
@@ -1659,6 +1998,10 @@ void MapEditor::onChangeRuleset(const PoolType& pooltype,
 	_bible = std::move(newbible);
 
 	_pooltype = pooltype;
+
+	_owner.closeWorkshop();
+	_rulesetname = rulesetname;
+	_rulesetbuffer[0] = '\0';
 }
 
 void MapEditor::playTestGame()
@@ -1683,6 +2026,18 @@ void MapEditor::playVersusAI()
 	{
 		// Save a copy of the map to the expected location for testing.
 		saveToFile(AIChallenge::getMapName(Challenge::CUSTOM));
+		// Same with the ruleset (even if it is the default ruleset).
+		{
+			Json::Value json = _bible.toJson();
+			std::stringstream strm;
+			strm << json;
+			std::string fname = Locator::rulesetAuthoredFilename(
+				AIChallenge::getRulesetName(Challenge::CUSTOM));
+			System::touchFile(fname);
+			std::ofstream file = System::ofstream(fname);
+			file << strm.rdbuf();
+		}
+		// Start the challenge.
 		_gameowner.startChallenge(Challenge::CUSTOM);
 		return;
 	}
@@ -1707,6 +2062,24 @@ void MapEditor::playVersusAI()
 	_gameowner.startGame(std::move(game));
 }
 
+void MapEditor::switchToRulesetEditor()
+{
+	_owner.closeWorkshop();
+	_showRulesetEditor = true;
+	_rulesetname = _bible.name();
+	_rulesetbuffer[0] = '\0';
+}
+
+void MapEditor::switchToPaletteEditor()
+{
+	_owner.closeWorkshop();
+	_mapname = "colorsample";
+	_showRulesetEditor = false;
+	_rulesetname = "";
+	loadFromFile("colorsample");
+	_owner.openPaletteEditor();
+}
+
 void MapEditor::quit()
 {
 	_unsavedCached = unsaved();
@@ -1729,6 +2102,7 @@ static const char* title(const Popup& popup)
 		case Popup::SAVE_AS: return "Save As";
 		case Popup::SAVE_COPY_AS: return "Save Copy As";
 		case Popup::CHANGE_RULESET: return "Change Ruleset";
+		case Popup::SAVE_RULESET: return "Save Ruleset";
 		case Popup::ERROR: return "Error";
 
 		case Popup::NONE: return nullptr;
@@ -1835,6 +2209,25 @@ void MapEditor::updatePopup()
 				ImGui::Text("There are unsaved changes.");
 				ImGui::Separator();
 			}
+			if (!_cachedMapNames.empty())
+			{
+				if (ImGui::BeginChild("cached map names", ImVec2(0, 100)))
+				{
+					for (const std::string& name : _cachedMapNames)
+					{
+						if (ImGui::Selectable(name.c_str()))
+						{
+							if (name.size() < inputtext.size() - 1)
+							{
+								inputtext.fill('\0');
+								std::copy(name.begin(), name.end(),
+									inputtext.data());
+							}
+						}
+					}
+				}
+				ImGui::EndChild();
+			}
 			ImGui::InputText("Map name", inputtext.data(), inputtext.size(),
 				ImGuiInputTextFlags_CallbackCharFilter,
 				filterValidUserContentChar);
@@ -1870,6 +2263,25 @@ void MapEditor::updatePopup()
 			{
 				ImGui::Text("There are unsaved changes.");
 				ImGui::Separator();
+			}
+			if (!_cachedMapNames.empty())
+			{
+				if (ImGui::BeginChild("cached map names", ImVec2(0, 100)))
+				{
+					for (const std::string& name : _cachedMapNames)
+					{
+						if (ImGui::Selectable(name.c_str()))
+						{
+							if (name.size() < inputtext.size() - 1)
+							{
+								inputtext.fill('\0');
+								std::copy(name.begin(), name.end(),
+									inputtext.data());
+							}
+						}
+					}
+				}
+				ImGui::EndChild();
 			}
 			ImGui::InputText("Map name", inputtext.data(), inputtext.size(),
 				ImGuiInputTextFlags_CallbackCharFilter,
@@ -1973,6 +2385,25 @@ void MapEditor::updatePopup()
 
 			if (inputpooltype != PoolType::MULTIPLAYER)
 			{
+				if (!_cachedRulesetNames.empty())
+				{
+					if (ImGui::BeginChild("cached names", ImVec2(0, 100)))
+					{
+						for (const std::string& name : _cachedRulesetNames)
+						{
+							if (ImGui::Selectable(name.c_str()))
+							{
+								if (name.size() < inputtext.size() - 1)
+								{
+									inputtext.fill('\0');
+									std::copy(name.begin(), name.end(),
+										inputtext.data());
+								}
+							}
+						}
+					}
+					ImGui::EndChild();
+				}
 				ImGui::InputText("Ruleset", inputtext.data(), inputtext.size(),
 					ImGuiInputTextFlags_CallbackCharFilter,
 					filterValidUserContentChar);
@@ -2004,6 +2435,45 @@ void MapEditor::updatePopup()
 				ImGui::SameLine();
 			}
 			if (ImGui::Button("Cancel")) _activepopup = Popup::NONE;
+		}
+		break;
+
+		case Popup::SAVE_RULESET:
+		{
+			ImGui::InputText("Ruleset", inputtext.data(), inputtext.size(),
+				ImGuiInputTextFlags_CallbackCharFilter,
+				filterValidUserContentChar);
+			bool valid = true;
+			if (strlen(inputtext.data()) >= 3)
+			{
+				if (inputtext[0] == 'v'
+					&& inputtext[1] >= '0' && inputtext[1] <= '9')
+				{
+					static ImVec4 invalidcolor(1.0f, 0.4f, 0.2f, 1.0f);
+					ImGui::TextColored(invalidcolor, "Invalid name");
+					valid = false;
+				}
+				else if (Library::existsBible(inputtext.data()))
+				{
+					static ImVec4 invalidcolor(1.0f, 0.4f, 0.2f, 1.0f);
+					ImGui::TextColored(invalidcolor, "Overwrite?");
+				}
+			}
+			if (valid)
+			{
+				if (ImGui::Button("Save"))
+				{
+					_owner.closeWorkshop();
+					_rulesetname = inputtext.data();
+					_rulesetsaving = true;
+					_activepopup = Popup::NONE;
+				}
+				ImGui::SameLine();
+			}
+			if (ImGui::Button("Cancel"))
+			{
+				_activepopup = Popup::NONE;
+			}
 		}
 		break;
 
@@ -2040,6 +2510,10 @@ void ChallengeEditData::load(const Json::Value& root)
 	if (challenge["max_stars"].isInt())
 	{
 		stars = challenge["max_stars"].asInt();
+		if (stars > 1)
+		{
+			advanced = true;
+		}
 	}
 
 	if (!challenge["briefing"].isObject()) return;
@@ -2065,6 +2539,21 @@ void ChallengeEditData::load(const Json::Value& root)
 		if (value.isString())
 		{
 			strncpy(data, value.asString().c_str(), size - 1);
+		}
+		switch (brief)
+		{
+			case AIChallenge::Brief::FIRST_STAR:
+			case AIChallenge::Brief::SECOND_STAR:
+			case AIChallenge::Brief::THIRD_STAR:
+			{
+				if (value.isString() && !value.asString().empty())
+				{
+					advanced = true;
+				}
+			}
+			break;
+			default:
+			break;
 		}
 	}
 }

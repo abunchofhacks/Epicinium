@@ -29,13 +29,8 @@
 
 #include "libs/curl/curl.h"
 
+#include "response.hpp"
 
-struct Response
-{
-	CURLcode errorcode;
-	int statuscode;
-	std::string body;
-};
 
 class Curl
 {

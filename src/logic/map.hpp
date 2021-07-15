@@ -41,9 +41,19 @@ std::ostream& operator<<(std::ostream& os, const PoolType& type);
 
 class Map
 {
+public:
+	struct ExternalItem
+	{
+		std::string uniqueTag;
+		std::string quotedName;
+		std::string sourceFilename;
+		Json::Value metadata;
+	};
+
 private:
 	static std::string _resourcemapsfolder;
 	static std::string _authoredmapsfolder;
+	static std::vector<ExternalItem> _cachedexternalitems;
 
 public:
 	static void setResourceRoot(const std::string& root);
@@ -64,4 +74,11 @@ public:
 	static const std::vector<std::string>& hiddenDioramaPool();
 
 	static std::string DIORAMA_MAPNAME;
+
+	static std::vector<std::string> listAuthored();
+
+	static void listExternalItem(ExternalItem&& item);
+	static void unlistExternalItem(const std::string& uniqueTag);
+
+	static const std::vector<ExternalItem>& externalItems();
 };

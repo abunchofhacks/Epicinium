@@ -29,13 +29,15 @@
 
 Camera* Camera::_installed = nullptr;
 
-Camera::Camera(Settings& settings, int width, int height) :
+Camera::Camera(int width, int height, int scale) :
 	focus(0, 0),
 	offset(0, 0),
 	adjust(0, 0),
-	WINDOW_W(width),
-	WINDOW_H(height),
-	SCALE(settings.scale.value())
+	_width(width),
+	_height(height),
+	_focusXenon(width / 2),
+	_focusYahoo(height / 2),
+	_scale(scale)
 {}
 
 void Camera::install()
@@ -59,3 +61,17 @@ Point Camera::convert(const Pixel& pixel) const
 
 void Camera::update()
 {}
+
+void Camera::changeScale(int scale)
+{
+	_scale = scale;
+}
+
+void Camera::changeViewport(int width, int height)
+{
+	_width = width;
+	_height = height;
+
+	_focusXenon = width / 2;
+	_focusYahoo = height / 2;
+}

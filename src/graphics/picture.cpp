@@ -113,7 +113,7 @@ void Picture::drawStandardQuads(GLuint /**/, int x, int y)
 	int b = y + scaledHeight();
 
 	// If the image smaller than the view, we repeat. Otherwise we crop.
-	int scale = Camera::get()->SCALE;
+	int scale = Camera::get()->scale();
 	float wfactor = 1.0f * scaledWidth()  / (scale * _texture->_width );
 	float hfactor = 1.0f * scaledHeight() / (scale * _texture->_height);
 
@@ -144,7 +144,7 @@ void Picture::drawBackgroundQuads(GLuint /**/, int x, int y)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-	int scale = Camera::get()->SCALE;
+	int scale = Camera::get()->scale();
 
 	// We calculate the inner patch size of the sprite we are masked by now.
 	int innerPatchWidth = scaledWidth()
@@ -287,21 +287,21 @@ int Picture::height() const
 int Picture::scaledWidth() const
 {
 	if (_viewWidth) return _viewWidth;
-	return width() * Camera::get()->SCALE;
+	return width() * Camera::get()->scale();
 }
 
 int Picture::scaledHeight() const
 {
 	if (_viewHeight) return _viewHeight;
-	return height() * Camera::get()->SCALE;
+	return height() * Camera::get()->scale();
 }
 
 int Picture::topleftXenon(int x) const
 {
-	return x - _xOffset * Camera::get()->SCALE;
+	return x - _xOffset * Camera::get()->scale();
 }
 
 int Picture::topleftYahoo(int y) const
 {
-	return y - _yOffset * Camera::get()->SCALE;
+	return y - _yOffset * Camera::get()->scale();
 }

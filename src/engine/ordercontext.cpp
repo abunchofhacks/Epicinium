@@ -40,11 +40,13 @@
 #include "paint.hpp"
 #include "colorname.hpp"
 #include "graphics.hpp"
+#include "cycle.hpp"
 
 
 OrderContext::OrderContext(const Bible& bible, const Board& board,
 		const Skinner& skinner,
 		const Settings& settings,
+		Season season,
 		Cell cell, const Descriptor& desc,
 		const Player& player, bool hasOldOrder, bool hasNewOrder,
 		bool canGiveOrders) :
@@ -53,6 +55,7 @@ OrderContext::OrderContext(const Bible& bible, const Board& board,
 	_board(board),
 	_skinner(skinner),
 	_settings(settings),
+	_season(season),
 	_cell(cell),
 	_subject(desc),
 	_player(player),
@@ -577,6 +580,14 @@ bool OrderContext::checkBible(const Order& order) const
 
 bool OrderContext::checkValidity(const Order& order) const
 {
+	// Chilled ground units cannot use abilities (i.e. orders other than Move).
+	// The Chilled status effect is implemented by having Frostbite stick
+	// around in Spring, so we have to detect that.
+	bool coldfeet = (_bible.frostbiteGivesColdFeet()
+		&& _subject.type == Descriptor::Type::GROUND
+		&& _board.frostbite(_cell)
+		&& _bible.chaosMinFrostbite(_season) < 0);
+
 	switch (order.type)
 	{
 		case Order::Type::NONE:
@@ -589,47 +600,48 @@ bool OrderContext::checkValidity(const Order& order) const
 		case Order::Type::GUARD:
 		{
 			// Depends on the target, but a priori valid.
-			return true;
+			return !coldfeet;
 		}
 		break;
 
 		case Order::Type::FOCUS:
 		{
 			// Depends on the target, but a priori valid.
-			return true;
+			return !coldfeet;
 		}
 		break;
 
 		case Order::Type::LOCKDOWN:
 		{
 			// Depends on the target, but a priori valid.
-			return true;
+			return !coldfeet;
 		}
 		break;
 
 		case Order::Type::SHELL:
 		{
 			// Depends on the target, but a priori valid.
-			return true;
+			return !coldfeet;
 		}
 		break;
 
 		case Order::Type::BOMBARD:
 		{
 			// Depends on the target, but a priori valid.
-			return true;
+			return !coldfeet;
 		}
 		break;
 
 		case Order::Type::BOMB:
 		{
 			// Always valid.
-			return true;
+			return !coldfeet;
 		}
 		break;
 
 		case Order::Type::CAPTURE:
 		{
+			if (coldfeet) return false;
 			// If we can already predict failure, we do not allow the player to give the order.
 			const UnitToken& conqueror = _board.unit(_cell, _subject.type);
 			const TileToken& tile = _board.tile(_cell);
@@ -639,6 +651,7 @@ bool OrderContext::checkValidity(const Order& order) const
 
 		case Order::Type::SHAPE:
 		{
+			if (coldfeet) return false;
 			// The tile to be built on must be buildable.
 			if (!_board.tile(_cell)) return false;
 			return _bible.tileBuildable(_board.tile(_cell).type);
@@ -647,6 +660,7 @@ bool OrderContext::checkValidity(const Order& order) const
 
 		case Order::Type::SETTLE:
 		{
+			if (coldfeet) return false;
 			// The tile to be built on must be buildable.
 			if (!_board.tile(_cell)) return false;
 			return _bible.tileBuildable(_board.tile(_cell).type);
@@ -655,6 +669,7 @@ bool OrderContext::checkValidity(const Order& order) const
 
 		case Order::Type::EXPAND:
 		{
+			if (coldfeet) return false;
 			// Depends on the target, but a priori valid.
 			if (!_settings.allowPowerless.value())
 			{
@@ -669,6 +684,7 @@ bool OrderContext::checkValidity(const Order& order) const
 
 		case Order::Type::UPGRADE:
 		{
+			if (coldfeet) return false;
 			// Upgrade orders can always be given, but will be delayed if necessary.
 			if (!_settings.allowPowerless.value())
 			{
@@ -695,6 +711,7 @@ bool OrderContext::checkValidity(const Order& order) const
 
 		case Order::Type::CULTIVATE:
 		{
+			if (coldfeet) return false;
 			// Cultivate orders can always be given, but will be delayed if necessary.
 			if (!_settings.allowPowerless.value())
 			{
@@ -727,6 +744,7 @@ bool OrderContext::checkValidity(const Order& order) const
 
 		case Order::Type::PRODUCE:
 		{
+			if (coldfeet) return false;
 			// Produce orders can always be given, but will be delayed if necessary.
 			if (!_settings.allowPowerless.value())
 			{
@@ -739,7 +757,13 @@ bool OrderContext::checkValidity(const Order& order) const
 		}
 		break;
 
-		case Order::Type::HALT: return true;
+		case Order::Type::HALT:
+		{
+			// Halt orders are _always_ valid, even if the unit is Chilled.
+			return true;
+		}
+		break;
+
 		case Order::Type::MOVE: return false;
 	}
 	return false;

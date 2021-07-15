@@ -30,6 +30,7 @@
 std::string Locator::_resourceroot = "";
 std::string Locator::_cacheroot = "";
 std::string Locator::_authoredroot = "";
+std::vector<Locator::ExternalFolder> Locator::_externalfolders = {};
 
 void Locator::setResourceRoot(const std::string& root)
 {
@@ -119,6 +120,36 @@ std::string Locator::picture(const std::string& picturename)
 
 std::string Locator::pictureFilename(const std::string& picturename)
 {
+	if (picturename.find_first_of('@') != std::string::npos)
+	{
+		size_t seppos = picturename.find_first_of('/');
+		std::string shortname;
+		// Use x.rfind(y, 0) == 0 as x.starts_with(y).
+		if (picturename.rfind("panels/", 0) == 0)
+		{
+			shortname = "panel";
+		}
+
+		if (!shortname.empty() && seppos != std::string::npos)
+		{
+			std::string tag = picturename.substr(seppos + 1);
+			for (const auto& folder : _externalfolders)
+			{
+				if (folder.uniqueTag == tag)
+				{
+					return folder.sourcePath + shortname + ".png";
+				}
+			}
+			LOGW << "Failed to find external tag '" << tag << "'"
+				" for picture '" << picturename << "'";
+		}
+		else
+		{
+			LOGW << "Failed to determine shortname"
+				" for picture '" << picturename << "'";
+		}
+	}
+
 	return _cacheroot + "pictures/" + picturename + ".png";
 }
 
@@ -137,6 +168,20 @@ std::string Locator::pictureName(const std::string& fullfilename)
 
 std::string Locator::rulesetFilename(const std::string& rulesetname)
 {
+	if (rulesetname.find_first_of('@') != std::string::npos)
+	{
+		std::string tag = rulesetname;
+		for (const auto& folder : _externalfolders)
+		{
+			if (folder.uniqueTag == tag)
+			{
+				return folder.sourcePath + "ruleset.json";
+			}
+		}
+		size_t seppos = rulesetname.find_first_of('@');
+		std::string subpath = rulesetname.substr(seppos + 1);
+		return _cacheroot + "rulesets/external/" + subpath + ".json";
+	}
 	return _cacheroot + "rulesets/" + rulesetname + ".json";
 }
 
@@ -179,4 +224,59 @@ std::string Locator::fzmodelName(const std::string& fullfilename)
 		return filename.substr(slashpos + 1, dotpos - (slashpos + 1));
 	}
 	return "";
+}
+
+void Locator::useExternalFolder(ExternalFolder&& newFolder)
+{
+	LOGD << "Using '" << newFolder.uniqueTag << "'"
+		": " << newFolder.sourcePath;
+
+	for (auto& folder : _externalfolders)
+	{
+		if (folder.uniqueTag == newFolder.uniqueTag)
+		{
+			folder = newFolder;
+			return;
+		}
+	}
+
+	_externalfolders.emplace_back(newFolder);
+}
+
+void Locator::forgetExternalFolder(const std::string& uniqueTag)
+{
+	LOGD << "Forgetting '" << uniqueTag << "'";
+	_externalfolders.erase(
+		std::remove_if(
+			_externalfolders.begin(),
+			_externalfolders.end(),
+			[&](const ExternalFolder& folder) {
+				return folder.uniqueTag == uniqueTag;
+			}),
+		_externalfolders.end());
+}
+
+std::vector<std::string> Locator::externalRulesets()
+{
+	std::vector<std::string> rulesets;
+	for (const auto& folder : _externalfolders)
+	{
+		if (System::isFile(folder.sourcePath + "ruleset.json"))
+		{
+			rulesets.emplace_back(folder.uniqueTag);
+		}
+	}
+	return rulesets;
+}
+
+const std::vector<Locator::ExternalFolder>& Locator::externalFolders()
+{
+	return _externalfolders;
+}
+
+std::vector<std::string> Locator::listAuthoredRulesets()
+{
+	auto list = System::listDirectory(_authoredroot + "rulesets/", ".json");
+	std::sort(list.begin(), list.end());
+	return list;
 }

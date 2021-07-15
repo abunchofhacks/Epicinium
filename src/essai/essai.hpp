@@ -76,6 +76,7 @@ private:
 	std::vector<std::string> _ainames;
 	std::vector<Difficulty> _aidifficulties;
 	std::string _mapname;
+	std::string _fullsuitelogname;
 	bool _enableRecordings;
 
 	uint64_t ms_phase_start;
@@ -93,4 +94,5 @@ private:
 
 public:
 	void run(size_t games);
+	void runFullSuite(size_t games);
 };

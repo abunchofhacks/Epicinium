@@ -32,7 +32,11 @@ enum class UnitType : uint8_t
 	NONE = 0,
 };
 
+#if NEURALNEWT_20x13_ENABLED
+static constexpr size_t UNITTYPE_SIZE = 8;
+#else
 static constexpr size_t UNITTYPE_SIZE = 32;
+#endif
 
 UnitType parseUnitType(const TypeNamer& namer, const std::string& str);
 

@@ -81,6 +81,7 @@
 # local cached pictures
 /pictures/discord/avatars/*
 /pictures/steam/avatars/*
+/pictures/steam/workshop/*
 
 # local promotion pictures
 /pictures/kickstarter/*
@@ -95,16 +96,18 @@
 
 # local maps
 /maps/*test*
-/maps
+/maps/challenge_custom.map
 
 # local rulesets
 /rulesets/local.list
 /rulesets/*-rc*.json
 /rulesets/custom.json
 /rulesets/*test*
+/rulesets/challenge_custom.json
 
 # local resources
 /resources/palettes/*test*
+/resources/palettes/custom.json
 !/resources/palettes/index.list
 
 # core dumps
@@ -137,6 +140,9 @@ logs/.*.logrotate.conf
 # visual studio code
 /.vscode
 /.vs
+/build
+/out
+/CMakeSettings.json
 
 # test locales
 /data/loc/xx_*
@@ -145,3 +151,5 @@ logs/.*.logrotate.conf
 # intermediate translation files
 /translations/localizor/.*.po
 
+# graphs
+/logs/graphs/

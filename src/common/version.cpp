@@ -29,20 +29,20 @@
 
 Version Version::current()
 {
-#ifdef DEVELOPMENT
 #ifdef CANDIDATE
 	return latest();
 #else
+#ifdef DEVELOPMENT
 	return Version(255, 255, 255, 1);
-#endif
 #else
 	return latest().release();
+#endif
 #endif
 }
 
 Version Version::latest()
 {
-	return Version(1, 0, 10, 1);
+	return Version(1, 1, 0, 2);
 }
 
 std::istream& operator>>(std::istream &is, Version &version);

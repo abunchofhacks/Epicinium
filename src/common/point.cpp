@@ -27,7 +27,7 @@
 
 float Point::distanceTo(const Point& other) const
 {
-	float dx = xenon - other.xenon;
-	float dy = yahoo - other.yahoo;
+	float dx = (float) (xenon - other.xenon);
+	float dy = (float) (yahoo - other.yahoo);
 	return sqrt(dx * dx + dy * dy);
 }

@@ -292,6 +292,7 @@ Bible::Bible(const std::string& name, const Version& version) :
 	_moraleGatheredInSummer(false),
 	_moraleGatheredWhenBuilt(false),
 	_snowCoversNiceness(false),
+	_frostbiteGivesColdFeet(false),
 	_snowSlowAmount(0),
 	_snowSlowMaximum(0),
 	_startingMoney(0),
@@ -393,7 +394,7 @@ void Bible::initialize()
 	_tileNatural[i] = true;
 	_tilePlane[i] = true;
 	_tileFlammable[i] = true;
-	//_tileFirestormResistance[i] = 10;
+	_tileFirestormResistance[i] = 10;
 	_tileRegrowOnlyInSpring[i] = true;
 	_tileRegrowthProbabilityDivisor[i] = 4;
 	_tileRegrowthAmount[i] = 1;
@@ -466,7 +467,7 @@ void Bible::initialize()
 	_tileGrassy[i] = true;
 	_tileNatural[i] = true;
 	_tileFlammable[i] = true;
-	//_tileFirestormResistance[i] = 10;
+	_tileFirestormResistance[i] = 10;
 	_tileChaosProtection[i] = true;
 	_tileRegrowOnlyInSpring[i] = true;
 	_tileStacksBuilt[i] = 1;
@@ -498,8 +499,8 @@ void Bible::initialize()
 	_tileHitpoints[i] = 2;
 	_tileIncome[i] = 1;
 	_tileEmission[i] = 2;
-	//_tileFlammable[i] = true;
-	//_tileFirestormResistance[i] = 70;
+	_tileFlammable[i] = true;
+	_tileFirestormResistance[i] = 70;
 	_tileProduces[i] = {{(UnitType) MILITIA, 10}, (UnitType) SETTLER};
 	_tileExpands[i] = {(TileType) INDUSTRY, (TileType) BARRACKS};
 	_tileCost[i] = 50;
@@ -524,8 +525,8 @@ void Bible::initialize()
 	_tileHitpoints[i] = 2;
 	_tileIncome[i] = 1;
 	_tileEmission[i] = 1;
-	//_tileFlammable[i] = true;
-	//_tileFirestormResistance[i] = 70;
+	_tileFlammable[i] = true;
+	_tileFirestormResistance[i] = 70;
 	_tileProduces[i] = {(UnitType) SETTLER};
 	_tileUpgrades[i] = {{TileType::NONE, 4}, {(TileType) CITY, 40}};
 	_tileCost[i] = 10;
@@ -550,8 +551,8 @@ void Bible::initialize()
 	_tileHitpoints[i] = 2;
 	_tileIncome[i] = 0;
 	_tileEmission[i] = 1;
-	//_tileFlammable[i] = true;
-	//_tileFirestormResistance[i] = 70;
+	_tileFlammable[i] = true;
+	_tileFirestormResistance[i] = 70;
 	_tileProduces[i] = {(UnitType) SETTLER, (UnitType) MILITIA};
 	_tileUpgrades[i] = {};
 	_tileCost[i] = 0;
@@ -579,8 +580,8 @@ void Bible::initialize()
 	_tileEmission[i] = 5;
 	_tilePollutionAmount[i] = 1;
 	_tilePollutionRadius[i] = 2;
-	//_tileFlammable[i] = true;
-	//_tileFirestormResistance[i] = 70;
+	_tileFlammable[i] = true;
+	_tileFirestormResistance[i] = 70;
 	_tileProduces[i] = {(UnitType) TANK};
 	_tileExpands[i] = {(TileType) AIRFIELD};
 	_tileUpgrades[i] = {{TileType::NONE, 50}};
@@ -604,8 +605,8 @@ void Bible::initialize()
 	_tileVision[i] = 2;
 	_tileHitpoints[i] = 3;
 	_tileEmission[i] = 1;
-	//_tileFlammable[i] = true;
-	//_tileFirestormResistance[i] = 70;
+	_tileFlammable[i] = true;
+	_tileFirestormResistance[i] = 70;
 	_tileProduces[i] = {(UnitType) RIFLEMAN, (UnitType) GUNNER, (UnitType) SAPPER};
 	_tileUpgrades[i] = {{TileType::NONE, 25}};
 	_tileCost[i] = 5;
@@ -629,8 +630,8 @@ void Bible::initialize()
 	_tileHitpoints[i] = 3;
 	_tileLeakGas[i] = 1;
 	_tileEmission[i] = 1;
-	//_tileFlammable[i] = true;
-	//_tileFirestormResistance[i] = 70;
+	_tileFlammable[i] = true;
+	_tileFirestormResistance[i] = 70;
 	_tileProduces[i] = {(UnitType) ZEPPELIN};
 	_tileCost[i] = 5;
 	_tileDestroyed[i] = (TileType) RUBBLE;
@@ -654,8 +655,8 @@ void Bible::initialize()
 	_tileHitpoints[i] = 2;
 	_tileIncome[i] = 0;
 	_tileEmission[i] = 1;
-	//_tileFlammable[i] = true;
-	//_tileFirestormResistance[i] = 70;
+	_tileFlammable[i] = true;
+	_tileFirestormResistance[i] = 70;
 	_tileProduces[i] = {(UnitType) SETTLER, (UnitType) MILITIA};
 	_tileCultivates[i] = {(TileType) SOIL};
 	_tileCost[i] = 5;
@@ -673,7 +674,7 @@ void Bible::initialize()
 	_tileNatural[i] = false;
 	_tilePlane[i] = true;
 	_tileFlammable[i] = true;
-	//_tileFirestormResistance[i] = 10;
+	_tileFirestormResistance[i] = 10;
 	_tileRegrowOnlyInSpring[i] = false;
 	_tileVision[i] = 0;
 	_tileIncome[i] = 0;
@@ -695,7 +696,7 @@ void Bible::initialize()
 	_tileNatural[i] = true;
 	_tilePlane[i] = true;
 	_tileFlammable[i] = true;
-	//_tileFirestormResistance[i] = 10;
+	_tileFirestormResistance[i] = 10;
 	_tileVision[i] = 0;
 	_tileIncome[i] = 1;
 	_tileDestroyed[i] = (TileType) DIRT;
@@ -713,7 +714,7 @@ void Bible::initialize()
 	_tileControllable[i] = false;
 	_tilePlane[i] = false;
 	_tileFlammable[i] = true;
-	//_tileFirestormResistance[i] = 10;
+	_tileFirestormResistance[i] = 10;
 	_tileTrenches[i] = true;
 	_tileForceOccupy[i] = true;
 	_tileCost[i] = 0;
@@ -872,7 +873,6 @@ void Bible::initialize()
 	_aridificationRange = 2;
 
 	_aridificationCount = 4;
-	_firestormCount = 5;
 	_deathCount = 1;
 
 	_humidityMax = 4;
@@ -906,7 +906,7 @@ void Bible::initialize()
 	_humidityMaxDegradation[i] = 0;
 	_humidityMaxDesertification[i] = 0;
 	_humidityMinSnow[i] = 4;
-	_humidityMaxFirestorm[i] = 4;
+	_humidityMaxFirestorm[i] = 3;
 	_humidityMaxBonedrought[i] = 0;
 	_humidityMaxStonedrought[i] = 0;
 	_chaosMinDegradation[i] = 0;
@@ -954,15 +954,13 @@ void Bible::initialize()
 	_chaosMinStonedrought[i] = 4 * _chaosThreshold;
 	_chaosMinDeath[i] = -1;
 
-	_frostbiteShots = 2;
-	_frostbiteDamage = 1;
-	_frostbiteThresholdDamage = 1;
+	_frostbiteThresholdDamage = 100;
 	_frostbiteThresholdVulnerability = 100;
 
 	_firestormShots = 3;
 	_firestormDamage = 2;
-	//_firestormBasePercentage = 30;
-	//_firestormDroughtPercentage = 20;
+	_firestormBasePercentage = 30;
+	_firestormDroughtPercentage = 20;
 
 	_gasShots = 3;
 	_gasDamage = 1;
@@ -1009,9 +1007,8 @@ void Bible::initialize()
 	_emptyBasedFrostbite = false;
 	_planeBasedFrostbite = true;
 	_planeBasedAridification = true;
-	_flammableBasedFirestorm = true;
-	_percentageBasedFirestorm = false;
-	_randomizedFirestorm = true;
+	_percentageBasedFirestorm = true;
+	_randomizedFirestorm = false;
 	_randomizedAridification = true;
 	_cumulativeDeath = true;
 	_vulnerabilitiesStack = true;
@@ -1023,6 +1020,7 @@ void Bible::initialize()
 	_moraleGatheredInSummer = false;
 	_moraleGatheredWhenBuilt = false;
 	_snowCoversNiceness = true;
+	_frostbiteGivesColdFeet = true;
 
 	_snowSlowAmount = 1;
 	_snowSlowMaximum = 1;
@@ -1034,12 +1032,29 @@ void Bible::initialize()
 
 void Bible::customize()
 {
-	const size_t CITY = (size_t) tiletype("city");
+	//const size_t CITY = (size_t) tiletype("city");
+	const size_t TOWN = (size_t) tiletype("town");
+	const size_t FARM = (size_t) tiletype("farm");
 	const size_t BARRACKS = (size_t) tiletype("barracks");
-	const size_t RIFLEMAN = (size_t) unittype("rifleman");
+	const size_t INDUSTRY = (size_t) tiletype("industry");
+	//const size_t RIFLEMAN = (size_t) unittype("rifleman");
+	const size_t GUNNER = (size_t) unittype("gunner");
+	//const size_t MILITIA = (size_t) unittype("militia");
+	const size_t SETTLER = (size_t) unittype("settler");
+	const size_t SAPPER = (size_t) unittype("sapper");
 
-	_tileExpands[CITY] = {(TileType) BARRACKS};
-	_tileProduces[BARRACKS] = {(UnitType) RIFLEMAN};
+	//_tileProduces[CITY] = {(UnitType) SETTLER, {((UnitType) RIFLEMAN), 25}};
+	_tileUpgrades[TOWN] = {};
+	_tileGrowthMax[TOWN] = 5;
+	_tileProduces[BARRACKS] = {(UnitType) SAPPER, (UnitType) GUNNER};
+	_unitCost[SAPPER] = 20;
+	_unitCost[GUNNER] = 25;
+	_tileUpgrades[BARRACKS] = {};
+	_tileUpgrades[INDUSTRY] = {};
+	_tileExpands[INDUSTRY] = {};
+	_unitSettles[SETTLER] = {(TileType) TOWN, (TileType) FARM};
+	_unitCanLockdown[GUNNER] = false;
+	//_unitShapes[RIFLEMAN] = {};
 }
 
 void Bible::finalize()
@@ -2263,6 +2278,7 @@ Bible::Bible(const std::string& biblename, const Json::Value& json) :
 		}
 	}
 	AUTO(PARSEBOOL, snowCoversNiceness)
+	AUTO(PARSEBOOL, frostbiteGivesColdFeet)
 
 	AUTO(PARSEINT, snowSlowAmount)
 	else
@@ -2278,14 +2294,14 @@ Bible::Bible(const std::string& biblename, const Json::Value& json) :
 	}
 	// Backwards compatiblity: trenches had their slow amount hardcoded.
 	{
-		bool trenchesSlowAmount;
+		int trenchesSlowAmount;
 		PARSEINT(trenchesSlowAmount, "trenchesSlowAmount")
 		else
 		{
 			// Backwards compatibility.
 			trenchesSlowAmount = 10;
 		}
-		if (trenchesSlowAmount)
+		if (trenchesSlowAmount > 0)
 		{
 			TileType trenchestype = tiletype("trenches");
 			if (trenchestype != TileType::NONE)
@@ -2296,14 +2312,14 @@ Bible::Bible(const std::string& biblename, const Json::Value& json) :
 	}
 	// Backwards compatiblity: trenches had their slow maximum hardcoded.
 	{
-		bool trenchesSlowMaximum;
+		int trenchesSlowMaximum;
 		PARSEINT(trenchesSlowMaximum, "trenchesSlowMaximum")
 		else
 		{
 			// Backwards compatibility.
 			trenchesSlowMaximum = 10;
 		}
-		if (trenchesSlowMaximum)
+		if (trenchesSlowMaximum > 0)
 		{
 			TileType trenchestype = tiletype("trenches");
 			if (trenchestype != TileType::NONE)
@@ -2897,6 +2913,7 @@ Json::Value Bible::toJson() const
 	AUTO(PUTBOOL, moraleGatheredInSummer)
 	AUTO(PUTBOOL, moraleGatheredWhenBuilt)
 	AUTO(PUTBOOL, snowCoversNiceness)
+	AUTO(PUTBOOL, frostbiteGivesColdFeet)
 
 	AUTO(FORCEPUTINT, snowSlowAmount) // Backwards compatibility.
 	AUTO(FORCEPUTINT, snowSlowMaximum) // Backwards compatibility.
@@ -3275,6 +3292,7 @@ bool Bible::operator==(const Bible& other) const
 	AUTO(CHECK, moraleGatheredInSummer)
 	AUTO(CHECK, moraleGatheredWhenBuilt)
 	AUTO(CHECK, snowCoversNiceness)
+	AUTO(CHECK, frostbiteGivesColdFeet)
 
 	AUTO(CHECK, snowSlowAmount)
 	AUTO(CHECK, snowSlowMaximum)

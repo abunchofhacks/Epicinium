@@ -163,7 +163,7 @@ void Audible::buffer(uint8_t* buffer, size_t length)
 			if (_panned)
 			{
 				float p = Camera::get()->convert(_point).xenon
-					/ float(Camera::get()->WINDOW_W);
+					/ float(Camera::get()->width());
 				float q = pi() / 8.0f * (2.0f * p + 1.0f);
 				left = std::cos(q) / sqrt2();
 				right = std::sin(q) / sqrt2();

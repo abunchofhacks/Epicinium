@@ -1298,6 +1298,10 @@ void Automaton::processMove(const Player& player, Order& order)
 	bool air = _bible.unitAir(movingunit.type);
 	bool gliding = false;
 
+	// When a unit has Cold Feet, they cannot attack until after they have
+	// moved. We check whether they currently have Cold Feet.
+	bool coldfeet = hasColdFeet(current);
+
 	// Before actually moving, we will determine how far we walk and if we will attack an enemy.
 	int moves = 0;
 	int attack = 0;
@@ -1418,6 +1422,7 @@ void Automaton::processMove(const Player& player, Order& order)
 
 			// Only some units can attack.
 			if (!_bible.unitCanAttack(movingunit.type)) break;
+			if (coldfeet) break;
 
 			// We can only attack if we can stop, or if we do a "bypass attack";
 			// in the latter case we can only have bypassed a single unit.
@@ -1628,6 +1633,13 @@ void Automaton::processGuard(const Player& player, Order& order)
 		return discarded(player, order, cset, Notice::ORDERINVALID);
 	}
 
+	// Does the unit get cold feet?
+	if (hasColdFeet(from))
+	{
+		LOGV << "unit has cold feet, order discarded";
+		return discarded(player, order, cset, Notice::COLDFEET);
+	}
+
 	// If the cell is empty, we cannot attack.
 	// If the unit is friendly, we cannot attack.
 	if (!otherunit || otherunit.owner == guardingunit.owner)
@@ -1714,6 +1726,13 @@ void Automaton::processFocus(const Player& player, Order& order)
 		LOGW << "tile is null, order discarded"
 			": " << TypeEncoder(&_bible) << order << " from " << player;
 		return discarded(player, order, cset, Notice::ORDERINVALID);
+	}
+
+	// Does the unit get cold feet?
+	if (hasColdFeet(from))
+	{
+		LOGV << "unit has cold feet, order discarded";
+		return discarded(player, order, cset, Notice::COLDFEET);
 	}
 
 	// If the cell is empty, we cannot attack.
@@ -1811,9 +1830,6 @@ void Automaton::processLockdown(const Player& player, Order& order)
 		return discarded(player, order, cset, Notice::ORDERINVALID);
 	}
 
-	// This unit is now in lockdown mode.
-	_lockdowns.emplace_back(activeunit.id(), from, to);
-
 	// Before attacking, we look for a target.
 	const UnitToken& otherunit = _board.unit(to, desctype);
 	const TileToken& tile = _board.tile(to);
@@ -1825,6 +1841,16 @@ void Automaton::processLockdown(const Player& player, Order& order)
 			": " << TypeEncoder(&_bible) << order << " from " << player;
 		return discarded(player, order, cset, Notice::ORDERINVALID);
 	}
+
+	// Does the unit get cold feet?
+	if (hasColdFeet(from))
+	{
+		LOGV << "unit has cold feet, order discarded";
+		return discarded(player, order, cset, Notice::COLDFEET);
+	}
+
+	// This unit is now in lockdown mode.
+	_lockdowns.emplace_back(activeunit.id(), from, to);
 
 	// If the cell is empty, we cannot attack.
 	// If the unit is friendly, we cannot attack.
@@ -1920,6 +1946,13 @@ void Automaton::processShell(const Player& player, Order& order)
 		return discarded(player, order, cset, Notice::ORDERINVALID);
 	}
 
+	// Does the unit get cold feet?
+	if (hasColdFeet(from))
+	{
+		LOGV << "unit has cold feet, order discarded";
+		return discarded(player, order, cset, Notice::COLDFEET);
+	}
+
 	// Deal the damage.
 	for (int volley = 0; volley < _bible.unitAbilityVolleys(unittype); volley++)
 	{
@@ -1995,6 +2028,13 @@ void Automaton::processBombard(const Player& player, Order& order)
 		return discarded(player, order, cset, Notice::ORDERINVALID);
 	}
 
+	// Does the unit get cold feet?
+	if (hasColdFeet(from))
+	{
+		LOGV << "unit has cold feet, order discarded";
+		return discarded(player, order, cset, Notice::COLDFEET);
+	}
+
 	// Deal the damage.
 	for (int volley = 0; volley < _bible.unitAbilityVolleys(unittype); volley++)
 	{
@@ -2060,6 +2100,13 @@ void Automaton::processBomb(const Player& player, Order& order)
 		return discarded(player, order, cset, Notice::ORDERINVALID);
 	}
 
+	// Does the unit get cold feet?
+	if (hasColdFeet(at))
+	{
+		LOGV << "unit has cold feet, order discarded";
+		return discarded(player, order, cset, Notice::COLDFEET);
+	}
+
 	// Deal the damage.
 	for (int volley = 0; volley < _bible.unitAbilityVolleys(unittype); volley++)
 	{
@@ -2123,6 +2170,13 @@ void Automaton::processCapture(const Player& player, Order& order)
 		LOGW << "tile is null, order discarded"
 			": " << TypeEncoder(&_bible) << order << " from " << player;
 		return discarded(player, order, cset, Notice::ORDERINVALID);
+	}
+
+	// Does the unit get cold feet?
+	if (hasColdFeet(at))
+	{
+		LOGV << "unit has cold feet, order discarded";
+		return discarded(player, order, cset, Notice::COLDFEET);
 	}
 
 	// We can't capture a tile that is already ours.
@@ -2240,6 +2294,13 @@ void Automaton::processShape(const Player& player, Order& order)
 		// We show the player that the unit failed to build anything.
 		LOGV << "tile not buildable, order discarded";
 		return discarded(player, order, cset, Notice::UNBUILDABLE);
+	}
+
+	// Does the unit get cold feet?
+	if (hasColdFeet(at))
+	{
+		LOGV << "unit has cold feet, order discarded";
+		return discarded(player, order, cset, Notice::COLDFEET);
 	}
 
 	// If the player cannot afford the unit cost, the order is postponed.
@@ -2365,6 +2426,13 @@ void Automaton::processSettle(const Player& player, Order& order)
 		return discarded(player, order, cset, Notice::UNBUILDABLE);
 	}
 
+	// Does the unit get cold feet?
+	if (hasColdFeet(at))
+	{
+		LOGV << "unit has cold feet, order discarded";
+		return discarded(player, order, cset, Notice::COLDFEET);
+	}
+
 	// If the player cannot afford the unit cost, the order is postponed.
 	if (_money[player] < build.cost)
 	{
@@ -2410,6 +2478,7 @@ void Automaton::processSettle(const Player& player, Order& order)
 	checkTileBuildMoraleGain(at, cset);
 
 	// Check for cleanses.
+	checkColdFeetCleanse(at, cset);
 	checkTileBuildCleanse(at, cset);
 
 	// Check for auto-cultivate triggers.
@@ -3468,6 +3537,9 @@ void Automaton::doMove(Cell from, Cell to,
 		changes.push(exitchange, unsees);
 	}
 
+	// After we move, cold feet wears off.
+	checkColdFeetCleanse(from, changes);
+
 	// After we move, we check for trample damage.
 	// If there is any trample damage, it takes place in the same changeset.
 	checkTrample(to, todesc, changes);
@@ -3539,7 +3611,7 @@ void Automaton::doActiveAttack(Cell from, Cell to,
 
 	// If the defending unit was not killed during the attack and can retaliate, it will.
 	const UnitToken& takingunit = _board.unit(to, taker.type);
-	if (takingunit && _bible.unitCanAttack(takingunit.type))
+	if (takingunit && _bible.unitCanAttack(takingunit.type) && !hasColdFeet(to))
 	{
 		doRetaliationAttack(to, from, taker, attacker, changes);
 	}
@@ -3567,7 +3639,7 @@ void Automaton::doRetaliationAttack(Cell from, Cell to,
 	// Declare a bypassed background unit, if any.
 	// Entrenched units do not provide a background.
 	bool bypassdefense = (taker.type == Descriptor::Type::BYPASS
-			&& (_bible.tileTrenches(_board.tile(to).type)
+			&& (!_bible.tileTrenches(_board.tile(to).type)
 				|| !_bible.trenchesHideBypassedUnit()
 				|| _bible.unitMechanical(_board.ground(to).type)));
 	if (bypassdefense)
@@ -3637,7 +3709,8 @@ void Automaton::doFocussedAttack(Cell from, Cell to,
 
 		// Get the ground unit of that tile (only ground units can attack).
 		const UnitToken& unit = _board.ground(at);
-		if (!unit || !_bible.unitCanAttack(unit.type)) continue;
+		if (!unit || !_bible.unitCanAttack(unit.type)
+			|| hasColdFeet(at)) continue;
 
 		// Only units belonging to the player that gave the order respond to it.
 		if (unit.owner != focussingunit.owner) continue;
@@ -3686,7 +3759,7 @@ void Automaton::doFocussedAttack(Cell from, Cell to,
 
 	// If the defending unit was not killed during the attack and can retaliate, it will.
 	const UnitToken& takingunit = _board.unit(to, taker.type);
-	if (takingunit && _bible.unitCanAttack(takingunit.type))
+	if (takingunit && _bible.unitCanAttack(takingunit.type) && !hasColdFeet(to))
 	{
 		doRetaliationAttack(to, from, taker, attacker, changes);
 	}
@@ -3715,7 +3788,8 @@ void Automaton::checkAttackOfOpportunity(Cell at,
 	{
 		// Get the ground unit of that tile (only ground units can attack).
 		const UnitToken& unit = _board.ground(from);
-		if (!unit || !_bible.unitCanAttack(unit.type)) continue;
+		if (!unit || !_bible.unitCanAttack(unit.type)
+			|| hasColdFeet(from)) continue;
 		if (unit.owner == movingunit.owner) continue;
 
 		// The attacker aims.
@@ -3800,7 +3874,7 @@ bool Automaton::checkLockdown(Cell at,
 		lockdown = true;
 
 		// The lockdown unit may or may not also be able to attack.
-		if (!_bible.unitCanAttack(unit.type)) continue;
+		if (!_bible.unitCanAttack(unit.type) || hasColdFeet(from)) continue;
 
 		// The attacker aims.
 		changes.push(Change(Change::Type::AIMS,
@@ -4210,6 +4284,9 @@ void Automaton::doUnitDeath(Cell at, const UnitToken& unit,
 	_board.enact(deathchange);
 	changes.push(deathchange, _board.vision(at));
 
+	// Check cleanses.
+	checkColdFeetCleanse(at, changes);
+
 	// Some units release gas or radation on destruction.
 	checkUnitDeathLeak(at, oldtype, changes);
 
@@ -4534,8 +4611,27 @@ void Automaton::doDeathEffect(Cell at)
 
 void Automaton::doFrostbiteEffect(Cell at)
 {
+	if (_bible.frostbiteGivesColdFeet()
+		&& _board.frostbite(at) && _board.ground(at)
+		// Frostbite's Cold Feet is applied in Winter, not in Spring.
+		&& _bible.chaosMinFrostbite(_season) >= 0)
+	{
+		ChangeSet cset;
+		for (int figure = 0; figure < _board.ground(at).stacks; figure++)
+		{
+			// The FROSTBITTEN change tells a player that a unit was bitten
+			// by frostbite.
+			Change change(Change::Type::FROSTBITTEN,
+				Descriptor::ground(at.pos()),
+				figure, /*killing=*/false, /*depowering=*/false);
+			_board.enact(change);
+			cset.push(change, _board.vision(at));
+		}
+		_changesets.push(cset);
+	}
+
 	// Is there enough frostbite to do damage?
-	if (_board.frostbite(at) < _bible.frostbiteThresholdDamage()) return;
+	if ((_board.frostbite(at) ? 1 : 0) < _bible.frostbiteThresholdDamage()) return;
 
 	// Frostbite no longer affects tiles or air.
 	bool hittiles = !_bible.frostbiteOnlyTargetsGroundUnits();
@@ -4796,6 +4892,30 @@ void Automaton::doRadiationEffect(Cell at)
 			_bible.unitVision(groundtype), _bible.unitVision(airtype))));
 
 	_changesets.push(cset);
+}
+
+bool Automaton::hasColdFeet(Cell at)
+{
+	return (_bible.frostbiteGivesColdFeet()
+		&& _board.frostbite(at) && _board.ground(at)
+		// Frostbite's Cold Feet effect applies in Spring, not in Winter.
+		&& _bible.chaosMinFrostbite(_season) < 0);
+}
+
+void Automaton::checkColdFeetCleanse(Cell at, ChangeSet& changes)
+{
+	if (_bible.frostbiteGivesColdFeet()
+		// Once the unit moves away or is killed, Cold Feet wears off.
+		&& _board.frostbite(at) && !_board.ground(at)
+		// But only in Spring, not in Winter.
+		&& _bible.chaosMinFrostbite(_season) < 0)
+	{
+		Change change(Change::Type::FROSTBITE,
+			Descriptor::cell(at.pos()));
+		change.xFrostbite(false);
+		_board.enact(change);
+		changes.push(change, _board.vision(at));
+	}
 }
 
 void Automaton::decay()
@@ -5279,6 +5399,13 @@ void Automaton::doDefeat(const std::vector<Player>& defeats,
 		_activeidentifiers[player].clear();
 		// And filter them out of _activeplayers to avoid processing order
 		// _activeorders[_activeorderindices] on the next play() call.
+
+		// We will reveal the entire map to them.
+		if (std::find(_visionaries.begin(), _visionaries.end(), player)
+			== _visionaries.end())
+		{
+			_visionaries.push_back(player);
+		}
 	}
 
 	// Filter the defeated players out of _activeplayers.
@@ -5362,6 +5489,15 @@ void Automaton::doDefeat(const std::vector<Player>& defeats,
 
 		// Give all players vision of the entire map.
 		_visionaries = _players;
+		VisionTransition(_bible, _board, *this, vset).execute();
+		_changesets.push(vset);
+	}
+	else if (!defeats.empty())
+	{
+		// In a separate homogeneous changeset.
+		ChangeSet vset;
+
+		// Give all defeated players vision of the entire map.
 		VisionTransition(_bible, _board, *this, vset).execute();
 		_changesets.push(vset);
 	}

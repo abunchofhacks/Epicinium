@@ -216,7 +216,7 @@ bool Setting<bool>::parse(const Json::Value& root, const char* name)
 			{
 				_value = std::stoi(x.asString());
 			}
-			catch (const std::logic_error& e)
+			catch (const std::logic_error&)
 			{
 				std::cerr << "Invalid value for '" << name << "'" << std::endl;
 				return false;
@@ -259,7 +259,7 @@ bool Setting<int>::parse(const Json::Value& root, const char* name)
 			{
 				_value = std::stoi(x.asString());
 			}
-			catch (const std::logic_error& e)
+			catch (const std::logic_error&)
 			{
 				std::cerr << "Invalid value for '" << name << "'" << std::endl;
 				return false;
@@ -288,7 +288,7 @@ bool Setting<float>::parse(const Json::Value& root, const char* name)
 	else if (x.isInt())
 	{
 		_defined = true;
-		_value = x.asInt();
+		_value = (float) (int) x.asInt();
 		return true;
 	}
 	else if (x.isBool())
@@ -307,7 +307,7 @@ bool Setting<float>::parse(const Json::Value& root, const char* name)
 			{
 				_value = std::stof(x.asString());
 			}
-			catch (const std::logic_error& e)
+			catch (const std::logic_error&)
 			{
 				std::cerr << "Invalid value for '" << name << "'" << std::endl;
 				return false;

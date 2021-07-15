@@ -1113,7 +1113,7 @@ void Tutorial::prompt(State newstate)
 					" City"
 					" tiles can gain power"
 					" if they are surrounded by enough"
-					" Grass, Forest, Crops, Water or snowed tiles."
+					" Grass, Forest, Crops or Water tiles."
 					" City"
 					" tiles also generate income at night."
 					"")
@@ -1136,7 +1136,7 @@ void Tutorial::prompt(State newstate)
 			layout["texts"].addText(
 				" tiles can gain power"
 				" if they are surrounded by enough"
-				" Grass, Forest, Crops, Water or snowed tiles."
+				" Grass, Forest, Crops or Water tiles."
 				""
 				" "
 			);
@@ -1162,7 +1162,7 @@ void Tutorial::prompt(State newstate)
 					" City"
 					" tiles can gain power"
 					" if they are surrounded by enough"
-					" Grass, Forest, Crops, Water or snowed tiles."
+					" Grass, Forest, Crops or Water tiles."
 					" City"
 					" tiles also generate income at night."
 					"")
@@ -1196,7 +1196,7 @@ void Tutorial::prompt(State newstate)
 			layout["texts"].addText(
 				" tiles can gain power"
 				" if they are surrounded by enough"
-				" Grass, Forest, Crops, Water or snowed tiles."
+				" Grass, Forest, Crops or Water tiles."
 				""
 				" "
 			);

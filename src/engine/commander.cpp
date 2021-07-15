@@ -790,7 +790,7 @@ bool Commander::controlUnitOrders()
 		if (_hoversquare->position() == _selectsquare->position())
 		{
 			_ordercontext.reset(new OrderContext(_bible, _board,
-				_skinner, _settings,
+				_skinner, _settings, _season,
 				index, _selector, _player,
 				hasOld, hasNew, can));
 		}
@@ -832,7 +832,7 @@ bool Commander::controlTileOrders()
 		if (_hoversquare->position() == _selectsquare->position())
 		{
 			_ordercontext.reset(new OrderContext(_bible, _board,
-				_skinner, _settings,
+				_skinner, _settings, _season,
 				index, _selector, _player,
 				hasOld, hasNew, can));
 		}
@@ -1725,7 +1725,7 @@ void Commander::giveOrder(const Order& order)
 		Pixel pixel = Camera::get()->convert(
 			Surface::convertOrigin(position));
 		pixel.xenon -= orderlistelement->width() / 2;
-		pixel.yahoo += 5 * Camera::get()->SCALE;
+		pixel.yahoo += 5 * Camera::get()->scale();
 		pixel.proximity = Layer::INTERFACE;
 		orderlistelement->place(pixel);
 	}

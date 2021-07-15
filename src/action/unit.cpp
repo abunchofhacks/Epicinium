@@ -393,6 +393,32 @@ void Unit::enact(const Change& change, std::shared_ptr<AnimationGroup> group)
 				_square->tile().animateBlock(change, group, group ? group->delay : 0);
 			}
 
+			switch (change.notice)
+			{
+				case Notice::COLDFEET:
+				{
+					for (size_t i = 0; i < (size_t) std::max(0, (int) stacks); i++)
+					{
+						if (i >= _figures.size() || !_figures[i])
+						{
+							LOGW << "nullptr detected in _figures";
+							continue;
+						}
+						std::shared_ptr<Figure>& figure = _figures[i];
+						figure->animateChill(group, /*shiver=*/true,
+							group ? group->delay : 0);
+						if (group)
+						{
+							group->delay += 0.1f;
+						}
+					}
+				}
+				break;
+
+				default:
+				break;
+			}
+
 			if (group)
 			{
 				group->delay += 0.5f;
@@ -811,6 +837,7 @@ void Unit::enact(const Change& change, std::shared_ptr<AnimationGroup> group)
 		}
 		break;
 
+		case Change::Type::REVEAL:
 		case Change::Type::SNOW:
 		case Change::Type::FROSTBITE:
 		case Change::Type::FIRESTORM:

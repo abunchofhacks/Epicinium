@@ -33,6 +33,7 @@
 #include "clock.hpp"
 #include "palette.hpp"
 #include "editortheme.hpp"
+#include "screenshot.hpp"
 
 
 EngineSDL::EngineSDL()
@@ -81,7 +82,7 @@ Engine::Engine(Settings& settings) :
 	_loop(*this, _settings.framerate.value()),
 	_graphics(_settings),
 	_renderer(_graphics),
-	_camera(_settings, _graphics.width(), _graphics.height()),
+	_camera(_graphics.width(), _graphics.height(), _settings.scale.value()),
 	_mixer(_settings),
 	_game(nullptr),
 	_exitcode(ExitCode::DONE),
@@ -190,10 +191,15 @@ void Engine::doFrame()
 	/*  END OF UPDATES  */
 	_loop.expose();
 
+
 	if (_draw && _display)
 	{
 		_graphics.prepare();
 		_renderer.render();
+		if (_screenshot)
+		{
+			_screenshot->finishRendering();
+		}
 		_graphics.update();
 		ImGui::Render();
 		ImGuiSDL::RenderDrawData();
@@ -213,6 +219,23 @@ void Engine::doFrame()
 
 void Engine::startUpdates()
 {
+	if (_nextScreenshot)
+	{
+		_screenshot = _nextScreenshot;
+		_nextScreenshot.reset();
+
+		_screenshot->setAsRenderTarget();
+		Camera::get()->changeViewport(_screenshot->width(),
+			_screenshot->height());
+	}
+	else if (_screenshot)
+	{
+		_screenshot.reset();
+
+		_graphics.resetRenderTarget();
+		Camera::get()->changeViewport(_graphics.width(), _graphics.height());
+	}
+
 	if (_input.wasKeyPressed(SDL_SCANCODE_ESCAPE))
 	{
 		if (_input.isKeyHeld(SDL_SCANCODE_ALT)) _loop.stop();

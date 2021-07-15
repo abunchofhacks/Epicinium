@@ -102,6 +102,8 @@ public:
 	int baseOffset = 0;
 	int yahooOffset = 0;
 	bool deathsound = true;
+	bool trimmed = false;
+	bool ninepatched = false;
 
 	static std::map<std::string, std::shared_ptr<Skin>> _skins;
 

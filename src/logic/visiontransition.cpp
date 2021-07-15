@@ -32,6 +32,9 @@
 #include "tiletoken.hpp"
 #include "unittoken.hpp"
 
+ // windows.h is being annoying
+#undef near
+
 
 template <class This>
 VisionTMRI<This>::VisionTMRI(const Bible& bible, Board& board,

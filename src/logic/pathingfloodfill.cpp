@@ -155,12 +155,15 @@ void TileFloodfill::includeOccupied(bool include)
 
 void UnitFloodfill::map(Cell index)
 {
-	UnitType unittype = _board.ground(index).type;
+	Descriptor::Type desctype = (_air)
+		? Descriptor::Type::AIR
+		: Descriptor::Type::GROUND;
+	UnitType unittype = _board.unit(index, desctype).type;
 
 	// TODO unnecessary?
 	if (unittype == UnitType::NONE) return;
 
-	Player unitowner = _board.ground(index).owner;
+	Player unitowner = _board.unit(index, desctype).owner;
 	bool playerfound = (std::find(_players.begin(), _players.end(), unitowner)
 		!= _players.end());
 	if (_excludePlayers && playerfound) return;

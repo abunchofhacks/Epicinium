@@ -43,9 +43,10 @@ public:
 		EVERYTHINGISFREE,
 		TRAMPLE,
 		HIGHSPEED,
-		TRAMPLE2,
 		INVESTMENT,
 		MORALE,
+		ACT1A, ACT1B, ACT1C, ACT1D, ACT1E, ACT1F,
+		ACT2A, ACT2B, ACT2C, ACT2D, ACT2E,
 	};
 
 	static constexpr size_t ID_SIZE = ((size_t) Id::MORALE) + 1;
@@ -54,10 +55,8 @@ public:
 		_id(id)
 	{}
 
-	static Id current()
-	{
-		return MORALE;
-	}
+	static const std::vector<Id>& pool();
+	static const std::vector<Id>& campaign();
 
 protected:
 	const Id _id;

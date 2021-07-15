@@ -91,6 +91,7 @@ private:
 
 	bool _snow = false;
 	bool _frostbite = false;
+	bool _coldfeet = false;
 	bool _firestorm = false;
 	bool _bonedrought = false;
 	bool _death = false;
@@ -144,12 +145,14 @@ public:
 
 	bool snow()        const { return _snow;        }
 	bool frostbite()   const { return _frostbite;   }
+	bool coldfeet()    const { return _coldfeet;   }
 	bool firestorm()   const { return _firestorm;   }
 	bool bonedrought() const { return _bonedrought; }
 	bool death()       const { return _death;       }
 
 	bool& snow()        { return _snow;        }
 	bool& frostbite()   { return _frostbite;   }
+	bool& coldfeet()    { return _coldfeet;   }
 	bool& firestorm()   { return _firestorm;   }
 	bool& bonedrought() { return _bonedrought; }
 	bool& death()       { return _death;       }

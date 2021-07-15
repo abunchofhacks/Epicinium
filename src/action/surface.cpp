@@ -81,7 +81,9 @@ Surface::Surface(const Square* square, const Skin& skin, const Player& player) :
 		{
 			case HazardType::FROSTBITE:
 			{
-				_hazards[i] = square->frostbite();
+				// Prevent Frostbite hazard markers if frostbite is used to mark
+				// the "Chilled" status effect on units in Spring.
+				_hazards[i] = square->frostbite() && !square->coldfeet();
 			}
 			break;
 			case HazardType::FIRESTORM:
@@ -355,7 +357,9 @@ void Surface::animate(const Change& change,
 	{
 		case Change::Type::REVEAL:
 		{
-			bool frostbite = change.frostbite;
+			// Prevent Frostbite hazard markers if frostbite is used to mark
+			// the "Chilled" status effect on units in Spring.
+			bool frostbite = change.frostbite && !square->coldfeet();
 			bool firestorm = change.firestorm;
 			bool bonedrought = change.bonedrought;
 			bool death = change.death;
@@ -611,14 +615,16 @@ void Surface::animate(const Change& change,
 
 		case Change::Type::FROSTBITE:
 		{
-			bool frostbite = change.frostbite;
+			// Prevent Frostbite hazard markers if frostbite is used to mark
+			// the "Chilled" status effect on units in Spring.
+			bool frostbite = change.frostbite && !square->coldfeet();
 			addAnimation(Animation(group, [this, frostbite](float /**/){
 
 				_hazards[size_t(HazardType::FROSTBITE)] = frostbite;
 
 			}, 0, delay + 0.500f));
 
-			if (!change.frostbite) break;
+			if (!frostbite) break;
 
 			weather(group, WeatherType::FROSTBITE, 1.0);
 			_weathercountdown = delay + 1.000f;
@@ -837,6 +843,12 @@ void Surface::animateBlock(const Change& change,
 				// queue the audio
 				Mixer::get()->queue(Clip::Type::NOCOIN, delay, _point);
 			}
+		}
+		break;
+
+		case Notice::COLDFEET:
+		{
+			Mixer::get()->queue(Clip::Type::FROSTHURT, delay, _point);
 		}
 		break;
 
@@ -1125,7 +1137,12 @@ void Surface::updateWeather(const Square* square)
 				weather(nullptr, WeatherType::RAINWEAK, 0.25);
 			}
 		}
-		if (square->frostbite())   weather(nullptr, WeatherType::FROSTBITE, 0.1);
+		// Prevent Frostbite hazard markers if frostbite is used to mark
+		// the "Chilled" status effect on units in Spring.
+		if (square->frostbite() && !square->coldfeet())
+		{
+			weather(nullptr, WeatherType::FROSTBITE, 0.1);
+		}
 		if (square->firestorm())   weather(nullptr, WeatherType::FIRESTORM, 0.2);
 		if (square->bonedrought()) weather(nullptr, WeatherType::BONEDROUGHT, 0.1);
 		if (square->death())       weather(nullptr, WeatherType::DEATH, 0.05);

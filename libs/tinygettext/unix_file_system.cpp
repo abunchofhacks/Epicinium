@@ -27,10 +27,11 @@
 #include "tinygettext/unix_file_system.hpp"
 
 #if defined __has_include
-#   if __has_include(<filesystem>)
+#   if __has_include(<filesystem>) && ((__cplusplus >= 201703L) || (defined(_MSVC_LANG) && (_MSVC_LANG >= 201703L) && (_MSC_VER >= 1913)))
 #     include <filesystem>
-      namespace fs = std::filesystem;
+namespace fs = std::filesystem;
 #   else
+#     define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
 #     include <experimental/filesystem>
       namespace fs = std::experimental::filesystem;
 #   endif

@@ -30,11 +30,26 @@
 #include <mutex>
 
 #include "libs/SDL2/SDL_image.h"
+#include "libs/SDL2/SDL2_gfxPrimitives.h"
+#include "libs/stb/stb_image_write.h"
 
 #include "client.hpp"
 #include "system.hpp"
 #include "locator.hpp"
 #include "role.hpp"
+#include "screenshot.hpp"
+#include "keycode.hpp"
+#include "clock.hpp"
+#include "camera.hpp"
+#include "graphics.hpp"
+#include "map.hpp"
+#include "palette.hpp"
+#include "download.hpp"
+#include "writer.hpp"
+#include "colorname.hpp"
+#include "openurl.hpp"
+#include "validation.hpp"
+#include "parseerror.hpp"
 
 
 static std::mutex _singleton_mutex;
@@ -115,6 +130,8 @@ void Steam::ready()
 void Steam::update()
 {
 	SteamAPI_RunCallbacks();
+
+	updateWorkshop();
 }
 
 void Steam::clearLobbyInfo()
@@ -164,16 +181,8 @@ void Steam::updateLobbyInfo()
 	}
 	else if (_lobbyType == "challenge")
 	{
-		if (!_challengeKey.empty() && !_challengeDisplayName.empty())
-		{
-			_legacyStatus = "Playing " + _challengeDisplayName + " Challenge";
-			_localizedStatus = "#playing_challenge_keyed";
-		}
-		else
-		{
-			_legacyStatus = "Playing Challenge";
-			_localizedStatus = "#playing_challenge";
-		}
+		_legacyStatus = "Playing Challenge";
+		_localizedStatus = "#playing_challenge";
 	}
 	else if (_lobbyType == "replay")
 	{
@@ -243,11 +252,6 @@ void Steam::updatePresence()
 		SteamFriends()->SetRichPresence("steam_display",
 			_localizedStatus.c_str());
 	}
-	if (!_challengeKey.empty())
-	{
-		SteamFriends()->SetRichPresence("challenge_key",
-			_challengeKey.c_str());
-	}
 	if (!_lobbyTypeKey.empty())
 	{
 		SteamFriends()->SetRichPresence("lobby_type_key",
@@ -309,6 +313,8 @@ void Steam::handleAuthSessionTicketResponse(
 				avatarpicturename, steamid.ConvertToUint64(), ticket);
 
 			handleUrlLaunchParameters(nullptr);
+			refreshSubscribedWorkshopItems();
+			retrievePublishedWorkshopItems();
 		}
 		else
 		{
@@ -571,29 +577,6 @@ void Steam::leavesOwnLobby(const std::string& name)
 	updatePresence();
 }
 
-void Steam::listChallenge(const std::string&, const Json::Value& metadata)
-{
-	if (metadata["steam-short-key"].isString())
-	{
-		_challengeKey = metadata["steam-short-key"].asString();
-	}
-	else
-	{
-		LOGW << "Missing 'steam-short-key'";
-	}
-
-	if (metadata["display-name"].isString())
-	{
-		// The display name is used for the (English-only) legacy status,
-		// so we leave it untranslated.
-		_challengeDisplayName = metadata["display-name"].asString();
-	}
-	else
-	{
-		LOGW << "Missing 'display-name'";
-	}
-}
-
 void Steam::receiveSecrets(const Json::Value& metadata)
 {
 	if (metadata["join-secret"].isString())
@@ -648,6 +631,1201 @@ void Steam::startTutorial()
 	_isPlaying = true;
 	updateLobbyInfo();
 	updatePresence();
+}
+
+inline std::string buildUniqueTag(const char* title, PublishedFileId_t fileId)
+{
+	std::string tag = title;
+	if (!isValidUserContentName(tag))
+	{
+		LOGE << "Failed to validate item title in time: " << title;
+		tag = "Unnamed";
+	}
+	tag += "@WORKSHOP/" + std::to_string(fileId);
+	return tag;
+}
+
+bool Steam::resetWorkshopItem(const WorkshopItemType& type)
+{
+	switch (_workshopItem.state)
+	{
+		case WorkshopItemState::NONE:
+		case WorkshopItemState::READY:
+		case WorkshopItemState::CREATION_FAILED:
+		case WorkshopItemState::UPLOAD_FAILED:
+		{
+			_workshopItem.type = type;
+			_workshopItem.state = WorkshopItemState::NONE;
+			_workshopItem.title[0] = '\0';
+			_workshopItem.description[0] = '\0';
+			_workshopItem.previewScreenshot.reset();
+			_workshopItem.previewScreenshotPath.clear();
+			_workshopItem.panelScreenshot.reset();
+			_workshopItem.panelScreenshotPath.clear();
+			return true;
+		}
+		break;
+		case WorkshopItemState::CREATING:
+		case WorkshopItemState::UPLOADING:
+		{
+			// Cannot change the state right now.
+			return false;
+		}
+		break;
+	}
+	return false;
+}
+
+inline std::shared_ptr<Screenshot> createPalettePreviewScreenshot()
+{
+	int boxw = 20;
+	int boxh = 20;
+	int cols = 18;
+	int rows = (COLORNAME_SIZE + cols - 1) / cols;
+	int w = cols * boxw;
+	int h = rows * boxh;
+
+	SDL_Surface* surface = SDL_CreateRGBSurfaceWithFormat(0,
+		nearestPowerOfTwo(w), nearestPowerOfTwo(h),
+		32, SDL_PIXELFORMAT_RGBA8888);
+	if (!surface)
+	{
+		LOGW << "SDL generated invalid surface";
+		DEBUG_ASSERT(false);
+		return nullptr;
+	}
+
+	SDL_Renderer* renderer = SDL_CreateSoftwareRenderer(surface);
+	if (!renderer)
+	{
+		LOGW << "SDL generated invalid renderer";
+		DEBUG_ASSERT(false);
+		return nullptr;
+	}
+
+	for (size_t i = 0; i < COLORNAME_SIZE; i++)
+	{
+		ColorName colorname = (ColorName) i;
+		Color color = Palette::get(colorname);
+
+		int x = (i % cols) * boxw;
+		int y = (i / cols) * boxh;
+		boxRGBA(renderer,
+			x, y, x + boxw - 1, y + boxh - 1,
+			color.r, color.g, color.b, color.a);
+	}
+
+	SDL_DestroyRenderer(renderer);
+
+	auto screenshot = std::make_shared<Screenshot>(w, h, "palette", false);
+
+	glBindTexture(GL_TEXTURE_2D, screenshot->textureID());
+	glPixelStorei(GL_UNPACK_ROW_LENGTH, surface->w);
+	glTexImage2D(GL_TEXTURE_2D, 0, surface->format->BytesPerPixel,
+		w, h, 0, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8,
+		surface->pixels);
+	glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	SDL_FreeSurface(surface);
+
+	return screenshot;
+}
+
+static int filterValidUserContentChar(ImGuiInputTextCallbackData* data)
+{
+	bool discarded = !isValidUserContentChar(data->EventChar);
+	return discarded;
+}
+
+void Steam::updateWorkshop()
+{
+	if (_workshopItem.type == WorkshopItemType::NONE)
+	{
+		return;
+	}
+
+	bool takePreviewScreenshot = false;
+	bool keepopen = true;
+	if (ImGui::Begin("Steam Workshop", &keepopen,
+			ImGuiWindowFlags_AlwaysAutoResize))
+	{
+		{
+			ImGui::Text("By submitting items, you agree to the ");
+			ImGui::SameLine(0.0f, ImGui::GetStyle().ItemInnerSpacing.x);
+			ImGui::PushStyleColor(ImGuiCol_Text,
+				ImGui::GetStyle().Colors[ImGuiCol_ButtonHovered]);
+			ImGui::Text("Steam Workshop terms of service");
+			ImGui::PopStyleColor();
+			ImVec2 min = ImGui::GetItemRectMin();
+			ImVec2 max = ImGui::GetItemRectMax();
+			min.y = max.y;
+			auto underlinecolor = ImGuiCol_Button;
+			if (ImGui::IsItemHovered())
+			{
+				const char* URL = "https://steamcommunity.com/sharedfiles/workshoplegalagreement";
+				if (ImGui::IsMouseClicked(0))
+				{
+					openUrl(URL);
+				}
+				ImGui::SetTooltip("Open with Steam\n%s", URL);
+				underlinecolor = ImGuiCol_ButtonHovered;
+			}
+			ImGui::GetWindowDrawList()->AddLine(min, max,
+				ImGui::GetColorU32(ImGui::GetStyle().Colors[underlinecolor]),
+				1.0f);
+			ImGui::SameLine(0.0f, ImGui::GetStyle().ItemInnerSpacing.x);
+			ImGui::Text(".");
+		}
+		ImGui::Separator();
+
+		switch (_workshopItem.type)
+		{
+			case WorkshopItemType::NONE:
+			break;
+			case WorkshopItemType::MAP:
+			{
+				ImGui::Text("Map: %s", _workshopItem.authoredName.c_str());
+			}
+			break;
+			case WorkshopItemType::RULESET:
+			{
+				ImGui::Text("Ruleset: %s", _workshopItem.authoredName.c_str());
+			}
+			break;
+			case WorkshopItemType::PALETTE:
+			{
+				ImGui::Text("Palette: %s", _workshopItem.authoredName.c_str());
+			}
+			break;
+		}
+
+		ImGui::InputText("Title",
+			_workshopItem.title.data(), _workshopItem.title.size(),
+			ImGuiInputTextFlags_CallbackCharFilter,
+			filterValidUserContentChar);
+		ImGui::InputTextMultiline("Description",
+			_workshopItem.description.data(), _workshopItem.description.size());
+
+		if (_workshopItem.previewScreenshot)
+		{
+			int w = 300;
+			ImGui::Image(
+				(void*) (intptr_t) _workshopItem.previewScreenshot->textureID(),
+				ImVec2(w,
+					_workshopItem.previewScreenshot->height() * w
+						/ _workshopItem.previewScreenshot->width()));
+		}
+		switch (_workshopItem.type)
+		{
+			case WorkshopItemType::NONE:
+			break;
+			case WorkshopItemType::MAP:
+			{
+				if (ImGui::Button("Take screenshot of entire map"))
+				{
+					_client.takeScreenshotOfMap();
+				}
+			}
+			break;
+			case WorkshopItemType::RULESET:
+			break;
+			case WorkshopItemType::PALETTE:
+			{
+				if (ImGui::Button("Generate preview image"))
+				{
+					takePreviewScreenshot = true;
+				}
+			}
+			break;
+		}
+
+		if (_workshopItem.panelScreenshot)
+		{
+			int w = 300;
+			ImGui::Image(
+				(void*) (intptr_t) _workshopItem.panelScreenshot->textureID(),
+				ImVec2(w,
+					_workshopItem.panelScreenshot->height() * w
+						/ _workshopItem.panelScreenshot->width()),
+				// Zoom in because the rest is bleed.
+				ImVec2(0.25, 0.25),
+				ImVec2(0.75, 0.75));
+		}
+		switch (_workshopItem.type)
+		{
+			case WorkshopItemType::NONE:
+			break;
+			case WorkshopItemType::MAP:
+			{
+				if (ImGui::Button("Take screenshot for UI panels"))
+				{
+					_client.takeScreenshot(
+						std::make_shared<Screenshot>(600, 400, "panel"));
+				}
+			}
+			break;
+			case WorkshopItemType::RULESET:
+			case WorkshopItemType::PALETTE:
+			break;
+		}
+
+		switch (_workshopItem.state)
+		{
+			case WorkshopItemState::NONE:
+			{
+				if (!_runningWorkshopQueries.empty())
+				{
+					ImGui::Text("Loading...");
+				}
+				else if (ImGui::Button("Publish"))
+				{
+					LOGD << "Creating item...";
+					auto callback = SteamUGC()->CreateItem(APPLICATION_ID,
+						k_EWorkshopFileTypeCommunity);
+					awaitCreateItemResult(callback);
+					_workshopItem.state = WorkshopItemState::CREATING;
+				}
+			}
+			break;
+			case WorkshopItemState::CREATING:
+			case WorkshopItemState::UPLOADING:
+			{
+				ImGui::Text("Publishing...");
+			}
+			break;
+			case WorkshopItemState::READY:
+			{
+				if (!_runningWorkshopQueries.empty())
+				{
+					ImGui::Text("Loading...");
+				}
+				else if (ImGui::Button("Publish"))
+				{
+					submitWorkshopItem();
+				}
+				ImGui::SameLine();
+				if (ImGui::Button("View in Steam Workshop"))
+				{
+					std::string url = "steam://url/CommunityFilePage/"
+						+ std::to_string(_workshopItem.fileId);
+					SteamFriends()->ActivateGameOverlayToWebPage(url.c_str());
+				}
+			}
+			break;
+			case WorkshopItemState::CREATION_FAILED:
+			case WorkshopItemState::UPLOAD_FAILED:
+			{
+				static ImVec4 errorcolor(1.0f, 0.4f, 0.2f, 1.0f);
+				ImGui::TextColored(errorcolor, "Failed to publish.");
+			}
+			break;
+		}
+	}
+	ImGui::End();
+
+	if (!keepopen)
+	{
+		resetWorkshopItem(WorkshopItemType::NONE);
+	}
+
+	// We should not call screenshotTaken() while rendering ImGui windows,
+	// so do it now.
+	if (takePreviewScreenshot)
+	{
+		Palette::installNamed(_workshopItem.authoredName);
+		screenshotTaken(createPalettePreviewScreenshot());
+	}
+}
+
+void Steam::handleCreateItemResult(CreateItemResult_t* result, bool failure)
+{
+	if (failure) LOGE << "IO failed";
+	else if (result == nullptr) LOGE << "Unexpected null";
+	else if (result->m_eResult == k_EResultOK)
+	{
+		_workshopItem.fileId = result->m_nPublishedFileId;
+		LOGI << "Created item " << (uint64_t) _workshopItem.fileId;
+
+		if (result->m_bUserNeedsToAcceptWorkshopLegalAgreement)
+		{
+			const char* URL = "https://steamcommunity.com/sharedfiles/workshoplegalagreement";
+			openUrl(URL);
+		}
+
+		submitWorkshopItem();
+	}
+	// TODO handle some specific error cases?
+	else
+	{
+		LOGE << "EResult = " << (int) result->m_eResult;
+		_workshopItem.state = WorkshopItemState::CREATION_FAILED;
+	}
+}
+
+void Steam::submitWorkshopItem()
+{
+	LOGD << "Uploading item " << _workshopItem.fileId << "...";
+	_workshopItem.state = WorkshopItemState::UPLOADING;
+
+	// Prepare a brand new content folder, to avoid uploading old files.
+	{
+		auto timestampMs = SteadyClock::milliseconds();
+		uint16_t key = rand() % (1 << 16);
+		std::string path = Download::getDownloadsFolderWithSlash() + "workshop"
+			"/uploaded_items"
+			"/"	+ std::to_string(_workshopItem.fileId) + ""
+			"/" + keycode(key, timestampMs);
+		System::touchDirectory(path);
+		_workshopItem.contentPath = System::absolutePath(path);
+	}
+
+	std::vector<const char*> tags;
+	std::string metadata;
+	switch (_workshopItem.type)
+	{
+		case WorkshopItemType::NONE:
+		break;
+		case WorkshopItemType::MAP:
+		{
+			Json::Value json = Map::loadMetadata(_workshopItem.authoredName);
+			PoolType pooltype = PoolType::NONE;
+			bool isChallenge = false;
+			std::string rulesetname;
+			try
+			{
+				if (json["pool"].isString())
+				{
+					pooltype = parsePoolType(json["pool"].asString());
+				}
+				if (json["challenge"].isObject())
+				{
+					isChallenge = true;
+				}
+				if (pooltype == PoolType::CUSTOM)
+				{
+					if (json["ruleset"].isString())
+					{
+						rulesetname = json["ruleset"].asString();
+					}
+				}
+			}
+			catch (const ParseError& error)
+			{
+				LOGW << "Failed to parse loaded metadata: " << error.what();
+			}
+			catch (const Json::Exception& error)
+			{
+				LOGW << "Failed to parse loaded metadata: " << error.what();
+			}
+			System::copyFile(Map::authoredFilename(_workshopItem.authoredName),
+				_workshopItem.contentPath + "/content.map");
+			if (System::isFile(_workshopItem.panelScreenshotPath))
+			{
+				System::copyFile(_workshopItem.panelScreenshotPath,
+					_workshopItem.contentPath + "/panel.png");
+			}
+			tags.emplace_back("Map");
+			if (isChallenge)
+			{
+				tags.emplace_back("Challenge");
+			}
+			if (System::isFile(Locator::rulesetAuthoredFilename(rulesetname)))
+			{
+				System::copyFile(Locator::rulesetAuthoredFilename(rulesetname),
+					_workshopItem.contentPath + "/ruleset.json");
+				tags.emplace_back("Custom Rules");
+				// Overwrite the 'ruleset' specified in the metadata to refer
+				// to this Workshop item, instead of to the author's local file.
+				json["ruleset"] = buildUniqueTag(
+					_workshopItem.title.data(), _workshopItem.fileId);
+			}
+			metadata = Writer::write(json);
+		}
+		break;
+		case WorkshopItemType::RULESET:
+		{
+			System::copyFile(
+				Locator::rulesetAuthoredFilename(_workshopItem.authoredName),
+				_workshopItem.contentPath + "/ruleset.json");
+			tags.emplace_back("Ruleset");
+		}
+		break;
+		case WorkshopItemType::PALETTE:
+		{
+			System::copyFile(
+				Palette::authoredFilename(_workshopItem.authoredName),
+				_workshopItem.contentPath + "/palette.json");
+			tags.emplace_back("Color Palette");
+		}
+		break;
+	}
+
+	auto handle = SteamUGC()->StartItemUpdate(APPLICATION_ID,
+		_workshopItem.fileId);
+	SteamUGC()->SetItemTitle(handle, _workshopItem.title.data());
+	SteamUGC()->SetItemDescription(handle, _workshopItem.description.data());
+	{
+		SteamParamStringArray_t param { tags.data(), (int) tags.size() };
+		SteamUGC()->SetItemTags(handle, &param);
+	}
+	SteamUGC()->RemoveItemKeyValueTags(handle, "authoredName");
+	SteamUGC()->AddItemKeyValueTag(handle, "authoredName",
+		_workshopItem.authoredName.c_str());
+	if (!_workshopItem.contentPath.empty()
+			&& System::isDirectory(_workshopItem.contentPath))
+	{
+		SteamUGC()->SetItemContent(handle, _workshopItem.contentPath.c_str());
+	}
+	if (!_workshopItem.previewScreenshotPath.empty()
+			&& System::isFile(_workshopItem.previewScreenshotPath))
+	{
+		SteamUGC()->SetItemPreview(handle,
+			_workshopItem.previewScreenshotPath.c_str());
+	}
+	if (metadata.size() + 1 >= k_cchDeveloperMetadataMax)
+	{
+		LOGE << "Discarding too large metadata: " << metadata;
+		metadata = "";
+	}
+	SteamUGC()->SetItemMetadata(handle, metadata.c_str());
+
+	auto callback = SteamUGC()->SubmitItemUpdate(handle, nullptr);
+	if (callback == k_uAPICallInvalid)
+	{
+		LOGE << "Invalid handle";
+	}
+	else awaitSubmitItemUpdateResult(callback);
+}
+
+void Steam::handleSubmitItemUpdateResult(SubmitItemUpdateResult_t* result,
+	bool failure)
+{
+	if (failure) LOGE << "IO failed";
+	else if (result == nullptr) LOGE << "Unexpected null";
+	else if (result->m_eResult == k_EResultOK)
+	{
+		LOGD << "Upload complete.";
+		_workshopItem.state = WorkshopItemState::READY;
+
+		if (result->m_bUserNeedsToAcceptWorkshopLegalAgreement)
+		{
+			std::string url = "steam://url/CommunityFilePage/"
+				+ std::to_string(_workshopItem.fileId);
+			SteamFriends()->ActivateGameOverlayToWebPage(url.c_str());
+		}
+
+		retrievePublishedWorkshopItems();
+	}
+	// TODO handle some specific error cases?
+	else
+	{
+		LOGE << "EResult = " << (int) result->m_eResult;
+		_workshopItem.state = WorkshopItemState::UPLOAD_FAILED;
+	}
+}
+
+void Steam::retrievePublishedWorkshopItems(int pageNumber)
+{
+	CSteamID steamid = SteamUser()->GetSteamID();
+	auto handle = SteamUGC()->CreateQueryUserUGCRequest(steamid.GetAccountID(),
+		k_EUserUGCList_Published, k_EUGCMatchingUGCType_Items,
+		k_EUserUGCListSortOrder_CreationOrderAsc,
+		APPLICATION_ID, APPLICATION_ID,
+		pageNumber);
+	if (handle == k_UGCQueryHandleInvalid)
+	{
+		LOGE << "Failed to generate query.";
+		return;
+	}
+	SteamUGC()->SetReturnKeyValueTags(handle, true);
+	if (pageNumber == 1)
+	{
+		_publishedWorkshopItems.clear();
+	}
+	WorkshopQuery query;
+	query.type = WorkshopQueryType::PUBLISHED;
+	query.handle = handle;
+	query.pageNumber = pageNumber;
+	addWorkshopQuery(std::move(query));
+}
+
+void Steam::retrieveSubscribedMaps(int pageNumber)
+{
+	CSteamID steamid = SteamUser()->GetSteamID();
+	auto handle = SteamUGC()->CreateQueryUserUGCRequest(steamid.GetAccountID(),
+		k_EUserUGCList_Subscribed, k_EUGCMatchingUGCType_Items,
+		k_EUserUGCListSortOrder_CreationOrderAsc,
+		APPLICATION_ID, APPLICATION_ID,
+		pageNumber);
+	if (handle == k_UGCQueryHandleInvalid)
+	{
+		LOGE << "Failed to generate query.";
+		return;
+	}
+	SteamUGC()->AddRequiredTag(handle, "Map");
+	SteamUGC()->SetReturnKeyValueTags(handle, true);
+	SteamUGC()->SetReturnMetadata(handle, true);
+	WorkshopQuery query;
+	query.type = WorkshopQueryType::SUBSCRIBED_MAPS;
+	query.handle = handle;
+	query.pageNumber = pageNumber;
+	addWorkshopQuery(std::move(query));
+}
+
+void Steam::retrieveSubscribedRulesets(int pageNumber)
+{
+	CSteamID steamid = SteamUser()->GetSteamID();
+	auto handle = SteamUGC()->CreateQueryUserUGCRequest(steamid.GetAccountID(),
+		k_EUserUGCList_Subscribed, k_EUGCMatchingUGCType_Items,
+		k_EUserUGCListSortOrder_CreationOrderAsc,
+		APPLICATION_ID, APPLICATION_ID,
+		pageNumber);
+	if (handle == k_UGCQueryHandleInvalid)
+	{
+		LOGE << "Failed to generate query.";
+		return;
+	}
+	SteamUGC()->AddRequiredTag(handle, "Ruleset");
+	SteamUGC()->SetReturnKeyValueTags(handle, true);
+	WorkshopQuery query;
+	query.type = WorkshopQueryType::SUBSCRIBED_RULESETS;
+	query.handle = handle;
+	query.pageNumber = pageNumber;
+	addWorkshopQuery(std::move(query));
+}
+
+void Steam::retrieveSubscribedPalettes(int pageNumber)
+{
+	CSteamID steamid = SteamUser()->GetSteamID();
+	auto handle = SteamUGC()->CreateQueryUserUGCRequest(steamid.GetAccountID(),
+		k_EUserUGCList_Subscribed, k_EUGCMatchingUGCType_Items,
+		k_EUserUGCListSortOrder_CreationOrderAsc,
+		APPLICATION_ID, APPLICATION_ID,
+		pageNumber);
+	if (handle == k_UGCQueryHandleInvalid)
+	{
+		LOGE << "Failed to generate query.";
+		return;
+	}
+	SteamUGC()->AddRequiredTag(handle, "Color Palette");
+	SteamUGC()->SetReturnKeyValueTags(handle, true);
+	WorkshopQuery query;
+	query.type = WorkshopQueryType::SUBSCRIBED_PALETTES;
+	query.handle = handle;
+	query.pageNumber = pageNumber;
+	addWorkshopQuery(std::move(query));
+}
+
+void Steam::addWorkshopQuery(WorkshopQuery&& query)
+{
+	// Cancel previous queries of this type.
+	auto type = query.type;
+	_runningWorkshopQueries.erase(
+		std::remove_if(_runningWorkshopQueries.begin(),
+			_runningWorkshopQueries.end(),
+			[type](const WorkshopQuery& q) { return q.type == type; }),
+		_runningWorkshopQueries.end());
+	// Add a new query to the end of the queue.
+	_runningWorkshopQueries.emplace_back(query);
+	// Start it.
+	if (_runningWorkshopQueries.size() == 1)
+	{
+		startNextWorkshopQuery();
+	}
+}
+
+void Steam::startNextWorkshopQuery()
+{
+	for (/**/;
+		!_runningWorkshopQueries.empty();
+		_runningWorkshopQueries.erase(_runningWorkshopQueries.begin()))
+	{
+		const WorkshopQuery& query = _runningWorkshopQueries[0];
+
+		auto callback = SteamUGC()->SendQueryUGCRequest(query.handle);
+		if (callback == k_uAPICallInvalid)
+		{
+			LOGE << "Invalid handle";
+			continue;
+		}
+
+		LOGD << "Retrieving query " << int(query.handle)
+			<< " of type " << int(query.type)
+			<< "; page " << query.pageNumber;
+		return awaitSteamUGCQueryCompleted(callback);
+	}
+}
+
+void Steam::screenshotTaken(std::weak_ptr<Screenshot> weakScreenshot)
+{
+	auto screenshot = weakScreenshot.lock();
+	if (!screenshot)
+	{
+		LOGE << "Expected screenshot";
+		return;
+	}
+
+	auto timestampMs = SteadyClock::milliseconds();
+	uint16_t key = rand() % (1 << 16);
+	std::string itemname = keycode(key, timestampMs);
+
+	if (screenshot->tag() == "map" || screenshot->tag() == "palette")
+	{
+		_workshopItem.previewScreenshot = screenshot;
+		_workshopItem.previewScreenshotPath = saveScreenshot(screenshot,
+			"steam/workshop/screenshots/previews/" + itemname);
+	}
+	else if (screenshot->tag() == "panel")
+	{
+		_workshopItem.panelScreenshot = screenshot;
+		_workshopItem.panelScreenshotPath = saveScreenshot(screenshot,
+			"steam/workshop/screenshots/panels/" + itemname);
+	}
+	else
+	{
+		LOGW << "Unknown screenshot tag '" << screenshot->tag() << "'";
+		saveScreenshot(screenshot,
+			"steam/workshop/screenshots/lostandfound/" + itemname);
+	}
+}
+
+std::string Steam::saveScreenshot(std::shared_ptr<Screenshot> screenshot,
+		const std::string& picturename)
+{
+	std::string filename = Locator::pictureFilename(picturename);
+	System::touchFile(filename);
+	std::vector<uint8_t> buffer = screenshot->writeToBuffer();
+	int bytes_per_pixel = 4;
+	int stride_in_bytes = bytes_per_pixel * screenshot->width();
+	bool success = stbi_write_png(filename.c_str(),
+		screenshot->width(),
+		screenshot->height(),
+		bytes_per_pixel, buffer.data(),
+		stride_in_bytes);
+	if (success)
+	{
+		LOGI << "Wrote screenshot to file " << filename;
+		return System::absolutePath(filename);
+	}
+	else
+	{
+		LOGE << "Failed to write screenshot to " << filename;
+		return "";
+	}
+}
+
+void Steam::handleSteamUGCQueryCompleted(SteamUGCQueryCompleted_t* result,
+		bool failure)
+{
+	WorkshopQueryType type = WorkshopQueryType::NONE;
+	int pageNumber = 0;
+	bool shouldContinue = false;
+
+	if (failure) LOGE << "IO failed";
+	else if (result == nullptr) LOGE << "Unexpected null";
+	else if (result->m_eResult == k_EResultOK)
+	{
+		Json::Reader reader;
+		// Look for the query with this handle.
+		{
+			auto handle = result->m_handle;
+			if (!_runningWorkshopQueries.empty()
+				&& _runningWorkshopQueries[0].handle == handle)
+			{
+				type = _runningWorkshopQueries[0].type;
+				pageNumber = _runningWorkshopQueries[0].pageNumber;
+				LOGD << "Completed query " << int(handle)
+					<< " of type " << int(type)
+					<< "; page " << pageNumber;
+				_runningWorkshopQueries.erase(_runningWorkshopQueries.begin());
+			}
+			else
+			{
+				LOGD << "Completed discarded query " << int(handle);
+			}
+		}
+		// Use the results.
+		for (size_t i = 0; i < result->m_unNumResultsReturned; i++)
+		{
+			SteamUGCDetails_t details;
+			if (!SteamUGC()->GetQueryUGCResult(result->m_handle, i,
+					&details))
+			{
+				LOGE << "Failed to get details for " << i << "/"
+					<< result->m_unNumResultsReturned;
+				break;
+			}
+			if (details.m_eResult != k_EResultOK)
+			{
+				// TODO handle some specific error cases?
+				LOGE << "EResult = " << (int) details.m_eResult;
+				break;
+			}
+			PublishedWorkshopItem item;
+			item.fileId = details.m_nPublishedFileId;
+			item.title = std::string(details.m_rgchTitle);
+			item.description = std::string(details.m_rgchDescription);
+			auto tagstrm = std::stringstream(details.m_rgchTags);
+			std::string tag;
+			while (std::getline(tagstrm, tag, ','))
+			{
+				if (::tolower(tag) == "map")
+				{
+					item.type = WorkshopItemType::MAP;
+				}
+				else if (::tolower(tag) == "ruleset")
+				{
+					item.type = WorkshopItemType::RULESET;
+				}
+				else if (::tolower(tag) == "color palette")
+				{
+					item.type = WorkshopItemType::PALETTE;
+				}
+			}
+			int n = SteamUGC()->GetQueryUGCNumKeyValueTags(result->m_handle, i);
+			for (int t = 0; t < n; t++)
+			{
+				std::array<char, 256> keybuffer = {0};
+				std::array<char, 256> valuebuffer = {0};
+				SteamUGC()->GetQueryUGCKeyValueTag(result->m_handle, i, t,
+					keybuffer.data(), keybuffer.size() - 1,
+					valuebuffer.data(), valuebuffer.size() - 1);
+				if (strcmp(keybuffer.data(), "authoredName") == 0)
+				{
+					item.authoredName = std::string(valuebuffer.data());
+				}
+			}
+			Json::Value metadata = Json::nullValue;
+			{
+				std::array<char, 1024> metadatabuffer = {0};
+				if (!SteamUGC()->GetQueryUGCMetadata(result->m_handle, i,
+					metadatabuffer.data(), metadatabuffer.size() - 1))
+				{
+					LOGE << "Failed to get metadata for " << i << "/"
+						<< result->m_unNumResultsReturned;
+				}
+				else if (metadatabuffer[0] != '\0')
+				{
+					if (!reader.parse(metadatabuffer.data(), metadata))
+					{
+						LOGE << "Failed to parse metadata"
+							" '" << metadatabuffer.data() << "'"
+							": " << reader.getFormattedErrorMessages();
+					}
+				}
+			}
+			LOGV << "Retrieved " << item.fileId << ""
+				", a type " << ((int) item.type) << ""
+				" " << details.m_rgchTags << ""
+				" named " << item.title << ""
+				", originally authored as '" << item.authoredName << "'"
+				"";
+			switch (type)
+			{
+				case WorkshopQueryType::PUBLISHED:
+				{
+					LOGV << "Retrieve published item.";
+					_publishedWorkshopItems.push_back(item);
+				}
+				break;
+				case WorkshopQueryType::SUBSCRIBED_MAPS:
+				{
+					std::string dirname;
+					{
+						std::array<char, 5000> pathbuffer;
+						if (SteamUGC()->GetItemInstallInfo(item.fileId, nullptr,
+							pathbuffer.data(), pathbuffer.size() - 1, nullptr))
+						{
+							dirname = std::string(pathbuffer.data());
+							if (!dirname.empty() && dirname.back() != '/'
+								&& dirname.back() != '\\')
+							{
+								dirname += "/";
+							}
+						}
+					}
+					LOGV << "Retrieved map '" << item.title << "'"
+						" with metadata " << Writer::write(metadata) << ""
+						" (dirname=" << dirname << ")";
+					if (!dirname.empty() && metadata.isObject()
+						&& System::isFile(dirname + "content.map")
+						&& isValidUserContentName(item.title))
+					{
+						std::string name = buildUniqueTag(
+							item.title.data(), item.fileId);
+						Map::ExternalItem external;
+						external.uniqueTag = name;
+						external.quotedName = "\"" + item.title + "\"";
+						external.sourceFilename = dirname + "content.map";
+						external.metadata = metadata;
+						Map::listExternalItem(std::move(external));
+						Locator::useExternalFolder({ name, dirname });
+					}
+					else
+					{
+						LOGW << "Not using incomplete or invalid map"
+							" (fileId=" << item.fileId << ")";
+					}
+				}
+				break;
+				case WorkshopQueryType::SUBSCRIBED_RULESETS:
+				{
+					std::string dirname;
+					{
+						std::array<char, 5000> pathbuffer;
+						if (SteamUGC()->GetItemInstallInfo(item.fileId, nullptr,
+							pathbuffer.data(), pathbuffer.size() - 1, nullptr))
+						{
+							dirname = std::string(pathbuffer.data());
+							if (!dirname.empty() && dirname.back() != '/'
+								&& dirname.back() != '\\')
+							{
+								dirname += "/";
+							}
+						}
+					}
+					LOGV << "Retrieved ruleset '" << item.title << "'"
+						" (dirname=" << dirname << ")";
+					if (!dirname.empty()
+						&& System::isFile(dirname + "ruleset.json")
+						&& isValidUserContentName(item.title))
+					{
+						std::string name = buildUniqueTag(
+							item.title.data(), item.fileId);
+						Locator::useExternalFolder({ name, dirname });
+					}
+					else
+					{
+						LOGW << "Not using incomplete or invalid ruleset"
+							" (fileId=" << item.fileId << ")";
+					}
+				}
+				break;
+				case WorkshopQueryType::SUBSCRIBED_PALETTES:
+				{
+					std::string fname;
+					{
+						std::array<char, 5000> pathbuffer;
+						if (SteamUGC()->GetItemInstallInfo(item.fileId, nullptr,
+							pathbuffer.data(), pathbuffer.size() - 1, nullptr))
+						{
+							fname = std::string(pathbuffer.data());
+							if (!fname.empty() && fname.back() != '/'
+								&& fname.back() != '\\')
+							{
+								fname += "/";
+							}
+							fname += "palette.json";
+						}
+					}
+					LOGV << "Retrieved palette (fname=" << fname << ")";
+					if (!fname.empty() && System::isFile(fname)
+						&& isValidUserContentName(item.title))
+					{
+						Palette::ExternalItem external;
+						external.uniqueTag = buildUniqueTag(
+							item.title.data(), item.fileId);
+						external.quotedName = "\"" + item.title + "\"";
+						external.sourceFilename = fname;
+						Palette::listExternalItem(std::move(external));
+					}
+					else
+					{
+						LOGW << "Not using incomplete or invalid palette"
+							" (fileId=" << item.fileId << ")";
+					}
+				}
+				break;
+				case WorkshopQueryType::NONE:
+				{
+					LOGV << "Discarded.";
+				}
+				break;
+			}
+		}
+		if (result->m_unTotalMatchingResults >
+			50 * (pageNumber - 1) + result->m_unNumResultsReturned)
+		{
+			shouldContinue = true;
+		}
+		SteamUGC()->ReleaseQueryUGCRequest(result->m_handle);
+	}
+	// TODO handle some specific error cases?
+	else
+	{
+		LOGE << "EResult = " << (int) result->m_eResult;
+	}
+
+	if (shouldContinue)
+	{
+		switch (type)
+		{
+			case WorkshopQueryType::PUBLISHED:
+			{
+				retrievePublishedWorkshopItems(pageNumber + 1);
+			}
+			break;
+			case WorkshopQueryType::SUBSCRIBED_MAPS:
+			{
+				retrieveSubscribedMaps(pageNumber + 1);
+			}
+			break;
+			case WorkshopQueryType::SUBSCRIBED_RULESETS:
+			{
+				retrieveSubscribedRulesets(pageNumber + 1);
+			}
+			break;
+			case WorkshopQueryType::SUBSCRIBED_PALETTES:
+			{
+				retrieveSubscribedPalettes(pageNumber + 1);
+			}
+			break;
+			case WorkshopQueryType::NONE:
+			break;
+		}
+	}
+
+	startNextWorkshopQuery();
+}
+
+void Steam::openUrl(const std::string& url)
+{
+	LOGD << "Opening " << url;
+#ifdef CANDIDATE
+	if (SteamFriends())
+#else
+#ifdef DEVELOPMENT
+	if (false)
+#else
+	if (SteamFriends())
+#endif
+#endif
+	{
+		SteamFriends()->ActivateGameOverlayToWebPage(url.c_str());
+	}
+	else
+	{
+		System::openURL(url.c_str());
+	}
+}
+
+void Steam::restorePublishedItem(const PublishedWorkshopItem& published)
+{
+	if (published.fileId <= 0)
+	{
+		LOGE << "Invalid published workshop item.";
+		return;
+	}
+	_workshopItem.fileId = published.fileId;
+	_workshopItem.state = WorkshopItemState::READY;
+	if (published.title.size() + 1 < _workshopItem.title.size())
+	{
+		std::copy(published.title.begin(), published.title.end(),
+			_workshopItem.title.data());
+		_workshopItem.title[published.title.size()] = '\0';
+	}
+	if (published.description.size() + 1 < _workshopItem.description.size())
+	{
+		std::copy(published.description.begin(), published.description.end(),
+			_workshopItem.description.data());
+		_workshopItem.description[published.description.size()] = '\0';
+	}
+}
+
+void Steam::openWorkshopForMap(const std::string& mapname)
+{
+	if (_workshopItem.type == WorkshopItemType::MAP
+		&& _workshopItem.authoredName == mapname)
+	{
+		return;
+	}
+	else if (!_runningWorkshopQueries.empty())
+	{
+		resetWorkshopItem(WorkshopItemType::NONE);
+		return;
+	}
+
+	resetWorkshopItem(WorkshopItemType::MAP);
+	_workshopItem.authoredName = mapname;
+	for (const auto& item : _publishedWorkshopItems)
+	{
+		if (item.type == _workshopItem.type
+			&& item.authoredName == _workshopItem.authoredName)
+		{
+			restorePublishedItem(item);
+		}
+	}
+}
+
+void Steam::openWorkshopForRuleset(const std::string& rulesetname)
+{
+	if (_workshopItem.type == WorkshopItemType::RULESET
+		&& _workshopItem.authoredName == rulesetname)
+	{
+		return;
+	}
+	else if (!_runningWorkshopQueries.empty())
+	{
+		resetWorkshopItem(WorkshopItemType::NONE);
+		return;
+	}
+
+	resetWorkshopItem(WorkshopItemType::RULESET);
+	_workshopItem.authoredName = rulesetname;
+	for (const auto& item : _publishedWorkshopItems)
+	{
+		if (item.type == _workshopItem.type
+			&& item.authoredName == _workshopItem.authoredName)
+		{
+			restorePublishedItem(item);
+		}
+	}
+
+	_workshopItem.previewScreenshotPath = System::absolutePath(
+		Locator::picture("steam/ruleset_preview"));
+}
+
+void Steam::openWorkshopForPalette(const std::string& palettename)
+{
+	if (_workshopItem.type == WorkshopItemType::PALETTE
+		&& _workshopItem.authoredName == palettename)
+	{
+		return;
+	}
+	else if (!_runningWorkshopQueries.empty())
+	{
+		resetWorkshopItem(WorkshopItemType::NONE);
+		return;
+	}
+
+	resetWorkshopItem(WorkshopItemType::PALETTE);
+	_workshopItem.authoredName = palettename;
+	for (const auto& item : _publishedWorkshopItems)
+	{
+		if (item.type == _workshopItem.type
+			&& item.authoredName == _workshopItem.authoredName)
+		{
+			restorePublishedItem(item);
+		}
+	}
+}
+
+void Steam::closeAllWorkshops()
+{
+	resetWorkshopItem(WorkshopItemType::NONE);
+}
+
+void Steam::refreshSubscribedWorkshopItems()
+{
+	int n = SteamUGC()->GetNumSubscribedItems();
+	if (n <= 0) return;
+	std::vector<PublishedFileId_t> fileIds(n, 0);
+	n = SteamUGC()->GetSubscribedItems(fileIds.data(), fileIds.size());
+	LOGD << "Got " << n << " subscribed items";
+
+	// Remove unsubscribed palettes.
+	{
+		std::vector<std::string> removals;
+		for (const auto& item : Palette::externalItems())
+		{
+			size_t pos = item.uniqueTag.find("@WORKSHOP/");
+			if (pos == std::string::npos) continue;
+			std::string idstr = item.uniqueTag.substr(
+				pos + strlen("@WORKSHOP/"));
+			bool keep = false;
+			for (const auto& fileId : fileIds)
+			{
+				if (std::to_string(fileId) == idstr)
+				{
+					keep = true;
+					break;
+				}
+			}
+			if (!keep)
+			{
+				removals.push_back(item.uniqueTag);
+			}
+		}
+		for (const auto& removal : removals)
+		{
+			Palette::unlistExternalItem(removal);
+		}
+	}
+
+	// Remove unsubscribed maps.
+	{
+		std::vector<std::string> removals;
+		for (const auto& item : Map::externalItems())
+		{
+			size_t pos = item.uniqueTag.find("@WORKSHOP/");
+			if (pos == std::string::npos) continue;
+			std::string idstr = item.uniqueTag.substr(
+				pos + strlen("@WORKSHOP/"));
+			bool keep = false;
+			for (const auto& fileId : fileIds)
+			{
+				if (std::to_string(fileId) == idstr)
+				{
+					keep = true;
+					break;
+				}
+			}
+			if (!keep)
+			{
+				removals.push_back(item.uniqueTag);
+			}
+		}
+		for (const auto& removal : removals)
+		{
+			Map::unlistExternalItem(removal);
+		}
+	}
+
+	// Remove unsubscribed external folders.
+	{
+		std::vector<std::string> removals;
+		for (const auto& item : Locator::externalFolders())
+		{
+			size_t pos = item.uniqueTag.find("@WORKSHOP/");
+			if (pos == std::string::npos) continue;
+			std::string idstr = item.uniqueTag.substr(
+				pos + strlen("@WORKSHOP/"));
+			bool keep = false;
+			for (const auto& fileId : fileIds)
+			{
+				if (std::to_string(fileId) == idstr)
+				{
+					keep = true;
+					break;
+				}
+			}
+			if (!keep)
+			{
+				removals.push_back(item.uniqueTag);
+			}
+		}
+		for (const auto& removal : removals)
+		{
+			Locator::forgetExternalFolder(removal);
+		}
+	}
+
+	retrieveSubscribedPalettes();
+	retrieveSubscribedMaps();
+	retrieveSubscribedRulesets();
+}
+
+void Steam::handleItemInstalled(ItemInstalled_t* result, bool failure)
+{
+	if (failure) LOGE << "IO failed";
+	else if (result == nullptr) LOGE << "Unexpected null";
+	else if (result->m_unAppID == APPLICATION_ID)
+	{
+		auto fileId = result->m_nPublishedFileId;
+		LOGD << "Item " << fileId << " was installed.";
+		refreshSubscribedWorkshopItems();
+	}
 }
 
 extern "C" void __cdecl steam_log_callback(int severity, const char* text)

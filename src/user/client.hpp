@@ -35,10 +35,12 @@ namespace femtozip
 
 #include "account.hpp"
 #include "responsestatus.hpp"
+#include "response.hpp"
 
 class Settings;
 class Game;
 class GameOwner;
+class HostedGame;
 class ClientHandler;
 class StreamedMessage;
 class ParsedMessage;
@@ -48,8 +50,8 @@ struct Version;
 struct Download;
 class Curl;
 class PatchInProgress;
-struct Response;
 enum class PortalStatus:  uint8_t;
+class Screenshot;
 
 
 struct EmailPreference
@@ -92,6 +94,7 @@ private:
 	TCPsocket _socket = nullptr;
 	std::string _lobbyID = "";
 	std::weak_ptr<Game> _game;
+	std::weak_ptr<HostedGame> _hosted;
 	bool _disconnected = false;
 	bool _resetting = false;
 	bool _initialized = false;
@@ -295,4 +298,16 @@ public:
 	void steamDisconnected();
 	void steamMissing();
 	void steamJoinGame(const std::string& secret);
+
+	void openWorkshopForMap(const std::string& mapname);
+	void openWorkshopForRuleset(const std::string& rulesetname);
+	void openWorkshopForPalette(const std::string& palettename);
+	void closeAllWorkshops();
+
+	void openUrl(const std::string& url);
+
+	void takeScreenshot(std::weak_ptr<Screenshot> screenshot);
+	void takeScreenshotOfMap();
+
+	void hostedGameStarted(std::weak_ptr<HostedGame> hostedGame);
 };

@@ -286,7 +286,7 @@ int Damage::hitpoints(Cell index, const TileToken& tile)
 	int loss = 0;
 
 	// Frostbite only affects ground units.
-	if (_board.frostbite(index) >= _bible.frostbiteThresholdVulnerability()
+	if ((_board.frostbite(index) ? 1 : 0) >= _bible.frostbiteThresholdVulnerability()
 			&& !_bible.frostbiteOnlyTargetsGroundUnits())
 	{
 		loss++;
@@ -333,7 +333,7 @@ int Damage::hitpoints(Cell index, const UnitToken& unit)
 	int loss = 0;
 
 	// Frostbite affects everything.
-	if (_board.frostbite(index) >= _bible.frostbiteThresholdVulnerability()
+	if ((_board.frostbite(index) ? 1 : 0) >= _bible.frostbiteThresholdVulnerability()
 			&& (!_bible.frostbiteOnlyTargetsGroundUnits()
 				|| !_bible.unitAir(unit.type)))
 	{

@@ -45,6 +45,7 @@
 
 static const char* ordinal(uint8_t x);
 
+static constexpr int MIN_TURNS_DRAW = 5;
 static constexpr int ABSOLUTE_MAX_TURNS = 100;
 
 class Tracker
@@ -298,7 +299,8 @@ EssAI::Result EssAI::playGame(size_t offset, Tracker& tracker)
 					phase = Phase::DECAY;
 					break;
 				}
-				else if (automaton.globalScore() <= 0)
+				else if (automaton.globalScore() <= 0
+					&& turns >= MIN_TURNS_DRAW)
 				{
 					draw = true;
 					phase = Phase::DECAY;
@@ -1003,6 +1005,101 @@ void EssAI::run(size_t games)
 			+ "graphs/globalwarming-output.tsv";
 		writeGlobalWarmingTsv(tracker, filename);
 	}
+
+	if (!_fullsuitelogname.empty())
+	{
+		System::touchFile(_fullsuitelogname);
+		std::ofstream out = System::ofstream(_fullsuitelogname,
+			std::ofstream::out | std::ofstream::app);
+		if (!out)
+		{
+			LOGE << "Failed to open " << _fullsuitelogname << " for writing";
+			throw std::runtime_error("failed to open " + _fullsuitelogname
+				+ " for writing");
+		}
+		for (const Result& result : results)
+		{
+			Json::Value entry = Json::objectValue;
+			entry["map"] = _mapname;
+			bool winner = false;
+			entry["usernames"] = Json::arrayValue;
+			for (size_t i = 0; i < _ainames.size(); i++)
+			{
+				std::string username = "[bot]" + _ainames[i] + ":"
+					+ stringify(_aidifficulties[i]);
+				entry["usernames"].append(username);
+				if (result.scores[i] > 0)
+				{
+					winner = true;
+					entry["winner"] = username;
+					entry["score"] = result.scores[i];
+				}
+			}
+			if (!winner)
+			{
+				entry["winner"] = Json::nullValue;
+				entry["score"] = result.totalScore;
+			}
+			out << Writer::write(entry) << std::endl;
+		}
+	}
+}
+
+void EssAI::runFullSuite(size_t ngames)
+{
+	{
+		time_t starttime;
+		std::time(&starttime);
+		char humantime[100];
+		std::strftime(humantime, sizeof(humantime), "%Y-%m-%dT%Hh%Mm%S",
+			std::localtime(&starttime));
+		_fullsuitelogname = LogInstaller::getLogsFolderWithSlash() + "essai/"
+			+ "fullsuite_game_results_" + humantime + ".log";
+	}
+
+	std::vector<std::string> ainames = {"RampantRhino", "HungryHippo",
+		"NeuralNewt", "ChargingCheetah"};
+	std::vector<Difficulty> aidiffs = {Difficulty::HARD,
+		Difficulty::MEDIUM, Difficulty::EASY};
+
+	for (const std::string& mapname : Map::pool())
+	{
+		Json::Value mapmetadata = Map::loadMetadata(mapname);
+		if (mapmetadata["playercount"] != 2) continue;
+		_mapname = mapname;
+		for (size_t i = 0; i < ainames.size(); i++)
+		{
+			for (size_t j = i + 1; j < ainames.size(); j++)
+			{
+				_ainames = {ainames[i], ainames[j]};
+				for (size_t u = 0; u < aidiffs.size(); u++)
+				{
+					for (size_t v = 0; v < aidiffs.size(); v++)
+					{
+						_aidifficulties = {aidiffs[u], aidiffs[v]};
+						run(ngames);
+					}
+				}
+			}
+
+			_ainames = {ainames[i], ainames[i]};
+			for (size_t u = 0; u < aidiffs.size(); u++)
+			{
+				for (size_t v = u + 1; v < aidiffs.size(); v++)
+				{
+					_aidifficulties = {aidiffs[u], aidiffs[v]};
+					run(ngames);
+				}
+			}
+
+			_ainames = {ainames[i], "Dummy"};
+			for (size_t u = 0; u < aidiffs.size(); u++)
+			{
+				_aidifficulties = {aidiffs[u], Difficulty::NONE};
+				run(ngames);
+			}
+		}
+	}
 }
 
 int main(int argc, char* argv[])
@@ -1015,6 +1112,7 @@ int main(int argc, char* argv[])
 	std::vector<Difficulty> aidifficulties;
 	std::string mapname = "";
 	bool record = false;
+	bool fullsuite = false;
 	int ngames = 0;
 
 	Settings settings("settings-essai.json", argc, argv);
@@ -1038,6 +1136,10 @@ int main(int argc, char* argv[])
 		else if (strcmp(arg, "record") == 0)
 		{
 			record = true;
+		}
+		else if (strcmp(arg, "fullsuite") == 0)
+		{
+			fullsuite = true;
 		}
 		else if (arglen > 9 + 5
 			&& strncmp(arg, "rulesets/", 9) == 0
@@ -1104,7 +1206,14 @@ int main(int argc, char* argv[])
 
 	if (ngames == 0)
 	{
-		ngames = 1000;
+		if (fullsuite)
+		{
+			ngames = 1;
+		}
+		else
+		{
+			ngames = 1000;
+		}
 	}
 
 	EssAI essai(settings,
@@ -1113,7 +1222,15 @@ int main(int argc, char* argv[])
 		aidifficulties,
 		mapname,
 		record);
-	essai.run(ngames);
+
+	if (fullsuite)
+	{
+		essai.runFullSuite(ngames);
+	}
+	else
+	{
+		essai.run(ngames);
+	}
 
 	std::cout << std::endl << std::endl << "[ Done ]" << std::endl;
 	return 0;

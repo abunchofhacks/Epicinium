@@ -186,6 +186,8 @@ private:
 	void doFirestormEffect(Cell at);
 	void doGasEffect(Cell at);
 	void doRadiationEffect(Cell at);
+	bool hasColdFeet(Cell at);
+	void checkColdFeetCleanse(Cell at, ChangeSet& changes);
 
 	void checkRegularDefeat();
 	void checkChallengeDefeat();

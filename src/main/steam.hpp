@@ -34,6 +34,7 @@
 #pragma GCC diagnostic pop
 
 #include "clienthandler.hpp"
+#include "screenshot.hpp"
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Winvalid-offsetof"
@@ -43,6 +44,16 @@
 	_STEAM_CALLBACK_3(/**/, Steam, handle##X, Get##X##_t)
 #define AUTO_STEAM_CALLBACK_NEW(X) \
 	_STEAM_CALLBACK_3(/**/, Steam, handle##X, New##X##_t)
+
+#define AUTO_STEAM_CALL_RESULT(X) \
+	X_STEAM_CALL_RESULT(await##X, handle##X, X##_t, _future##X)
+#define X_STEAM_CALL_RESULT(AWAITER, HANDLER, RESULTTYPE, MEMBER) \
+	CCallResult<Steam, RESULTTYPE> MEMBER;\
+	void AWAITER(SteamAPICall_t call) \
+	{ \
+		MEMBER.Set(call, this, &Steam::HANDLER);\
+	} \
+	void HANDLER(RESULTTYPE* result, bool failure)/**/
 
 class Client;
 
@@ -66,6 +77,71 @@ private:
 		{
 			return std::vector<uint8_t>(_buffer, _buffer + _length);
 		}
+	};
+
+	enum class WorkshopItemState
+	{
+		NONE,
+		CREATING,
+		UPLOADING,
+		READY,
+		CREATION_FAILED,
+		UPLOAD_FAILED,
+	};
+
+	enum class WorkshopItemType
+	{
+		NONE,
+		MAP,
+		RULESET,
+		PALETTE,
+	};
+
+	struct WorkshopItem
+	{
+		WorkshopItemState state = WorkshopItemState::NONE;
+		WorkshopItemType type = WorkshopItemType::NONE;
+
+		PublishedFileId_t fileId;
+
+		std::array<char, k_cchPublishedDocumentTitleMax> title = {};
+		std::array<char, k_cchPublishedDocumentDescriptionMax> description = {};
+
+		std::string authoredName;
+		std::string contentPath;
+		std::shared_ptr<Screenshot> previewScreenshot;
+		std::string previewScreenshotPath;
+		std::shared_ptr<Screenshot> panelScreenshot;
+		std::string panelScreenshotPath;
+	};
+
+	struct PublishedWorkshopItem
+	{
+		WorkshopItemType type = WorkshopItemType::NONE;
+
+		PublishedFileId_t fileId;
+
+		std::string title;
+		std::string description;
+		std::string authoredName;
+	};
+
+	enum class WorkshopQueryType
+	{
+		NONE,
+		PUBLISHED,
+		SUBSCRIBED_MAPS,
+		SUBSCRIBED_RULESETS,
+		SUBSCRIBED_PALETTES,
+	};
+
+	struct WorkshopQuery
+	{
+		WorkshopQueryType type = WorkshopQueryType::NONE;
+
+		UGCQueryHandle_t handle;
+
+		int pageNumber;
 	};
 
 	Steam(Client& client);
@@ -93,7 +169,6 @@ private:
 	int _numPlayersAndBots;
 	int _numBots;
 	int _numPlayers;
-	std::string _challengeDisplayName;
 	bool _isPlaying;
 	bool _isSpectating;
 
@@ -101,11 +176,19 @@ private:
 	std::string _groupSize;
 	std::string _legacyStatus;
 	std::string _localizedStatus;
-	std::string _challengeKey;
 	std::string _lobbyTypeKey;
 	std::string _lobbyMaxSize;
 	std::string _lobbyCurSize;
 	std::string _connectCommand;
+
+	WorkshopItem _workshopItem;
+	std::vector<PublishedWorkshopItem> _publishedWorkshopItems;
+	std::vector<WorkshopQuery> _runningWorkshopQueries;
+
+	AUTO_STEAM_CALL_RESULT(CreateItemResult);
+	AUTO_STEAM_CALL_RESULT(SubmitItemUpdateResult);
+	AUTO_STEAM_CALL_RESULT(SteamUGCQueryCompleted);
+	AUTO_STEAM_CALL_RESULT(ItemInstalled);
 
 	AUTO_STEAM_CALLBACK_GET(AuthSessionTicketResponse);
 	AUTO_STEAM_CALLBACK_NEW(UrlLaunchParameters);
@@ -117,6 +200,21 @@ private:
 	void clearLobbyInfo();
 	void updateLobbyInfo();
 	void updatePresence();
+
+	bool resetWorkshopItem(const WorkshopItemType& type);
+	void updateWorkshop();
+	void submitWorkshopItem();
+	void retrievePublishedWorkshopItems(int pageNumber = 1);
+	void restorePublishedItem(const PublishedWorkshopItem& published);
+	void refreshSubscribedWorkshopItems();
+	void retrieveSubscribedMaps(int pageNumber = 1);
+	void retrieveSubscribedRulesets(int pageNumber = 1);
+	void retrieveSubscribedPalettes(int pageNumber = 1);
+	void addWorkshopQuery(WorkshopQuery&& query);
+	void startNextWorkshopQuery();
+
+	std::string saveScreenshot(std::shared_ptr<Screenshot> screenshot,
+		const std::string& picturename);
 
 public:
 	static bool shouldRestart();
@@ -135,10 +233,17 @@ public:
 		const Json::Value& metadata) override;
 	virtual void joinsOwnLobby(const std::string& name, bool isSelf) override;
 	virtual void leavesOwnLobby(const std::string& name) override;
-	virtual void listChallenge(const std::string& name, const Json::Value& metadata) override;
 	virtual void receiveSecrets(const Json::Value& metadata) override;
 	virtual void startGame(const Role& role) override;
 	virtual void startTutorial() override;
+
+	virtual void screenshotTaken(std::weak_ptr<Screenshot> screenshot) override;
+	virtual void openWorkshopForMap(const std::string& mapname) override;
+	virtual void openWorkshopForRuleset(const std::string& rulesetname) override;
+	virtual void openWorkshopForPalette(const std::string& palettename) override;
+	virtual void closeAllWorkshops() override;
+
+	virtual void openUrl(const std::string& url) override;
 
 	void update();
 };

@@ -43,6 +43,7 @@ Notice parseNotice(const std::string& str)
 	else if (str == "lackingstacks")       return Notice::LACKINGSTACKS;
 	else if (str == "lackingpower")        return Notice::LACKINGPOWER;
 	else if (str == "lackingmoney")        return Notice::LACKINGMONEY;
+	else if (str == "coldfeet")            return Notice::COLDFEET;
 	else if (str == "occupiedbyenemy")     return Notice::OCCUPIEDBYENEMY;
 	else if (str == "activeattack") return Notice::ACTIVEATTACK;
 	else if (str == "retaliationattack") return Notice::RETALIATIONATTACK;
@@ -73,6 +74,7 @@ const char* stringify(const Notice& notice)
 		case Notice::LACKINGSTACKS:       return "lackingstacks";
 		case Notice::LACKINGPOWER:        return "lackingpower";
 		case Notice::LACKINGMONEY:        return "lackingmoney";
+		case Notice::COLDFEET:            return "coldfeet";
 		case Notice::OCCUPIEDBYENEMY:     return "occupiedbyenemy";
 		case Notice::ACTIVEATTACK: return "activeattack";
 		case Notice::RETALIATIONATTACK: return "retaliationattack";

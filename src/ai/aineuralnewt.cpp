@@ -28,6 +28,9 @@
 #include "aim.hpp"
 #include "bible.hpp"
 
+ // windows.h is being annoying
+#undef near
+
 
 std::string AINeuralNewt::ainame() const
 {
@@ -937,7 +940,10 @@ void AINeuralNewt::moveDefense(const Descriptor& unitdesc,
 	for (Cell at : _board)
 	{
 		if (_board.gas(at)) continue;
-		if (_board.frostbite(at)) continue;
+		if (_board.frostbite(at)
+			// In Spring, frostbite is used to indicate "Chilled" units.
+			&& !(_bible.frostbiteGivesColdFeet()
+				&& _bible.chaosMinFrostbite(_season) < 0)) continue;
 		if (_board.firestorm(at)) continue;
 		if (_board.death(at)) continue;
 		int threatdis = _enemyBaseFloodfill.steps(at);
@@ -1056,6 +1062,7 @@ void AINeuralNewt::moveUnit(const Descriptor& unitdesc,
 	size_t length = 0;
 	for (; length < moves.size(); length++)
 	{
+		bool stop = false;
 		for (const Move& dir : {Move::E, Move::S, Move::W, Move::N})
 		{
 			if (dir == moves[length] || ::flip(dir) == moves[length]) continue;
@@ -1073,9 +1080,11 @@ void AINeuralNewt::moveUnit(const Descriptor& unitdesc,
 					&& _board.ground(at).owner == _player
 					&& at != from))
 			{
+				stop = true;
 				break;
 			}
 		}
+		if (stop) break;
 		at = at + moves[length];
 	}
 	if (length == 0)
@@ -1086,7 +1095,11 @@ void AINeuralNewt::moveUnit(const Descriptor& unitdesc,
 	{
 		moves.resize(length);
 	}
-	else assert(target == at);
+	else if (target != at)
+	{
+		LOGE << "Assertion failure";
+		DEBUG_ASSERT(target == at);
+	}
 
 	bestOrderScore = targetScore;
 	bestOrder = Order(Order::Type::MOVE, unitdesc,

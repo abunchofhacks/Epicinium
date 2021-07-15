@@ -518,6 +518,17 @@ StreamedMessage Message::num_players(
 	return message;
 }
 
+StreamedMessage Message::claim_host()
+{
+	StreamedMessage message;
+	message._type = Message::Type::CLAIM_HOST;
+	std::stringstream strm;
+	strm << "{\"type\":\"claim_host\"";
+	strm << "}";
+	message._str = strm.str();
+	return message;
+}
+
 StreamedMessage Message::claim_role(
 		const Role& role, const std::string& username)
 {
@@ -1067,6 +1078,31 @@ StreamedMessage Message::change(
 	return message;
 }
 
+StreamedMessage Message::change(
+		const TypeNamer& typenamer,
+		const std::vector<Change>& changes,
+		const Json::Value& metadata)
+{
+	StreamedMessage message;
+	message._type = Message::Type::CHANGE;
+	std::stringstream strm;
+	strm << "{\"type\":\"change\"";
+	strm << ",\"metadata\":" << Writer::write(metadata);
+	strm << ",\"changes\":[";
+	strm << TypeEncoder(&typenamer);
+	bool empty = true;
+	for (auto& change : changes)
+	{
+		if (empty) empty = false;
+		else strm << ",";
+		strm << change;
+	}
+	strm << "]";
+	strm << "}";
+	message._str = strm.str();
+	return message;
+}
+
 StreamedMessage Message::order_old(
 		const TypeNamer& typenamer,
 		const std::vector<Order>& orders)
@@ -1157,6 +1193,56 @@ StreamedMessage Message::sync(
 	std::stringstream strm;
 	strm << "{\"type\":\"sync\"";
 	strm << ",\"time\":" << std::to_string(time);
+	strm << "}";
+	message._str = strm.str();
+	return message;
+}
+
+StreamedMessage Message::host_sync()
+{
+	StreamedMessage message;
+	message._type = Message::Type::HOST_SYNC;
+	std::stringstream strm;
+	strm << "{\"type\":\"host_sync\"";
+	strm << "}";
+	message._str = strm.str();
+	return message;
+}
+
+StreamedMessage Message::host_sync(const Json::Value& metadata)
+{
+	StreamedMessage message;
+	message._type = Message::Type::HOST_SYNC;
+	std::stringstream strm;
+	strm << "{\"type\":\"host_sync\"";
+	strm << ",\"metadata\":" << Writer::write(metadata);
+	strm << "}";
+	message._str = strm.str();
+	return message;
+}
+
+StreamedMessage Message::host_rejoin_changes(
+		const TypeNamer& typenamer,
+		const std::vector<Change>& changes,
+		const Player& player, const std::string& username)
+{
+	StreamedMessage message;
+	message._type = Message::Type::HOST_REJOIN_CHANGES;
+	std::stringstream strm;
+	strm << "{\"type\":\"host_rejoin_changes\"";
+	strm << ",\"player\":\"" << player << "\"";
+	strm << ",\"content\":"
+		<< Json::valueToQuotedString(username.c_str());
+	strm << ",\"changes\":[";
+	strm << TypeEncoder(&typenamer);
+	bool empty = true;
+	for (auto& change : changes)
+	{
+		if (empty) empty = false;
+		else strm << ",";
+		strm << change;
+	}
+	strm << "]";
 	strm << "}";
 	message._str = strm.str();
 	return message;
@@ -1495,6 +1581,10 @@ ParsedMessage::ParsedMessage(Json::Value&& json) :
 		break;
 		case Type::RECENT_STARS:
 		{
+			if (_json["content"].isString())
+			{
+				_content = _json["content"].asString();
+			}
 			if (_json["time"].isUInt())
 			{
 				_time = _json["time"].asUInt();
@@ -1606,6 +1696,14 @@ ParsedMessage::ParsedMessage(Json::Value&& json) :
 			if (_json["content"].isString())
 			{
 				_content = _json["content"].asString();
+			}
+		}
+		break;
+		case Type::CLAIM_HOST:
+		{
+			if (_json["sender"].isString())
+			{
+				_sender = _json["sender"].asString();
 			}
 		}
 		break;
@@ -1815,6 +1913,36 @@ ParsedMessage::ParsedMessage(Json::Value&& json) :
 			}
 		}
 		break;
+		case Type::HOST_SYNC:
+		break;
+		case Type::HOST_REJOIN_REQUEST:
+		{
+			if (_json["player"].isString())
+			{
+				_player = parsePlayer(_json["player"].asString());
+			}
+			if (_json["content"].isString())
+			{
+				_content = _json["content"].asString();
+			}
+		}
+		break;
+		case Type::HOST_REJOIN_CHANGES:
+		{
+			if (_json["player"].isString())
+			{
+				_player = parsePlayer(_json["player"].asString());
+			}
+			if (_json["content"].isString())
+			{
+				_content = _json["content"].asString();
+			}
+			if (!_json["changes"].isArray())
+			{
+				throw ParseError("No changes array");
+			}
+		}
+		break;
 		case Type::PING:
 		case Type::PONG:
 		case Type::QUIT:
@@ -1873,6 +2001,7 @@ Message::Type Message::parseMessageType(const std::string& type)
 	else if (type == "name_lobby") return Type::NAME_LOBBY;
 	else if (type == "max_players") return Type::MAX_PLAYERS;
 	else if (type == "num_players") return Type::NUM_PLAYERS;
+	else if (type == "claim_host") return Type::CLAIM_HOST;
 	else if (type == "claim_role") return Type::CLAIM_ROLE;
 	else if (type == "claim_color") return Type::CLAIM_COLOR;
 	else if (type == "assign_color") return Type::CLAIM_COLOR;
@@ -1910,6 +2039,9 @@ Message::Type Message::parseMessageType(const std::string& type)
 	else if (type == "order_old") return Type::ORDER_OLD;
 	else if (type == "order_new") return Type::ORDER_NEW;
 	else if (type == "sync") return Type::SYNC;
+	else if (type == "host_sync") return Type::HOST_SYNC;
+	else if (type == "host_rejoin_request") return Type::HOST_REJOIN_REQUEST;
+	else if (type == "host_rejoin_changes") return Type::HOST_REJOIN_CHANGES;
 	else if (type == "ping") return Type::PING;
 	else if (type == "pong") return Type::PONG;
 	else if (type == "quit") return Type::QUIT;
@@ -1978,6 +2110,7 @@ bool Message::compressible(const Type& type)
 		case Type::UNLOCK_LOBBY:
 		case Type::MAX_PLAYERS:
 		case Type::NUM_PLAYERS:
+		case Type::CLAIM_HOST:
 		case Type::CLAIM_ROLE:
 		case Type::CLAIM_COLOR:
 		case Type::CLAIM_VISIONTYPE:
@@ -2014,6 +2147,9 @@ bool Message::compressible(const Type& type)
 		case Type::ORDER_OLD:
 		case Type::ORDER_NEW:
 		case Type::SYNC:
+		case Type::HOST_SYNC:
+		case Type::HOST_REJOIN_REQUEST:
+		case Type::HOST_REJOIN_CHANGES:
 		case Type::PING:
 		case Type::PONG:
 		case Type::QUIT:

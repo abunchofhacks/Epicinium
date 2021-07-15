@@ -32,6 +32,15 @@
 #include "aibrawlingbear.hpp"
 #include "aibrawlingbearfree.hpp"
 #include "aineuralnewt.hpp"
+#include "aistorysaddlehead.hpp"
+#include "aistorysalmon.hpp"
+#include "aistorysandperch.hpp"
+#include "aistorysawfish.hpp"
+#include "aistoryseabass.hpp"
+#include "aistoryseahorse.hpp"
+#include "aistorystarfish.hpp"
+#include "aistorystingray.hpp"
+#include "aistorysturgeon.hpp"
 #include "ailibrary.hpp"
 
 
@@ -80,6 +89,42 @@ AICommander* AI::allocate(const std::string& ainame,
 	{
 		return new AIBrawlingBearFree(player, difficulty, ruleset, character);
 	}
+	if (lowered == "storystarfish")
+	{
+		return new AIStoryStarfish(player, difficulty, ruleset, character);
+	}
+	if (lowered == "storysturgeon")
+	{
+		return new AIStorySturgeon(player, difficulty, ruleset, character);
+	}
+	if (lowered == "storysaddlehead")
+	{
+		return new AIStorySaddlehead(player, difficulty, ruleset, character);
+	}
+	if (lowered == "storysalmon")
+	{
+		return new AIStorySalmon(player, difficulty, ruleset, character);
+	}
+	if (lowered == "storysandperch")
+	{
+		return new AIStorySandperch(player, difficulty, ruleset, character);
+	}
+	if (lowered == "storysawfish")
+	{
+		return new AIStorySawfish(player, difficulty, ruleset, character);
+	}
+	if (lowered == "storyseabass")
+	{
+		return new AIStorySeabass(player, difficulty, ruleset, character);
+	}
+	if (lowered == "storyseahorse")
+	{
+		return new AIStorySeahorse(player, difficulty, ruleset, character);
+	}
+	if (lowered == "storystingray")
+	{
+		return new AIStoryStingray(player, difficulty, ruleset, character);
+	}
 	if (lowered == "dummy")
 	{
 		return new AIDummy(player, difficulty, ruleset, character);
@@ -127,7 +172,35 @@ const std::vector<std::string>& AI::hiddenPool()
 		"TutorialTurtle",
 		"BrawlingBear",
 		"BrawlingBearFree",
+		"StoryStarfish",
+		"StorySturgeon",
+		"StorySaddlehead",
+		"StorySalmon",
+		"StorySandperch",
+		"StorySawfish",
+		"StorySeabass",
+		"StorySeahorse",
+		"StoryStingray",
 		"Dummy",
+	};
+	return pool;
+}
+
+const std::vector<std::string>& AI::selfHostedPool()
+{
+	static std::vector<std::string> pool = {
+		"RampantRhino",
+		"HungryHippo",
+		"ChargingCheetah",
+		"StoryStarfish",
+		"StorySturgeon",
+		"StorySaddlehead",
+		"StorySalmon",
+		"StorySandperch",
+		"StorySawfish",
+		"StorySeabass",
+		"StorySeahorse",
+		"StoryStingray",
 	};
 	return pool;
 }

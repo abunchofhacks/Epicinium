@@ -202,8 +202,9 @@ int main(int /**/, char* /**/[])
 		assert(custombible.version().isWellDefined());
 	}
 
+	for (const Challenge::Id& challengeId : Challenge::pool())
 	{
-		AIChallenge challenge(Challenge::current());
+		AIChallenge challenge(challengeId);
 
 		{
 			std::string challengemapname = challenge.getMapName();

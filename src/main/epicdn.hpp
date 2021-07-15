@@ -60,7 +60,7 @@ private:
 	std::thread _thread;
 
 public:
-	std::string getPicture(const std::string& name);
+	void getPicture(const std::string& name);
 
 	void update();
 

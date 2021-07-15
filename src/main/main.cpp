@@ -35,6 +35,8 @@
 #include "onlinetutorial.hpp"
 #include "onlinereplay.hpp"
 #include "onlinediorama.hpp"
+#include "onlinelocalgame.hpp"
+#include "hostedgame.hpp"
 #include "aichallenge.hpp"
 #include "settings.hpp"
 #include "exitcode.hpp"
@@ -43,6 +45,7 @@
 #include "bot.hpp"
 #include "difficulty.hpp"
 #include "ai.hpp"
+#include "aicommander.hpp"
 #include "ailibrary.hpp"
 #include "map.hpp"
 #include "account.hpp"
@@ -56,6 +59,8 @@
 #include "palette.hpp"
 #include "spritepattern.hpp"
 #include "curl.hpp"
+#include "openurl.hpp"
+#include "message.hpp"
 
 
 static void help(const Settings& settings)
@@ -354,7 +359,7 @@ int main(int argc, char* argv[])
 		else if (challengeid >= 0
 			&& ((size_t) challengeid) < Challenge::ID_SIZE)
 		{
-			engine.startChallenge((Challenge::Id) challengeid);
+			engine.startChallenge((Challenge::Id) challengeid, "");
 		}
 
 		exitcode = engine.run();
@@ -520,6 +525,14 @@ void Main::startUpdates()
 	_client.obey(_dictator);
 #endif
 
+	if (_screenshot)
+	{
+		// Tell all ClientHandler implementors that a screenshot was taken.
+		// The screenshot will be cleared by Engine::startUpdates().
+		// Afterwards, we can create new a new screenshot.
+		ClientHandlerHandler::screenshotTaken(_screenshot);
+	}
+
 	Engine::startUpdates();
 
 #if STEAM_ENABLED
@@ -544,9 +557,35 @@ void Main::quit(ExitCode exitcode)
 	Engine::quit(exitcode);
 }
 
-std::string Main::getPicture(const std::string& name)
+void Main::getPicture(const std::string& name)
 {
-	return _epiCDN.getPicture(name);
+	_epiCDN.getPicture(name);
+}
+
+std::string Main::activePaletteName() const
+{
+	return _skineditor.activePaletteName();
+}
+
+void Main::openPaletteEditor(const std::string& palettename)
+{
+	return _skineditor.openPaletteEditor(palettename);
+}
+
+void Main::openUrl(const std::string& url)
+{
+#if STEAM_ENABLED
+	if (_steam)
+	{
+		_steam->openUrl(url);
+	}
+	else
+	{
+		System::openURL(url);
+	}
+#else
+	System::openURL(url);
+#endif
 }
 
 void Main::sendStomt(bool positive, const std::string& text)
@@ -560,11 +599,27 @@ std::weak_ptr<Game> Main::startGame(imploding_ptr<Game> game)
 	return Engine::startGame(std::move(game));
 }
 
-std::weak_ptr<Game> Main::startChallenge(const Challenge& challenge)
+std::weak_ptr<Game> Main::startChallenge(const Challenge& challenge,
+	const std::string& name)
 {
-	return startGame(new LocalGame(*this, _settings,
-		std::make_shared<AIChallenge>(challenge),
-		/*silentQuit=*/false));
+	if (name.empty())
+	{
+		return startGame(new LocalGame(*this, _settings,
+			std::make_shared<AIChallenge>(challenge),
+			/*silentQuit=*/false));
+	}
+	else
+	{
+		std::string mapname = name;
+		std::string rulesetname = Library::nameCurrentBible();
+		if (Library::existsBible(name))
+		{
+			rulesetname = name;
+		}
+		return startGame(new OnlineLocalGame(*this, _settings, _client,
+			std::make_shared<AIChallenge>(challenge),
+			mapname, rulesetname));
+	}
 }
 
 std::weak_ptr<Game> Main::startGame(
@@ -597,8 +652,42 @@ std::weak_ptr<Game> Main::startDiorama()
 		Map::DIORAMA_MAPNAME));
 }
 
+std::weak_ptr<HostedGame> Main::startHostedGame(
+		const std::vector<Player>& playercolors,
+		const std::vector<VisionType>& visiontypes,
+		const std::vector<std::string>& usernames,
+		const std::vector<Bot>& bots,
+		bool hasObservers,
+		const std::string& mapname, const std::string& rulesetname)
+{
+	_hosted = new HostedGame(_client,
+		playercolors, visiontypes, usernames, bots, hasObservers,
+		mapname, rulesetname);
+	return _hosted.remember();
+}
+
 void Main::stopGame()
 {
 	Engine::stopGame();
+	_hosted = nullptr;
 	_menu.show();
+}
+
+void Main::reportAwardedStars(int amount)
+{
+	Json::Value metadata = Json::objectValue;
+	metadata["game_over"] = true;
+	metadata["stars"] = amount;
+	_client.send(Message::host_sync(metadata));
+}
+
+void Main::takeScreenshot(std::weak_ptr<Screenshot> screenshot)
+{
+	// The screenshot will be rendered by the Engine during the next frame.
+	_nextScreenshot = screenshot.lock();
+}
+
+bool Main::isTakingScreenshot()
+{
+	return (_screenshot != nullptr);
 }

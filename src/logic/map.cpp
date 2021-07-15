@@ -60,6 +60,7 @@ std::ostream& operator<<(std::ostream& os, const PoolType& type)
 
 std::string Map::_resourcemapsfolder = "maps/";
 std::string Map::_authoredmapsfolder = "maps/";
+std::vector<Map::ExternalItem> Map::_cachedexternalitems = {};
 
 void Map::setResourceRoot(const std::string& root)
 {
@@ -95,6 +96,14 @@ void Map::setAuthoredRoot(const std::string& root)
 
 std::string Map::readOnlyFilename(const std::string& name)
 {
+	for (const auto& item : _cachedexternalitems)
+	{
+		if (item.uniqueTag == name)
+		{
+			return item.sourceFilename;
+		}
+	}
+
 	std::string fname = authoredFilename(name);
 	if (System::isFile(fname))
 	{
@@ -120,6 +129,14 @@ std::string Map::authoredFilename(const std::string& name)
 
 Json::Value Map::loadMetadata(const std::string& name)
 {
+	for (const auto& item : _cachedexternalitems)
+	{
+		if (item.uniqueTag == name)
+		{
+			return item.metadata;
+		}
+	}
+
 	try
 	{
 		std::ifstream file = System::ifstream(readOnlyFilename(name));
@@ -181,6 +198,11 @@ const std::vector<std::string>& Map::customPool()
 const std::vector<std::string>& Map::userPool()
 {
 	static std::vector<std::string> pool = {
+		{"1diyabl/A Game of Chess"},
+		{"1diyabl/Claustrophobia"},
+		{"1diyabl/Trenches"},
+		{"Clyde/Operation Badger Pass"},
+		{"Fast_gag_pink_king/Big Hello from Russia"},
 		{"Overlord_Vadim/Abandoned Places"},
 		{"Overlord_Vadim/Civil War"},
 		{"Overlord_Vadim/Great Duel"},
@@ -193,6 +215,8 @@ const std::vector<std::string>& Map::userPool()
 		{"Overlord_Vadim/Triumvirate Islands"},
 		{"Overlord_Vadim/War Never Changes"},
 		{"Overlord_Vadim/Winter Confrontation"},
+		{"StormDrago/Lands of Tyrel"},
+		{"StormDrago/Republic of Carsus"},
 	};
 	return pool;
 }
@@ -225,4 +249,47 @@ const std::vector<std::string>& Map::hiddenDioramaPool()
 		DIORAMA_MAPNAME,
 	};
 	return pool;
+}
+
+std::vector<std::string> Map::listAuthored()
+{
+	auto list = System::listDirectory(_authoredmapsfolder, ".map");
+	std::sort(list.begin(), list.end());
+	return list;
+}
+
+void Map::listExternalItem(ExternalItem&& newItem)
+{
+	LOGD << "Listing '" << newItem.uniqueTag << "'"
+		" (a.k.a. " << newItem.quotedName << ")"
+		": " << newItem.sourceFilename;
+
+	for (auto& item : _cachedexternalitems)
+	{
+		if (item.uniqueTag == newItem.uniqueTag)
+		{
+			item = newItem;
+			return;
+		}
+	}
+
+	_cachedexternalitems.emplace_back(newItem);
+}
+
+void Map::unlistExternalItem(const std::string& uniqueTag)
+{
+	LOGD << "Unlisting '" << uniqueTag << "'";
+	_cachedexternalitems.erase(
+		std::remove_if(
+			_cachedexternalitems.begin(),
+			_cachedexternalitems.end(),
+			[&](const ExternalItem& item) {
+				return item.uniqueTag == uniqueTag;
+			}),
+		_cachedexternalitems.end());
+}
+
+const std::vector<Map::ExternalItem>& Map::externalItems()
+{
+	return _cachedexternalitems;
 }

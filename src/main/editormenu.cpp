@@ -26,6 +26,8 @@
 
 #include "settings.hpp"
 #include "mapeditor.hpp"
+#include "camera.hpp"
+#include "client.hpp"
 
 
 void EditorMenu::build()
@@ -49,7 +51,87 @@ void EditorMenu::refresh()
 	}
 }
 
+void EditorMenu::onOpen()
+{
+	_client.registerHandler(this);
+
+	if (_layout.born())
+	{
+		Camera::get()->changeScale(_settings.getEditorScale());
+	}
+}
+
+void EditorMenu::onKill()
+{
+	_client.deregisterHandler(this);
+
+	Camera::get()->changeScale(_settings.scale.value());
+}
+
+void EditorMenu::onShow()
+{
+	if (_layout.born())
+	{
+		Camera::get()->changeScale(_settings.getEditorScale());
+	}
+}
+
+void EditorMenu::onHide()
+{
+	Camera::get()->changeScale(_settings.scale.value());
+}
+
+void EditorMenu::debugHandler() const
+{
+	LOGD << ((void*) this);
+}
+
 void EditorMenu::onConfirmQuit()
 {
 	quit();
+}
+
+bool EditorMenu::hasWorkshop()
+{
+	return _client.isSteamEnabled();
+}
+
+void EditorMenu::openWorkshop(const std::string& mapname,
+	const std::string& rulesetname)
+{
+	if (mapname == "colorsample")
+	{
+		_client.openWorkshopForPalette(_owner.activePaletteName());
+	}
+	else if (mapname.empty())
+	{
+		_client.openWorkshopForRuleset(rulesetname);
+	}
+	else
+	{
+		_client.openWorkshopForMap(mapname);
+	}
+}
+
+void EditorMenu::closeWorkshop()
+{
+	if (hasWorkshop())
+	{
+		_client.closeAllWorkshops();
+	}
+}
+
+void EditorMenu::openPaletteEditor()
+{
+	_owner.openPaletteEditor("");
+}
+
+bool EditorMenu::isTakingScreenshot()
+{
+	return _owner.isTakingScreenshot();
+}
+
+void EditorMenu::takeScreenshotOfMap()
+{
+	_client.takeScreenshot(_mapeditor->prepareScreenshotOfMap());
 }

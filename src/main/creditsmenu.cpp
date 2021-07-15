@@ -141,7 +141,7 @@ void CreditsMenu::build()
 				FONTSIZEMEDIUM, NAMECOLOR));
 		_layout["it"]["credits"]["roles"].add("tom",
 			new TextField(
-				_("game balance, additional content"),
+				_("campaign levels, game balance"),
 				FONTSIZEMEDIUM, ROLECOLOR));
 	}
 	{

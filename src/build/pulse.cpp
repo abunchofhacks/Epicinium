@@ -618,6 +618,7 @@ void Pulse::checkForResponse(std::string& warning, uint64_t& warningTTL)
 				case Message::Type::SECRETS:
 				case Message::Type::SKINS:
 				case Message::Type::IN_GAME:
+				case Message::Type::CLAIM_HOST:
 				case Message::Type::CLAIM_ROLE:
 				case Message::Type::CLAIM_COLOR:
 				case Message::Type::CLAIM_VISIONTYPE:
@@ -651,6 +652,9 @@ void Pulse::checkForResponse(std::string& warning, uint64_t& warningTTL)
 				case Message::Type::ORDER_OLD:
 				case Message::Type::ORDER_NEW:
 				case Message::Type::SYNC:
+				case Message::Type::HOST_SYNC:
+				case Message::Type::HOST_REJOIN_REQUEST:
+				case Message::Type::HOST_REJOIN_CHANGES:
 				case Message::Type::DOWNLOAD:
 				case Message::Type::REQUEST:
 				case Message::Type::REQUEST_DENIED:

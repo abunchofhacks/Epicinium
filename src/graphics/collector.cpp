@@ -59,13 +59,13 @@ void Collector::addOnScreen(std::vector<CoSprite>& drawlist,
 	Pixel pixel = camera->convert(point);
 
 	if (sprite->topleftXenon(pixel.xenon) + sprite->scaledWidth()
-			>                   -5 * camera->SCALE
+			>                   -5 * camera->scale()
 		&&  sprite->topleftXenon(pixel.xenon)
-			< camera->WINDOW_W + 5 * camera->SCALE
+			< camera->width()  + 5 * camera->scale()
 		&&  sprite->topleftYahoo(pixel.yahoo) + sprite->scaledHeight()
-			>                   -5 * camera->SCALE
+			>                   -5 * camera->scale()
 		&&  sprite->topleftYahoo(pixel.yahoo)
-			< camera->WINDOW_H + 5 * camera->SCALE)
+			< camera->height() + 5 * camera->scale())
 	{
 		drawlist.emplace_back(sprite, pixel);
 	}

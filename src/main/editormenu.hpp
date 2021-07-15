@@ -26,9 +26,11 @@
 
 #include "menu.hpp"
 #include "mapeditor.hpp"
+#include "clienthandler.hpp"
 
 
-class EditorMenu final : public Menu, private MapEditor::Owner
+class EditorMenu final : public Menu, private MapEditor::Owner,
+	private ClientHandler
 {
 private:
 	std::unique_ptr<MapEditor> _mapeditor;
@@ -41,7 +43,25 @@ public:
 	virtual void beforeFirstRefreshOfEachSecond() override;
 	virtual void refresh() override;
 
+	virtual void onOpen() override;
+	virtual void onKill() override;
+	virtual void onShow() override;
+	virtual void onHide() override;
+
 	virtual Settings& settings() override { return _settings; }
 
 	virtual void onConfirmQuit() override;
+
+	virtual bool isTakingScreenshot() override;
+
+	virtual bool hasWorkshop() override;
+	virtual void openWorkshop(const std::string& mapname,
+		const std::string& rulesetname) override;
+	virtual void closeWorkshop() override;
+
+	virtual void openPaletteEditor() override;
+
+	virtual void debugHandler() const override;
+
+	virtual void takeScreenshotOfMap() override;
 };

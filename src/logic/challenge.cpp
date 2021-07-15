@@ -33,6 +33,32 @@
 #include "roundinfo.hpp"
 
 
+
+const std::vector<Challenge::Id>& Challenge::pool()
+{
+	static std::vector<Challenge::Id> pool = {
+		Challenge::Id::SHOWCASE,
+		Challenge::Id::ELIMINATION,
+		Challenge::Id::TRAMPLE,
+		Challenge::Id::MORALE,
+		Challenge::Id::EVERYTHINGISFREE,
+		Challenge::Id::HIGHSPEED,
+		Challenge::Id::INVESTMENT,
+	};
+	return pool;
+}
+
+const std::vector<Challenge::Id>& Challenge::campaign()
+{
+	static std::vector<Challenge::Id> pool = {
+		Challenge::Id::ACT1A, Challenge::Id::ACT1B, Challenge::Id::ACT1C,
+		Challenge::Id::ACT1D, Challenge::Id::ACT1E, Challenge::Id::ACT1F,
+		Challenge::Id::ACT2A, Challenge::Id::ACT2B, Challenge::Id::ACT2C,
+		Challenge::Id::ACT2D, Challenge::Id::ACT2E,
+	};
+	return pool;
+}
+
 static int tileCount(const Board& board, const TileType& tiletype)
 {
 	int count = 0;
@@ -77,9 +103,19 @@ Notice Challenge::check(const Id& id, const Bible&, const Board& board,
 		case ELIMINATION:
 		case EVERYTHINGISFREE:
 		case TRAMPLE:
-		case TRAMPLE2:
 		case HIGHSPEED:
 		case MORALE:
+		case ACT1A:
+		case ACT1B:
+		case ACT1C:
+		case ACT1D:
+		case ACT1E:
+		case ACT1F:
+		case ACT2A:
+		case ACT2B:
+		case ACT2C:
+		case ACT2D:
+		case ACT2E:
 		{
 			return Notice::NONE;
 		}
@@ -124,9 +160,19 @@ void Challenge::score(const Id& id, const Bible&, const Board&,
 		case ELIMINATION:
 		case EVERYTHINGISFREE:
 		case TRAMPLE:
-		case TRAMPLE2:
 		case HIGHSPEED:
 		case MORALE:
+		case ACT1A:
+		case ACT1B:
+		case ACT1C:
+		case ACT1D:
+		case ACT1E:
+		case ACT1F:
+		case ACT2A:
+		case ACT2B:
+		case ACT2C:
+		case ACT2D:
+		case ACT2E:
 		break;
 
 		case INVESTMENT:
@@ -155,10 +201,63 @@ void Challenge::award(const Id& id, const Bible& bible, const Board& board,
 	switch (id)
 	{
 		case CUSTOM:
+		case ACT1A:
+		case ACT1B:
+		case ACT1C:
+		case ACT1D:
+		case ACT2A:
+		case ACT2B:
+		case ACT2C:
+		case ACT2D:
+		case ACT2E:
 		{
 			for (const Player& player : info._players)
 			{
 				if (info._defeated[player])
+				{
+					info._award[player] = 0;
+				}
+				else
+				{
+					info._award[player] = 1;
+				}
+			}
+		}
+		break;
+		case ACT1E:
+		{
+			for (const Player& player : info._players)
+			{
+				int score = info._score[player];
+				if (score >= 75)
+				{
+					info._award[player] = 2;
+				}
+				else if (info._defeated[player])
+				{
+					info._award[player] = 0;
+				}
+				else
+				{
+					info._award[player] = 1;
+				}
+			}
+		}
+		break;
+		case ACT1F:
+		{
+			for (const Player& player : info._players)
+			{
+				int score = info._score[player];
+				if (score >= 100)
+				{
+					info._award[player] = 3;
+				}
+				else if (score >= 80)
+				{
+					info._award[player] = 2;
+				}
+				else if (info._defeated[player])
 				{
 					info._award[player] = 0;
 				}
@@ -245,7 +344,6 @@ void Challenge::award(const Id& id, const Bible& bible, const Board& board,
 		}
 		break;
 		case TRAMPLE:
-		case TRAMPLE2:
 		{
 			for (const Player& player : info._players)
 			{

@@ -362,7 +362,7 @@ void Curl::finish(Transfer transfer)
 		return;
 	}
 
-	CURLcode errorcode = transfer.response->errorcode;
+	CURLcode errorcode = (CURLcode) transfer.response->errorcode;
 
 	if (errorcode == CURLE_OK)
 	{

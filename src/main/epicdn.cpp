@@ -65,11 +65,18 @@ EpiCDN::~EpiCDN()
 	LOGI << "Thread finished";
 }
 
-std::string EpiCDN::getPicture(const std::string& picturename)
+void EpiCDN::getPicture(const std::string& picturename)
 {
 	// We want to request each picture only once, but we want to make sure we
 	// have the latest version every time we restart the game.
 	static std::unordered_set<std::string> requested;
+
+	// Do not try to download externally downloaded pictures ourselves.
+	if (picturename.find_first_of('@') != std::string::npos)
+	{
+		LOGD << "Skipping external picture '" << picturename << "'";
+		return;
+	}
 
 	// If the have not yet downloaded this avatar, do so now.
 	if (requested.count(picturename) == 0)
@@ -92,7 +99,7 @@ std::string EpiCDN::getPicture(const std::string& picturename)
 		_requestnotifier.notify_one();
 	}
 
-	return picturename;
+	return;
 }
 
 void EpiCDN::update()
@@ -184,10 +191,7 @@ void EpiCDN::runThread()
 			{
 				LOGW << "Error while downloading from EpiCDN: "
 					<< "Curl error " << response.errorcode;
-
-				// Finish this thread.
-				_threadrunning = false;
-				return;
+				continue;
 			}
 
 			if (response.statuscode == 304)
@@ -200,10 +204,7 @@ void EpiCDN::runThread()
 				LOGW << "Got an unexpected response from EpiCDN:"
 					<< " [" << response.statuscode << "]"
 					<< response.body;
-
-				// Finish this thread.
-				_threadrunning = false;
-				return;
+				continue;
 			}
 			else
 			{

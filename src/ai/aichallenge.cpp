@@ -37,14 +37,25 @@ const char* AIChallenge::getKey(const Challenge::Id& id)
 	switch (id)
 	{
 		case CUSTOM: return "";
+		// OLD: "trample_2017_08_01";
 		case SHOWCASE: return "showcase_2018_07_04";
 		case ELIMINATION: return "elimination_2017_07_20";
 		case EVERYTHINGISFREE: return "everythingisfree_2018_07_16";
-		case TRAMPLE: return "trample_2017_08_01";
-		case TRAMPLE2: return "trample_2018_11_26";
+		case TRAMPLE: return "trample_2018_11_26";
 		case HIGHSPEED: return "highspeed_2018_09_21";
 		case INVESTMENT: return "investment_2019_04_15";
 		case MORALE: return "morale_2020_05_06";
+		case ACT1A: return "act_1a_2021_07_14";
+		case ACT1B: return "act_1b_2021_07_14";
+		case ACT1C: return "act_1c_2021_07_14";
+		case ACT1D: return "act_1d_2021_07_14";
+		case ACT1E: return "act_1e_2021_07_14";
+		case ACT1F: return "act_1f_2021_07_14";
+		case ACT2A: return "act_2a_2021_07_14";
+		case ACT2B: return "act_2b_2021_07_14";
+		case ACT2C: return "act_2c_2021_07_14";
+		case ACT2D: return "act_2d_2021_07_14";
+		case ACT2E: return "act_2e_2021_07_14";
 	}
 	return "";
 }
@@ -53,17 +64,10 @@ std::vector<Player> AIChallenge::getPlayers()
 {
 	switch (_id)
 	{
-		case CUSTOM: return ::getPlayers(2);
-		case SHOWCASE: return ::getPlayers(2);
-		case ELIMINATION: return ::getPlayers(2);
-		case EVERYTHINGISFREE: return ::getPlayers(2);
 		case TRAMPLE: return ::getPlayers(4);
-		case TRAMPLE2: return ::getPlayers(4);
-		case HIGHSPEED: return ::getPlayers(2);
-		case INVESTMENT: return ::getPlayers(2);
-		case MORALE: return ::getPlayers(2);
+		default: return ::getPlayers(2);
 	}
-	return {};
+	return ::getPlayers(2);
 }
 
 std::vector<Bot> AIChallenge::getBots()
@@ -85,15 +89,8 @@ size_t AIChallenge::getNumBots(const Challenge::Id& id)
 {
 	switch (id)
 	{
-		case CUSTOM: return 1;
-		case SHOWCASE: return 1;
-		case ELIMINATION: return 1;
-		case HIGHSPEED: return 1;
-		case EVERYTHINGISFREE: return 1;
 		case TRAMPLE: return 3;
-		case TRAMPLE2: return 3;
-		case INVESTMENT: return 1;
-		case MORALE: return 1;
+		default: return 1;
 	}
 	return 0;
 }
@@ -108,9 +105,19 @@ const char* AIChallenge::getBotName(const Challenge::Id& id)
 		case HIGHSPEED: return "BrawlingBear";
 		case EVERYTHINGISFREE: return "BrawlingBearFree";
 		case TRAMPLE: return "BrawlingBearFree";
-		case TRAMPLE2: return "BrawlingBearFree";
 		case INVESTMENT: return "Dummy";
 		case MORALE: return "BrawlingBearFree";
+		case ACT1A: return "StoryStarfish";
+		case ACT1B: return "StoryStarfish";
+		case ACT1C: return "StoryStarfish";
+		case ACT1D: return "StorySalmon";
+		case ACT1E: return "StorySeahorse";
+		case ACT1F: return "StorySeabass";
+		case ACT2A: return "StorySaddlehead";
+		case ACT2B: return "StorySandperch";
+		case ACT2C: return "StorySturgeon";
+		case ACT2D: return "StoryStingray";
+		case ACT2E: return "StorySawfish";
 	}
 	return "";
 }
@@ -125,9 +132,19 @@ Difficulty AIChallenge::getBotDifficulty(const Challenge::Id& id)
 		case HIGHSPEED: return Difficulty::MEDIUM;
 		case EVERYTHINGISFREE: return Difficulty::EASY;
 		case TRAMPLE: return Difficulty::MEDIUM;
-		case TRAMPLE2: return Difficulty::MEDIUM;
 		case INVESTMENT: return Difficulty::NONE;
 		case MORALE: return Difficulty::HARD;
+		case ACT1A: return Difficulty::EASY;
+		case ACT1B: return Difficulty::MEDIUM;
+		case ACT1C: return Difficulty::HARD;
+		case ACT1D: return Difficulty::HARD;
+		case ACT1E: return Difficulty::HARD;
+		case ACT1F: return Difficulty::HARD;
+		case ACT2A: return Difficulty::HARD;
+		case ACT2B: return Difficulty::HARD;
+		case ACT2C: return Difficulty::HARD;
+		case ACT2D: return Difficulty::HARD;
+		case ACT2E: return Difficulty::HARD;
 	}
 	return Difficulty::NONE;
 }
@@ -146,10 +163,20 @@ const char* AIChallenge::getMapName(const Challenge::Id& id)
 		case ELIMINATION: return "challenge_elimination";
 		case EVERYTHINGISFREE: return "spruce1v1";
 		case TRAMPLE: return "challenge_trample";
-		case TRAMPLE2: return "challenge_trample";
 		case HIGHSPEED: return "oasis1v1";
 		case INVESTMENT: return "challenge_investment";
 		case MORALE: return "challenge_morale";
+		case ACT1A: return "Act1a";
+		case ACT1B: return "Act1b";
+		case ACT1C: return "Act1c";
+		case ACT1D: return "Act1d";
+		case ACT1E: return "Act1e";
+		case ACT1F: return "Act1f";
+		case ACT2A: return "Act2a";
+		case ACT2B: return "Act2b";
+		case ACT2C: return "Act2c";
+		case ACT2D: return "Act2d";
+		case ACT2E: return "Act2e";
 	}
 	return "";
 }
@@ -163,15 +190,25 @@ const char* AIChallenge::getRulesetName(const Challenge::Id& id)
 {
 	switch (id)
 	{
-		case CUSTOM: return "";
+		case CUSTOM: return "challenge_custom";
 		case SHOWCASE: return "";
 		case ELIMINATION: return "";
 		case EVERYTHINGISFREE: return "challenge_everythingisfree";
 		case TRAMPLE: return "challenge_trample";
-		case TRAMPLE2: return "challenge_trample";
 		case HIGHSPEED: return "challenge_highspeed";
 		case INVESTMENT: return "challenge_investment";
 		case MORALE: return "challenge_morale";
+		case ACT1A: return "Act1a";
+		case ACT1B: return "Act1b";
+		case ACT1C: return "Act1c";
+		case ACT1D: return "Act1d";
+		case ACT1E: return "Act1e";
+		case ACT1F: return "Act1f";
+		case ACT2A: return "Act2a";
+		case ACT2B: return "Act2b";
+		case ACT2C: return "Act2c";
+		case ACT2D: return "Act2d";
+		case ACT2E: return "Act2e";
 	}
 	return "";
 }
@@ -188,40 +225,72 @@ std::string AIChallenge::getDisplayName(const Challenge::Id& id)
 		case CUSTOM:
 		case SHOWCASE:
 		{
-			return _("Showcase");
+			return _("Preservation Challenge");
 		}
 		break;
 		case ELIMINATION:
 		{
-			return _("Elimination");
+			return _("Elimination Challenge");
 		}
 		break;
 		case EVERYTHINGISFREE:
 		{
-			return _("Everything is Free");
+			return _("Everything is Free Challenge");
 		}
 		break;
 		case TRAMPLE:
-		case TRAMPLE2:
 		{
-			return _("Tank Derby");
+			return _("Tank Derby Challenge");
 		}
 		break;
 		case HIGHSPEED:
 		{
-			return _("High Speed");
+			return _("High Speed Challenge");
 		}
 		break;
 		case INVESTMENT:
 		{
-			return _("Economic Growth");
+			return _("Economic Growth Challenge");
 		}
 		break;
 		case MORALE:
 		{
-			return _("Morale");
+			return _("Morale Challenge");
 		}
 		break;
+		case ACT1A: return ::format(
+			_("Act %d - Level %d"),
+			1, 1);
+		case ACT1B: return ::format(
+			_("Act %d - Level %d"),
+			1, 2);
+		case ACT1C: return ::format(
+			_("Act %d - Level %d"),
+			1, 3);
+		case ACT1D: return ::format(
+			_("Act %d - Level %d"),
+			1, 4);
+		case ACT1E: return ::format(
+			_("Act %d - Level %d"),
+			1, 5);
+		case ACT1F: return ::format(
+			_("Act %d - Level %d"),
+			1, 6);
+		case ACT2A: return ::format(
+			_("Act %d - Level %d"),
+			2, 1);
+		case ACT2B: return ::format(
+			_("Act %d - Level %d"),
+			2, 2);
+		case ACT2C: return ::format(
+			_("Act %d - Level %d"),
+			2, 3);
+		case ACT2D: return ::format(
+			_("Act %d - Level %d"),
+			2, 4);
+		case ACT2E: return ::format(
+			_("Act %d - Level %d"),
+			2, 5);
 	}
 	return "";
 }
@@ -240,10 +309,20 @@ const char* AIChallenge::getPanelPictureName(const Challenge::Id& id)
 		case ELIMINATION: return "panels/challenge_elimination";
 		case EVERYTHINGISFREE: return "panels/challenge_everythingisfree";
 		case TRAMPLE: return "panels/challenge_trample";
-		case TRAMPLE2: return "panels/challenge_trample";
 		case HIGHSPEED: return "panels/challenge_highspeed";
 		case INVESTMENT: return "panels/challenge_investment";
 		case MORALE: return "panels/challenge_morale";
+		case ACT1A: return "panels/Act1a";
+		case ACT1B: return "panels/Act1b";
+		case ACT1C: return "panels/Act1c";
+		case ACT1D: return "panels/Act1d";
+		case ACT1E: return "panels/Act1e";
+		case ACT1F: return "panels/Act1f";
+		case ACT2A: return "panels/Act2a";
+		case ACT2B: return "panels/Act2b";
+		case ACT2C: return "panels/Act2c";
+		case ACT2D: return "panels/Act2d";
+		case ACT2E: return "panels/Act2e";
 	}
 	return "";
 }
@@ -262,32 +341,20 @@ const char* AIChallenge::getDiscordImageKey(const Challenge::Id& id)
 		case ELIMINATION: return "challenge_elimination";
 		case EVERYTHINGISFREE: return "challenge_everythingisfree";
 		case TRAMPLE: return "challenge_trample";
-		case TRAMPLE2: return "challenge_trample";
 		case HIGHSPEED: return "challenge_highspeed";
 		case INVESTMENT: return "challenge_investment";
 		case MORALE: return "challenge_morale";
-	}
-	return "";
-}
-
-std::string AIChallenge::getSteamShortKey()
-{
-	return AIChallenge::getSteamShortKey(_id);
-}
-
-const char* AIChallenge::getSteamShortKey(const Challenge::Id& id)
-{
-	switch (id)
-	{
-		case CUSTOM: return "showcase";
-		case SHOWCASE: return "showcase";
-		case ELIMINATION: return "elimination";
-		case EVERYTHINGISFREE: return "everythingisfree";
-		case TRAMPLE: return "trample";
-		case TRAMPLE2: return "trample";
-		case HIGHSPEED: return "highspeed";
-		case INVESTMENT: return "investment";
-		case MORALE: return "morale";
+		case ACT1A: return "campaign";
+		case ACT1B: return "campaign";
+		case ACT1C: return "campaign";
+		case ACT1D: return "campaign";
+		case ACT1E: return "campaign";
+		case ACT1F: return "campaign";
+		case ACT2A: return "campaign";
+		case ACT2B: return "campaign";
+		case ACT2C: return "campaign";
+		case ACT2D: return "campaign";
+		case ACT2E: return "campaign";
 	}
 	return "";
 }
@@ -324,6 +391,29 @@ std::string AIChallenge::getBrief(const Challenge::Id& id,
 	switch (id)
 	{
 		case CUSTOM:
+		{
+			switch (brief)
+			{
+				case Brief::GREETING: return _(""
+				"Greetings, Commander!"
+				"");
+				case Brief::DESCRIPTION: return "";
+				case Brief::OBJECTIVE: return "";
+				// These have to be hardcoded, because they are translated
+				// client-side by matching the exact string, and we want
+				// challenges to not require client binary patches, only server
+				// patches and optionally client translation file updates.
+				case Brief::FIRST_STAR: return _(""
+				"Defeat the enemy."
+				"");
+				case Brief::SECOND_STAR: return "";
+				case Brief::THIRD_STAR: return "";
+				case Brief::SENDOFF: return _(""
+				"Good luck!"
+				"");
+			}
+		}
+		break;
 		case SHOWCASE:
 		{
 			switch (brief)
@@ -437,7 +527,6 @@ std::string AIChallenge::getBrief(const Challenge::Id& id,
 		}
 		break;
 		case TRAMPLE:
-		case TRAMPLE2:
 		{
 			switch (brief)
 			{
@@ -565,6 +654,44 @@ std::string AIChallenge::getBrief(const Challenge::Id& id,
 				" at the end of the game,"
 				" and each remaining Barracks, Industry or Airfield tile"
 				" is worth 1 point."
+				"");
+				case Brief::FIRST_STAR: return _(""
+				"Get 2 points."
+				"");
+				case Brief::SECOND_STAR: return _(""
+				"Get 5 points."
+				"");
+				case Brief::THIRD_STAR: return _(""
+				"Get 8 points."
+				"");
+				case Brief::SENDOFF: return _(""
+				"Good luck!"
+				"");
+			}
+		}
+		break;
+		case ACT1A:
+		case ACT1B:
+		case ACT1C:
+		case ACT1D:
+		case ACT1E:
+		case ACT1F:
+		case ACT2A:
+		case ACT2B:
+		case ACT2C:
+		case ACT2D:
+		case ACT2E:
+		{
+			switch (brief)
+			{
+				case Brief::GREETING: return _(""
+				"Greetings, Commander!"
+				"");
+				case Brief::DESCRIPTION: return _(""
+				"Text!"
+				"");
+				case Brief::OBJECTIVE: return _(""
+				"More text!"
 				"");
 				case Brief::FIRST_STAR: return _(""
 				"Get 2 points."

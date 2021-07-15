@@ -165,6 +165,8 @@ void Skin::storeContentsIntoJson(Json::Value& json) const
 	if (baseOffset) json["base-offset"] = baseOffset;
 	if (yahooOffset) json["yahoo-offset"] = yahooOffset;
 	if (deathsound) json["deathsound"] = deathsound;
+	if (trimmed) json["trimmed"] = trimmed;
+	if (ninepatched) json["ninepatched"] = ninepatched;
 }
 
 std::shared_ptr<Skin> Skin::clone(const std::string& newname) const
@@ -311,6 +313,16 @@ void Skin::fillContentsFromJson(const Json::Value& json)
 	if (!json["deathsound"].isNull())
 	{
 		deathsound = json["deathsound"].asBool();
+	}
+
+	if (!json["trimmed"].isNull())
+	{
+		trimmed = json["trimmed"].asBool();
+	}
+
+	if (!json["ninepatched"].isNull())
+	{
+		ninepatched = json["ninepatched"].asBool();
 	}
 }
 

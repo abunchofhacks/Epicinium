@@ -52,8 +52,9 @@ static bool _dpIngame = false;
 static std::string _dpMap;
 static std::string _dpUserMapDescription;
 static std::string _dpChallenge;
-static std::string _dpChallengeDisplayName;
-static std::string _dpChallengeImageKey;
+static std::vector<std::string> _dpListedChallengeKey; // (married)
+static std::vector<std::string> _dpListedChallengeDisplayName; // (married)
+static std::vector<std::string> _dpListedChallengeImageKey; // (married)
 static std::string _dpReplay;
 static std::string _dpPartyId;
 static std::string _dpJoinSecret;
@@ -339,26 +340,42 @@ void DiscordRPC::pickReplay(const std::string& replayname)
 	updatePresence();
 }
 
-void DiscordRPC::pickChallenge(const std::string&)
+void DiscordRPC::pickChallenge(const std::string& key)
 {
 	if (!_installed) return;
 
-	_dpChallenge = _dpChallengeDisplayName;
+	_dpChallenge = key;
 	updateLobbyInfo();
 	updatePresence();
 }
 
-void DiscordRPC::listChallenge(const std::string&, const Json::Value& metadata)
+void DiscordRPC::listChallenge(const std::string& key,
+		const Json::Value& metadata)
 {
 	if (!_installed) return;
 
+	size_t offset = _dpListedChallengeKey.size();
+	auto iter = std::find(_dpListedChallengeKey.begin(),
+		_dpListedChallengeKey.end(), key);
+	if (iter < _dpListedChallengeKey.end())
+	{
+		offset = iter - _dpListedChallengeKey.begin();
+	}
+	else
+	{
+		_dpListedChallengeKey.emplace_back(key);
+		_dpListedChallengeDisplayName.emplace_back();
+		_dpListedChallengeImageKey.emplace_back();
+	}
 	if (metadata["display-name"].isString())
 	{
-		_dpChallengeDisplayName = metadata["display-name"].asString();
+		_dpListedChallengeDisplayName[offset] =
+			metadata["display-name"].asString();
 	}
 	if (metadata["discord-image-key"].isString())
 	{
-		_dpChallengeImageKey = metadata["discord-image-key"].asString();
+		_dpListedChallengeImageKey[offset] =
+			metadata["discord-image-key"].asString();
 	}
 }
 
@@ -660,13 +677,21 @@ void DiscordRPC::updateLobbyInfo()
 
 	if (!_dpChallenge.empty())
 	{
-		if (!_dpChallengeImageKey.empty())
+		auto iter = std::find(_dpListedChallengeKey.begin(),
+			_dpListedChallengeKey.end(), _dpChallenge);
+		if (iter < _dpListedChallengeKey.end())
 		{
-			_discordPresence.largeImageKey = _dpChallengeImageKey.c_str();
-		}
-		if (!_dpChallengeDisplayName.empty())
-		{
-			_discordPresence.largeImageText = _dpChallengeDisplayName.c_str();
+			size_t offset = iter - _dpListedChallengeKey.begin();
+			if (!_dpListedChallengeImageKey[offset].empty())
+			{
+				_discordPresence.largeImageKey =
+					_dpListedChallengeImageKey[offset].c_str();
+			}
+			if (!_dpListedChallengeDisplayName[offset].empty())
+			{
+				_discordPresence.largeImageText =
+					_dpListedChallengeDisplayName[offset].c_str();
+			}
 		}
 	}
 	else if (_dpMap.find_first_of('/') != std::string::npos)

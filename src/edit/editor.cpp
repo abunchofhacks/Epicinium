@@ -123,7 +123,7 @@ Editor::Editor(Settings& settings, const std::string& mapname) :
 	_loop(*this, _settings.framerate.value()),
 	_graphics(_settings),
 	_renderer(_graphics),
-	_camera(_settings, _graphics.width(), _graphics.height()),
+	_camera(_graphics.width(), _graphics.height(), _settings.getEditorScale()),
 	_mixer(_settings)
 {
 	_writer.install();
@@ -289,7 +289,7 @@ std::weak_ptr<Game> Editor::startGame(imploding_ptr<Game> /**/)
 	return std::weak_ptr<Game>();
 }
 
-std::weak_ptr<Game> Editor::startChallenge(const Challenge&)
+std::weak_ptr<Game> Editor::startChallenge(const Challenge&, const std::string&)
 {
 	// Not implemented.
 	return std::weak_ptr<Game>();
@@ -325,7 +325,24 @@ std::weak_ptr<Game> Editor::startDiorama()
 	return std::weak_ptr<Game>();
 }
 
+std::weak_ptr<HostedGame> Editor::startHostedGame(
+		const std::vector<Player>& /**/,
+		const std::vector<VisionType>& /**/,
+		const std::vector<std::string>& /**/,
+		const std::vector<Bot>& /**/,
+		bool /**/,
+		const std::string& /**/, const std::string& /**/)
+{
+	// Not implemented.
+	return std::weak_ptr<HostedGame>();
+}
+
 void Editor::stopGame()
 {
 	// Not implemented.
+}
+
+void Editor::openPaletteEditor()
+{
+	return _skineditor.openPaletteEditor("");
 }

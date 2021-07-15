@@ -210,8 +210,8 @@ void Sprite::drawBackgroundQuads(GLuint /**/, int x, int y)
 	// We cover the entire window with this texture.
 	int wl = 0;
 	int wt = 0;
-	int wr = Camera::get()->WINDOW_W;
-	int wb = Camera::get()->WINDOW_H;
+	int wr = Camera::get()->width();
+	int wb = Camera::get()->height();
 	float s1 = 1.0f * (wl - l) / (r - l);
 	float t1 = 1.0f * (wt - t) / (b - t);
 	float s2 = 1.0f * (wr - l) / (r - l);
@@ -528,11 +528,11 @@ void Sprite::setNinePatch()
 	_ninepatch = true;
 	_pattern->cutNinePatch();
 
-	_emptyWidth = Camera::get()->SCALE * (
+	_emptyWidth = Camera::get()->scale() * (
 		+ _pattern->leftPatchWidth()
 		+ _pattern->rightPatchWidth());
 
-	_emptyHeight = Camera::get()->SCALE * (
+	_emptyHeight = Camera::get()->scale() * (
 		+ _pattern->topPatchHeight()
 		+ _pattern->bottomPatchHeight());
 }
@@ -720,7 +720,7 @@ void Sprite::update()
 
 int Sprite::drawscale() const
 {
-	return _upscale * Camera::get()->SCALE;
+	return _upscale * Camera::get()->scale();
 }
 
 int Sprite::width() const

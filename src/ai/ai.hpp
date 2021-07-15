@@ -45,6 +45,7 @@ public:
 	static std::string libraryDefaultFilename(const std::string& name);
 
 	static const std::vector<std::string>& pool();
+    static const std::vector<std::string>& selfHostedPool();
 
 private:
 	static const std::vector<std::string>& hiddenPool();

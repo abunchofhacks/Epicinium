@@ -85,6 +85,10 @@ Frame::Frame(const char* sname) :
 	_palettesize = std::min(_sprite->paletteSize(), 6);
 }
 
+Frame::Frame(const Skin& skin) :
+	Image(skin)
+{}
+
 std::unique_ptr<InterfaceElement> Frame::makeItem()
 {
 	return makeItem(ColorName::FRAMETRANSPARENTITEM);

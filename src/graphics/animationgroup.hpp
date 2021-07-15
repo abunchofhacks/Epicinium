@@ -39,6 +39,7 @@ public:
 	bool morale = false;
 	bool attacker = false;
 	bool multiculti = false;
+	bool coldfeet = false;
 	Player player;
 	int8_t unitslot = 0;
 	int8_t fromrow = 0;

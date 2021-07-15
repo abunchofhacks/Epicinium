@@ -32,7 +32,11 @@ enum class TileType : uint8_t
 	NONE = 0,
 };
 
+#if NEURALNEWT_20x13_ENABLED
+static constexpr size_t TILETYPE_SIZE = 19;
+#else
 static constexpr size_t TILETYPE_SIZE = 32;
+#endif
 
 TileType parseTileType(const TypeNamer& namer, const std::string& str);
 

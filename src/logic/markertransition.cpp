@@ -39,6 +39,7 @@ namespace MarkerFlag
 		FIRESTORM = 0x04,
 		BONEDROUGHT = 0x08,
 		DEATH = 0x10,
+		COLDFEET = 0x20,
 	};
 }
 
@@ -152,10 +153,16 @@ void MarkerTransition::execute()
 	}
 }
 
+constexpr Season previousSeason(const Season& season)
+{
+	return (Season) ((((size_t) season) + SEASON_SIZE - 1) % SEASON_SIZE);
+}
+
 void MarkerTransition::map(Cell index)
 {
 	bool snow;
 	bool frostbite;
+	bool coldfeet;
 	bool firestorm;
 	bool bonedrought;
 	bool death;
@@ -184,6 +191,9 @@ void MarkerTransition::map(Cell index)
 				: (_bible.stackBasedFrostbite())
 				? ((stacks + 1) * _bible.chaosMinFrostbite(_season) <= chaos)
 				: true));
+		coldfeet = (_bible.frostbiteGivesColdFeet()
+				&& _board.frostbite(index) && _board.ground(index)
+				&& _bible.chaosMinFrostbite(previousSeason(_season)) >= 0);
 		firestorm = (_bible.chaosMinFirestorm(_season) >= 0
 			&& !_bible.randomizedFirestorm()
 			&& !_bible.percentageBasedFirestorm()
@@ -245,6 +255,7 @@ void MarkerTransition::map(Cell index)
 			&& temp <= _bible.temperatureMaxSnow(_season);
 		// Frostbite occurs if the temperature is critically low.
 		frostbite = temp <= _bible.temperatureMaxFrostbite(_season);
+		coldfeet = false;
 		// Firestorm occurs if the temperature is critically high.
 		firestorm = temp >= _bible.temperatureMinFirestorm(_season);
 		// Bonedrought occurs if the humidity is critically low.
@@ -259,6 +270,7 @@ void MarkerTransition::map(Cell index)
 	uint8_t result = 0;
 	if (snow) result |= MarkerFlag::SNOW;
 	if (frostbite) result |= MarkerFlag::FROSTBITE;
+	if (coldfeet) result |= MarkerFlag::COLDFEET;
 	if (firestorm) result |= MarkerFlag::FIRESTORM;
 	if (bonedrought) result |= MarkerFlag::BONEDROUGHT;
 	if (death) result |= MarkerFlag::DEATH;
@@ -283,11 +295,17 @@ void MarkerTransition::reduce(Cell index)
 
 	{
 		bool frostbite = (result & MarkerFlag::FROSTBITE);
-		if (frostbite != _board.frostbite(index))
+		bool coldfeet = (result & MarkerFlag::COLDFEET);
+		// Frostbite freezes ground units in Winter. This is implemented by
+		// having it stick around until Spring or until the unit moves.
+		// We issue a second positive FROSTBITE update when this happens, to
+		// help with animations.
+		if (frostbite != _board.frostbite(index)
+			|| (frostbite || coldfeet) != _board.frostbite(index))
 		{
 			Change change(Change::Type::FROSTBITE,
 				Descriptor::cell(index.pos()));
-			change.xFrostbite(frostbite);
+			change.xFrostbite(frostbite || coldfeet);
 			_board.enact(change);
 			_changeset.push(change, _board.vision(index));
 		}

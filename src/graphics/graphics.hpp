@@ -112,4 +112,5 @@ public:
 	void finish();
 
 	void raiseWindow();
+	void resetRenderTarget();
 };

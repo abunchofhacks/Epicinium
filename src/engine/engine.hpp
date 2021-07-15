@@ -43,6 +43,7 @@
 union SDL_Event;
 class Settings;
 class Game;
+class Screenshot;
 
 
 class EngineSDL
@@ -79,6 +80,8 @@ protected:
 	Library _library;
 	SkinEditor _skineditor;
 	imploding_ptr<Game> _game;
+	std::shared_ptr<Screenshot> _nextScreenshot;
+	std::shared_ptr<Screenshot> _screenshot;
 	ExitCode _exitcode;
 	EngineKiller _killer;
 
