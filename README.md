@@ -60,11 +60,11 @@ Also beware that running anything other than the steps from _Getting started_ be
     {
         "type": "default",
         "project": "CMakeLists.txt",
-        "projectTarget": "epicinium.exe",
-        "name": "epicinium.exe",
+        "projectTarget": "game.exe (bin\\game.exe)",
+        "name": "game.exe (bin\\game.exe)",
         "args": [
-            "--font-filename=C:\\PATH\\TO\\FONT",
-            "--resource-root=C:\\PATH\\TO\\RESOURCES"
+            "--font-filename=\"C:\\PATH\\TO\\FONT\"",
+            "--resource-root=\"C:\\PATH\\TO\\RESOURCES\""
         ]
     }
   ]
@@ -72,7 +72,7 @@ Also beware that running anything other than the steps from _Getting started_ be
 ```
 3. Replace `C:\\PATH\\TO\\RESOURCES` to a folder containing Epicinium's assets (see _Locating the assets_ above).
 4. Replace `C:\\PATH\\TO\\FONT` to the path of a TTF font file. If using assets downloaded from Steam or itch.io, you may instead remove that line altogether, which causes the font included with the assets to be used.
-5. Compile and run the target named "epicinium.exe" from within Visual Studio.
+5. Compile and run the target named "game.exe" from within Visual Studio.
 
 ## Getting started (Mac or Linux)
 

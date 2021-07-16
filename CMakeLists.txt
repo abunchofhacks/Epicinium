@@ -158,6 +158,32 @@ set_target_properties(game
 	PROPERTIES
 	RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
 )
+add_custom_command(TARGET game POST_BUILD
+	COMMAND ${CMAKE_COMMAND} -E copy_directory
+		"${ARCHIVE_BIN_PATH}"
+		"${CMAKE_BINARY_DIR}/bin")
+if(STEAM)
+	if(WIN32)
+		add_custom_command(TARGET game POST_BUILD
+			COMMAND ${CMAKE_COMMAND} -E copy
+				"${STEAM_BIN_PATH}/steam_api64.dll"
+				"${CMAKE_BINARY_DIR}/bin")
+	elseif(APPLE)
+		add_custom_command(TARGET game POST_BUILD
+			COMMAND ${CMAKE_COMMAND} -E copy
+				"${STEAM_BIN_PATH}/libsteam_api.dylib"
+				"${CMAKE_BINARY_DIR}/bin")
+	else()
+		add_custom_command(TARGET game POST_BUILD
+			COMMAND ${CMAKE_COMMAND} -E copy
+				"${STEAM_BIN_PATH}/libsteam_api.so"
+				"${CMAKE_BINARY_DIR}/bin")
+	endif()
+	add_custom_command(TARGET game POST_BUILD
+		COMMAND ${CMAKE_COMMAND} -E copy
+			"${CMAKE_SOURCE_DIR}/steam_appid.txt"
+			"${CMAKE_BINARY_DIR}/")
+endif()
 
 add_executable(launcher src/build/launcher.c)
 target_link_libraries(launcher Shlwapi)
@@ -166,30 +192,3 @@ set_target_properties(launcher
 	OUTPUT_NAME "epicinium"
 )
 add_dependencies(launcher game)
-add_custom_command(TARGET launcher POST_BUILD
-	COMMAND ${CMAKE_COMMAND} -E copy_directory
-		"${ARCHIVE_BIN_PATH}"
-		"${CMAKE_BINARY_DIR}/bin")
-if(STEAM)
-	if(WIN32)
-		add_custom_command(TARGET launcher POST_BUILD
-			COMMAND ${CMAKE_COMMAND} -E copy
-				"${STEAM_BIN_PATH}/steam_api64.dll"
-				"${CMAKE_BINARY_DIR}/bin")
-	elseif(APPLE)
-		add_custom_command(TARGET launcher POST_BUILD
-			COMMAND ${CMAKE_COMMAND} -E copy
-				"${STEAM_BIN_PATH}/libsteam_api.dylib"
-				"${CMAKE_BINARY_DIR}/bin")
-	else()
-		add_custom_command(TARGET launcher POST_BUILD
-			COMMAND ${CMAKE_COMMAND} -E copy
-				"${STEAM_BIN_PATH}/libsteam_api.so"
-				"${CMAKE_BINARY_DIR}/bin")
-	endif()
-	add_custom_command(TARGET launcher POST_BUILD
-		COMMAND ${CMAKE_COMMAND} -E copy
-			"${CMAKE_SOURCE_DIR}/steam_appid.txt"
-			"${CMAKE_BINARY_DIR}/")
-endif()
-
