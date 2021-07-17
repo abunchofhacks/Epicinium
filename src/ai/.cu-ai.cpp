@@ -2,6 +2,7 @@
 #include "aibrawlingbear.cpp"
 #include "aibrawlingbearfree.cpp"
 #include "aichallenge.cpp"
+#include "aichargingcheetah.cpp"
 #include "aicommander.cpp"
 #include "aihungryhippo.cpp"
 #include "ailibrary.cpp"

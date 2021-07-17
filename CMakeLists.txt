@@ -86,7 +86,6 @@ add_executable(game src/main/main.cpp
                     src/logic/.cu-automaton.cpp
                     src/logic/bible.cpp
                     src/ai/.cu-ai.cpp
-                    src/ai/aichargingcheetah.cpp
                     src/network/.cu-network.cpp
                     src/message/.cu-message.cpp
                     src/user/.cu-client.cpp

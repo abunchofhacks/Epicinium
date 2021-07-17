@@ -99,7 +99,7 @@ int main(int argc, char* argv[])
 	int nplayers = 2;
 	int challengeid = -1;
 	int launcherversion = 0;
-	std::vector<std::string> invalid_arguments;
+	std::vector<std::string> unused_arguments;
 
 	for (int i = 1; i < argc; i++)
 	{
@@ -109,19 +109,11 @@ int main(int argc, char* argv[])
 		{
 			// Setting argument, will be handled by Settings.
 		}
-		else if (ainames.size() > aidifficulties.size())
-		{
-			aidifficulties.emplace_back(parseDifficulty(arg));
-		}
 		else if (arglen > 9
 			&& strncmp(arg, "launcher=", 9) == 0
 			&& strspn(arg + 9, "0123456789") == arglen - 9)
 		{
 			launcherversion = atoi(arg + 9);
-		}
-		else if (!mapname.empty() && strspn(arg, "0123456789") == arglen)
-		{
-			nplayers = atoi(arg);
 		}
 		else if (arglen > 11 + 4
 			&& strncmp(arg, "recordings/", 11) == 0
@@ -139,18 +131,6 @@ int main(int argc, char* argv[])
 		{
 			record = true;
 		}
-		else if (Map::exists(arg))
-		{
-			mapname = arg;
-		}
-		else if (AI::exists(arg))
-		{
-			ainames.emplace_back(arg);
-		}
-		else if (AILibrary::exists(arg))
-		{
-			ainames.emplace_back(arg);
-		}
 		else if (arglen > 10
 			&& strncmp(arg, "challenge=", 10) == 0
 			&& strspn(arg + 10, "0123456789") == arglen - 10)
@@ -167,7 +147,8 @@ int main(int argc, char* argv[])
 		}
 		else
 		{
-			invalid_arguments.push_back(arg);
+			// Some arguments can only be parsed once we have set roots.
+			unused_arguments.push_back(arg);
 		}
 	}
 
@@ -229,6 +210,35 @@ int main(int argc, char* argv[])
 		Palette::setAuthoredRoot(settings.dataRoot.value());
 		Account::setRoot(settings.dataRoot.value());
 		Recording::setRoot(settings.dataRoot.value());
+	}
+
+	std::vector<std::string> invalid_arguments;
+	for (std::string arg : unused_arguments)
+	{
+		if (ainames.size() > aidifficulties.size())
+		{
+			aidifficulties.emplace_back(parseDifficulty(arg));
+		}
+		else if (!mapname.empty() && strspn(arg.c_str(), "0123456789") == arg.size())
+		{
+			nplayers = atoi(arg.c_str());
+		}
+		else if (Map::exists(arg))
+		{
+			mapname = arg;
+		}
+		else if (AI::exists(arg))
+		{
+			ainames.emplace_back(arg);
+		}
+		else if (AILibrary::exists(arg))
+		{
+			ainames.emplace_back(arg);
+		}
+		else
+		{
+			invalid_arguments.push_back(arg);
+		}
 	}
 
 	LOGI << "Start v" << Version::current();
