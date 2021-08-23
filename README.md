@@ -96,4 +96,5 @@ Epicinium is distributed in the hope that it will be useful, but WITHOUT ANY WAR
 
 *  [Epicinium documentation](https://github.com/abunchofhacks/epicinium-documentation), which includes a wiki and a tutorial for Epicinium
 *  [Epicinium assets](https://github.com/abunchofhacks/Epicinium-assets), assets for Epicinium including audio, sprites, maps, rulesets and other resources
+*  [epicinium_server.rs](https://github.com/abunchofhacks/Epicinium-server-rs), an asynchronous multiplayer server for Epicinium, written in Rust
 *  [Epicinium-NeuralNewt](https://github.com/abunchofhacks/Epicinium-NeuralNewt), a libtorch framework for training neural networks to play Epicinium via NeuralNewt, a parameterized decision tree AI, with evolutionary training techniques
