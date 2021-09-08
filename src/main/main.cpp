@@ -35,7 +35,6 @@
 #include "onlinetutorial.hpp"
 #include "onlinereplay.hpp"
 #include "onlinediorama.hpp"
-#include "onlinelocalgame.hpp"
 #include "hostedgame.hpp"
 #include "aichallenge.hpp"
 #include "settings.hpp"
@@ -114,6 +113,10 @@ int main(int argc, char* argv[])
 			&& strspn(arg + 9, "0123456789") == arglen - 9)
 		{
 			launcherversion = atoi(arg + 9);
+		}
+		else if (!mapname.empty() && strspn(arg, "0123456789") == arglen)
+		{
+			nplayers = atoi(arg);
 		}
 		else if (arglen > 11 + 4
 			&& strncmp(arg, "recordings/", 11) == 0
@@ -369,7 +372,7 @@ int main(int argc, char* argv[])
 		else if (challengeid >= 0
 			&& ((size_t) challengeid) < Challenge::ID_SIZE)
 		{
-			engine.startChallenge((Challenge::Id) challengeid, "");
+			engine.startChallenge((Challenge::Id) challengeid);
 		}
 
 		exitcode = engine.run();
@@ -609,27 +612,11 @@ std::weak_ptr<Game> Main::startGame(imploding_ptr<Game> game)
 	return Engine::startGame(std::move(game));
 }
 
-std::weak_ptr<Game> Main::startChallenge(const Challenge& challenge,
-	const std::string& name)
+std::weak_ptr<Game> Main::startChallenge(const Challenge& challenge)
 {
-	if (name.empty())
-	{
-		return startGame(new LocalGame(*this, _settings,
-			std::make_shared<AIChallenge>(challenge),
-			/*silentQuit=*/false));
-	}
-	else
-	{
-		std::string mapname = name;
-		std::string rulesetname = Library::nameCurrentBible();
-		if (Library::existsBible(name))
-		{
-			rulesetname = name;
-		}
-		return startGame(new OnlineLocalGame(*this, _settings, _client,
-			std::make_shared<AIChallenge>(challenge),
-			mapname, rulesetname));
-	}
+	return startGame(new LocalGame(*this, _settings,
+		std::make_shared<AIChallenge>(challenge),
+		/*silentQuit=*/false));
 }
 
 std::weak_ptr<Game> Main::startGame(
@@ -662,7 +649,8 @@ std::weak_ptr<Game> Main::startDiorama()
 		Map::DIORAMA_MAPNAME));
 }
 
-std::weak_ptr<HostedGame> Main::startHostedGame(
+std::weak_ptr<HostedGame> Main::hostGame(
+		std::shared_ptr<Challenge> challenge,
 		const std::vector<Player>& playercolors,
 		const std::vector<VisionType>& visiontypes,
 		const std::vector<std::string>& usernames,
@@ -671,6 +659,7 @@ std::weak_ptr<HostedGame> Main::startHostedGame(
 		const std::string& mapname, const std::string& rulesetname)
 {
 	_hosted = new HostedGame(_client,
+		challenge,
 		playercolors, visiontypes, usernames, bots, hasObservers,
 		mapname, rulesetname);
 	return _hosted.remember();
@@ -681,14 +670,6 @@ void Main::stopGame()
 	Engine::stopGame();
 	_hosted = nullptr;
 	_menu.show();
-}
-
-void Main::reportAwardedStars(int amount)
-{
-	Json::Value metadata = Json::objectValue;
-	metadata["game_over"] = true;
-	metadata["stars"] = amount;
-	_client.send(Message::host_sync(metadata));
 }
 
 void Main::takeScreenshot(std::weak_ptr<Screenshot> screenshot)

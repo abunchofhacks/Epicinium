@@ -8,5 +8,4 @@
 #include "setting.cpp"
 #include "settings.cpp"
 #include "stringref.cpp"
-#include "system.cpp"
 #include "writer.cpp"

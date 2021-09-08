@@ -310,4 +310,7 @@ public:
 	void takeScreenshotOfMap();
 
 	void hostedGameStarted(std::weak_ptr<HostedGame> hostedGame);
+	void listHostedChallenge(const std::string& name,
+		const Json::Value& metadata);
+	void pickHostedChallenge(const std::string& name);
 };

@@ -91,7 +91,7 @@ private:
 
 	virtual std::weak_ptr<Game> startGame(imploding_ptr<Game> game) override;
 	virtual std::weak_ptr<Game> startChallenge(
-		const Challenge& challenge, const std::string& name) override;
+		const Challenge& challenge) override;
 	virtual std::weak_ptr<Game> startGame(
 		const Player& player, const std::string& rulesetname,
 		uint32_t planningTime) override;
@@ -103,7 +103,8 @@ private:
 		uint32_t planningTime) override;
 	virtual std::weak_ptr<Game> startDiorama() override;
 
-	virtual std::weak_ptr<HostedGame> startHostedGame(
+	virtual std::weak_ptr<HostedGame> hostGame(
+		std::shared_ptr<Challenge> challenge,
 		const std::vector<Player>& colors,
 		const std::vector<VisionType>& visiontypes,
 		const std::vector<std::string>& usernames,

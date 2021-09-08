@@ -39,20 +39,31 @@ OnlineDiorama::OnlineDiorama(GameOwner& owner, Settings& settings,
 		Client& client, const std::string& mapname) :
 	_owner(owner),
 	_client(client),
-	_mapname(mapname),
-	_observer(settings, *this, Library::nameCurrentBible())
-{}
-
-void OnlineDiorama::load()
+	_mapname(mapname)
 {
 	Json::Value metadata;
 	metadata = Map::loadMetadata(_mapname);
-	_observer.setSkins(metadata);
 
-	_observer.load();
+	std::string rulesetname = Library::nameCurrentBible();
+	if (metadata["ruleset"].isString())
+	{
+		std::string name = metadata["ruleset"].asString();
+		if (Library::existsBible(name))
+		{
+			rulesetname = name;
+		}
+	}
+
+	_observer.reset(new Observer(settings, *this, rulesetname));
+	_observer->setSkins(metadata);
+}
+
+void OnlineDiorama::load()
+{
+	_observer->load();
 
 	{
-		Board board(_observer.bible());
+		Board board(_observer->bible());
 		board.load(_mapname);
 
 		ChangeSet cset;
@@ -95,32 +106,32 @@ void OnlineDiorama::load()
 			}
 		}
 		cset.push(Change(Change::Type::BORDER), Vision::none());
-		_observer.receiveChanges(cset.get(Player::OBSERVER));
+		_observer->receiveChanges(cset.get(Player::OBSERVER));
 	}
 
 	{
 		ChangeSet cset;
 		cset.push(Change(Change::Type::PHASE, Phase::RESTING), Vision::none());
-		_observer.receiveChanges(cset.get(Player::OBSERVER));
+		_observer->receiveChanges(cset.get(Player::OBSERVER));
 	}
 
 	{
 		ChangeSet cset;
 		cset.push(Change(Change::Type::PHASE, Phase::PLANNING), Vision::none());
-		_observer.receiveChanges(cset.get(Player::OBSERVER));
+		_observer->receiveChanges(cset.get(Player::OBSERVER));
 	}
 
-	_observer.addChatmode(stringify(Target::GENERAL),
+	_observer->addChatmode(stringify(Target::GENERAL),
 		_("ALL"),
 		ColorName::TEXT800);
-	_observer.setChatmode(stringify(Target::GENERAL));
+	_observer->setChatmode(stringify(Target::GENERAL));
 
 	_client.registerHandler(this);
 }
 
 void OnlineDiorama::update()
 {
-	_observer.update();
+	_observer->update();
 }
 
 void OnlineDiorama::sendOrders()
@@ -130,7 +141,7 @@ void OnlineDiorama::sendOrders()
 
 void OnlineDiorama::attemptQuit()
 {
-	_observer.attemptQuit();
+	_observer->attemptQuit();
 }
 
 void OnlineDiorama::confirmQuit()
@@ -151,11 +162,11 @@ void OnlineDiorama::debugHandler() const
 
 void OnlineDiorama::message(const std::string& message)
 {
-	_observer.message(message);
+	_observer->message(message);
 }
 
 void OnlineDiorama::chat(const std::string& user, const std::string& message,
 		const Target& target)
 {
-	_observer.chat(user, message, stringify(target));
+	_observer->chat(user, message, stringify(target));
 }

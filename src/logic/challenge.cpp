@@ -55,6 +55,9 @@ const std::vector<Challenge::Id>& Challenge::campaign()
 		Challenge::Id::ACT1D, Challenge::Id::ACT1E, Challenge::Id::ACT1F,
 		Challenge::Id::ACT2A, Challenge::Id::ACT2B, Challenge::Id::ACT2C,
 		Challenge::Id::ACT2D, Challenge::Id::ACT2E,
+		Challenge::Id::ACT3A, Challenge::Id::ACT3B, Challenge::Id::ACT3C,
+		Challenge::Id::ACT3D, Challenge::Id::ACT3E, Challenge::Id::ACT3F,
+		Challenge::Id::ACT3G,
 	};
 	return pool;
 }
@@ -85,6 +88,59 @@ static int tileCount(const Board& board, const Player& owner)
 	return count;
 }
 
+static int tileCount(const Board& board,
+	const TileType& tiletype, const Player& owner)
+{
+	int count = 0;
+	for (Cell index : board)
+	{
+		if (board.tile(index).type == tiletype
+			&& board.tile(index).owner == owner)
+		{
+			count++;
+		}
+	}
+	return count;
+}
+
+static int unitCount(const Board& board,
+	const UnitType& unittype, const Player& owner)
+{
+	int count = 0;
+	for (Cell index : board)
+	{
+		if (board.ground(index).type == unittype
+			&& board.ground(index).owner == owner)
+		{
+			count++;
+		}
+
+		if (board.air(index).type == unittype
+			&& board.air(index).owner == owner)
+		{
+			count++;
+		}
+	}
+	return count;
+}
+
+static int unitReachesTile(const Board& board,
+	const UnitType& unittype, const TileType& tiletype, const Player& owner)
+{
+	int count = 0;
+	for (Cell index : board)
+	{
+		if (board.ground(index).type == unittype
+			&& board.ground(index).owner == owner
+			&& board.tile(index).type == tiletype
+			&& board.tile(index).owner == owner)
+		{
+			count++;
+		}
+	}
+	return count;
+}
+
 Notice Challenge::check(const Bible& bible, const Board& board,
 	const RoundInfo& rinfo, PlayerInfo& pinfo,
 	std::vector<Player>& defeats)
@@ -92,7 +148,7 @@ Notice Challenge::check(const Bible& bible, const Board& board,
 	return Challenge::check(_id, bible, board, rinfo, pinfo, defeats);
 }
 
-Notice Challenge::check(const Id& id, const Bible&, const Board& board,
+Notice Challenge::check(const Id& id, const Bible& bible, const Board& board,
 	const RoundInfo& rinfo, PlayerInfo& pinfo,
 	std::vector<Player>& defeats)
 {
@@ -116,6 +172,8 @@ Notice Challenge::check(const Id& id, const Bible&, const Board& board,
 		case ACT2C:
 		case ACT2D:
 		case ACT2E:
+		case ACT3C:
+		case ACT3E:
 		{
 			return Notice::NONE;
 		}
@@ -136,6 +194,164 @@ Notice Challenge::check(const Id& id, const Bible&, const Board& board,
 				}
 
 				return Notice::ROUNDLIMIT;
+			}
+		}
+		break;
+
+		case ACT3A:
+		{
+			TileType citytype = bible.tiletype("city");
+			if (citytype == TileType::NONE)
+			{
+				LOGE << "Missing type 'city'";
+				return Notice::NONE;
+			}
+
+			// Capture (not destroy) neutral city. Lose if blue captures it or
+			// your city.
+			if (tileCount(board, citytype, Player::NONE) == 0)
+			{
+				if (tileCount(board, citytype, Player::RED) >= 2
+					&& tileCount(board, citytype) < 3)
+				{
+					for (const Player& player : pinfo._players)
+					{
+						if (player != Player::BLUE) continue;
+						if (pinfo._defeated[player]) continue;
+
+						defeats.emplace_back(player);
+					}
+				}
+				else
+				{
+					for (const Player& player : pinfo._players)
+					{
+						if (player != Player::RED) continue;
+						if (pinfo._defeated[player]) continue;
+
+						defeats.emplace_back(player);
+					}
+				}
+			}
+			return Notice::NONE;
+		}
+		break;
+		case ACT3B:
+		{
+			TileType towntype = bible.tiletype("town");
+			if (towntype == TileType::NONE)
+			{
+				LOGE << "Missing type 'town'";
+				return Notice::NONE;
+			}
+
+			// Capture 3 towns within 4 years. If not, lose.
+			if (rinfo._year > 4 && rinfo._phase == Phase::GROWTH)
+			{
+				for (const Player& player : pinfo._players)
+				{
+					if (player != Player::RED) continue;
+					if (pinfo._defeated[player]) continue;
+
+					defeats.emplace_back(player);
+				}
+
+				return Notice::ROUNDLIMIT;
+			}
+
+			if (tileCount(board, towntype, Player::RED) >= 3)
+			{
+				for (const Player& player : pinfo._players)
+				{
+					if (player != Player::BLUE) continue;
+					if (pinfo._defeated[player]) continue;
+
+					defeats.emplace_back(player);
+				}
+			}
+			else if (tileCount(board, towntype) < 3)
+			{
+				for (const Player& player : pinfo._players)
+				{
+					if (player != Player::RED) continue;
+					if (pinfo._defeated[player]) continue;
+
+					defeats.emplace_back(player);
+				}
+			}
+
+			return Notice::NONE;
+		}
+		break;
+		case ACT3D:
+		{
+			// Occupy southern airport (only possible by capturing
+			// northern airport and sending zeppelin down).
+			// This is achieved by simply making the airfields binding.
+			return Notice::NONE;
+		}
+		break;
+		case ACT3F:
+		{
+			UnitType gunnertype = bible.unittype("gunner");
+			if (gunnertype == UnitType::NONE)
+			{
+				LOGE << "Missing type 'gunner'";
+				return Notice::NONE;
+			}
+			TileType citytype = bible.tiletype("city");
+			if (citytype == TileType::NONE)
+			{
+				LOGE << "Missing type 'city'";
+				return Notice::NONE;
+			}
+
+			// Kill enemy gunners.
+			if (unitCount(board, gunnertype, Player::BLUE) == 0)
+			{
+				for (const Player& player : pinfo._players)
+				{
+					if (player != Player::BLUE) continue;
+					if (pinfo._defeated[player]) continue;
+
+					defeats.emplace_back(player);
+				}
+			}
+
+			// If gunners reach blue city, you lose.
+			if (unitReachesTile(board, gunnertype, citytype, Player::BLUE))
+			{
+				for (const Player& player : pinfo._players)
+				{
+					if (player != Player::RED) continue;
+					if (pinfo._defeated[player]) continue;
+
+					defeats.emplace_back(player);
+				}
+
+				return Notice::NONE;
+			}
+		}
+		break;
+		case ACT3G:
+		{
+			UnitType gunnertype = bible.unittype("gunner");
+			if (gunnertype == UnitType::NONE)
+			{
+				LOGE << "Missing type 'gunner'";
+				return Notice::NONE;
+			}
+
+			// Kill enemy gunners.
+			if (unitCount(board, gunnertype, Player::BLUE) == 0)
+			{
+				for (const Player& player : pinfo._players)
+				{
+					if (player != Player::BLUE) continue;
+					if (pinfo._defeated[player]) continue;
+
+					defeats.emplace_back(player);
+				}
 			}
 		}
 		break;
@@ -173,6 +389,13 @@ void Challenge::score(const Id& id, const Bible&, const Board&,
 		case ACT2C:
 		case ACT2D:
 		case ACT2E:
+		case ACT3A:
+		case ACT3B:
+		case ACT3C:
+		case ACT3D:
+		case ACT3E:
+		case ACT3F:
+		case ACT3G:
 		break;
 
 		case INVESTMENT:
@@ -210,6 +433,13 @@ void Challenge::award(const Id& id, const Bible& bible, const Board& board,
 		case ACT2C:
 		case ACT2D:
 		case ACT2E:
+		case ACT3A:
+		case ACT3B:
+		case ACT3C:
+		case ACT3D:
+		case ACT3E:
+		case ACT3F:
+		case ACT3G:
 		{
 			for (const Player& player : info._players)
 			{

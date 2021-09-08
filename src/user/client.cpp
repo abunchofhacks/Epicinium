@@ -3691,6 +3691,17 @@ void Client::hostedGameStarted(std::weak_ptr<HostedGame> hostedGame)
 	}
 }
 
+void Client::listHostedChallenge(const std::string& name,
+		const Json::Value& metadata)
+{
+	_owner.listChallenge(name, metadata);
+}
+
+void Client::pickHostedChallenge(const std::string& name)
+{
+	_owner.pickChallenge(name);
+}
+
 
 #if DICTATOR_ENABLED
 /* ############################ DICTATOR_ENABLED ############################ */

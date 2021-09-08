@@ -47,6 +47,7 @@ public:
 		MORALE,
 		ACT1A, ACT1B, ACT1C, ACT1D, ACT1E, ACT1F,
 		ACT2A, ACT2B, ACT2C, ACT2D, ACT2E,
+		ACT3A, ACT3B, ACT3C, ACT3D, ACT3E, ACT3F, ACT3G,
 	};
 
 	static constexpr size_t ID_SIZE = ((size_t) Id::MORALE) + 1;

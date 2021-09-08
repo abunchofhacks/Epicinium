@@ -200,6 +200,7 @@ void CreditsMenu::build()
 			"JoeKerr555",
 			"AlexisBarroso",
 			"1diyabl",
+			"Shuvi",
 		})
 	{
 		translators.add(stringref(name),

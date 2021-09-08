@@ -781,7 +781,7 @@ void AIStorySawfish::process()
 					_options.emplace_back(Option{order, 30});
 				}
 				else if (_board.ground(attacker).type == _tanktype)
-				{
+				{ 
 				Order order(Order::Type::SHELL, myUnit.descriptor,
 					Descriptor::cell(enemyUnit.descriptor.position));
 				_options.emplace_back(Option{order, 100});
@@ -797,13 +797,29 @@ void AIStorySawfish::process()
 	}
 	
 	
-	// Tanks move to targets after year 4
+	// Tanks move to targets from the start. SHELL if next to the target
 	for (Ground& tank : _myTanks)
 	{
 		if (tank.unfinished.type != Order::Type::NONE) continue;
 		Cell destination = _board.cell(tank.descriptor.position);
 		if (!targets.reached(destination)) continue;
-		if (targets.steps(destination) <= 1) continue;
+		if (targets.steps(destination) <= 1)
+		{
+			Cell prev = destination;
+			Cell shelltarget = destination;
+			for (const Move& move : { Move::E, Move::S, Move::W, Move::N })
+			{
+				Cell to = prev + move;
+				if (targets.steps(to) == 0)
+				{
+					shelltarget = to;
+				}
+			}
+			Order order(Order::Type::SHELL, tank.descriptor,
+				Descriptor::cell(shelltarget.pos()));
+			_options.emplace_back(Option{ order, 100 });
+			continue;
+		}
 		std::vector<Move> moves;
 		Move current;
 		Cell prev = destination;
@@ -822,7 +838,7 @@ void AIStorySawfish::process()
 	
 
 	// Gunners move if enemy comes in range, and move themselves after turn 15. Also move to nearby occupied cities.
-for (Ground& gunner : _myGunners)
+	for (Ground& gunner : _myGunners)
 	{
 		Cell destination = _board.cell(gunner.descriptor.position);
 		if (enemyunits.steps(destination) < 3)

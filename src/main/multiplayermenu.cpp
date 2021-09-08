@@ -88,6 +88,9 @@ void MultiplayerMenu::onOpen()
 	_client.registerHandler(this);
 	_client.join();
 	_client.requestLeaderboard();
+
+	Mixer::get()->fade(Mixer::get()->getOSTid(), 0.1f, 1.5f);
+	Mixer::get()->fade(Mixer::get()->getMidiOSTid(), 0.4f, 1.5f);
 }
 
 void MultiplayerMenu::onKill()
@@ -106,8 +109,8 @@ void MultiplayerMenu::onShow()
 		message(
 			_("Welcome back!"));
 		_client.requestLeaderboard();
-		Mixer::get()->fade(Mixer::get()->getOSTid(), 0.2f, 1.5f);
-		Mixer::get()->fade(Mixer::get()->getMidiOSTid(), 0.8f, 1.5f);
+		Mixer::get()->fade(Mixer::get()->getOSTid(), 0.1f, 1.5f);
+		Mixer::get()->fade(Mixer::get()->getMidiOSTid(), 0.4f, 1.5f);
 
 		if (_layout["left"].getTag() == "inlobby")
 		{
@@ -1342,6 +1345,12 @@ void MultiplayerMenu::refresh()
 			_client.send(Message::enable_custom_maps());
 			options.setTag("Checked");
 			options.disable();
+
+			if (settings["host"]["claim"].enabled())
+			{
+				_client.send(Message::claim_host());
+				settings["host"]["claim"].disable();
+			}
 		}
 	}
 
@@ -1709,15 +1718,19 @@ void MultiplayerMenu::refresh()
 			std::string name = levels.name(i);
 			if (levels[name].clicked())
 			{
+				std::string namekey = name;
+				size_t seppos = name.find_first_of('@');
+				if (seppos != std::string::npos)
+				{
+					namekey = name.substr(seppos + 1);
+				}
 				Challenge::Id pickedId = Challenge::Id::CUSTOM;
-				std::string mapname;
 				for (const Challenge::Id& id : Challenge::campaign())
 				{
 					std::string key = AIChallenge::getKey(id);
-					if (name == key + "@" + key)
+					if (key == namekey)
 					{
 						pickedId = id;
-						mapname = AIChallenge::getMapName(id);
 						break;
 					}
 				}
@@ -1728,13 +1741,39 @@ void MultiplayerMenu::refresh()
 					metadata["is_public"] = false;
 					_client.send(Message::make_lobby(metadata));
 					// This is a self-hosted challenge.
+					_selfHostingChallenge =
+						std::make_shared<Challenge>(pickedId);
+					_selfHostingChallengeKey = name;
 					_client.send(Message::claim_host());
 					_client.send(Message::enable_custom_maps());
 					_client.send(Message::pick_challenge(name));
-					// Start the challenge locally, and then also start the
-					// lobby, which should have no effect other than making
-					// it seem like we are in a lobby playing a game.
-					_gameowner.startChallenge(pickedId, mapname);
+					rethinkLobbySettingsForSelfHostedContent();
+					std::string mapname = AIChallenge::getMapName(pickedId);
+					_client.send(Message::list_map(mapname,
+						Map::loadMetadata(mapname)));
+					_client.send(Message::pick_map(mapname));
+					std::string rulesetname =
+						AIChallenge::getRulesetName(pickedId);
+					if (Library::existsBible(rulesetname))
+					{
+						Json::Value rulesetmetadata = Json::objectValue;
+						rulesetmetadata["self_hosted"] = true;
+						_client.send(Message::list_ruleset(rulesetname,
+							rulesetmetadata));
+						_client.send(Message::pick_ruleset(rulesetname));
+					}
+					std::string botname = AIChallenge::getBotName(pickedId);
+					if (AI::exists(botname))
+					{
+						Json::Value aimetadata = Json::objectValue;
+						aimetadata["self_hosted"] = true;
+						_client.send(Message::list_ai(botname, aimetadata));
+						listAI(botname, aimetadata);
+					}
+					_client.send(Message::claim_ai(botname, std::string("")));
+					auto difficulty = AIChallenge::getBotDifficulty(pickedId);
+					_client.send(Message::claim_difficulty(difficulty,
+						std::string("")));
 					_client.send(Message::start());
 					_client.send(Message::save_lobby());
 				}
@@ -1758,13 +1797,27 @@ void MultiplayerMenu::refresh()
 				if (external)
 				{
 					// This is a self-hosted challenge.
+					_selfHostingChallenge =
+						std::make_shared<Challenge>(Challenge::Id::CUSTOM);
+					_selfHostingChallengeKey = name;
 					_client.send(Message::claim_host());
 					_client.send(Message::enable_custom_maps());
 					_client.send(Message::pick_challenge(name));
-					// Start the challenge locally, and then also start the
-					// lobby, which should have no effect other than making
-					// it seem like we are in a lobby playing a game.
-					_gameowner.startChallenge(Challenge::CUSTOM, name);
+					rethinkLobbySettingsForSelfHostedContent();
+					std::string mapname = name;
+					_client.send(Message::pick_map(mapname));
+					std::string rulesetname = name;
+					if (Library::existsBible(rulesetname))
+					{
+						_client.send(Message::pick_ruleset(rulesetname));
+					}
+					std::string botname = AIChallenge::getBotName(
+						AIChallenge::CUSTOM);
+					_client.send(Message::claim_ai(botname, std::string("")));
+					auto difficulty = AIChallenge::getBotDifficulty(
+						AIChallenge::CUSTOM);
+					_client.send(Message::claim_difficulty(difficulty,
+						std::string("")));
 				}
 				else
 				{
@@ -2508,8 +2561,6 @@ void MultiplayerMenu::joinsLobby(const std::string& sender)
 void MultiplayerMenu::inGame(const std::string& lobbyid,
 	const std::string& sender, const Role& role)
 {
-	Mixer::get()->stop();
-
 	bool isreplay = false;
 	if (_layout["left"]["browser"]["lobbies"].contains(lobbyid))
 	{
@@ -2619,6 +2670,22 @@ void MultiplayerMenu::listLobby(const std::string& lobbyid,
 void MultiplayerMenu::nameLobby(const std::string& lobby,
 	const std::string& name)
 {
+	std::string oldname =
+		_layout["left"]["browser"]["lobbies"][lobby]["name"].text();
+	if (oldname.empty())
+	{
+		message(::format(
+			// TRANSLATORS: The argument is an English or custom lobby name.
+			_("Lobby \"%s\" was created."),
+			name.c_str()));
+	}
+	else
+	{
+		message(::format(
+			// TRANSLATORS: Each argument is an English or custom lobby name.
+			_("Lobby \"%s\" was renamed \"%s\"."),
+			oldname.c_str(), name.c_str()));
+	}
 	_layout["left"]["browser"]["lobbies"][lobby]["name"].setText(name);
 	_layout["left"]["browser"]["lobbies"][lobby]["name"].setWidth(
 		_layout["left"]["browser"]["lobbies"][lobby]["name"].width());
@@ -4001,6 +4068,10 @@ void MultiplayerMenu::listChallenge(const std::string& name,
 	{
 		maxStars = std::max(1, std::min(metadata["max-stars"].asInt(), 3));
 	}
+	else if (metadata["max_stars"].isInt())
+	{
+		maxStars = std::max(1, std::min(metadata["max_stars"].asInt(), 3));
+	}
 
 	auto element = makeChallengePanel(displayname, maxStars);
 
@@ -4016,7 +4087,15 @@ void MultiplayerMenu::listChallenge(const std::string& name,
 		element->setPicture(picturename);
 	}
 
-	auto& levels = _layout["left"]["challenges"]["levels"];
+	bool isCampaign = false;
+	if (metadata["is-campaign"].isBool())
+	{
+		isCampaign = metadata["is-campaign"].asBool();
+	}
+
+	InterfaceElement& levels = (isCampaign)
+		? _layout["left"]["campaign"]["levels"]
+		: _layout["left"]["challenges"]["levels"];
 	if (levels.contains(name))
 	{
 		levels.replace(name, std::move(element));
@@ -4177,9 +4256,14 @@ void MultiplayerMenu::startHostedGame()
 	visiontypes.insert(visiontypes.end(),
 		botvisiontypes.begin(), botvisiontypes.end());
 
-	auto hostedGame = _gameowner.startHostedGame(
+	auto hostedGame = _gameowner.hostGame(
+		_selfHostingChallenge,
 		colors, visiontypes, playerusernames, bots, hasObservers,
 		mapname, rulesetname);
+	if (_selfHostingChallenge)
+	{
+		_client.pickHostedChallenge(_selfHostingChallengeKey);
+	}
 	_client.hostedGameStarted(hostedGame);
 }
 
@@ -4544,48 +4628,26 @@ void MultiplayerMenu::rethinkLobbySettingsForSelfHostedContent()
 
 void MultiplayerMenu::reloadChallengeList()
 {
+	for (const Challenge::Id& id : Challenge::campaign())
 	{
-		auto& levels = _layout["left"]["campaign"]["levels"];
-		bool any = false;
-		for (const Challenge::Id& id : Challenge::campaign())
-		{
-			std::string key = AIChallenge::getKey(id);
-			// The challenge key should contain an @ because we will self-host.
-			std::string name = key + "@" + key;
-			if (!levels.contains(name))
-			{
-				std::string displayname = AIChallenge::getDisplayName(id);
-				int maxStars = 1;
-				Json::Value metadata = Map::loadMetadata(
-					AIChallenge::getMapName(id));
-				if (metadata["challenge"].isObject())
-				{
-					if (metadata["challenge"]["max-stars"].isInt())
-					{
-						maxStars = std::max(1, std::min(
-							metadata["challenge"]["max-stars"].asInt(), 3));
-					}
-					else if (metadata["challenge"]["max_stars"].isInt())
-					{
-						maxStars = std::max(1, std::min(
-							metadata["challenge"]["max_stars"].asInt(), 3));
-					}
-				}
-				std::string picturename = AIChallenge::getPanelPictureName(id);
+		std::string key = AIChallenge::getKey(id);
+		std::string mapname = AIChallenge::getMapName(id);
+		// The challenge key should contain an @ because we will self-host.
+		// The part after the @ is used as the unique database key.
+		std::string name = mapname + "@" + key;
+		Json::Value mapmetadata = Map::loadMetadata(mapname);
 
-				auto element = makeChallengePanel(displayname, maxStars);
-				element->setPicture(picturename);
-
-				levels.add(name, std::move(element));
-				any = true;
-			}
-		}
-		if (any)
+		Json::Value metadata = Json::objectValue;
+		if (mapmetadata["challenge"].isObject())
 		{
-			levels.fixHeight();
-			levels.fixWidth(levels.width());
-			levels.settle();
+			metadata = mapmetadata["challenge"];
 		}
+		metadata["display-name"] = AIChallenge::getDisplayName(id);
+		metadata["panel-picture-name"] = AIChallenge::getPanelPictureName(id);
+		metadata["discord-image-key"] = AIChallenge::getDiscordImageKey(id);
+		metadata["is-campaign"] = true;
+
+		_client.listHostedChallenge(name, metadata);
 	}
 
 	{
@@ -4610,7 +4672,8 @@ void MultiplayerMenu::reloadChallengeList()
 	{
 		if (item.metadata["challenge"].isObject())
 		{
-			listChallenge(item.uniqueTag, item.metadata["challenge"]);
+			Json::Value metadata = item.metadata["challenge"];
+			_client.listHostedChallenge(item.uniqueTag, metadata);
 		}
 	}
 
@@ -4754,6 +4817,7 @@ void MultiplayerMenu::outServer()
 	_ainames.clear();
 	_aidescriptions.clear();
 	_isSelfHosting = false;
+	_selfHostingChallenge.reset();
 
 	_challengekeys.clear();
 	_challengestars.clear();
@@ -4807,6 +4871,7 @@ void MultiplayerMenu::outLobby()
 	_ainames.clear();
 	_aidescriptions.clear();
 	_isSelfHosting = false;
+	_selfHostingChallenge.reset();
 }
 
 void MultiplayerMenu::serverClosing()

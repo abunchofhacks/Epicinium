@@ -41,6 +41,13 @@
 #include "aistorystarfish.hpp"
 #include "aistorystingray.hpp"
 #include "aistorysturgeon.hpp"
+#include "aiactinganchovies.hpp"
+#include "aiactingalpaca.hpp"
+#include "aiactingaardvark.hpp"
+#include "aiactingarmadillo.hpp"
+#include "aiactingalbatross.hpp"
+#include "aiactingantilope.hpp"
+#include "aiactingalligator.hpp"
 #include "ailibrary.hpp"
 
 
@@ -125,6 +132,34 @@ AICommander* AI::allocate(const std::string& ainame,
 	{
 		return new AIStoryStingray(player, difficulty, ruleset, character);
 	}
+	if (lowered == "actinganchovies")
+	{
+		return new AIActingAnchovies(player, difficulty, ruleset, character);
+	}
+	if (lowered == "actingalpaca")
+	{
+		return new AIActingAlpaca(player, difficulty, ruleset, character);
+	}
+	if (lowered == "actingaardvark")
+	{
+		return new AIActingAardvark(player, difficulty, ruleset, character);
+	}
+	if (lowered == "actingarmadillo")
+	{
+		return new AIActingArmadillo(player, difficulty, ruleset, character);
+	}
+	if (lowered == "actingalbatross")
+	{
+		return new AIActingAlbatross(player, difficulty, ruleset, character);
+	}
+	if (lowered == "actingantilope")
+	{
+		return new AIActingAntilope(player, difficulty, ruleset, character);
+	}
+	if (lowered == "actingalligator")
+	{
+		return new AIActingAlligator(player, difficulty, ruleset, character);
+	}
 	if (lowered == "dummy")
 	{
 		return new AIDummy(player, difficulty, ruleset, character);
@@ -181,6 +216,13 @@ const std::vector<std::string>& AI::hiddenPool()
 		"StorySeabass",
 		"StorySeahorse",
 		"StoryStingray",
+		"ActingAnchovies",
+		"ActingAlpaca",
+		"ActingAardvark",
+		"ActingArmadillo",
+		"ActingAlbatross",
+		"ActingAntilope",
+		"ActingAlligator",
 		"Dummy",
 	};
 	return pool;
@@ -192,15 +234,6 @@ const std::vector<std::string>& AI::selfHostedPool()
 		"RampantRhino",
 		"HungryHippo",
 		"ChargingCheetah",
-		"StoryStarfish",
-		"StorySturgeon",
-		"StorySaddlehead",
-		"StorySalmon",
-		"StorySandperch",
-		"StorySawfish",
-		"StorySeabass",
-		"StorySeahorse",
-		"StoryStingray",
 	};
 	return pool;
 }

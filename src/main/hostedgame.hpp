@@ -32,12 +32,14 @@ class Client;
 enum class Player : uint8_t;
 enum class VisionType : uint8_t;
 enum class Phase : uint8_t;
+class Challenge;
 
 
 class HostedGame
 {
 public:
 	HostedGame(Client& client,
+		std::shared_ptr<Challenge> challenge,
 		const std::vector<Player>& colors,
 		const std::vector<VisionType>& visiontypes,
 		const std::vector<std::string>& usernames,

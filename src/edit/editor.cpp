@@ -37,6 +37,7 @@
 #include "spritepattern.hpp"
 #include "language.hpp"
 #include "editortheme.hpp"
+#include "challenge.hpp"
 
 
 int main(int argc, char* argv[])
@@ -289,7 +290,7 @@ std::weak_ptr<Game> Editor::startGame(imploding_ptr<Game> /**/)
 	return std::weak_ptr<Game>();
 }
 
-std::weak_ptr<Game> Editor::startChallenge(const Challenge&, const std::string&)
+std::weak_ptr<Game> Editor::startChallenge(const Challenge&)
 {
 	// Not implemented.
 	return std::weak_ptr<Game>();
@@ -325,7 +326,8 @@ std::weak_ptr<Game> Editor::startDiorama()
 	return std::weak_ptr<Game>();
 }
 
-std::weak_ptr<HostedGame> Editor::startHostedGame(
+std::weak_ptr<HostedGame> Editor::hostGame(
+		std::shared_ptr<Challenge> /**/,
 		const std::vector<Player>& /**/,
 		const std::vector<VisionType>& /**/,
 		const std::vector<std::string>& /**/,

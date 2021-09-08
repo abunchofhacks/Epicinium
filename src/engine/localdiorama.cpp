@@ -38,16 +38,25 @@ LocalDiorama::LocalDiorama(GameOwner& owner, Settings& settings,
 	_mapname(mapname),
 	_silentConfirmQuit(silentConfirmQuit)
 {
+	Json::Value metadata;
+	metadata = Map::loadMetadata(_mapname);
+
 	std::string rulesetname = Library::nameCurrentBible();
+	if (metadata["ruleset"].isString())
+	{
+		std::string name = metadata["ruleset"].asString();
+		if (Library::existsBible(name))
+		{
+			rulesetname = name;
+		}
+	}
+
 	_observer.reset(new Observer(settings, *this, rulesetname));
+	_observer->setSkins(metadata);
 }
 
 void LocalDiorama::load()
 {
-	Json::Value metadata;
-	metadata = Map::loadMetadata(_mapname);
-	_observer->setSkins(metadata);
-
 	_observer->load();
 
 	{

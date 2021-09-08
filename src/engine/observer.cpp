@@ -1448,7 +1448,7 @@ void Observer::processChange(const std::shared_ptr<AnimationGroup> group,
 					"GLOBAL WARMING WORSENS"
 					""),
 					_(""
-					"CITIES VULNERABLE TO INFERNO ONCE FORESTS ARE GONE"
+					"CITIES VULNERABLE TO INFERNO AS HEATWAVE CONTINUES"
 					""),
 					_(""
 					"THE END OF DAYS HAS ARRIVED, SAY CULT LEADERS"

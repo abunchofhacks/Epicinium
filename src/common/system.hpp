@@ -24,6 +24,8 @@
 #pragma once
 #include "header.hpp"
 
+#include <fstream>
+
 
 namespace System
 {

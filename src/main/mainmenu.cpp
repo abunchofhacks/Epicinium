@@ -1450,11 +1450,8 @@ void MainMenu::refresh()
 			{
 				case SteamStatus::CONNECTED:
 				{
-					Mixer::get()->stop();
 					kill();
 					_submenus[MULTIPLAYER]->open();
-					Mixer::get()->fade(Mixer::get()->getOSTid(), 0.2f, 1.5f);
-					Mixer::get()->fade(Mixer::get()->getMidiOSTid(), 0.8f, 1.5f);
 				}
 				break;
 
@@ -1478,7 +1475,6 @@ void MainMenu::refresh()
 					{
 						case DiscordStatus::CONNECTED:
 						{
-							Mixer::get()->stop();
 							kill();
 							_submenus[MULTIPLAYER]->open();
 						}
@@ -1521,8 +1517,6 @@ void MainMenu::refresh()
 				case LoginStatus::DISABLED:
 				case LoginStatus::LOGGEDIN:
 				{
-					Mixer::get()->fade(Mixer::get()->getOSTid(), 0.2f, 1.5f);
-					Mixer::get()->fade(Mixer::get()->getMidiOSTid(), 0.8f, 1.5f);
 					kill();
 					_submenus[MULTIPLAYER]->open();
 				}

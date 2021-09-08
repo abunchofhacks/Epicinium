@@ -394,7 +394,7 @@ void DiscordRPC::receiveSecrets(const Json::Value& metadata)
 
 	if (_dpIngame)
 	{
-		if (!_dpSpectateSecret.empty())
+		if (_dpPublic && !_dpSpectateSecret.empty())
 		{
 			_discordPresence.spectateSecret = _dpSpectateSecret.c_str();
 		}
@@ -686,6 +686,10 @@ void DiscordRPC::updateLobbyInfo()
 			{
 				_discordPresence.largeImageKey =
 					_dpListedChallengeImageKey[offset].c_str();
+				if (_dpListedChallengeImageKey[offset] == "campaign")
+				{
+					_discordPresence.details = "Campaign";
+				}
 			}
 			if (!_dpListedChallengeDisplayName[offset].empty())
 			{
@@ -693,6 +697,18 @@ void DiscordRPC::updateLobbyInfo()
 					_dpListedChallengeDisplayName[offset].c_str();
 			}
 		}
+	}
+	else if (_dpMap.find_first_of('@') != std::string::npos)
+	{
+		size_t seppos = _dpMap.find_first_of('@');
+		std::string mapname = _dpMap.substr(0, seppos);
+		DEBUG_ASSERT(isValidUserContentName(mapname));
+		if (!isValidUserContentName(mapname))
+		{
+			mapname = "???";
+		}
+		_dpUserMapDescription = "\"" + mapname + "\"";
+		_discordPresence.largeImageText = _dpUserMapDescription.c_str();
 	}
 	else if (_dpMap.find_first_of('/') != std::string::npos)
 	{

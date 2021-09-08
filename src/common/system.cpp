@@ -24,14 +24,18 @@
 #include "system.hpp"
 #include "source.hpp"
 
+
 #if defined __has_include
 #   if __has_include(<filesystem>) && ((__cplusplus >= 201703L) || (defined(_MSVC_LANG) && (_MSVC_LANG >= 201703L) && (_MSC_VER >= 1913)))
 #     include <filesystem>
       namespace fs = std::filesystem;
-#   else
+#   elif __has_include(<experimental/filesystem>)
 #     define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
 #     include <experimental/filesystem>
       namespace fs = std::experimental::filesystem;
+#   else
+#     include "libs/ghc/filesystem.hpp"
+      namespace fs = ghc::filesystem;
 #   endif
 #else
 #   include <filesystem>

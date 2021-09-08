@@ -1,6 +1,104 @@
 <!-- SUMMARY
-The game asks for confirmation after changing screen resolution or other visual settings and reverts automatically if not confirmed.
+Added Steam Workshop support.
+Added a Campaign made by community member Zanath.
+Frostbite now causes units to become Chilled.
 -->
+
+# Release 1.1.0 (2021-09-08)
+
+### Content
+- Added support for Steam Workshop. Steam Workshop allows sharing maps, challenges, rulesets and color palettes made using the Map Editor. More information about how publish and play Steam Workshop maps can be found on [this wiki page](https://epicinium.fandom.com/wiki/Steam_Workshop).
+- Added a Campaign, made by community member Zanath.
+- All challenges can now be selected from the "Challenges" submenu.
+- Added a Ruleset Editor to the Map Editor.
+- Added a Palette Editor to the Map Editor. The Palette Editor also opens when selecting the color palette "custom..." in the Settings menu.
+
+### Gameplay
+- *Reworked Frostbite:* Frostbite no longer deals damage. Instead, units that remain in Frostbite in the Decay phase become **Chilled**. Chilled units cannot attack or use abilities until they move at least one tile. This effect wears off at the next Decay phase.
+- *Reworked Firestorm:* Firestorm now has a percentage chance of appearing, instead of being placed on random tiles. Highly flammable tiles (Grass, Forest, Soil, Crops and Trenches) have a 20 percent chance of receiving Firestorm after the second stage of global warming, increased to 40 percent if the tile has no humidity left. After the fourth stage of global warming this becomes a 50 percent chance (70 for tiles without humidity), and structural tiles (City, Town, Outpost, Barracks, Industry, Airfield and Farm) without humidity have a 10 percent chance of receiving Firestorm.
+
+### Visuals & User Interface
+- Redesigned the multiplayer menu.
+- The map in the Map Editor uses a smaller scale than the rest of the game, giving a more zoomed out overview.
+- Added option to claim Host privileges to the lobby screen. When a player becomes the Host, only they can change lobby settings and start the game.
+- Added a "Ruleset" dropdown to the lobby. In custom lobbies, this can be used to change the rules from *v1.1.0* (this version) to a different set of rules, such as one from the Steam Workshop.
+- Added 5-second option back to the planning timer dropdown.
+
+### Audio
+- The alternative title theme now also plays inside the Map Editor.
+- Reduced the relative volume of the alternative title theme to 50%.
+
+### Bugfixes
+- Fixed a bug in the Steam version where music would stop playing after clicking the "PLAY" button.
+- Fixed a bug in the Map Editor where 'Copy' did the same thing as 'Open'.
+- Fixed a bug in the Map Editor where 'Play Versus AI' did not work correctly for challenge maps.
+- Fixed a crash that could occur in the Map Editor when selecting 'Crop Top' or 'Crop Left'.
+- Fixed a bug in the Map Editor where resigning from a test game could cause a tile or unit to be placed because the left mouse button was still held down.
+- Fixed a bug in the Map Editor where neutral units could not be placed after placing non-neutral units.
+- Fixed a bug in the Map Editor where ground units could be place in the air and vice versa.
+
+### Technical
+- Made it easier to compile Epicinium's source code on Windows by adding CMake.
+
+
+## Patch 1.0.12 (2021-05-17)
+
+*This is a server-only patch that is compatible with release 1.0.0.*
+
+### Content
+- Added more user-made maps.
+
+### Gameplay
+- Players that are defeated before the game ends are granted global vision.
+
+### Bugfixes
+- Fixed a bug where rejoining a lobby after resigning as a player would not grant global vision.
+- Fixed a bug where, after a bypass attack, the bypassed unit was not involved in the retaliation damage.
+
+
+## Patch 1.0.11 (2021-03-12)
+
+*This is a server-only patch that is compatible with release 1.0.0.*
+
+### Content
+- Added various user-made maps.
+
+### Bugfixes
+- Fixed a bug where NeuralNewt AI could be selected on maps bigger than 20x13, resulting in a server crash.
+
+
+## Patch 1.0.10 (2020-12-24)
+
+*This is a Windows-only patch that is compatible with release 1.0.0.*
+
+### Content
+- Added the Map Editor to the main menu.
+- Increased the size of *small8ffa* and *cornered8ffa* to 32 by 32 by adding Water tiles in order to balance out the advance of global warming.
+- Updated the credits.
+
+### Visuals & User Interface
+- Updated the panel pictures in the multiplayer menu that showed outdated graphics.
+
+### Bugfixes
+- Fixed a bug where tooltips for Frostbite could show when hovering a tile in the fog of war.
+
+
+## Patch 1.0.9 (2020-11-27)
+
+*This is a server-only patch that is compatible with release 1.0.0.*
+
+### Accounts
+- Ending a game as the winner with a score of 0 also causes your rating to increase by 0.1, instead of decrease by a percentage.
+
+### Content
+- Added the ChargingCheetah AI. This aggressive AI made by Zanath is based on HungryHippo but uses Gunners and Sappers in an early rush strategy.
+
+### Bugfixes
+- Fixed a bug where HungryHippo would not create Rifleman units.
+
+### Technical
+- Improved NeuralNewt's brain with additional training.
+
 
 ## Patch 1.0.7 (2020-11-09)
 

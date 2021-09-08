@@ -28,6 +28,7 @@
 #include "mapeditor.hpp"
 #include "camera.hpp"
 #include "client.hpp"
+#include "mixer.hpp"
 
 
 void EditorMenu::build()
@@ -59,6 +60,9 @@ void EditorMenu::onOpen()
 	{
 		Camera::get()->changeScale(_settings.getEditorScale());
 	}
+
+	Mixer::get()->fade(Mixer::get()->getOSTid(), 0.1f, 1.5f);
+	Mixer::get()->fade(Mixer::get()->getMidiOSTid(), 0.4f, 1.5f);
 }
 
 void EditorMenu::onKill()
@@ -66,6 +70,9 @@ void EditorMenu::onKill()
 	_client.deregisterHandler(this);
 
 	Camera::get()->changeScale(_settings.scale.value());
+
+	Mixer::get()->fade(Mixer::get()->getOSTid(), 1.0f, 4.0f);
+	Mixer::get()->fade(Mixer::get()->getMidiOSTid(), 0.0f, 1.0f);
 }
 
 void EditorMenu::onShow()
@@ -74,6 +81,11 @@ void EditorMenu::onShow()
 	{
 		Camera::get()->changeScale(_settings.getEditorScale());
 	}
+
+	// This is already handled by MultiplayerMenu::onShow().
+	// Which doesn't make any sense, but it works.
+	//Mixer::get()->fade(Mixer::get()->getOSTid(), 0.1f, 1.5f);
+	//Mixer::get()->fade(Mixer::get()->getMidiOSTid(), 0.4f, 1.5f);
 }
 
 void EditorMenu::onHide()

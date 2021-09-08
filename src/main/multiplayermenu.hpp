@@ -29,6 +29,7 @@
 
 enum class InputMode;
 class Paint;
+class Challenge;
 
 
 class MultiplayerMenu final : public Menu, public ClientHandler
@@ -52,6 +53,8 @@ private:
 	std::vector<std::string> _ainames; // (married)
 	std::vector<std::string> _aidescriptions; // (married)
 	bool _isSelfHosting = false;
+	std::shared_ptr<Challenge> _selfHostingChallenge;
+	std::string _selfHostingChallengeKey;
 	std::vector<std::string> _challengekeys; // (married)
 	std::vector<int> _challengestars; // (married)
 	bool _linkWasHovered = false;

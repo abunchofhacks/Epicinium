@@ -551,7 +551,23 @@ void AIStorySandperch::process()
 		if (tank.unfinished.type != Order::Type::NONE) continue;
 		Cell destination = _board.cell(tank.descriptor.position);
 		if (!targets.reached(destination)) continue;
-		if (targets.steps(destination) <= 1) continue;
+		if (targets.steps(destination) <= 1)
+		{
+			Cell prev = destination;
+			Cell shelltarget = destination;
+			for (const Move& move : { Move::E, Move::S, Move::W, Move::N })
+			{
+				Cell to = prev + move;
+				if (targets.steps(to) == 0)
+				{
+					shelltarget = to;
+				}
+			}
+			Order order(Order::Type::SHELL, tank.descriptor,
+				Descriptor::cell(shelltarget.pos()));
+			_options.emplace_back(Option{ order, 100 });
+			continue;
+		}
 		std::vector<Move> moves;
 		Move current;
 		Cell prev = destination;

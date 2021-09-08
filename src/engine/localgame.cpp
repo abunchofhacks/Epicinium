@@ -521,11 +521,6 @@ void LocalGame::leaveActionPhase()
 
 	if (_automaton.gameover())
 	{
-		if (_challenge && _commanders.size() > 0)
-		{
-			_owner.reportAwardedStars(_automaton.award(_commanders[0]->player()));
-		}
-
 		return;
 	}
 

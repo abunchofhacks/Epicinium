@@ -168,7 +168,7 @@ int main(int /**/, char* /**/[])
 		assert(json["pool"].isString());
 		PoolType pooltype = parsePoolType(json["pool"].asString());
 		LOGI << "Checking pooltype of " << mapname;
-		assert(pooltype == PoolType::CUSTOM);
+		assert(pooltype != PoolType::NONE);
 		LOGI << "Parsing ruleset of " << mapname;
 		assert(json["ruleset"].isString());
 		std::string rulesetname = json["ruleset"].asString();

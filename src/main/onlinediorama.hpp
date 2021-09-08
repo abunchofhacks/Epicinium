@@ -52,7 +52,7 @@ private:
 
 	const std::string _mapname;
 
-	Observer _observer;
+	std::unique_ptr<Observer> _observer;
 
 	virtual void load() override;
 	virtual void update() override;

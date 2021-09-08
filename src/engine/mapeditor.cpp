@@ -99,8 +99,8 @@ MapEditor::MapEditor(Owner& owner, GameOwner& gameowner,
 	_rulesetunsaved(false),
 	_rulesetsaving(false),
 	_ruleseterrormessage("Loading..."),
-	_pooltype(PoolType::NONE),
-	_savedpooltype(PoolType::NONE),
+	_pooltype(PoolType::MULTIPLAYER),
+	_savedpooltype(PoolType::MULTIPLAYER),
 	_bible(),
 	_skinner(_bible),
 	_cols(20),
@@ -162,6 +162,18 @@ std::shared_ptr<Screenshot> MapEditor::prepareScreenshotOfMap()
 	return std::make_shared<Screenshot>(w, h, "map");
 }
 
+inline bool isValidPoolTypeForWorkshop(const PoolType& pooltype)
+{
+	switch (pooltype)
+	{
+		case PoolType::NONE: return false;
+		case PoolType::MULTIPLAYER: return true;
+		case PoolType::CUSTOM: return true;
+		case PoolType::DIORAMA: return false;
+	}
+	return false;
+}
+
 void MapEditor::update()
 {
 	if (_activepopup == Popup::NONE
@@ -172,7 +184,7 @@ void MapEditor::update()
 
 	_camerafocus->update();
 
-	if (_cursor)
+	if (_cursor && _cursor->state() == Cursor::State::ACTIVE)
 	{
 		Input* input = Input::get();
 		Point point(input->mousePoint());
@@ -181,13 +193,20 @@ void MapEditor::update()
 		_cursor->set(index);
 	}
 
-	if (_mapname != "colorsample"
+	if (_cursor->state() == Cursor::State::ACTIVE
+		&& _mapname != "colorsample"
 		&& !(_showRulesetEditor && _mapname.empty()))
 	{
 		updatePaintMode();
 		updatePaintBrush();
 		updateParameters();
 		updateGlobals();
+	}
+	else if (_cursor->state() == Cursor::State::WAITING
+		&& !Input::get()->isKeyHeld(SDL_SCANCODE_LMB)
+		&& !Input::get()->isKeyHeld(SDL_SCANCODE_RMB))
+	{
+		_cursor->setState(Cursor::State::ACTIVE);
 	}
 
 	if (_showRulesetEditor)
@@ -249,8 +268,15 @@ void MapEditor::updateMenuBar()
 		else if (Input::get()->wasKeyPressed(SDL_SCANCODE_U))
 		{
 			if (_owner.hasWorkshop()
-				&& (!_mapname.empty() || !_rulesetname.empty()))
+				&& ((_mapname == "colorsample")
+					|| (!_mapname.empty() && _mapname != "colorsample"
+						&& isValidPoolTypeForWorkshop(_pooltype))
+					|| (_mapname.empty() && !_rulesetname.empty())))
 			{
+				if (!_mapname.empty())
+				{
+					save();
+				}
 				_owner.openWorkshop(_mapname, _rulesetname);
 			}
 		}
@@ -264,7 +290,12 @@ void MapEditor::updateMenuBar()
 		}
 		else if (Input::get()->wasKeyPressed(SDL_SCANCODE_J))
 		{
-			onNewDimensions(_cols, _rows);
+			_pooltype = PoolType::NONE;
+			_savedpooltype = PoolType::NONE;
+			_board.clear(_cols, _rows);
+			_level.clear(_cols, _rows);
+			loadEmpty();
+			_mapname = "";
 			switchToRulesetEditor();
 		}
 		else if (Input::get()->wasKeyPressed(SDL_SCANCODE_H))
@@ -300,9 +331,13 @@ void MapEditor::updateMenuBar()
 			if (ImGui::MenuItem("Save", "Ctrl+S"))
 			{
 				if (_mapname.empty())
+				{
 					saveAs();
+				}
 				else
+				{
 					save();
+				}
 			}
 			if (ImGui::MenuItem("Save As...", "Ctrl+Shift+S"))
 			{
@@ -317,7 +352,15 @@ void MapEditor::updateMenuBar()
 			{
 				if (ImGui::MenuItem("Publish to Steam Workshop...", "Ctrl+U"))
 				{
-					_owner.openWorkshop(_mapname, _rulesetname);
+					if (isValidPoolTypeForWorkshop(_pooltype))
+					{
+						save();
+						_owner.openWorkshop(_mapname, _rulesetname);
+					}
+					else
+					{
+						changeRuleset();
+					}
 				}
 			}
 			ImGui::Separator();
@@ -346,7 +389,12 @@ void MapEditor::updateMenuBar()
 		{
 			if (ImGui::MenuItem("Switch to Ruleset Editor", "Ctrl+J"))
 			{
-				onNewDimensions(_cols, _rows);
+				_pooltype = PoolType::NONE;
+				_savedpooltype = PoolType::NONE;
+				_board.clear(_cols, _rows);
+				_level.clear(_cols, _rows);
+				loadEmpty();
+				_mapname = "";
 				switchToRulesetEditor();
 			}
 			if (_owner.hasWorkshop() && _mapname.empty()
@@ -635,6 +683,11 @@ void MapEditor::updatePaintBrush()
 			{
 				ImGui::Separator();
 
+				if (_unitpaint.type != UnitType::NONE
+					&& _bible.unitAir(_unitpaint.type) != air)
+				{
+					_unitpaint.type = UnitType::NONE;
+				}
 				int tp = static_cast<int>(_unitpaint.type);
 				for (int i = 0; i <= _bible.unittype_max(); i++)
 				{
@@ -660,6 +713,13 @@ void MapEditor::updatePaintBrush()
 					for (Player player : allPlayers)
 					{
 						const char* txt = ::stringify(player);
+						if (player == Player::NONE)
+						{
+							// This looks nicer but it actually fixes a bug
+							// because the imgui button id "none" is already
+							// used for unit types.
+							txt = "neutral";
+						}
 						ImGui::RadioButton(txt, &pl, static_cast<int>(player));
 					}
 					_unitpaint.owner = static_cast<Player>(pl);
@@ -717,19 +777,11 @@ void MapEditor::updateParameters()
 	if (ImGui::Begin("Parameters", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
 	{
 		ImGui::Text("Map Pool: %s", ::stringify(_pooltype));
-		switch (_pooltype)
+		if (!isValidPoolTypeForWorkshop(_pooltype))
 		{
-			case PoolType::MULTIPLAYER:
-			case PoolType::CUSTOM:
-			break;
-			case PoolType::NONE:
-			case PoolType::DIORAMA:
-			{
-				ImVec4 invalidcolor(1.0f, 0.4f, 0.2f, 1.0f);
-				ImGui::TextColored(invalidcolor,
-					"Invalid Map Pool!");
-			}
-			break;
+			ImVec4 invalidcolor(1.0f, 0.4f, 0.2f, 1.0f);
+			ImGui::TextColored(invalidcolor,
+				"Invalid Map Pool!");
 		}
 		ImGui::Text("Ruleset: %s", _bible.name().c_str());
 		if (ImGui::Button("Change"))
@@ -1159,6 +1211,10 @@ void MapEditor::onNewDimensions(int cols, int rows)
 	_board.clear(_cols, _rows);
 	_level.clear(_cols, _rows);
 
+	_pooltype = PoolType::MULTIPLAYER;
+	_bible = Library::getBible(Library::nameCurrentBible());
+	_rulesetname = "";
+
 	loadEmpty();
 
 	_mapname = "";
@@ -1372,6 +1428,8 @@ void MapEditor::loadEmpty()
 	{
 		_skinner.treetypes.emplace_back(TreeType::OAK);
 	}
+
+	_challenge.reset();
 
 	loaded();
 
@@ -2016,6 +2074,7 @@ void MapEditor::playTestGame()
 		_playercount - bots.size(),
 		/*silentQuit=*/false, /*record=*/false));
 	_gameowner.startGame(std::move(game));
+	_cursor->setState(Cursor::State::WAITING);
 }
 
 void MapEditor::playVersusAI()
@@ -2039,6 +2098,7 @@ void MapEditor::playVersusAI()
 		}
 		// Start the challenge.
 		_gameowner.startChallenge(Challenge::CUSTOM);
+		_cursor->setState(Cursor::State::WAITING);
 		return;
 	}
 
@@ -2060,6 +2120,7 @@ void MapEditor::playVersusAI()
 		_playercount - bots.size(),
 		/*silentQuit=*/false, /*record=*/false));
 	_gameowner.startGame(std::move(game));
+	_cursor->setState(Cursor::State::WAITING);
 }
 
 void MapEditor::switchToRulesetEditor()
@@ -2520,14 +2581,22 @@ void ChallengeEditData::load(const Json::Value& root)
 	const Json::Value& briefing = challenge["briefing"];
 
 	std::tuple<AIChallenge::Brief, char*, size_t> tuples[] = {
-		{AIChallenge::Brief::GREETING, greeting.data(), greeting.size()},
-		{AIChallenge::Brief::DESCRIPTION,
+		std::tuple<AIChallenge::Brief, char*, size_t>{
+			AIChallenge::Brief::GREETING, greeting.data(), greeting.size()},
+		std::tuple<AIChallenge::Brief, char*, size_t>{
+			AIChallenge::Brief::DESCRIPTION,
 			description.data(), description.size()},
-		{AIChallenge::Brief::OBJECTIVE, objective.data(), objective.size()},
-		{AIChallenge::Brief::FIRST_STAR, one.data(), one.size()},
-		{AIChallenge::Brief::SECOND_STAR, two.data(), two.size()},
-		{AIChallenge::Brief::THIRD_STAR, three.data(), three.size()},
-		{AIChallenge::Brief::SENDOFF, sendoff.data(), sendoff.size()},
+		std::tuple<AIChallenge::Brief, char*, size_t>{
+			AIChallenge::Brief::OBJECTIVE,
+			objective.data(), objective.size()},
+		std::tuple<AIChallenge::Brief, char*, size_t>{
+			AIChallenge::Brief::FIRST_STAR, one.data(), one.size()},
+		std::tuple<AIChallenge::Brief, char*, size_t>{
+			AIChallenge::Brief::SECOND_STAR, two.data(), two.size()},
+		std::tuple<AIChallenge::Brief, char*, size_t>{
+			AIChallenge::Brief::THIRD_STAR, three.data(), three.size()},
+		std::tuple<AIChallenge::Brief, char*, size_t>{
+			AIChallenge::Brief::SENDOFF, sendoff.data(), sendoff.size()},
 	};
 	for (auto tuple : tuples)
 	{
@@ -2565,13 +2634,20 @@ void ChallengeEditData::store(Json::Value& root)
 	challenge["max_stars"] = stars;
 	Json::Value briefing = Json::objectValue;
 	std::tuple<AIChallenge::Brief, const char*> tuples[] = {
-		{AIChallenge::Brief::GREETING, greeting.data()},
-		{AIChallenge::Brief::DESCRIPTION, description.data()},
-		{AIChallenge::Brief::OBJECTIVE, objective.data()},
-		{AIChallenge::Brief::FIRST_STAR, one.data()},
-		{AIChallenge::Brief::SECOND_STAR, two.data()},
-		{AIChallenge::Brief::THIRD_STAR, three.data()},
-		{AIChallenge::Brief::SENDOFF, sendoff.data()},
+		std::tuple<AIChallenge::Brief, const char*>{
+			AIChallenge::Brief::GREETING, greeting.data()},
+		std::tuple<AIChallenge::Brief, const char*>{
+			AIChallenge::Brief::DESCRIPTION, description.data()},
+		std::tuple<AIChallenge::Brief, const char*>{
+			AIChallenge::Brief::OBJECTIVE, objective.data()},
+		std::tuple<AIChallenge::Brief, const char*>{
+			AIChallenge::Brief::FIRST_STAR, one.data()},
+		std::tuple<AIChallenge::Brief, const char*>{
+			AIChallenge::Brief::SECOND_STAR, two.data()},
+		std::tuple<AIChallenge::Brief, const char*>{
+			AIChallenge::Brief::THIRD_STAR, three.data()},
+		std::tuple<AIChallenge::Brief, const char*>{
+			AIChallenge::Brief::SENDOFF, sendoff.data()},
 	};
 	for (auto tuple : tuples)
 	{

@@ -713,6 +713,10 @@ void AIStorySturgeon::process()
 								bestCell = target;
 								bestScore = 1;
 							}
+							if (_board.air(target).type == _zeppelintype && bestScore < 7){
+								bestCell = target;
+								bestScore = 7;
+							}
 						}
 		if (bestScore > 0)
 		{
@@ -746,7 +750,6 @@ void AIStorySturgeon::process()
 		{
 		Cell target = _board.cell(gunner.unfinished.target.position);
 		if (gunner.unfinished.type != Order::Type::NONE || (gunner.unfinished.type == Order::Type::MOVE && _board.tile(target).owner == _player && cityOccupied(target)==true)) continue;
-		destination = _board.cell(gunner.descriptor.position);
 		if (cityOccupied(destination)) continue; // If this line does what I think it does, it might have to be removed?
 		if (!cities.reached(destination)) continue;
 		if (cities.steps(destination) == 0) continue;
@@ -786,7 +789,6 @@ void AIStorySturgeon::process()
 		{
 		Cell target = _board.cell(rifleman.unfinished.target.position);
 		if (rifleman.unfinished.type != Order::Type::NONE || (rifleman.unfinished.type == Order::Type::MOVE && _board.tile(target).owner == _player && cityOccupied(target)==true)) continue;
-		destination = _board.cell(rifleman.descriptor.position);
 		if (cityOccupied(destination)) continue; // If this line does what I think it does, it might have to be removed?
 		if (!cities.reached(destination)) continue;
 		if (cities.steps(destination) == 0) continue;
@@ -803,6 +805,44 @@ void AIStorySturgeon::process()
 		}
 	}	
 	
+	for (Ground& tank : _myTanks)
+	{
+		if (tank.unfinished.type != Order::Type::NONE) continue;
+		Cell destination = _board.cell(tank.descriptor.position);
+		if (!targets.reached(destination)) continue;
+		if (targets.steps(destination) <= 1)
+		{
+			Cell prev = destination;
+			Cell shelltarget = destination;
+			for (const Move& move : { Move::E, Move::S, Move::W, Move::N })
+			{
+				Cell to = prev + move;
+				if (targets.steps(to) == 0)
+				{
+					shelltarget = to;
+				}
+			}
+			Order order(Order::Type::SHELL, tank.descriptor,
+				Descriptor::cell(shelltarget.pos()));
+			_options.emplace_back(Option{ order, 100 });
+			continue;
+		}
+		std::vector<Move> moves;
+		Move current;
+		Cell prev = destination;
+		while ((current = targets.step(destination)) != Move::X)
+		{
+			moves.emplace_back(current);
+			prev = destination;
+			destination = destination + current;
+		}
+		if (moves.size() <= 1) continue;
+		moves.pop_back();
+		Order order(Order::Type::MOVE, tank.descriptor,
+			Descriptor::cell(prev.pos()), moves);
+		_options.emplace_back(Option{order, 15 - int(moves.size())});
+	}
+
 	// Industry create tanks to the north if power==3 and gold > 30
 	for (Tile& industry : _myIndustry)
 	{

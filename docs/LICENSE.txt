@@ -12,6 +12,7 @@ See also the LICENSE.txt files for
 	DiscordRPC
 	femtozip
 	FreeType
+	ghc
 	GLEW
 	ImGui
 	JsonCpp

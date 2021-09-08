@@ -24,8 +24,6 @@
 #include "hostedgame.hpp"
 #include "source.hpp"
 
-#include "libs/SDL2/SDL_timer.h"
-
 #include "aicommander.hpp"
 #include "client.hpp"
 #include "message.hpp"
@@ -33,9 +31,11 @@
 #include "visiontype.hpp"
 #include "cycle.hpp"
 #include "map.hpp"
+#include "aichallenge.hpp"
 
 
 HostedGame::HostedGame(Client& client,
+		std::shared_ptr<Challenge> challenge,
 		const std::vector<Player>& colors,
 		const std::vector<VisionType>& visiontypes,
 		const std::vector<std::string>& usernames,
@@ -98,7 +98,24 @@ HostedGame::HostedGame(Client& client,
 		}
 	}
 
-	_automaton.load(mapname, /*shufflePlayers=*/true);
+	if (challenge)
+	{
+		_automaton.setChallenge(challenge);
+
+		AIChallenge aichallenge(*challenge);
+		Json::Value briefing = aichallenge.getMissionBriefing();
+		if ((!briefing["description"].isString()
+				|| briefing["description"].asString().empty())
+			&& metadata["challenge"].isObject()
+			&& metadata["challenge"]["briefing"].isObject())
+		{
+			briefing = metadata["challenge"]["briefing"];
+		}
+		_client.send(Message::briefing(briefing));
+	}
+
+	bool shufflePlayers = !challenge;
+	_automaton.load(mapname, shufflePlayers);
 	_automaton.startRecording(metadata);
 }
 
@@ -157,6 +174,11 @@ void HostedGame::sync()
 				{
 					metadata["defeated_players"].append(::stringify(player));
 				}
+			}
+			if (_automaton.gameover() && _usernamecolors.size() >= 1
+				&& _automaton.award(_usernamecolors[0]) > 0)
+			{
+				metadata["stars"] = _automaton.award(_usernamecolors[0]);
 			}
 			_client.send(Message::host_sync(metadata));
 

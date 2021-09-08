@@ -147,6 +147,7 @@ std::vector<std::string> Language::experimentalTags()
 		"es_ES",
 		"fr_FR",
 		"pl_PL",
+		"ru_RU",
 		"tr_TR",
 	};
 }
@@ -154,13 +155,10 @@ std::vector<std::string> Language::experimentalTags()
 std::vector<std::string> Language::incompleteTags()
 {
 	return {
-		"cs_CZ",
 		"de_DE",
-		"fi_FI",
 		"it_IT",
 		"nl_NL",
 		"pt_BR",
-		"ru_RU",
 		"uk_UA",
 	};
 }
