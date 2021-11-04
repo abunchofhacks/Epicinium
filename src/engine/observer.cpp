@@ -3120,7 +3120,15 @@ std::unique_ptr<InterfaceElement> Observer::makeChatBox()
 		/*maxlength=*/255));
 	(*element)["inputline"]["input"].setMargin(4 * InterfaceElement::scale());
 	(*element)["inputline"]["input"].setPadding(4 * InterfaceElement::scale());
-	(*element)["inputline"]["input"].power();
+	if (!_chatmodeTarget[0].empty())
+	{
+		(*element)["inputline"]["input"].power();
+	}
+	else
+	{
+		(*element)["inputline"]["indicator"].disable();
+		(*element)["inputline"]["input"].disable();
+	}
 	(*element)["inputline"].add("sendbutton", new Frame("ui/frame_button_9"));
 	(*element)["inputline"]["sendbutton"].put(new TextField(
 		_("Send"),

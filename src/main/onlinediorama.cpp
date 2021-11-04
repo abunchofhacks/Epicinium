@@ -33,6 +33,7 @@
 #include "target.hpp"
 #include "library.hpp"
 #include "colorname.hpp"
+#include "settings.hpp"
 
 
 OnlineDiorama::OnlineDiorama(GameOwner& owner, Settings& settings,
@@ -56,6 +57,13 @@ OnlineDiorama::OnlineDiorama(GameOwner& owner, Settings& settings,
 
 	_observer.reset(new Observer(settings, *this, rulesetname));
 	_observer->setSkins(metadata);
+
+	if (settings.enableGeneralChat.value())
+	{
+		_observer->addChatmode(stringify(Target::GENERAL),
+			_("ALL"),
+			ColorName::TEXT800);
+	}
 }
 
 void OnlineDiorama::load()
@@ -121,9 +129,6 @@ void OnlineDiorama::load()
 		_observer->receiveChanges(cset.get(Player::OBSERVER));
 	}
 
-	_observer->addChatmode(stringify(Target::GENERAL),
-		_("ALL"),
-		ColorName::TEXT800);
 	_observer->setChatmode(stringify(Target::GENERAL));
 
 	_client.registerHandler(this);

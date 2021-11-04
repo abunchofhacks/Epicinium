@@ -168,6 +168,8 @@ public:
 	Setting<int> fontSizeWallet;
 	Setting<int> fontSizeTutorial;
 	Setting<int> fontSizeHeadline;
+	Setting<bool> enableGeneralChat;
+	Setting<bool> enableLobbyChat;
 	Setting<std::string> rememberedPreviousContents;
 
 private:

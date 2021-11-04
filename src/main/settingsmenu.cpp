@@ -896,6 +896,28 @@ void SettingsMenu::buildTopRightSocial()
 		Menu::makeCheckbox());
 	_layout["top"]["right"]["discord"].setMarginHorizontal(_margins);
 	_layout["top"]["right"]["discord"]["title"].setMarginVertical(_margins);
+
+	_layout["top"]["right"].add("all-chat", new HorizontalLayout());
+	_layout["top"]["right"]["all-chat"].align(
+		VerticalAlignment::MIDDLE);
+	_layout["top"]["right"]["all-chat"].add("title", new TextField(
+		_("Enable General Text Chat ('ALL'):"),
+		FONTSIZE));
+	_layout["top"]["right"]["all-chat"].add("options",
+		Menu::makeCheckbox());
+	_layout["top"]["right"]["all-chat"].setMarginHorizontal(_margins);
+	_layout["top"]["right"]["all-chat"]["title"].setMarginVertical(_margins);
+
+	_layout["top"]["right"].add("lobby-chat", new HorizontalLayout());
+	_layout["top"]["right"]["lobby-chat"].align(
+		VerticalAlignment::MIDDLE);
+	_layout["top"]["right"]["lobby-chat"].add("title", new TextField(
+		_("Enable Lobby Text Chat:"),
+		FONTSIZE));
+	_layout["top"]["right"]["lobby-chat"].add("options",
+		Menu::makeCheckbox());
+	_layout["top"]["right"]["lobby-chat"].setMarginHorizontal(_margins);
+	_layout["top"]["right"]["lobby-chat"]["title"].setMarginVertical(_margins);
 }
 
 void SettingsMenu::buildTopRightInterface()
@@ -1774,6 +1796,36 @@ void SettingsMenu::refresh()
 		}
 	}
 
+	if (_layout["top"]["right"]["all-chat"]["options"].clicked())
+	{
+		auto& options = _layout["top"]["right"]["all-chat"]["options"];
+		if (options.getTag() == "Empty")
+		{
+			_settings.enableGeneralChat = true;
+			options.setTag("Checked");
+		}
+		else
+		{
+			_settings.enableGeneralChat = false;
+			options.setTag("Empty");
+		}
+	}
+
+	if (_layout["top"]["right"]["lobby-chat"]["options"].clicked())
+	{
+		auto& options = _layout["top"]["right"]["lobby-chat"]["options"];
+		if (options.getTag() == "Empty")
+		{
+			_settings.enableLobbyChat = true;
+			options.setTag("Checked");
+		}
+		else
+		{
+			_settings.enableLobbyChat = false;
+			options.setTag("Empty");
+		}
+	}
+
 	if (_layout["top"]["right"]["artpanmode"]["options"]["dropdown"].clicked())
 	{
 		auto& options = _layout["top"]["right"]["artpanmode"]["options"];
@@ -2235,6 +2287,24 @@ void SettingsMenu::load()
 	else
 	{
 		_layout["top"]["right"]["discord"]["options"].setTag("Empty");
+	}
+
+	if (_settings.enableGeneralChat.value())
+	{
+		_layout["top"]["right"]["all-chat"]["options"].setTag("Checked");
+	}
+	else
+	{
+		_layout["top"]["right"]["all-chat"]["options"].setTag("Empty");
+	}
+
+	if (_settings.enableLobbyChat.value())
+	{
+		_layout["top"]["right"]["lobby-chat"]["options"].setTag("Checked");
+	}
+	else
+	{
+		_layout["top"]["right"]["lobby-chat"]["options"].setTag("Empty");
 	}
 
 	if (_settings.palette.value("") == "highcontrast")

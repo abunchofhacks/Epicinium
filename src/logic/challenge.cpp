@@ -208,29 +208,29 @@ Notice Challenge::check(const Id& id, const Bible& bible, const Board& board,
 			}
 
 			// Capture (not destroy) neutral city. Lose if blue captures it or
-			// your city.
-			if (tileCount(board, citytype, Player::NONE) == 0)
+			// your city. Also capture the enemy city. Rephrased: you win when
+			// you control all 3 cities, and you lose if blue controls 2 cities
+			// or if any city is destroyed.(Settlers cannot build cities so
+			// that's fine.)
+			if (tileCount(board, citytype, Player::RED) >= 3)
 			{
-				if (tileCount(board, citytype, Player::RED) >= 2
-					&& tileCount(board, citytype) < 3)
+				for (const Player& player : pinfo._players)
 				{
-					for (const Player& player : pinfo._players)
-					{
-						if (player != Player::BLUE) continue;
-						if (pinfo._defeated[player]) continue;
+					if (player != Player::BLUE) continue;
+					if (pinfo._defeated[player]) continue;
 
-						defeats.emplace_back(player);
-					}
+					defeats.emplace_back(player);
 				}
-				else
+			}
+			else if (tileCount(board, citytype) < 3
+				|| tileCount(board, citytype, Player::BLUE) >= 2)
+			{
+				for (const Player& player : pinfo._players)
 				{
-					for (const Player& player : pinfo._players)
-					{
-						if (player != Player::RED) continue;
-						if (pinfo._defeated[player]) continue;
+					if (player != Player::RED) continue;
+					if (pinfo._defeated[player]) continue;
 
-						defeats.emplace_back(player);
-					}
+					defeats.emplace_back(player);
 				}
 			}
 			return Notice::NONE;

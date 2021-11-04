@@ -35,6 +35,7 @@
 #include "cycle.hpp"
 #include "paint.hpp"
 #include "colorname.hpp"
+#include "settings.hpp"
 
 
 OnlineGame::OnlineGame(GameOwner& owner, Settings& settings, Client& client,
@@ -51,18 +52,25 @@ OnlineGame::OnlineGame(GameOwner& owner, Settings& settings, Client& client,
 	_commander(settings, *this, player, rulesetname)
 {
 	_time = SDL_GetTicks() * 0.001f;
+
+	if (settings.enableGeneralChat.value())
+	{
+		_commander.addChatmode(stringify(Target::GENERAL),
+			_("ALL"),
+			ColorName::TEXT800);
+	}
+	if (settings.enableLobbyChat.value())
+	{
+		_commander.addChatmode(stringify(Target::LOBBY),
+			_("GAME"),
+			ColorName::TEXTLOBBYCHAT);
+	}
 }
 
 void OnlineGame::load()
 {
 	_commander.load();
 
-	_commander.addChatmode(stringify(Target::GENERAL),
-		_("ALL"),
-		ColorName::TEXT800);
-	_commander.addChatmode(stringify(Target::LOBBY),
-		_("GAME"),
-		ColorName::TEXTLOBBYCHAT);
 	_commander.setChatmode(stringify(Target::LOBBY));
 
 	_client.registerHandler(this);

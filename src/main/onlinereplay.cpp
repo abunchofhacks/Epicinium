@@ -35,6 +35,7 @@
 #include "cycle.hpp"
 #include "paint.hpp"
 #include "colorname.hpp"
+#include "settings.hpp"
 
 
 OnlineReplay::OnlineReplay(GameOwner& owner, Settings& settings, Client& client,
@@ -49,18 +50,25 @@ OnlineReplay::OnlineReplay(GameOwner& owner, Settings& settings, Client& client,
 	_planningStart(0),
 	_phase(Phase::GROWTH),
 	_observer(settings, *this, getVisionLevel(_role), rulesetname)
-{}
+{
+	if (settings.enableGeneralChat.value())
+	{
+		_observer.addChatmode(stringify(Target::GENERAL),
+			_("ALL"),
+			ColorName::TEXT800);
+	}
+	if (settings.enableLobbyChat.value())
+	{
+		_observer.addChatmode(stringify(Target::LOBBY),
+			_("GAME"),
+			ColorName::TEXTLOBBYCHAT);
+	}
+}
 
 void OnlineReplay::load()
 {
 	_observer.load();
 
-	_observer.addChatmode(stringify(Target::GENERAL),
-		_("ALL"),
-		ColorName::TEXT800);
-	_observer.addChatmode(stringify(Target::LOBBY),
-		_("GAME"),
-		ColorName::TEXTLOBBYCHAT);
 	_observer.setChatmode(stringify(Target::LOBBY));
 
 	_client.registerHandler(this);

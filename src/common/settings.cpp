@@ -119,6 +119,8 @@ Settings::Settings(std::unique_ptr<Settings> fallback) :
 	fontSizeWallet(this, "font-size-wallet"),
 	fontSizeTutorial(this, "font-size-tutorial"),
 	fontSizeHeadline(this, "font-size-headline"),
+	enableGeneralChat(this, "enable-general-chat"),
+	enableLobbyChat(this, "enable-lobby-chat"),
 	rememberedPreviousContents(this, "remembered-previous-contents"),
 	settings(this, "settings", "defaults")
 {}
@@ -148,6 +150,8 @@ Settings::Settings() :
 	masterVolume = 1.0f;
 	gameplayVolume = 1.0f;
 	musicVolume = 1.0f;
+	enableGeneralChat = true;
+	enableLobbyChat = true;
 
 #ifdef CANDIDATE
 	dataRoot = System::getPersistentDataRoot();

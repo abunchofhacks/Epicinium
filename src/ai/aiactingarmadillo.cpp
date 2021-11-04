@@ -442,7 +442,7 @@ void AIActingArmadillo::determineState()
 		{
 			_enemyGround.emplace_back(makeGround(index));
 		}
-		
+
 		if (_board.air(index).owner == _player)
 		{
 			if (_board.air(index).type == _zeppelintype)
@@ -539,6 +539,13 @@ void AIActingArmadillo::process()
 	cities.excludeOccupied();
 	cities.execute();
 
+	TileFloodfill aircities(_bible, _board);
+	aircities.include({ _citytype });
+	aircities.exclude({ _player });
+	aircities.fly();
+	aircities.excludeOccupied();
+	aircities.execute();
+
 	TileFloodfill alliedcities(_bible, _board);
 	alliedcities.include({_citytype});
 	alliedcities.include({_player});
@@ -549,17 +556,17 @@ void AIActingArmadillo::process()
 	alliedbarracks.include({_player});
 	alliedbarracks.execute();
 
-	
+
 	UnitFloodfill enemyair(_bible, _board);
 	enemyair.fly();
 	enemyair.exclude({_player});
 	enemyair.execute();
-	
+
 
 	UnitFloodfill enemyunits(_bible, _board);
 	enemyunits.exclude({_player});
 	enemyunits.execute();
-	
+
 	size_t occupiedairports = 0;
 	for (Tile& airfield : _myAirports)
 	{
@@ -570,7 +577,7 @@ void AIActingArmadillo::process()
 		}
 	}
 
-	
+
 	// win condition: SHELL own city
 	if ((_myCities.size() == 1) && (occupiedairports == _myAirports.size()))
 	{
@@ -589,7 +596,7 @@ void AIActingArmadillo::process()
 				Descriptor::cell(target.pos()));
 			_options.emplace_back(Option{ order, 100 });
 		}
-	} 
+	}
 	else
 	{
 
@@ -620,7 +627,7 @@ void AIActingArmadillo::process()
 				}
 				Order order(Order::Type::MOVE, gunner.descriptor,
 					Descriptor::cell(destination.pos()), moves);
-				_options.emplace_back(Option{ order, 15 - int(moves.size()) });
+				_options.emplace_back(Option{ order, 15   });
 			}
 		}
 
@@ -645,7 +652,7 @@ void AIActingArmadillo::process()
 				}
 				Order order(Order::Type::MOVE, militia.descriptor,
 					Descriptor::cell(destination.pos()), moves);
-				_options.emplace_back(Option{ order, 15 - int(moves.size()) });
+				_options.emplace_back(Option{ order, 15   });
 		}
 		// move militia to units if they are close
 		for (Ground& militia : _myMilitia)
@@ -666,7 +673,7 @@ void AIActingArmadillo::process()
 				}
 				Order order(Order::Type::MOVE, militia.descriptor,
 					Descriptor::cell(destination.pos()), moves);
-				_options.emplace_back(Option{ order, 15 - int(moves.size()) });
+				_options.emplace_back(Option{ order, 15   });
 			}
 		}
 
@@ -690,7 +697,7 @@ void AIActingArmadillo::process()
 			}
 			Order order(Order::Type::MOVE, rifleman.descriptor,
 				Descriptor::cell(destination.pos()), moves);
-			_options.emplace_back(Option{ order, 15 - int(moves.size()) });
+			_options.emplace_back(Option{ order, 15   });
 		}
 		// move riflemen towards enemy units if they are close
 		for (Ground& rifleman : _myRiflemen)
@@ -711,13 +718,15 @@ void AIActingArmadillo::process()
 				}
 				Order order(Order::Type::MOVE, rifleman.descriptor,
 					Descriptor::cell(destination.pos()), moves);
-				_options.emplace_back(Option{ order, 15 - int(moves.size()) });
+				_options.emplace_back(Option{ order, 15   });
 			}
 		}
 
 		// Zepplins gas if enemy is near, otherwise move towards enemy city.
 		for (Air& zeppelin : _myZeppelins)
 		{
+
+
 			Cell from = _board.cell(zeppelin.descriptor.position);
 			std::vector<Ground> surrounding;
 
@@ -750,23 +759,23 @@ void AIActingArmadillo::process()
 
 			if (zeppelin.unfinished.type != Order::Type::NONE) continue;
 			Cell destination = _board.cell(zeppelin.descriptor.position);
-			if (cityOccupied(destination)) continue; // If this line does what I think it does, it might have to be removed?
-			if (!cities.reached(destination)) continue;
-			if (cities.steps(destination) == 0) continue;
 			std::vector<Move> moves;
 			Move current;
-			while ((current = cities.step(destination)) != Move::X)
+			while ((current = aircities.step(destination)) != Move::X)
 			{
 				moves.emplace_back(current);
 				destination = destination + current;
 			}
 			Order order(Order::Type::MOVE, zeppelin.descriptor,
 				Descriptor::cell(destination.pos()), moves);
-			_options.emplace_back(Option{ order, 15 - int(moves.size()) });
+			_options.emplace_back(Option{ order, 15   });
+
+
+
 		}
 
 
-		// focus/lockdown	
+		// focus/lockdown
 		for (Ground& enemyUnit : _enemyGround)
 		{
 			Cell from = _board.cell(enemyUnit.descriptor.position);
@@ -844,7 +853,7 @@ void AIActingArmadillo::process()
 			moves.pop_back();
 			Order order(Order::Type::MOVE, tank.descriptor,
 				Descriptor::cell(prev.pos()), moves);
-			_options.emplace_back(Option{ order, 15 - int(moves.size()) });
+			_options.emplace_back(Option{ order, 15   });
 		}
 
 

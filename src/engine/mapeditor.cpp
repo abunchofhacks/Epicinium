@@ -1032,15 +1032,19 @@ void MapEditor::updateGlobals()
 		else if (ImGui::Button("Expand Top")) expandTop();
 		if (_board.rows() == Position::MAX_ROWS) ImGui::Text("(max reached)");
 		else if (ImGui::Button("Expand Bottom")) expandBottom();
-		if (ImGui::Button("Crop Top")) cropTop();
-		if (ImGui::Button("Crop Bottom")) cropBottom();
+		if (_board.rows() <= 1) ImGui::Text("(min reached)");
+		else if (ImGui::Button("Crop Top")) cropTop();
+		if (_board.rows() <= 1) ImGui::Text("(min reached)");
+		else if (ImGui::Button("Crop Bottom")) cropBottom();
 		ImGui::Text("Columns: %d", _board.cols());
 		if (_board.cols() == Position::MAX_COLS) ImGui::Text("(max reached)");
 		else if (ImGui::Button("Expand Left")) expandLeft();
 		if (_board.cols() == Position::MAX_COLS) ImGui::Text("(max reached)");
 		else if (ImGui::Button("Expand Right")) expandRight();
-		if (ImGui::Button("Crop Left")) cropLeft();
-		if (ImGui::Button("Crop Right")) cropRight();
+		if (_board.cols() <= 1) ImGui::Text("(min reached)");
+		else if (ImGui::Button("Crop Left")) cropLeft();
+		if (_board.cols() <= 1) ImGui::Text("(min reached)");
+		else if (ImGui::Button("Crop Right")) cropRight();
 
 		ImGui::Separator();
 		ImGui::Text("Number of accessible tiles: %d", totalaccessible);

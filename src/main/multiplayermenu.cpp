@@ -70,7 +70,6 @@ enum class InputMode
 {
 	CHAT_GENERAL,
 	CHAT_LOBBY,
-	LOBBYNAME,
 };
 
 MultiplayerMenu::~MultiplayerMenu()
@@ -667,13 +666,8 @@ void MultiplayerMenu::build()
 		auto& name = container["settings"]["name"];
 		name.add("text", new TextField("", FONTSIZE, ColorName::TEXT900));
 		name["text"].setMarginLeft(8 * InterfaceElement::scale());
-		name.add("rename", Frame::makeItem());
-		name["rename"].put(new TextField(
-			_("rename"),
-			FONTSIZE, ColorName::TEXT900));
-		name["rename"].makeClickable();
-		name["rename"].fixWidth();
-		name["rename"].setMarginVertical(2 * InterfaceElement::scale());
+		name.add("rename", new Filler());
+		name["rename"].fixWidth(10);
 		name.align(VerticalAlignment::MIDDLE);
 
 		container["settings"].add("host", new HorizontalLayout());
@@ -1270,15 +1264,6 @@ void MultiplayerMenu::refresh()
 	_layout.refresh();
 
 	auto& settings = _layout["left"]["inlobby"]["settings"];
-	if (settings["name"]["rename"].clicked())
-	{
-		_inputMode = InputMode::LOBBYNAME;
-		_layout["right"]["inputline"]["indicator"]["button"].setText(
-			_("NAME"));
-		_layout["right"]["inputline"]["indicator"]["button"].setTextColor(ColorName::TEXTANNOUNCEMENT);
-		message(
-			_("Please enter a new lobby name."));
-	}
 
 	if (settings.contains("map")
 		&& settings["map"]["options"]["dropdown"].hovered())
@@ -1848,14 +1833,20 @@ void MultiplayerMenu::refresh()
 		&& _layout["right"]["users"].getTag() != "users")
 	{
 		_layout["right"]["users"].setTag("users");
-		_layout["right"]["inputline"]["input"].content().power();
+		if (_layout["right"]["inputline"]["input"].enabled())
+		{
+			_layout["right"]["inputline"]["input"].content().power();
+		}
 		_layout["right"]["users"]["feedback"]["input"].content().depower();
 	}
 	else if (_layout["right"]["tabs"]["rankings"]["button"].clicked()
 		&& _layout["right"]["users"].getTag() != "rankings")
 	{
 		_layout["right"]["users"].setTag("rankings");
-		_layout["right"]["inputline"]["input"].content().power();
+		if (_layout["right"]["inputline"]["input"].enabled())
+		{
+			_layout["right"]["inputline"]["input"].content().power();
+		}
 		_layout["right"]["users"]["feedback"]["input"].content().depower();
 	}
 	else if (_layout["right"]["tabs"]["feedback"].clicked()
@@ -1893,6 +1884,8 @@ void MultiplayerMenu::refresh()
 	}
 
 	if (_layout["left"]["inlobby"].born()
+		&& _settings.enableGeneralChat.value()
+		&& _settings.enableLobbyChat.value()
 		&& _layout["right"]["inputline"]["indicator"]["button"].clicked())
 	{
 		if (_inputMode == InputMode::CHAT_LOBBY)
@@ -1930,15 +1923,6 @@ void MultiplayerMenu::refresh()
 		LOGD << "User input: " << input;
 		switch (_inputMode)
 		{
-			case InputMode::LOBBYNAME:
-			{
-				_client.send(Message::name_lobby(input));
-				_inputMode = InputMode::CHAT_LOBBY;
-				_layout["right"]["inputline"]["indicator"]["button"].setText(
-					_("LOBBY"));
-				_layout["right"]["inputline"]["indicator"]["button"].setTextColor(ColorName::TEXTLOBBYCHAT);
-			}
-			break;
 			case InputMode::CHAT_GENERAL:
 			{
 				_client.send(Message::chat(input, Target::GENERAL));
@@ -2679,7 +2663,7 @@ void MultiplayerMenu::nameLobby(const std::string& lobby,
 			_("Lobby \"%s\" was created."),
 			name.c_str()));
 	}
-	else
+	else if (oldname != name)
 	{
 		message(::format(
 			// TRANSLATORS: Each argument is an English or custom lobby name.
@@ -4533,6 +4517,7 @@ void MultiplayerMenu::rethinkLobbySettingsForSelfHostedContent()
 	}
 	_ainames.clear();
 	_aidescriptions.clear();
+	std::vector<std::pair<std::string, std::string>> aireclaimings;
 	{
 		auto& players = _layout["left"]["inlobby"]["players"]["players"];
 		for (size_t i = 0; i < players.size(); i++)
@@ -4543,8 +4528,10 @@ void MultiplayerMenu::rethinkLobbySettingsForSelfHostedContent()
 				auto& options = players[name]["ainame"];
 				auto& content = options["content"];
 				auto& dropdown = options["dropdown"];
+				std::string ainame = content.getTag();
 				content.reset();
 				dropdown.reset();
+				aireclaimings.emplace_back(ainame, name);
 			}
 		}
 	}
@@ -4623,6 +4610,18 @@ void MultiplayerMenu::rethinkLobbySettingsForSelfHostedContent()
 		metadata["self_hosted"] = true;
 		_client.send(Message::list_ai(ainame, metadata));
 		listAI(ainame, metadata);
+	}
+	for (const auto& x : aireclaimings)
+	{
+		std::string ainame;
+		for (const std::string& n : AI::selfHostedPool())
+		{
+			if (n == std::get<0>(x) || ainame.empty())
+			{
+				ainame = n;
+			}
+		}
+		_client.send(Message::claim_ai(ainame, std::get<1>(x)));
 	}
 }
 
@@ -4777,11 +4776,26 @@ void MultiplayerMenu::inServer()
 	_layout["left"].setTag("gamemodes");
 	_layout["left"].enable();
 	_inputMode = InputMode::CHAT_GENERAL;
-	_layout["right"]["inputline"]["indicator"]["button"].setText(
-		_("ALL"));
-	_layout["right"]["inputline"]["indicator"]["button"].setTextColor(ColorName::TEXT800);
-	_layout["right"]["inputline"]["input"].enable();
-	_layout["right"]["inputline"]["input"].content().power();
+	if (_settings.enableGeneralChat.value()
+			|| _settings.enableLobbyChat.value())
+	{
+		_layout["right"]["inputline"]["indicator"]["button"].setText(
+			_("ALL"));
+		_layout["right"]["inputline"]["indicator"]["button"].setTextColor(ColorName::TEXT800);
+		_layout["right"]["inputline"]["indicator"].enable();
+	}
+	else
+	{
+		_layout["right"]["inputline"]["indicator"]["button"].setText(
+			_("CHAT"));
+		_layout["right"]["inputline"]["indicator"]["button"].setTextColor(ColorName::TEXT800);
+		_layout["right"]["inputline"]["indicator"].disable();
+	}
+	if (_settings.enableGeneralChat.value())
+	{
+		_layout["right"]["inputline"]["input"].enable();
+		_layout["right"]["inputline"]["input"].content().power();
+	}
 	_layout["right"]["users"]["feedback"]["input"].content().depower();
 
 	if (_client.hotJoining())
@@ -4837,10 +4851,15 @@ void MultiplayerMenu::inLobby(const std::string& lobby)
 			name.c_str()));
 	}
 	_layout["left"]["inlobby"]["settings"]["name"]["text"].setText(name);
-	_inputMode = InputMode::CHAT_LOBBY;
-	_layout["right"]["inputline"]["indicator"]["button"].setText(
-		_("LOBBY"));
-	_layout["right"]["inputline"]["indicator"]["button"].setTextColor(ColorName::TEXTLOBBYCHAT);
+	if (_settings.enableLobbyChat.value())
+	{
+		_inputMode = InputMode::CHAT_LOBBY;
+		_layout["right"]["inputline"]["indicator"]["button"].setText(
+			_("LOBBY"));
+		_layout["right"]["inputline"]["indicator"]["button"].setTextColor(ColorName::TEXTLOBBYCHAT);
+		_layout["right"]["inputline"]["input"].enable();
+		_layout["right"]["inputline"]["input"].content().power();
+	}
 }
 
 void MultiplayerMenu::outLobby()
@@ -4866,6 +4885,15 @@ void MultiplayerMenu::outLobby()
 	_layout["right"]["inputline"]["indicator"]["button"].setText(
 		_("ALL"));
 	_layout["right"]["inputline"]["indicator"]["button"].setTextColor(ColorName::TEXT800);
+	if (_settings.enableGeneralChat.value())
+	{
+		_layout["right"]["inputline"]["input"].enable();
+		_layout["right"]["inputline"]["input"].content().power();
+	}
+	else
+	{
+		_layout["right"]["inputline"]["input"].disable();
+	}
 
 	resetMapDropdown();
 	_ainames.clear();
@@ -4928,6 +4956,9 @@ void MultiplayerMenu::discordJoinRequest(const char* username,
 	form.settle();
 
 	_layout["right"]["users"].setTag("discord");
-	_layout["right"]["inputline"]["input"].content().power();
+	if (_layout["right"]["inputline"]["input"].enabled())
+	{
+		_layout["right"]["inputline"]["input"].content().power();
+	}
 	_layout["right"]["users"]["feedback"]["input"].content().depower();
 }

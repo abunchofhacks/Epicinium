@@ -298,6 +298,16 @@ void Client::handleMessage(const ParsedMessage& message)
 		break;
 		case Message::Type::CHAT:
 		{
+			if (message.sender() == "server")
+			{
+				_owner.message(
+					GETTEXT_FROM_SERVER(message.content().c_str()));
+				// We expect the following messages:
+				(void) _("Replays are not available at the moment.");
+				(void) _("Game interrupted: host left.");
+				break;
+			}
+
 			switch (message.target())
 			{
 				case Target::NONE:
@@ -306,17 +316,17 @@ void Client::handleMessage(const ParsedMessage& message)
 				}
 				break;
 				case Target::GENERAL:
+				{
+					if (_settings.enableGeneralChat.value())
+					{
+						_owner.chat(message.sender(), message.content(),
+							message.target());
+					}
+				}
+				break;
 				case Target::LOBBY:
 				{
-					if (message.sender() == "server")
-					{
-						_owner.message(
-							GETTEXT_FROM_SERVER(message.content().c_str()));
-						// We expect the following messages:
-						(void) _("Replays are not available at the moment.");
-						(void) _("Game interrupted: host left.");
-					}
-					else
+					if (_settings.enableLobbyChat.value())
 					{
 						_owner.chat(message.sender(), message.content(),
 							message.target());
